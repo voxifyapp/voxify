@@ -1,14 +1,17 @@
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, Text, View} from 'react-native';
+import { Button, TamaguiProvider, Theme } from 'tamagui';
+import config from './tamagui.config';
 
 function App(): JSX.Element {
   return (
-    <NavigationContainer>
-      <View>
-        <Text>Hello World!</Text>
-      </View>
-    </NavigationContainer>
+    <TamaguiProvider config={config}>
+      <NavigationContainer>
+        <Theme name="dark">
+          <Button theme="pink">Hello World</Button>
+        </Theme>
+      </NavigationContainer>
+    </TamaguiProvider>
   );
 }
 
