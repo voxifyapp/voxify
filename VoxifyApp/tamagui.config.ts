@@ -9,7 +9,9 @@ export default createTamagui({
   fonts: {
     body: createFont({
       family: 'Arial',
-      size: {},
+      size: {
+        4: 14,
+      },
       lineHeight: {},
     }),
   },
