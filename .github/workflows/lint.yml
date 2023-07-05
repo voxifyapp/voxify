@@ -1,4 +1,4 @@
-name: Lint-Server
+name: Lint
 
 on:
   # Trigger the workflow on push or pull request,
@@ -26,7 +26,10 @@ jobs:
 
       # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
-        run: cd server && yarn install
+        run: npm i -g eslint
 
-      - name: Run linters
+      - name: Run linters on Server
         run: cd server && npm run lint
+
+      - name: Run linters on App
+        run: cd VoxifyApp && npm run lint
