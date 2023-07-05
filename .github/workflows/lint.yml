@@ -24,12 +24,8 @@ jobs:
         with:
           node-version: 18
 
-      # ESLint and Prettier must be in `package.json`
-      - name: Install Node.js dependencies
-        run: npm i -g eslint
-
       - name: Run linters on Server
-        run: cd server && npm run lint
+        run: cd server && yarn install && npm run lint
 
       - name: Run linters on App
-        run: cd VoxifyApp && npm run lint
+        run: cd VoxifyApp && yarn install && npm run lint
