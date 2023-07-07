@@ -1,16 +1,17 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { TamaguiProvider, Theme } from 'tamagui';
-import { LoginScreen } from './modules/auth/screens/LoginScreen';
-import {
-  AppContextProvider,
-  useAppContext,
-} from './modules/context/AppContext';
-import tamaguiConfig from './tamagui.config';
+import { AppContextProvider, useAppContext } from './context/AppContext';
 import { HomeScreen } from './modules/auth/screens/HomeScreen';
+import { LoginScreen } from './modules/auth/screens/LoginScreen';
+import tamaguiConfig from './tamagui.config';
+import Config from 'react-native-config';
 
+GoogleSignin.configure({
+  webClientId: Config.FIREBASE_WEBCLIENT_ID,
+});
 const Stack = createNativeStackNavigator();
 
 export const Routes = () => {
@@ -34,14 +35,6 @@ export const Routes = () => {
 };
 
 function App(): JSX.Element {
-  useEffect(() => {
-    //TODO Change this
-    GoogleSignin.configure({
-      webClientId:
-        '44840556270-b1g144ntduo455mcpdskm3v15i30udu7.apps.googleusercontent.com',
-    });
-  }, []);
-
   return (
     <TamaguiProvider config={tamaguiConfig}>
       <AppContextProvider>
