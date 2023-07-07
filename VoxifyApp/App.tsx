@@ -12,24 +12,28 @@ import tamaguiConfig from '@voxify/tamagui.config';
 GoogleSignin.configure({
   webClientId: Config.FIREBASE_WEBCLIENT_ID,
 });
-const Stack = createNativeStackNavigator();
+
+const AuthStack = createNativeStackNavigator();
+const AppStack = createNativeStackNavigator();
 
 export const Routes = () => {
   const { user } = useAppContext();
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {user ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
-        ) : (
-          <Stack.Screen
+      {!!user ? (
+        <AppStack.Navigator>
+          <AuthStack.Screen name="Home" component={HomeScreen} />
+        </AppStack.Navigator>
+      ) : (
+        <AuthStack.Navigator initialRouteName="Login">
+          <AuthStack.Screen
             options={{ headerShown: false }}
             name="Login"
             component={LoginScreen}
           />
-        )}
-      </Stack.Navigator>
+        </AuthStack.Navigator>
+      )}
     </NavigationContainer>
   );
 };
