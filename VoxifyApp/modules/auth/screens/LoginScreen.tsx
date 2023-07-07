@@ -1,12 +1,11 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React from 'react';
-import { Button, H1, Stack, YStack } from 'tamagui';
+import { Button, Stack, YStack } from 'tamagui';
 
 export const LoginScreen = () => {
   return (
     <YStack>
-      <H1>Hello World 2!</H1>
       <Stack flex={1} />
       <Button
         onPress={async () => {
