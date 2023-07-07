@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { TamaguiProvider, Theme } from 'tamagui';
-import { AppContextProvider, useAppContext } from './context/AppContext';
-import { HomeScreen } from './modules/auth/screens/HomeScreen';
-import { LoginScreen } from './modules/auth/screens/LoginScreen';
-import tamaguiConfig from './tamagui.config';
+import { HomeScreen } from '@voxify/modules/auth/screens/HomeScreen';
+import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
 import Config from 'react-native-config';
+import { useAppContext, AppContextProvider } from '@voxify/context/AppContext';
+import tamaguiConfig from '@voxify/tamagui.config';
 
 GoogleSignin.configure({
   webClientId: Config.FIREBASE_WEBCLIENT_ID,
