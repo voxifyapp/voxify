@@ -13,7 +13,7 @@ export type AppContextType = {
 };
 
 // Create a context
-const AuthContext = createContext<AppContextType | null>(null);
+const AppContext = createContext<AppContextType | null>(null);
 
 // Create a provider which will hold our global state
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
@@ -30,8 +30,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value = { user, loading };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 // Hook that enables any component to subscribe to auth state
-export const useAppContext = () => useContext(AuthContext) as AppContextType;
+export const useAppContext = () => useContext(AppContext) as AppContextType;
