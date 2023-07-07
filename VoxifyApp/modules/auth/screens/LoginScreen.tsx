@@ -3,7 +3,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React from 'react';
 import { Button, H1, Stack, YStack } from 'tamagui';
 
-export const Login = () => {
+export const LoginScreen = () => {
   return (
     <YStack>
       <H1>Hello World 2!</H1>

@@ -1,12 +1,37 @@
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { TamaguiProvider, Theme } from 'tamagui';
-import { Login } from './modules/auth/screens/Login';
+import { LoginScreen } from './modules/auth/screens/LoginScreen';
+import {
+  AppContextProvider,
+  useAppContext,
+} from './modules/context/AppContext';
 import tamaguiConfig from './tamagui.config';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { HomeScreen } from './modules/auth/screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
+
+export const Routes = () => {
+  const { user } = useAppContext();
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        {user ? (
+          <Stack.Screen name="Home" component={HomeScreen} />
+        ) : (
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Login"
+            component={LoginScreen}
+          />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 function App(): JSX.Element {
   useEffect(() => {
@@ -19,17 +44,11 @@ function App(): JSX.Element {
 
   return (
     <TamaguiProvider config={tamaguiConfig}>
-      <Theme name="light">
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="Login"
-              component={Login}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Theme>
+      <AppContextProvider>
+        <Theme name="light">
+          <Routes />
+        </Theme>
+      </AppContextProvider>
     </TamaguiProvider>
   );
 }
