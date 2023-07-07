@@ -13,13 +13,13 @@ function App(): JSX.Element {
     //TODO Change this
     GoogleSignin.configure({
       webClientId:
-        '44840556270-pitj1tnp57rddm5bnbib0a4ni8fn5gth.apps.googleusercontent.com',
+        '44840556270-b1g144ntduo455mcpdskm3v15i30udu7.apps.googleusercontent.com',
     });
   }, []);
 
   return (
     <TamaguiProvider config={tamaguiConfig}>
-      <Theme name="dark">
+      <Theme name="light">
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login">
             <Stack.Screen
