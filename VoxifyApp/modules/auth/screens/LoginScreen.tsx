@@ -5,7 +5,7 @@ import { Button, Stack, YStack } from 'tamagui';
 
 export const LoginScreen = () => {
   return (
-    <YStack>
+    <YStack fullscreen>
       <Stack flex={1} />
       <Button
         onPress={async () => {

@@ -21,7 +21,7 @@ export const Routes = () => {
 
   return (
     <NavigationContainer>
-      {!!user ? (
+      {user ? (
         <AppStack.Navigator>
           <AuthStack.Screen name="Home" component={HomeScreen} />
         </AppStack.Navigator>
