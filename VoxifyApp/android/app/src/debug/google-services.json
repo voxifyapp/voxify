@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "44840556270",
+    "project_id": "voxify-dev",
+    "storage_bucket": "voxify-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44840556270:android:55ef3f78a64bb9bc2c85ff",
+        "android_client_info": {
+          "package_name": "com.voxifyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44840556270-rmufpr23cen8a66ber3d23ebk4sdqmev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voxifyapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "44840556270-pitj1tnp57rddm5bnbib0a4ni8fn5gth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwjU9W2ecKmCaInO5ObTr5nlVcGRHHYZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44840556270-pitj1tnp57rddm5bnbib0a4ni8fn5gth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

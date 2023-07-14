@@ -1,16 +1,15 @@
-import { createFont, createTamagui } from '@tamagui/core';
-import { shorthands } from '@tamagui/shorthands';
-import { themes, tokens } from '@tamagui/themes';
+import { config } from '@tamagui/config';
+import { createTamagui } from 'tamagui'; // or '@tamagui/core'
 
-export default createTamagui({
-  themes,
-  tokens,
-  shorthands,
-  fonts: {
-    body: createFont({
-      family: 'Arial',
-      size: {},
-      lineHeight: {},
-    }),
-  },
-});
+const appConfig = createTamagui(config);
+export type AppConfig = typeof appConfig;
+declare module 'tamagui' {
+  // or '@tamagui/core'
+
+  // overrides TamaguiCustomConfig so your custom types
+
+  // work everywhere you import `tamagui`
+
+  interface TamaguiCustomConfig extends AppConfig {}
+}
+export default appConfig;
