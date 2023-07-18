@@ -1,19 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FirebaseService } from './firebase.service';
 import axios from 'axios';
-import * as admin from 'firebase-admin';
+import {
+  createIdTokenForFirebaseUser,
+  createTestFirebaseUser,
+} from '../../../test/common/firebase';
+import { before } from 'node:test';
 
 describe('FirebaseService', () => {
   let service: FirebaseService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [FirebaseService],
     }).compile();
 
     service = module.get<FirebaseService>(FirebaseService);
-
-    // console.log(user)
+    console.log(
+      await createIdTokenForFirebaseUser(
+        service.admin,
+        (
+          await createTestFirebaseUser(service.admin)
+        ).uid,
+      ),
+    );
   });
 
   it('should be defined', () => {
