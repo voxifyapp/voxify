@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AppService } from './app.service';
       type: 'postgres',
       url: process.env.POSTGRES_URL,
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
