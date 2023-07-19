@@ -36,8 +36,6 @@ describe('FirebaseService', () => {
       error = err;
     }
 
-    console.log(error);
-
     expect(error).not.toBeNull();
   });
 });
