@@ -15,18 +15,20 @@ export class FirebaseService {
     const firebaseProjectId = process.env.FIREBASE_PROJECT_ID;
     const firebaseClientEmail = process.env.FIREBASE_CLIENT_EMAIL;
 
-    this.admin = admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: firebaseProjectId,
-        clientEmail: firebaseClientEmail,
-        privateKey: firebasePrivateKey.replace(/\\n/g, '\n'),
-      }),
-    });
-
-    this.admin = admin.app();
+    if (admin.apps.length === 0) {
+      this.admin = admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId: firebaseProjectId,
+          clientEmail: firebaseClientEmail,
+          privateKey: firebasePrivateKey.replace(/\\n/g, '\n'),
+        }),
+      });
+    } else {
+      this.admin = admin.app();
+    }
   }
 
-  async verifyIdToken(idToken: string) {
+  async getFirebaseUserFromIdToken(idToken: string) {
     return await this.admin.auth().verifyIdToken(idToken);
   }
 }

@@ -1,32 +1,43 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FirebaseService } from './firebase.service';
-import axios from 'axios';
 import {
   createIdTokenForFirebaseUser,
   createTestFirebaseUser,
 } from '../../../test/common/firebase';
-import { before } from 'node:test';
+import { FirebaseService } from './firebase.service';
 
 describe('FirebaseService', () => {
   let service: FirebaseService;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [FirebaseService],
     }).compile();
 
     service = module.get<FirebaseService>(FirebaseService);
-    console.log(
-      await createIdTokenForFirebaseUser(
-        service.admin,
-        (
-          await createTestFirebaseUser(service.admin)
-        ).uid,
-      ),
-    );
   });
 
-  it('should be defined', () => {
-    expect(true).toBe(true);
+  it('should be able to verify a valid idtoken', async () => {
+    const firebaseUser = await createTestFirebaseUser(service.admin);
+    const idToken = await createIdTokenForFirebaseUser(
+      service.admin,
+      firebaseUser.uid,
+    );
+
+    const result = await service.getFirebaseUserFromIdToken(idToken);
+
+    expect(result.uid).toEqual(firebaseUser.uid);
+  });
+
+  it('should throw an error if idtoken is invalid', async () => {
+    let error;
+    try {
+      await service.getFirebaseUserFromIdToken('fakeIdTokenThatDoesNotExist');
+    } catch (err) {
+      error = err;
+    }
+
+    console.log(error);
+
+    expect(error).not.toBeNull();
   });
 });
