@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  createIdTokenForFirebaseUser,
-  createTestFirebaseUser,
-} from '../../../test/common/firebase';
 import { FirebaseService } from './firebase.service';
+import {
+  createTestFirebaseUser,
+  createIdTokenForFirebaseUser,
+} from 'test/common/firebase';
 
 describe('FirebaseService', () => {
   let service: FirebaseService;
