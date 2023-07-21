@@ -1,12 +1,11 @@
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import * as dayjs from 'dayjs';
 import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
 import { profileFactory } from 'src/auth/profile/profile.fixture';
 import { ProfileRepository } from 'src/auth/profile/profile.repository';
 import { ProfileService } from './profile.service';
-import * as dayjs from 'dayjs';
-import { EntityNotFoundError } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
 
 describe('ProfileService', () => {
   let service: ProfileService;
@@ -94,9 +93,6 @@ describe('ProfileService', () => {
     expect(result).toBeNull();
   });
 
-  // User should only be able to change own profile
-  // If already taken free trial, throw an error
-
   it('should be able to update the profile subscription status', async () => {
     const userId = 'user-id';
     const profile = profileFactory.build({ subscriptionEndDate: null, userId });
@@ -151,5 +147,22 @@ describe('ProfileService', () => {
     }
 
     expect(error).toBeDefined();
+    expect(error).toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('should throw error if user already has subscription end date', async () => {
+    const profile = profileFactory.build();
+
+    profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+
+    let error;
+    try {
+      await service.addDaysToSubscription(profile.userId, profile.id, 60);
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).toBeDefined();
+    expect(error).toBeInstanceOf(UnauthorizedException);
   });
 });

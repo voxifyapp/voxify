@@ -6,7 +6,6 @@ import {
 import * as dayjs from 'dayjs';
 import { Profile } from 'src/auth/profile/profile.entity';
 import { ProfileRepository } from 'src/auth/profile/profile.repository';
-import { EntityNotFoundError } from 'typeorm';
 
 @Injectable()
 export class ProfileService {
