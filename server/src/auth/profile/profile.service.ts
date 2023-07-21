@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -58,10 +59,20 @@ export class ProfileService {
     const profile = await this.profileRepository.findOneBy({ id: profileId });
 
     if (!profile) throw new NotFoundException({ profileId });
-
     await this.requireUserToHaveAccessToProfile(userId, { profile });
+
+    if (profile.subscriptionEndDate) {
+      throw new ProfileAlreadyHasSubscriptionError(profile.id);
+    }
 
     profile.subscriptionEndDate = dayjs().add(daysToAdd, 'days').toDate();
     return await this.profileRepository.save(profile);
+  }
+}
+
+// Exceptions
+export class ProfileAlreadyHasSubscriptionError extends BadRequestException {
+  constructor(profileId) {
+    super({ profileId });
   }
 }

@@ -5,7 +5,10 @@ import * as dayjs from 'dayjs';
 import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
 import { profileFactory } from 'src/auth/profile/profile.fixture';
 import { ProfileRepository } from 'src/auth/profile/profile.repository';
-import { ProfileService } from './profile.service';
+import {
+  ProfileAlreadyHasSubscriptionError,
+  ProfileService,
+} from './profile.service';
 
 describe('ProfileService', () => {
   let service: ProfileService;
@@ -163,6 +166,6 @@ describe('ProfileService', () => {
     }
 
     expect(error).toBeDefined();
-    expect(error).toBeInstanceOf(UnauthorizedException);
+    expect(error).toBeInstanceOf(ProfileAlreadyHasSubscriptionError);
   });
 });
