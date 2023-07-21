@@ -1,19 +1,32 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
-import { CreateProfileDto } from './dto/create-profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { Body, Controller, Post, Req } from '@nestjs/common';
+import {
+  AuthenticatedRequest,
+  AuthenticatedRequestWithProfile,
+} from 'src/common/request';
 import { ProfileService } from './profile.service';
+import { AddDaysToSubscriptionDto } from 'src/auth/profile/dto/update-profile.dto';
 
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Post()
-  create(@Body() createProfileDto: CreateProfileDto) {
-    return this.profileService.findOrCreate(createProfileDto);
+  create(@Req() req: AuthenticatedRequest) {
+    const user = req.firebaseUser;
+    return this.profileService.findOrCreate(user.uid);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profileService.update(+id, updateProfileDto);
+  @Post('add-days-to-subscription')
+  addDaysToSubscription(
+    @Req() req: AuthenticatedRequestWithProfile,
+    @Body() updateProfileDto: AddDaysToSubscriptionDto,
+  ) {
+    const { firebaseUser, currentProfile } = req;
+    const { freeTrialDays } = updateProfileDto;
+    return this.profileService.addDaysToSubscription(
+      firebaseUser.uid,
+      currentProfile.id,
+      freeTrialDays,
+    );
   }
 }

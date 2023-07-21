@@ -1,11 +1,6 @@
-import { IsEnum, IsOptional, Max } from 'class-validator';
-import { ProficiencyLevel } from 'src/auth/profile/profile.entity';
+import { IsOptional, Max } from 'class-validator';
 
-export class UpdateProfileDto {
-  @IsEnum(ProficiencyLevel)
-  @IsOptional()
-  proficiencyLevel?: ProficiencyLevel;
-
+export class AddDaysToSubscriptionDto {
   @Max(180)
   @IsOptional()
   freeTrialDays?: number;
