@@ -1,3 +1,3 @@
-import { ConfigModule } from '@nestjs/config';
+import { configureEnv } from 'common/configure-env';
 
-ConfigModule.forRoot({ envFilePath: '.env.test' });
+configureEnv();
