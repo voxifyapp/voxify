@@ -9,7 +9,9 @@ import { datasourceConfig } from 'src/typeorm.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({ ...datasourceConfig }),
+    TypeOrmModule.forRoot({
+      ...datasourceConfig,
+    }),
     AuthModule,
     ProfileModule,
   ],
