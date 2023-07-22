@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as dayjs from 'dayjs';
-import { Profile } from 'src/auth/profile/profile.entity';
+import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
 import { ProfileRepository } from 'src/auth/profile/profile.repository';
 
 @Injectable()
@@ -68,10 +68,37 @@ export class ProfileService {
     profile.subscriptionEndDate = dayjs().add(daysToAdd, 'days').toDate();
     return await this.profileRepository.save(profile);
   }
+
+  /**
+   * Set proficiency level if not already set
+   */
+  async setProficiencyLevel(
+    userId: string,
+    profileId: number,
+    proficiencyLevel: ProficiencyLevel,
+  ) {
+    const profile = await this.profileRepository.findOneBy({ id: profileId });
+
+    if (!profile) throw new NotFoundException({ profileId });
+    await this.requireUserToHaveAccessToProfile(userId, { profile });
+
+    if (profile.proficiencyLevel) {
+      throw new ProfileAlreadyHasProficiencyLevelError(profile.id);
+    }
+
+    profile.proficiencyLevel = proficiencyLevel;
+    return await this.profileRepository.save(profile);
+  }
 }
 
 // Exceptions
 export class ProfileAlreadyHasSubscriptionError extends BadRequestException {
+  constructor(profileId) {
+    super({ profileId });
+  }
+}
+
+export class ProfileAlreadyHasProficiencyLevelError extends BadRequestException {
   constructor(profileId) {
     super({ profileId });
   }

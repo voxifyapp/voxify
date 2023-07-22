@@ -6,6 +6,7 @@ import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
 import { profileFactory } from 'src/auth/profile/profile.fixture';
 import { ProfileRepository } from 'src/auth/profile/profile.repository';
 import {
+  ProfileAlreadyHasProficiencyLevelError,
   ProfileAlreadyHasSubscriptionError,
   ProfileService,
 } from './profile.service';
@@ -96,76 +97,146 @@ describe('ProfileService', () => {
     expect(result).toBeNull();
   });
 
-  it('should be able to update the profile subscription status', async () => {
-    const userId = 'user-id';
-    const profile = profileFactory.build({ subscriptionEndDate: null, userId });
-    const numberOfDaysToAdd = 60;
+  describe('addDaysToSubscription', () => {
+    it('should be able to update the profile subscription status', async () => {
+      const userId = 'user-id';
+      const profile = profileFactory.build({
+        subscriptionEndDate: null,
+        userId,
+      });
+      const numberOfDaysToAdd = 60;
 
-    profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
 
-    const returnSubscriptionEndDate = dayjs()
-      .add(numberOfDaysToAdd, 'day')
-      .toDate();
-    profileRepo.save = jest.fn().mockResolvedValue({
-      ...profile,
-      subscriptionEndDate: returnSubscriptionEndDate,
-    } as Profile);
+      const returnSubscriptionEndDate = dayjs()
+        .add(numberOfDaysToAdd, 'day')
+        .toDate();
+      profileRepo.save = jest.fn().mockResolvedValue({
+        ...profile,
+        subscriptionEndDate: returnSubscriptionEndDate,
+      } as Profile);
 
-    const result = await service.addDaysToSubscription(
-      userId,
-      profile.id,
-      numberOfDaysToAdd,
-    );
+      const result = await service.addDaysToSubscription(
+        userId,
+        profile.id,
+        numberOfDaysToAdd,
+      );
 
-    expect(profileRepo.save).toHaveBeenCalled();
-    expect(result.subscriptionEndDate.toISOString()).toBe(
-      returnSubscriptionEndDate.toISOString(),
-    );
+      expect(profileRepo.save).toHaveBeenCalled();
+      expect(result.subscriptionEndDate.toISOString()).toBe(
+        returnSubscriptionEndDate.toISOString(),
+      );
+    });
+
+    it('should throw entitynotfound error, If profile does not exist', async () => {
+      profileRepo.findOneBy = jest.fn().mockResolvedValue(null);
+
+      let error;
+      try {
+        await service.addDaysToSubscription('test-user', 999, 60);
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error).toBeInstanceOf(NotFoundException);
+    });
+
+    it('should throw error if the user id trying to change it does not own profile', async () => {
+      const userId = 'user-id';
+      const profile = profileFactory.build({ subscriptionEndDate: null });
+
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+
+      let error;
+      try {
+        await service.addDaysToSubscription(userId, profile.id, 60);
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error).toBeDefined();
+      expect(error).toBeInstanceOf(UnauthorizedException);
+    });
+
+    it('should throw error if user already has subscription end date', async () => {
+      const profile = profileFactory.build();
+
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+
+      let error;
+      try {
+        await service.addDaysToSubscription(profile.userId, profile.id, 60);
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error).toBeDefined();
+      expect(error).toBeInstanceOf(ProfileAlreadyHasSubscriptionError);
+    });
   });
 
-  it('should throw entitynotfound error, If profile does not exist', async () => {
-    profileRepo.findOneBy = jest.fn().mockResolvedValue(null);
+  describe('setProficiencyLevel', () => {
+    const userId = 'test-user-id';
+    const profileId = 1;
+    const proficiencyLevel = ProficiencyLevel.ADVANCED;
 
-    let error;
-    try {
-      await service.addDaysToSubscription('test-user', 999, 60);
-    } catch (err) {
-      error = err;
-    }
+    it('should set the proficiency level of a profile', async () => {
+      const profile = profileFactory.build({
+        id: profileId,
+        userId,
+        proficiencyLevel: null,
+      });
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+      profileRepo.save = jest.fn().mockImplementationOnce(async (p) => p);
 
-    expect(error).toBeInstanceOf(NotFoundException);
-  });
+      const result = await service.setProficiencyLevel(
+        userId,
+        profileId,
+        proficiencyLevel,
+      );
 
-  it('should throw error if the user id trying to change it does not own profile', async () => {
-    const userId = 'user-id';
-    const profile = profileFactory.build({ subscriptionEndDate: null });
+      expect(profileRepo.findOneBy).toHaveBeenCalledWith({ id: profileId });
+      expect(profileRepo.save).toHaveBeenCalledWith({
+        ...profile,
+        proficiencyLevel,
+      });
+      expect(result.proficiencyLevel).toEqual(proficiencyLevel);
+    });
 
-    profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+    it('should throw a NotFoundException if the profile does not exist', async () => {
+      profileRepo.findOneBy = jest.fn().mockResolvedValue(null);
 
-    let error;
-    try {
-      await service.addDaysToSubscription(userId, profile.id, 60);
-    } catch (err) {
-      error = err;
-    }
+      await expect(
+        service.setProficiencyLevel(userId, profileId, proficiencyLevel),
+      ).rejects.toThrowError(new NotFoundException({ profileId }));
+    });
 
-    expect(error).toBeDefined();
-    expect(error).toBeInstanceOf(UnauthorizedException);
-  });
+    it('should throw a ProfileAlreadyHasProficiencyLevelError if the profile already has a proficiency level', async () => {
+      const profile = profileFactory.build({
+        id: profileId,
+        userId,
+        proficiencyLevel: ProficiencyLevel.BEGINNER,
+      });
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
 
-  it('should throw error if user already has subscription end date', async () => {
-    const profile = profileFactory.build();
+      await expect(
+        service.setProficiencyLevel(userId, profileId, proficiencyLevel),
+      ).rejects.toThrowError(
+        new ProfileAlreadyHasProficiencyLevelError(profileId),
+      );
+    });
 
-    profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+    it('should require the user to have access to the profile', async () => {
+      const profile = profileFactory.build({
+        id: profileId,
+        userId: 'other-user-id',
+        proficiencyLevel: null,
+      });
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
 
-    let error;
-    try {
-      await service.addDaysToSubscription(profile.userId, profile.id, 60);
-    } catch (err) {
-      error = err;
-    }
-
-    expect(error).toBeDefined();
-    expect(error).toBeInstanceOf(ProfileAlreadyHasSubscriptionError);
+      await expect(
+        service.setProficiencyLevel(userId, profileId, proficiencyLevel),
+      ).rejects.toThrowError(UnauthorizedException);
+    });
   });
 });
