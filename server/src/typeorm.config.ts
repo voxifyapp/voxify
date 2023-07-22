@@ -1,4 +1,5 @@
 import { ConfigModule } from '@nestjs/config';
+import { Profile } from 'src/auth/profile/profile.entity';
 import { DataSource } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
@@ -8,7 +9,7 @@ ConfigModule.forRoot();
 export const datasourceConfig: PostgresConnectionOptions = {
   type: 'postgres',
   url: process.env.POSTGRES_URL,
-  entities: ['src/**/*.entity{.ts}'],
+  entities: [Profile],
   migrations: ['src/**/migrations/*.ts'],
 };
 
