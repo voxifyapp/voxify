@@ -5,16 +5,15 @@ import { DataSource } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { ProfileModule } from 'src/auth/profile/profile.module';
+import { datasourceConfig } from 'src/typeorm.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.POSTGRES_URL,
-      autoLoadEntities: true,
-    }),
+    TypeOrmModule.forRoot({ ...datasourceConfig }),
     AuthModule,
+    ProfileModule,
   ],
   providers: [
     {
