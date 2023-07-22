@@ -7,8 +7,11 @@ import {
 } from 'src/common/request';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
-import { AddDaysToSubscriptionDto } from 'src/auth/profile/dto/update-profile.dto';
-import { Profile } from 'src/auth/profile/profile.entity';
+import {
+  AddDaysToSubscriptionDto,
+  SetProficiencyLevelDto,
+} from 'src/auth/profile/dto/update-profile.dto';
+import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
 import * as dayjs from 'dayjs';
 
 describe('ProfileController', () => {
@@ -70,5 +73,34 @@ describe('ProfileController', () => {
       mockProfile.id,
       mockDto.freeTrialDays,
     );
+  });
+
+  describe('setProficiencyLevel', () => {
+    it('should set proficiency level', async () => {
+      const mockUser = firebaseUserFactory.build();
+      const mockProfile = profileFactory.build({ userId: mockUser.uid });
+      const mockDto: SetProficiencyLevelDto = {
+        proficiencyLevel: ProficiencyLevel.ADVANCED,
+      };
+      service.setProficiencyLevel = jest.fn().mockResolvedValue({
+        ...mockProfile,
+        proficiencyLevel: ProficiencyLevel.ADVANCED,
+      });
+
+      const result = await controller.setProficiencyLevel(
+        {
+          firebaseUser: mockUser,
+          currentProfile: mockProfile,
+        } as AuthenticatedRequestWithProfile,
+        mockDto,
+      );
+
+      expect(result.proficiencyLevel).toBe(ProficiencyLevel.ADVANCED);
+      expect(service.setProficiencyLevel).toHaveBeenCalledWith(
+        mockUser.uid,
+        mockProfile.id,
+        mockDto.proficiencyLevel,
+      );
+    });
   });
 });

@@ -4,7 +4,10 @@ import {
   AuthenticatedRequestWithProfile,
 } from 'src/common/request';
 import { ProfileService } from './profile.service';
-import { AddDaysToSubscriptionDto } from 'src/auth/profile/dto/update-profile.dto';
+import {
+  AddDaysToSubscriptionDto,
+  SetProficiencyLevelDto,
+} from 'src/auth/profile/dto/update-profile.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -27,6 +30,20 @@ export class ProfileController {
       firebaseUser.uid,
       currentProfile.id,
       freeTrialDays,
+    );
+  }
+
+  @Post('set-proficiency-level')
+  setProficiencyLevel(
+    @Req() req: AuthenticatedRequestWithProfile,
+    @Body() updateProfileDto: SetProficiencyLevelDto,
+  ) {
+    const { firebaseUser, currentProfile } = req;
+    const { proficiencyLevel } = updateProfileDto;
+    return this.profileService.setProficiencyLevel(
+      firebaseUser.uid,
+      currentProfile.id,
+      proficiencyLevel,
     );
   }
 }
