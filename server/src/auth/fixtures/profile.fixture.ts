@@ -6,7 +6,6 @@ import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 export const profileFactory = Factory.define<Profile>(
   ({ sequence, onCreate }) => {
     onCreate((profile) => {
-      console.log(profile);
       return profile;
     });
 
