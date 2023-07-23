@@ -69,7 +69,6 @@ describe('ProfileController', () => {
 
     expect(result.subscriptionEndDate).toBe(subscriptionEndDate);
     expect(service.addDaysToSubscription).toHaveBeenCalledWith(
-      mockUser.uid,
       mockProfile.id,
       mockDto.freeTrialDays,
     );
@@ -97,7 +96,6 @@ describe('ProfileController', () => {
 
       expect(result.proficiencyLevel).toBe(ProficiencyLevel.ADVANCED);
       expect(service.setProficiencyLevel).toHaveBeenCalledWith(
-        mockUser.uid,
         mockProfile.id,
         mockDto.proficiencyLevel,
       );

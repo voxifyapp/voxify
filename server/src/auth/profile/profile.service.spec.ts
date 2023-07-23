@@ -1,4 +1,4 @@
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
@@ -117,7 +117,6 @@ describe('ProfileService', () => {
       } as Profile);
 
       const result = await service.addDaysToSubscription(
-        userId,
         profile.id,
         numberOfDaysToAdd,
       );
@@ -133,29 +132,12 @@ describe('ProfileService', () => {
 
       let error;
       try {
-        await service.addDaysToSubscription('test-user', 999, 60);
+        await service.addDaysToSubscription(999, 60);
       } catch (err) {
         error = err;
       }
 
       expect(error).toBeInstanceOf(NotFoundException);
-    });
-
-    it('should throw error if the user id trying to change it does not own profile', async () => {
-      const userId = 'user-id';
-      const profile = profileFactory.build({ subscriptionEndDate: null });
-
-      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
-
-      let error;
-      try {
-        await service.addDaysToSubscription(userId, profile.id, 60);
-      } catch (err) {
-        error = err;
-      }
-
-      expect(error).toBeDefined();
-      expect(error).toBeInstanceOf(UnauthorizedException);
     });
 
     it('should throw error if user already has subscription end date', async () => {
@@ -165,7 +147,7 @@ describe('ProfileService', () => {
 
       let error;
       try {
-        await service.addDaysToSubscription(profile.userId, profile.id, 60);
+        await service.addDaysToSubscription(profile.id, 60);
       } catch (err) {
         error = err;
       }
@@ -190,7 +172,6 @@ describe('ProfileService', () => {
       profileRepo.save = jest.fn().mockImplementationOnce(async (p) => p);
 
       const result = await service.setProficiencyLevel(
-        userId,
         profileId,
         proficiencyLevel,
       );
@@ -207,7 +188,7 @@ describe('ProfileService', () => {
       profileRepo.findOneBy = jest.fn().mockResolvedValue(null);
 
       await expect(
-        service.setProficiencyLevel(userId, profileId, proficiencyLevel),
+        service.setProficiencyLevel(profileId, proficiencyLevel),
       ).rejects.toThrowError(new NotFoundException({ profileId }));
     });
 
@@ -220,23 +201,10 @@ describe('ProfileService', () => {
       profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
 
       await expect(
-        service.setProficiencyLevel(userId, profileId, proficiencyLevel),
+        service.setProficiencyLevel(profileId, proficiencyLevel),
       ).rejects.toThrowError(
         new ProfileAlreadyHasProficiencyLevelError(profileId),
       );
-    });
-
-    it('should require the user to have access to the profile', async () => {
-      const profile = profileFactory.build({
-        id: profileId,
-        userId: 'other-user-id',
-        proficiencyLevel: null,
-      });
-      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
-
-      await expect(
-        service.setProficiencyLevel(userId, profileId, proficiencyLevel),
-      ).rejects.toThrowError(UnauthorizedException);
     });
   });
 });

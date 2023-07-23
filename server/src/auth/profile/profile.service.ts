@@ -2,10 +2,9 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import * as dayjs from 'dayjs';
-import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
+import { ProficiencyLevel } from 'src/auth/profile/profile.entity';
 import { ProfileRepository } from 'src/auth/profile/profile.repository';
 
 @Injectable()
@@ -31,35 +30,12 @@ export class ProfileService {
   }
 
   /**
-   * Throws error if user does not have access to profile
-   */
-  async requireUserToHaveAccessToProfile(
-    userId: string,
-    {
-      profileId,
-      profile: passedProfile,
-    }: { profileId?: number; profile?: Profile },
-  ) {
-    const profile =
-      passedProfile ||
-      (await this.profileRepository.findOneBy({ id: profileId }));
-
-    if (profile.userId !== userId)
-      throw new UnauthorizedException({ userId, profileId: profile.id });
-  }
-
-  /**
    * Add days to subscription if there is no current subscription
    */
-  async addDaysToSubscription(
-    userId: string,
-    profileId: number,
-    daysToAdd: number,
-  ) {
+  async addDaysToSubscription(profileId: number, daysToAdd: number) {
     const profile = await this.profileRepository.findOneBy({ id: profileId });
 
     if (!profile) throw new NotFoundException({ profileId });
-    await this.requireUserToHaveAccessToProfile(userId, { profile });
 
     if (profile.subscriptionEndDate) {
       throw new ProfileAlreadyHasSubscriptionError(profile.id);
@@ -73,14 +49,12 @@ export class ProfileService {
    * Set proficiency level if not already set
    */
   async setProficiencyLevel(
-    userId: string,
     profileId: number,
     proficiencyLevel: ProficiencyLevel,
   ) {
     const profile = await this.profileRepository.findOneBy({ id: profileId });
 
     if (!profile) throw new NotFoundException({ profileId });
-    await this.requireUserToHaveAccessToProfile(userId, { profile });
 
     if (profile.proficiencyLevel) {
       throw new ProfileAlreadyHasProficiencyLevelError(profile.id);

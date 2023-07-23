@@ -1,13 +1,13 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
 import {
+  AddDaysToSubscriptionDto,
+  SetProficiencyLevelDto,
+} from 'src/auth/profile/dto/update-profile.dto';
+import {
   AuthenticatedRequest,
   AuthenticatedRequestWithProfile,
 } from 'src/common/request';
 import { ProfileService } from './profile.service';
-import {
-  AddDaysToSubscriptionDto,
-  SetProficiencyLevelDto,
-} from 'src/auth/profile/dto/update-profile.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -24,10 +24,9 @@ export class ProfileController {
     @Req() req: AuthenticatedRequestWithProfile,
     @Body() updateProfileDto: AddDaysToSubscriptionDto,
   ) {
-    const { firebaseUser, currentProfile } = req;
+    const { currentProfile } = req;
     const { freeTrialDays } = updateProfileDto;
     return this.profileService.addDaysToSubscription(
-      firebaseUser.uid,
       currentProfile.id,
       freeTrialDays,
     );
@@ -38,10 +37,9 @@ export class ProfileController {
     @Req() req: AuthenticatedRequestWithProfile,
     @Body() updateProfileDto: SetProficiencyLevelDto,
   ) {
-    const { firebaseUser, currentProfile } = req;
+    const { currentProfile } = req;
     const { proficiencyLevel } = updateProfileDto;
     return this.profileService.setProficiencyLevel(
-      firebaseUser.uid,
       currentProfile.id,
       proficiencyLevel,
     );
