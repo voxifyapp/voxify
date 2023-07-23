@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 import {
   AddDaysToSubscriptionDto,
   SetProficiencyLevelDto,
@@ -14,19 +14,21 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Post()
-  create(@Req() req: AuthenticatedRequest) {
+  @HttpCode(200)
+  async create(@Req() req: AuthenticatedRequest) {
     const user = req.decodedFirebaseUser;
-    return this.profileService.findOrCreate(user.uid);
+    const profile = await this.profileService.findOrCreate(user.uid);
+    return profile;
   }
 
   @Post('add-days-to-subscription')
-  addDaysToSubscription(
+  async addDaysToSubscription(
     @Req() req: AuthenticatedRequestWithProfile,
     @Body() updateProfileDto: AddDaysToSubscriptionDto,
   ) {
     const { currentProfile } = req;
     const { freeTrialDays } = updateProfileDto;
-    return this.profileService.addDaysToSubscription(
+    return await this.profileService.addDaysToSubscription(
       currentProfile.id,
       freeTrialDays,
     );

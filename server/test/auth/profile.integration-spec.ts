@@ -1,4 +1,5 @@
 import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import * as request from 'supertest';
 import { loginAsFirebaseUser } from 'test/utils/firebase';
 
@@ -15,6 +16,25 @@ describe('/profile', () => {
         request(global.app.getHttpServer()).post('/profile/'),
         { uid: user.uid },
       );
+
+      expect(res.status).toBe(200);
+      expect(res.body.userId).toBe(user.uid);
+      // Checking if the entire object is being returned
+      expect(res.body.createdAt).toBeDefined();
+    });
+
+    it('returns an existing profile if one already exists', async () => {
+      const user = await firebaseUserFactory.create();
+      const profile = await profileFactory.create({ userId: user.uid });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).post('/profile/'),
+        { uid: user.uid },
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body.userId).toBe(user.uid);
+      expect(res.body.id).toBe(profile.id);
     });
   });
 });

@@ -43,7 +43,7 @@ describe('ProfileService', () => {
 
   it('should be able to create a new profile', async () => {
     const userId = 'test-user-id';
-    profileRepo.create = jest.fn().mockImplementationOnce(async (args) => {
+    profileRepo.save = jest.fn().mockImplementationOnce(async (args) => {
       return {
         ...profileFactory.build(),
         userId: args['userId'],
@@ -51,7 +51,7 @@ describe('ProfileService', () => {
     });
     const result = await service.findOrCreate(userId);
 
-    expect(profileRepo.create).toBeCalledWith({ userId });
+    expect(profileRepo.save).toBeCalledWith({ userId }, { reload: true });
     expect(result.userId).toBe(userId);
   });
 

@@ -16,12 +16,12 @@ export class ProfileService {
    * if it already exists for the user we return that and ignore the createProfileDto
    */
   async findOrCreate(userId: string) {
-    const existingProfileForUser = this.profileRepository.findOne({
+    const existingProfileForUser = await this.profileRepository.findOne({
       where: { userId: userId },
     });
     return (
       existingProfileForUser ||
-      (await this.profileRepository.create({ userId }))
+      (await this.profileRepository.save({ userId }, { reload: true }))
     );
   }
 
