@@ -8,4 +8,5 @@ global.beforeEach(async () => {
 
   global.app = moduleFixture.createNestApplication();
   await global.app.init();
+  console.log('Nest app is up.');
 });

@@ -10,8 +10,15 @@ export default async () => {
     await compose.upAll({
       cwd: path.join(__dirname),
     });
-    console.log('Docker compose is up.');
   } catch (err) {
     throw err;
   }
+
+  // We are waiting for the docker container to be ready
+  await timeout(2000);
+  console.log('Docker compose is up.');
 };
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
