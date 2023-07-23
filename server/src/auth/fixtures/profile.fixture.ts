@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Factory } from 'fishery';
-import { firebaseUserFactory } from 'src/auth/firebase/firebase-user.fixture';
-import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
+import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
+import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 
 export const profileFactory = Factory.define<Profile>(
   ({ sequence, onCreate }) => {

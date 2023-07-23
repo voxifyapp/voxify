@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as dayjs from 'dayjs';
-import { ProficiencyLevel } from 'src/auth/profile/profile.entity';
-import { ProfileRepository } from 'src/auth/profile/profile.repository';
+import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
+import { ProfileRepository } from 'src/auth/profile.repository';
 
 @Injectable()
 export class ProfileService {

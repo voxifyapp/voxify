@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { firebaseUserFactory } from 'src/auth/firebase/firebase-user.fixture';
-import { profileFactory } from 'src/auth/profile/profile.fixture';
+import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
 import {
   AuthenticatedRequest,
   AuthenticatedRequestWithProfile,
 } from 'src/common/request';
 import { ProfileController } from './profile.controller';
-import { ProfileService } from './profile.service';
+import { ProfileService } from './services/profile.service';
 import {
   AddDaysToSubscriptionDto,
   SetProficiencyLevelDto,
-} from 'src/auth/profile/dto/update-profile.dto';
-import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
+} from 'src/auth/dto/update-profile.dto';
+import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 import * as dayjs from 'dayjs';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 
 describe('ProfileController', () => {
   let controller: ProfileController;

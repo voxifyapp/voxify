@@ -2,14 +2,14 @@ import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
-import { ProficiencyLevel, Profile } from 'src/auth/profile/profile.entity';
-import { profileFactory } from 'src/auth/profile/profile.fixture';
-import { ProfileRepository } from 'src/auth/profile/profile.repository';
+import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 import {
   ProfileAlreadyHasProficiencyLevelError,
   ProfileAlreadyHasSubscriptionError,
   ProfileService,
 } from './profile.service';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
+import { ProfileRepository } from 'src/auth/profile.repository';
 
 describe('ProfileService', () => {
   let service: ProfileService;

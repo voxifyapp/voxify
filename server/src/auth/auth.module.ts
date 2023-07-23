@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
-import { FirebaseService } from './firebase/firebase.service';
-import { ProfileModule } from './profile/profile.module';
+import { FirebaseService } from './services/firebase.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Profile } from 'src/auth/entities/profile.entity';
+import { ProfileController } from 'src/auth/profile.controller';
+import { ProfileRepository } from 'src/auth/profile.repository';
+import { ProfileService } from 'src/auth/services/profile.service';
 
 @Module({
-  providers: [FirebaseService],
-  imports: [ProfileModule],
+  imports: [TypeOrmModule.forFeature([Profile])],
+  controllers: [ProfileController],
+  providers: [ProfileService, ProfileRepository, AuthGuard, FirebaseService],
+  exports: [AuthGuard],
 })
 export class AuthModule {}

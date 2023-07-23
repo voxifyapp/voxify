@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
-import { FirebaseService } from './firebase/firebase.service';
+import { FirebaseService } from './services/firebase.service';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;

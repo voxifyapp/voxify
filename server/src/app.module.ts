@@ -4,7 +4,6 @@ import { DataSource } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { ProfileModule } from 'src/auth/profile/profile.module';
 import { datasourceConfig } from 'src/typeorm.config';
 
 @Module({
@@ -13,7 +12,6 @@ import { datasourceConfig } from 'src/typeorm.config';
       ...datasourceConfig,
     }),
     AuthModule,
-    ProfileModule,
   ],
   providers: [
     {

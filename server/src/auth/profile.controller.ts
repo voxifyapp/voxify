@@ -2,12 +2,12 @@ import { Body, Controller, Post, Req } from '@nestjs/common';
 import {
   AddDaysToSubscriptionDto,
   SetProficiencyLevelDto,
-} from 'src/auth/profile/dto/update-profile.dto';
+} from 'src/auth/dto/update-profile.dto';
 import {
   AuthenticatedRequest,
   AuthenticatedRequestWithProfile,
 } from 'src/common/request';
-import { ProfileService } from './profile.service';
+import { ProfileService } from './services/profile.service';
 
 @Controller('profile')
 export class ProfileController {
