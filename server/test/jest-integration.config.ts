@@ -7,6 +7,7 @@ module.exports = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   globalSetup: './globalSetup.ts',
+  globalTeardown: './globalTeardown.ts',
   setupFiles: [__dirname + '/env.setup.ts'],
   moduleDirectories: ['node_modules', __dirname + '/../'],
 };
