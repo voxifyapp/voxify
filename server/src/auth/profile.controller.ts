@@ -15,7 +15,7 @@ export class ProfileController {
 
   @Post()
   create(@Req() req: AuthenticatedRequest) {
-    const user = req.firebaseUser;
+    const user = req.decodedFirebaseUser;
     return this.profileService.findOrCreate(user.uid);
   }
 

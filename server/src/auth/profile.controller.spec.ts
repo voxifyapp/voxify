@@ -1,18 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import * as dayjs from 'dayjs';
+import {
+  AddDaysToSubscriptionDto,
+  SetProficiencyLevelDto,
+} from 'src/auth/dto/update-profile.dto';
+import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
+import { decodedTokenFactory } from 'src/auth/fixtures/decoded-token.fixture';
 import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import {
   AuthenticatedRequest,
   AuthenticatedRequestWithProfile,
 } from 'src/common/request';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './services/profile.service';
-import {
-  AddDaysToSubscriptionDto,
-  SetProficiencyLevelDto,
-} from 'src/auth/dto/update-profile.dto';
-import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
-import * as dayjs from 'dayjs';
-import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
@@ -44,13 +45,13 @@ describe('ProfileController', () => {
 
     expect(
       await controller.create({
-        firebaseUser: firebaseUserFactory.build(),
+        decodedFirebaseUser: decodedTokenFactory.build(),
       } as AuthenticatedRequest),
     ).toBe(result);
   });
 
   it('should add days to subscription', async () => {
-    const mockUser = firebaseUserFactory.build();
+    const mockUser = decodedTokenFactory.build();
     const mockProfile = profileFactory.build({ userId: mockUser.uid });
     const subscriptionEndDate = dayjs().add(7, 'day').toDate();
     const mockDto: AddDaysToSubscriptionDto = { freeTrialDays: 7 };
@@ -61,7 +62,7 @@ describe('ProfileController', () => {
 
     const result = await controller.addDaysToSubscription(
       {
-        firebaseUser: mockUser,
+        decodedFirebaseUser: mockUser,
         currentProfile: mockProfile,
       } as AuthenticatedRequestWithProfile,
       mockDto,
@@ -76,7 +77,7 @@ describe('ProfileController', () => {
 
   describe('setProficiencyLevel', () => {
     it('should set proficiency level', async () => {
-      const mockUser = firebaseUserFactory.build();
+      const mockUser = decodedTokenFactory.build();
       const mockProfile = profileFactory.build({ userId: mockUser.uid });
       const mockDto: SetProficiencyLevelDto = {
         proficiencyLevel: ProficiencyLevel.ADVANCED,
@@ -88,7 +89,7 @@ describe('ProfileController', () => {
 
       const result = await controller.setProficiencyLevel(
         {
-          firebaseUser: mockUser,
+          decodedFirebaseUser: mockUser,
           currentProfile: mockProfile,
         } as AuthenticatedRequestWithProfile,
         mockDto,

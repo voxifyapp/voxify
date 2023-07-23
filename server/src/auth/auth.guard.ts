@@ -20,11 +20,11 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const firebaseUser =
+      const decodedIdToken =
         await this.firebaseService.getFirebaseUserFromIdToken(jwtToken);
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
-      request['firebaseUser'] = firebaseUser;
+      request['decodedFirebaseUser'] = decodedIdToken;
     } catch {
       throw new UnauthorizedException();
     }
