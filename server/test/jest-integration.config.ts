@@ -9,5 +9,6 @@ module.exports = {
   globalSetup: './globalSetup.ts',
   globalTeardown: './globalTeardown.ts',
   setupFiles: [__dirname + '/env.setup.ts'],
+  setupFilesAfterEnv: [__dirname + '/setup-nest-app.ts'],
   moduleDirectories: ['node_modules', __dirname + '/../'],
 };
