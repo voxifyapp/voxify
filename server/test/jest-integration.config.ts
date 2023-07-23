@@ -8,7 +8,10 @@ module.exports = {
   },
   globalSetup: './globalSetup.ts',
   globalTeardown: './globalTeardown.ts',
-  setupFiles: [__dirname + '/env.setup.ts'],
-  setupFilesAfterEnv: [__dirname + '/setup-nest-app.ts'],
+  setupFiles: [__dirname + '/setup-test-env.ts'],
+  setupFilesAfterEnv: [
+    __dirname + '/setup-test-nest-app.ts',
+    __dirname + '/setup-test-migrations.ts',
+  ],
   moduleDirectories: ['node_modules', __dirname + '/../'],
 };

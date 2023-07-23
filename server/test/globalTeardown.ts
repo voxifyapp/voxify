@@ -1,4 +1,3 @@
-import * as compose from 'docker-compose';
 import * as path from 'path';
 
 export default async () => {

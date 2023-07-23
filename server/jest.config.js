@@ -9,5 +9,5 @@ module.exports = {
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   moduleDirectories: ['node_modules', __dirname],
-  setupFiles: [__dirname + '/test/env.setup.ts'],
+  setupFiles: [__dirname + '/test/setup-test-env.ts'],
 };
