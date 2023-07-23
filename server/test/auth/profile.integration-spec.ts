@@ -24,16 +24,15 @@ describe('/profile', () => {
     });
 
     it('returns an existing profile if one already exists', async () => {
-      const user = await firebaseUserFactory.create();
-      const profile = await profileFactory.create({ userId: user.uid });
+      const profile = await profileFactory.create();
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).post('/profile/'),
-        { uid: user.uid },
+        { uid: profile.userId },
       );
 
       expect(res.status).toBe(200);
-      expect(res.body.userId).toBe(user.uid);
+      expect(res.body.userId).toBe(profile.userId);
       expect(res.body.id).toBe(profile.id);
     });
   });
