@@ -34,45 +34,59 @@ describe('ProfileController', () => {
     service = module.get<ProfileService>(ProfileService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  describe('create', () => {
+    it('should create profile', async () => {
+      const mockUser = firebaseUserFactory.build();
+      const result = profileFactory.build({ userId: mockUser.uid });
+      service.findOrCreate = jest.fn().mockResolvedValue(result);
+
+      expect(
+        await controller.create({
+          decodedFirebaseUser: decodedTokenFactory.build(),
+        } as AuthenticatedRequest),
+      ).toBe(result);
+    });
   });
 
-  it('should create profile', async () => {
-    const mockUser = firebaseUserFactory.build();
-    const result = profileFactory.build({ userId: mockUser.uid });
-    service.findOrCreate = jest.fn().mockResolvedValue(result);
+  describe('addDaysToSubscription', () => {
+    it('should add days to subscription', async () => {
+      const mockUser = decodedTokenFactory.build();
+      const mockProfile = profileFactory.build({ userId: mockUser.uid });
+      const subscriptionEndDate = dayjs().add(7, 'day').toDate();
+      const mockDto: AddDaysToSubscriptionDto = { freeTrialDays: 7 };
+      service.addDaysToSubscription = jest.fn().mockResolvedValue({
+        ...mockProfile,
+        subscriptionEndDate: subscriptionEndDate,
+      } as Profile);
 
-    expect(
-      await controller.create({
-        decodedFirebaseUser: decodedTokenFactory.build(),
-      } as AuthenticatedRequest),
-    ).toBe(result);
+      const result = await controller.addDaysToSubscription(
+        {
+          decodedFirebaseUser: mockUser,
+          currentProfile: mockProfile,
+        } as AuthenticatedRequestWithProfile,
+        mockDto,
+      );
+
+      expect(result.subscriptionEndDate).toBe(subscriptionEndDate);
+      expect(service.addDaysToSubscription).toHaveBeenCalledWith(
+        mockProfile.id,
+        mockDto.freeTrialDays,
+      );
+    });
   });
 
-  it('should add days to subscription', async () => {
-    const mockUser = decodedTokenFactory.build();
-    const mockProfile = profileFactory.build({ userId: mockUser.uid });
-    const subscriptionEndDate = dayjs().add(7, 'day').toDate();
-    const mockDto: AddDaysToSubscriptionDto = { freeTrialDays: 7 };
-    service.addDaysToSubscription = jest.fn().mockResolvedValue({
-      ...mockProfile,
-      subscriptionEndDate: subscriptionEndDate,
-    } as Profile);
+  describe('get', () => {
+    it('should return the current profile', async () => {
+      const mockUser = decodedTokenFactory.build();
+      const mockProfile = profileFactory.build({ userId: mockUser.uid });
+      const mockReq = {
+        currentProfile: { ...mockProfile },
+      } as AuthenticatedRequestWithProfile;
 
-    const result = await controller.addDaysToSubscription(
-      {
-        decodedFirebaseUser: mockUser,
-        currentProfile: mockProfile,
-      } as AuthenticatedRequestWithProfile,
-      mockDto,
-    );
+      const result = await controller.get(mockReq);
 
-    expect(result.subscriptionEndDate).toBe(subscriptionEndDate);
-    expect(service.addDaysToSubscription).toHaveBeenCalledWith(
-      mockProfile.id,
-      mockDto.freeTrialDays,
-    );
+      expect(result.id).toBe(mockProfile.id);
+    });
   });
 
   describe('setProficiencyLevel', () => {
