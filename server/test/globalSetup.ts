@@ -17,13 +17,24 @@ export default async () => {
   console.log('Docker compose is up.');
 
   // start the firebase tools
-  global.childProcess = await exec('firebase emulators:start --only auth');
+  await exec('kill -9 $(lsof -ti:9099)');
+  global.childProcess = exec('firebase emulators:start --only auth');
+
+  await new Promise((resolve, reject) => {
+    global.childProcess.stdout.on('data', (data) => {
+      console.log(data);
+      if (data.includes('All emulators ready!')) {
+        resolve(true);
+      }
+    });
+
+    global.childProcess.stderr.on('data', (data) => {
+      // If there is an error, reject the promise and fail the tests
+      if (data.includes('Error')) {
+        global.childProcess.kill();
+        reject(new Error('Failed to start Firebase emulator'));
+      }
+    });
+  });
   console.log('Firebase emulator is up');
-
-  // We are waiting for the docker container and firebase to be ready
-  await timeout(3000);
 };
-
-function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
