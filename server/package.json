@@ -17,7 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:integration": "jest --config ./test/jest-integration.config.ts",
+    "test:integration": "jest --detectOpenHandles --forceExit --config ./test/jest-integration.config.ts",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/typeorm.config.ts",
     "typeorm:migrations:generate": "npm run typeorm migration:generate",
     "typeorm:migration:run": "npm run typeorm -- migration:run"
