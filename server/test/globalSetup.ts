@@ -21,7 +21,7 @@ export default async () => {
   console.log('Firebase emulator is up');
 
   // We are waiting for the docker container and firebase to be ready
-  await timeout(10000);
+  await timeout(3000);
 };
 
 function timeout(ms) {
