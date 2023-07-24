@@ -1,4 +1,4 @@
-import { exec, spawn } from 'child_process';
+import { exec } from 'child_process';
 import * as compose from 'docker-compose';
 import * as path from 'path';
 
@@ -21,7 +21,7 @@ export default async () => {
   console.log('Firebase emulator is up');
 
   // We are waiting for the docker container and firebase to be ready
-  await timeout(1000);
+  await timeout(10000);
 };
 
 function timeout(ms) {
