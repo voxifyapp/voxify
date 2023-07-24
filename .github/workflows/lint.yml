@@ -24,8 +24,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Run linters on Server
-        run: cd server && yarn install && npm run lint
+      - name: Install deps
+        run: yarn install
 
-      - name: Run linters on App
-        run: cd VoxifyApp && yarn install && npm run lint
+      - name: Run unit test
+        run: npm run test
+
+        working-directory: ./app
