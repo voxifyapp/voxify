@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 import {
   AddDaysToSubscriptionDto,
   SetProficiencyLevelDto,
 } from 'src/auth/dto/update-profile.dto';
+import { DoesNotRequireProfile } from 'src/common/decorators/auth';
 import {
   AuthenticatedRequest,
   AuthenticatedRequestWithProfile,
@@ -15,6 +16,7 @@ export class ProfileController {
 
   @Post()
   @HttpCode(200)
+  @DoesNotRequireProfile()
   async create(@Req() req: AuthenticatedRequest) {
     const user = req.decodedFirebaseUser;
     const profile = await this.profileService.findOrCreate(user.uid);
