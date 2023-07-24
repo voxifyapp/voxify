@@ -31,3 +31,9 @@ jobs:
       - name: Run unit tests
         working-directory: ./server
         run: npm run test
+
+      - name: Install firebase tools
+        run: npm install -g firebase-tools
+
+      - name: Run integration tests
+        run: npm run test:integration
