@@ -10,4 +10,10 @@ export default async () => {
   } catch (err) {
     throw err;
   }
+
+  // Stop firebase emulator
+  if (global.childProcess) {
+    await global.childProcess.kill();
+    console.log('Firebase tools are down');
+  }
 };

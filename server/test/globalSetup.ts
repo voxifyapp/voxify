@@ -1,3 +1,4 @@
+import { exec, spawn } from 'child_process';
 import * as compose from 'docker-compose';
 import * as path from 'path';
 
@@ -13,10 +14,14 @@ export default async () => {
   } catch (err) {
     throw err;
   }
-
-  // We are waiting for the docker container to be ready
-  await timeout(2000);
   console.log('Docker compose is up.');
+
+  // start the firebase tools
+  global.childProcess = await exec('firebase emulators:start --only auth');
+  console.log('Firebase emulator is up');
+
+  // We are waiting for the docker container and firebase to be ready
+  await timeout(1000);
 };
 
 function timeout(ms) {
