@@ -11,7 +11,7 @@ module.exports = {
   setupFiles: [__dirname + '/setup-test-env.ts'],
   setupFilesAfterEnv: [
     __dirname + '/setup-test-nest-app.ts',
-    __dirname + '/setup-test-migrations.ts',
+    __dirname + '/setup-test-db.ts',
   ],
   moduleDirectories: ['node_modules', __dirname + '/../'],
 };
