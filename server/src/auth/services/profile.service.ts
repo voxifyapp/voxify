@@ -68,12 +68,12 @@ export class ProfileService {
 // Exceptions
 export class ProfileAlreadyHasSubscriptionError extends BadRequestException {
   constructor(profileId) {
-    super({ profileId });
+    super({ profileId, message: 'Profile already has a subscription' });
   }
 }
 
 export class ProfileAlreadyHasProficiencyLevelError extends BadRequestException {
   constructor(profileId) {
-    super({ profileId });
+    super({ profileId, message: 'Profile already has a proficiency level' });
   }
 }

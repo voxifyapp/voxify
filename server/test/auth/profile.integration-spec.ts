@@ -1,5 +1,6 @@
 import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
+import { MAX_FREE_TRIAL_DAYS } from 'src/common/constants/auth';
 import * as request from 'supertest';
 import { loginAsFirebaseUser } from 'test/utils/firebase';
 
@@ -42,7 +43,7 @@ describe('/profile', () => {
       return request(global.app.getHttpServer()).get('/profile/').expect(401);
     });
 
-    it('returns the profile', async () => {
+    it("returns the current user's profile", async () => {
       const profile = await profileFactory.create();
 
       const res = await loginAsFirebaseUser(
@@ -53,6 +54,61 @@ describe('/profile', () => {
       expect(res.status).toBe(200);
       expect(res.body.userId).toBe(profile.userId);
       expect(res.body.id).toBe(profile.id);
+    });
+  });
+
+  describe('/add-days-to-subscription (POST)', () => {
+    it('throws a 401 without auth', () => {
+      return request(global.app.getHttpServer())
+        .post('/profile/add-days-to-subscription')
+        .expect(401);
+    });
+
+    it('adds days to subscription', async () => {
+      const profile = await profileFactory.create({
+        subscriptionEndDate: null,
+      });
+      const daysToAdd = 7;
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .post('/profile/add-days-to-subscription')
+          .send({ freeTrialDays: daysToAdd }),
+        { uid: profile.userId },
+      );
+
+      expect(res.status).toBe(201);
+      expect(res.body.userId).toBe(profile.userId);
+      expect(res.body.id).toBe(profile.id);
+      expect(res.body.subscriptionEndDate).toBeDefined();
+    });
+
+    it('if subscriptionEndDate already exists, throws bad request', async () => {
+      const profile = await profileFactory.create();
+      const daysToAdd = 7;
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .post('/profile/add-days-to-subscription')
+          .send({ freeTrialDays: daysToAdd }),
+        { uid: profile.userId },
+      );
+
+      expect(res.status).toBe(400);
+    });
+
+    it('cannot pass more than MAX_FREE_TRIAL_DAYS', async () => {
+      const profile = await profileFactory.create();
+      const daysToAdd = MAX_FREE_TRIAL_DAYS + 1;
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .post('/profile/add-days-to-subscription')
+          .send({ freeTrialDays: daysToAdd }),
+        { uid: profile.userId },
+      );
+
+      expect(res.status).toBe(400);
     });
   });
 });
