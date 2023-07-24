@@ -24,11 +24,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Checkout to server
-        run: cd server
-
       - name: Install deps
+        working-directory: ./server
         run: yarn install
 
       - name: Run unit tests
+        working-directory: ./server
         run: npm run test
