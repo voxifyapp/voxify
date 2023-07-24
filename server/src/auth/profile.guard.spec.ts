@@ -8,10 +8,11 @@ import { Request } from 'express';
 import { FirebaseService } from 'src/auth/services/firebase.service';
 
 /**
- * Runs globally on all routes, get a decoded token from the request header
+ * Runs globally on all routes
+ * Requires that the user has a profile created for the user
  */
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class ProfileGuard implements CanActivate {
   constructor(private firebaseService: FirebaseService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

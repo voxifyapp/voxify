@@ -207,4 +207,29 @@ describe('ProfileService', () => {
       );
     });
   });
+
+  describe('findProfileForUser', () => {
+    it('should return the profile for the user', async () => {
+      const userId = 'test-user-id';
+      const profile = profileFactory.build({
+        userId,
+      });
+      profileRepo.findOneBy = jest.fn().mockResolvedValue({ ...profile });
+
+      const result = await service.findProfileForUser(userId);
+
+      expect(profileRepo.findOneBy).toHaveBeenCalledWith({ userId });
+      expect(result).toEqual(profile);
+    });
+
+    it('should return null if no profile exists for the user', async () => {
+      const userId = 'test-user-id';
+      profileRepo.findOneBy = jest.fn().mockResolvedValue(null);
+
+      const result = await service.findProfileForUser(userId);
+
+      expect(profileRepo.findOneBy).toHaveBeenCalledWith({ userId });
+      expect(result).toBeNull();
+    });
+  });
 });
