@@ -36,4 +36,23 @@ describe('/profile', () => {
       expect(res.body.id).toBe(profile.id);
     });
   });
+
+  describe('/ (GET)', () => {
+    it('throws a 401 without auth', () => {
+      return request(global.app.getHttpServer()).get('/profile/').expect(401);
+    });
+
+    it('returns the profile', async () => {
+      const profile = await profileFactory.create();
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get('/profile/'),
+        { uid: profile.userId },
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body.userId).toBe(profile.userId);
+      expect(res.body.id).toBe(profile.id);
+    });
+  });
 });
