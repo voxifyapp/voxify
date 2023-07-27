@@ -7,6 +7,7 @@ import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
 import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { TamaguiProvider, Theme } from 'tamagui';
 
 GoogleSignin.configure({
@@ -15,6 +16,7 @@ GoogleSignin.configure({
 
 const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();
+const queryClient = new QueryClient();
 
 export const Routes = () => {
   const { user } = useAppContext();
@@ -41,11 +43,13 @@ export const Routes = () => {
 function App(): JSX.Element {
   return (
     <TamaguiProvider config={tamaguiConfig}>
-      <AppContextProvider>
-        <Theme name="light">
-          <Routes />
-        </Theme>
-      </AppContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppContextProvider>
+          <Theme name="light">
+            <Routes />
+          </Theme>
+        </AppContextProvider>
+      </QueryClientProvider>
     </TamaguiProvider>
   );
 }

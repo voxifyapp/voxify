@@ -1,4 +1,8 @@
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {
+  FETCH_OR_CREATE_PROFILE_QUERY,
+  fetchOrCreateProfile,
+} from '@voxify/api/auth/profile';
 import { authAxios } from '@voxify/axiosClient';
 import React, {
   ReactNode,
@@ -7,17 +11,12 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { useQuery } from 'react-query';
 
 // export enum ProfileCompletionStep {
 //   SELECT_PROFICIENCY,
 //   SELECT_MEMBERSHIP,
 //   COMPLETE,
-// }
-
-// enum Proficiency {
-//   BEGINNER,
-//   MEDIUM,
-//   ADVANCED,
 // }
 
 export type AppContextType = {
@@ -31,7 +30,7 @@ const AppContext = createContext<AppContextType | null>(null);
 // Create a provider which will hold our global state
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AppContextType['user']>(null);
-  const [loading, setLoading] = useState(true);
+  const [firebaseUserLoading, setFirebaseUserLoading] = useState(true);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(async firebaseUser => {
@@ -41,16 +40,18 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         authAxios.defaults.headers.common.Authorization = `Bearer ${token}`;
       }
       setUser(firebaseUser);
-      setLoading(false);
+      setFirebaseUserLoading(false);
     });
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  useEffect(() => {
-    if (!user) {
-      authAxios.defaults.headers.common.Authorization = ``;
-    }
-  }, [user]);
+  const { data: profileData } = useQuery({
+    queryKey: FETCH_OR_CREATE_PROFILE_QUERY,
+    queryFn: fetchOrCreateProfile,
+    enabled: !!user,
+  });
+
+  console.log('profileData', profileData);
 
   // const { data: profileData, status } = useQuery(
   //   'profile',
@@ -67,7 +68,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   //   }
   // }
 
-  const value = { user, loading };
+  const value = { user, loading: firebaseUserLoading || !!profileData };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
