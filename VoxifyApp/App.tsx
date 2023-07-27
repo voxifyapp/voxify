@@ -2,8 +2,13 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppContextProvider, useAppContext } from '@voxify/context/AppContext';
+import {
+  ProfileCompletionStep,
+  useGetCurrentProfileStep,
+} from '@voxify/hooks/profile';
 import { HomeScreen } from '@voxify/modules/auth/screens/HomeScreen';
 import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
+import { ProfileSetup } from '@voxify/modules/auth/screens/ProfileSetup/ProfileSetup';
 import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
@@ -19,13 +24,19 @@ const AppStack = createNativeStackNavigator();
 const queryClient = new QueryClient();
 
 export const Routes = () => {
-  const { user } = useAppContext();
+  const { user, profile } = useAppContext();
+
+  const currentProfileStep = useGetCurrentProfileStep(profile);
 
   return (
     <NavigationContainer>
       {user ? (
         <AppStack.Navigator>
-          <AuthStack.Screen name="Home" component={HomeScreen} />
+          {currentProfileStep !== ProfileCompletionStep.COMPLETE ? (
+            <AuthStack.Screen name="Profile Setup" component={ProfileSetup} />
+          ) : (
+            <AuthStack.Screen name="Home" component={HomeScreen} />
+          )}
         </AppStack.Navigator>
       ) : (
         <AuthStack.Navigator initialRouteName="Login">

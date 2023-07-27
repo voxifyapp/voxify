@@ -4,6 +4,7 @@ import {
   fetchOrCreateProfile,
 } from '@voxify/api/auth/profile';
 import { authAxios } from '@voxify/axiosClient';
+import { ProfileEntity } from '@voxify/types/auth/profile';
 import React, {
   ReactNode,
   createContext,
@@ -13,15 +14,10 @@ import React, {
 } from 'react';
 import { useQuery } from 'react-query';
 
-// export enum ProfileCompletionStep {
-//   SELECT_PROFICIENCY,
-//   SELECT_MEMBERSHIP,
-//   COMPLETE,
-// }
-
 export type AppContextType = {
   user: FirebaseAuthTypes.User | null;
   loading: boolean;
+  profile?: ProfileEntity;
 };
 
 // Create a context
@@ -51,24 +47,11 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     enabled: !!user,
   });
 
-  console.log('profileData', profileData);
-
-  // const { data: profileData, status } = useQuery(
-  //   'profile',
-  //   fetchOrCreateProfile,
-  // );
-
-  // if (status === 'success') {
-  //   if (profileData.proficiencyLevel === null) {
-  //     profileStep = ProfileCompletionStep.SELECT_PROFICIENCY;
-  //   } else if (profileData.subscriptionEndDate === null) {
-  //     profileStep = ProfileCompletionStep.SELECT_MEMBERSHIP;
-  //   } else {
-  //     profileStep = ProfileCompletionStep.COMPLETE;
-  //   }
-  // }
-
-  const value = { user, loading: firebaseUserLoading || !!profileData };
+  const value = {
+    user,
+    loading: firebaseUserLoading || !!profileData,
+    profile: profileData,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
