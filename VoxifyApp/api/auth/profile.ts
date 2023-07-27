@@ -1,5 +1,5 @@
-import axios from 'axios';
+import { authAxios } from '@voxify/axiosClient';
 
 export const fetchOrCreateProfile = async () => {
-  return axios.post('/profile');
+  return authAxios.post('/profile');
 };
