@@ -2,11 +2,15 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { TamaguiProvider, Theme } from 'tamagui';
+import { TamaguiProvider, Text, Theme } from 'tamagui';
 import { HomeScreen } from '@voxify/modules/auth/screens/HomeScreen';
 import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
 import Config from 'react-native-config';
-import { useAppContext, AppContextProvider } from '@voxify/context/AppContext';
+import {
+  useAppContext,
+  AppContextProvider,
+  ProfileCompletionStep,
+} from '@voxify/context/AppContext';
 import tamaguiConfig from '@voxify/tamagui.config';
 
 GoogleSignin.configure({
@@ -17,14 +21,20 @@ const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();
 
 export const Routes = () => {
-  const { user } = useAppContext();
+  const { user, profileStep } = useAppContext();
 
   return (
     <NavigationContainer>
       {user ? (
-        <AppStack.Navigator>
-          <AuthStack.Screen name="Home" component={HomeScreen} />
-        </AppStack.Navigator>
+        profileStep === ProfileCompletionStep.SELECT_PROFICIENCY ? (
+          <Text>Select Proficiency</Text>
+        ) : profileStep === ProfileCompletionStep.SELECT_MEMBERSHIP ? (
+          <Text>Select Membership</Text>
+        ) : (
+          <AppStack.Navigator>
+            <AuthStack.Screen name="Home" component={HomeScreen} />
+          </AppStack.Navigator>
+        )
       ) : (
         <AuthStack.Navigator initialRouteName="Login">
           <AuthStack.Screen
