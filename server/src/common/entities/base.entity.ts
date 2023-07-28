@@ -3,14 +3,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   VersionColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 /**
  * Base entity that all other entities inherit
  */
 export abstract class BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -20,4 +21,7 @@ export abstract class BaseEntity {
 
   @VersionColumn()
   version: number;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
