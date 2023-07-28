@@ -175,8 +175,12 @@ var keystone_default = withAuth(
       // we're using sqlite for the fastest startup experience
       //   for more information on what database might be appropriate for you
       //   see https://keystonejs.com/docs/guides/choosing-a-database#title
-      provider: "sqlite",
-      url: "file:./keystone.db"
+      provider: "postgresql",
+      url: "postgres://postgres:postgres@localhost:5432/keystone-test",
+      idField: {
+        kind: "uuid",
+        type: "String"
+      }
     },
     lists,
     session
