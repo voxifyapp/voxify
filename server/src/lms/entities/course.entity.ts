@@ -8,7 +8,6 @@ export class Course extends BaseEntity {
     comment: 'What proficiency level this course is for',
     type: 'enum',
     enum: ProficiencyLevel,
-    nullable: true,
   })
   proficiencyLevel: ProficiencyLevel;
 
