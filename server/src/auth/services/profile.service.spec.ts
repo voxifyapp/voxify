@@ -10,6 +10,7 @@ import {
 } from './profile.service';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { ProfileRepository } from 'src/auth/profile.repository';
+import { faker } from '@faker-js/faker';
 
 describe('ProfileService', () => {
   let service: ProfileService;
@@ -132,7 +133,7 @@ describe('ProfileService', () => {
 
       let error;
       try {
-        await service.addDaysToSubscription(999, 60);
+        await service.addDaysToSubscription('test-profile-uuid', 60);
       } catch (err) {
         error = err;
       }
@@ -159,7 +160,7 @@ describe('ProfileService', () => {
 
   describe('setProficiencyLevel', () => {
     const userId = 'test-user-id';
-    const profileId = 1;
+    const profileId = faker.datatype.uuid();
     const proficiencyLevel = ProficiencyLevel.ADVANCED;
 
     it('should set the proficiency level of a profile', async () => {
