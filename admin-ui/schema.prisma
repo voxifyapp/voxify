@@ -36,3 +36,27 @@ model Tag {
   name  String @default("")
   posts Post[] @relation("Post_tags")
 }
+
+model Activity {
+  id              String           @id @default(uuid()) @postgresql.Uuid
+  title           String           @default("")
+  activityLessons ActivityLesson[] @relation("ActivityLesson_activity")
+}
+
+model ActivityLesson {
+  id         String    @id @default(uuid()) @postgresql.Uuid
+  activity   Activity? @relation("ActivityLesson_activity", fields: [activityId], references: [id])
+  activityId String?   @map("activity") @postgresql.Uuid
+  lesson     Lesson?   @relation("ActivityLesson_lesson", fields: [lessonId], references: [id])
+  lessonId   String?   @map("lesson") @postgresql.Uuid
+  order      Int
+
+  @@index([activityId])
+  @@index([lessonId])
+}
+
+model Lesson {
+  id              String           @id @default(uuid()) @postgresql.Uuid
+  title           String           @default("")
+  activityLessons ActivityLesson[] @relation("ActivityLesson_lesson")
+}

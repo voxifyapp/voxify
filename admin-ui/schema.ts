@@ -11,11 +11,11 @@ import { allowAll } from "@keystone-6/core/access";
 // see https://keystonejs.com/docs/fields/overview for the full list of fields
 //   this is a few common fields for an example
 import {
-  text,
-  relationship,
+  integer,
   password,
+  relationship,
+  text,
   timestamp,
-  select,
 } from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
@@ -143,6 +143,45 @@ export const lists: Lists = {
       name: text(),
       // this can be helpful to find out all the Posts associated with a Tag
       posts: relationship({ ref: "Post.tags", many: true }),
+    },
+  }),
+
+  Activity: list({
+    access: allowAll,
+    fields: {
+      title: text({ validation: { isRequired: true } }),
+      activityLessons: relationship({
+        ref: "ActivityLesson.activity",
+        many: true,
+      }),
+    },
+  }),
+
+  ActivityLesson: list({
+    access: allowAll,
+    fields: {
+      activity: relationship({ ref: "Activity.activityLessons" }),
+      lesson: relationship({ ref: "Lesson.activityLessons" }),
+      order: integer({
+        isOrderable: true,
+        validation: { isRequired: true },
+        ui: { itemView: { fieldMode: "edit" } },
+      }),
+    },
+  }),
+
+  Lesson: list({
+    access: allowAll,
+    fields: {
+      title: text({ validation: { isRequired: true } }),
+      activityLessons: relationship({
+        ref: "ActivityLesson.lesson",
+        many: true,
+        ui: {
+          description: "Test",
+          displayMode: "select",
+        },
+      }),
     },
   }),
 };

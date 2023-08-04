@@ -132,6 +132,42 @@ var lists = {
       // this can be helpful to find out all the Posts associated with a Tag
       posts: (0, import_fields.relationship)({ ref: "Post.tags", many: true })
     }
+  }),
+  Activity: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      title: (0, import_fields.text)({ validation: { isRequired: true } }),
+      activityLessons: (0, import_fields.relationship)({
+        ref: "ActivityLesson.activity",
+        many: true
+      })
+    }
+  }),
+  ActivityLesson: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      activity: (0, import_fields.relationship)({ ref: "Activity.activityLessons" }),
+      lesson: (0, import_fields.relationship)({ ref: "Lesson.activityLessons" }),
+      order: (0, import_fields.integer)({
+        isOrderable: true,
+        validation: { isRequired: true },
+        ui: { itemView: { fieldMode: "edit" } }
+      })
+    }
+  }),
+  Lesson: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      title: (0, import_fields.text)({ validation: { isRequired: true } }),
+      activityLessons: (0, import_fields.relationship)({
+        ref: "ActivityLesson.lesson",
+        many: true,
+        ui: {
+          description: "Test",
+          displayMode: "select"
+        }
+      })
+    }
   })
 };
 
