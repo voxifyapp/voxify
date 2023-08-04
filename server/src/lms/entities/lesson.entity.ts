@@ -1,11 +1,10 @@
 import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Course } from 'src/lms/entities/course.entity';
-import { Lesson } from 'src/lms/entities/lesson.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Unit } from 'src/lms/entities/unit.entity';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-export class Unit extends BaseEntity {
+export class Lesson extends BaseEntity {
   @Column({
     comment: 'What proficiency level this course is for',
     type: 'enum',
@@ -20,13 +19,10 @@ export class Unit extends BaseEntity {
   title: string;
 
   @Column({
-    comment: 'The order of this unit in the course',
+    comment: 'The order of this lesson in the unit',
   })
   order: number;
 
-  @ManyToOne(() => Course, (course) => course.units)
-  course: Course;
-
-  @OneToMany(() => Lesson, (lesson) => lesson.unit)
-  lessons: Lesson[];
+  @ManyToOne(() => Unit, (unit) => unit.lessons)
+  unit: Unit;
 }
