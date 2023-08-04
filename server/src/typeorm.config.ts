@@ -1,5 +1,6 @@
 import { configureEnv } from 'common/configure-env';
 import { Profile } from 'src/auth/entities/profile.entity';
+import { Course } from 'src/lms/entities/course.entity';
 import { DataSource } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
@@ -13,7 +14,7 @@ configureEnv();
 export const datasourceConfig: PostgresConnectionOptions = {
   type: 'postgres',
   url: process.env.POSTGRES_URL,
-  entities: [Profile],
+  entities: [Profile, Course],
 };
 
 /** This datasource is only used by the TypeORM CLI */
