@@ -6,8 +6,6 @@ type User {
   name: String
   email: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
 }
 
@@ -29,7 +27,6 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -78,12 +75,6 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
-}
-
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -111,15 +102,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
-}
-
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -131,211 +114,83 @@ input UserCreateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForCreateInput
   createdAt: DateTime
 }
 
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-type Post {
+type Course {
   id: ID!
   title: String
-  content: Post_content_Document
-  author: User
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  units(where: UnitWhereInput! = {}, orderBy: [UnitOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UnitWhereUniqueInput): [Unit!]
+  unitsCount(where: UnitWhereInput! = {}): Int
 }
 
-type Post_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
-}
-
-input PostWhereUniqueInput {
+input CourseWhereUniqueInput {
   id: ID
 }
 
-input PostWhereInput {
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+input CourseWhereInput {
+  AND: [CourseWhereInput!]
+  OR: [CourseWhereInput!]
+  NOT: [CourseWhereInput!]
   id: IDFilter
   title: StringFilter
-  author: UserWhereInput
-  tags: TagManyRelationFilter
+  units: UnitManyRelationFilter
 }
 
-input TagManyRelationFilter {
-  every: TagWhereInput
-  some: TagWhereInput
-  none: TagWhereInput
+input UnitManyRelationFilter {
+  every: UnitWhereInput
+  some: UnitWhereInput
+  none: UnitWhereInput
 }
 
-input PostOrderByInput {
+input CourseOrderByInput {
   id: OrderDirection
   title: OrderDirection
 }
 
-input PostUpdateInput {
+input CourseUpdateInput {
   title: String
-  content: JSON
-  author: UserRelateToOneForUpdateInput
-  tags: TagRelateToManyForUpdateInput
+  units: UnitRelateToManyForUpdateInput
 }
 
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
+input UnitRelateToManyForUpdateInput {
+  disconnect: [UnitWhereUniqueInput!]
+  set: [UnitWhereUniqueInput!]
+  create: [UnitCreateInput!]
+  connect: [UnitWhereUniqueInput!]
 }
 
-input TagRelateToManyForUpdateInput {
-  disconnect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input CourseUpdateArgs {
+  where: CourseWhereUniqueInput!
+  data: CourseUpdateInput!
 }
 
-input PostUpdateArgs {
-  where: PostWhereUniqueInput!
-  data: PostUpdateInput!
-}
-
-input PostCreateInput {
+input CourseCreateInput {
   title: String
-  content: JSON
-  author: UserRelateToOneForCreateInput
-  tags: TagRelateToManyForCreateInput
+  units: UnitRelateToManyForCreateInput
 }
 
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
+input UnitRelateToManyForCreateInput {
+  create: [UnitCreateInput!]
+  connect: [UnitWhereUniqueInput!]
 }
 
-input TagRelateToManyForCreateInput {
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
-}
-
-type Tag {
-  id: ID!
-  name: String
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
-}
-
-input TagWhereUniqueInput {
-  id: ID
-}
-
-input TagWhereInput {
-  AND: [TagWhereInput!]
-  OR: [TagWhereInput!]
-  NOT: [TagWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  posts: PostManyRelationFilter
-}
-
-input TagOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-}
-
-input TagUpdateInput {
-  name: String
-  posts: PostRelateToManyForUpdateInput
-}
-
-input TagUpdateArgs {
-  where: TagWhereUniqueInput!
-  data: TagUpdateInput!
-}
-
-input TagCreateInput {
-  name: String
-  posts: PostRelateToManyForCreateInput
-}
-
-type Activity {
+type Unit {
   id: ID!
   title: String
-  activityLessons(where: ActivityLessonWhereInput! = {}, orderBy: [ActivityLessonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ActivityLessonWhereUniqueInput): [ActivityLesson!]
-  activityLessonsCount(where: ActivityLessonWhereInput! = {}): Int
-}
-
-input ActivityWhereUniqueInput {
-  id: ID
-}
-
-input ActivityWhereInput {
-  AND: [ActivityWhereInput!]
-  OR: [ActivityWhereInput!]
-  NOT: [ActivityWhereInput!]
-  id: IDFilter
-  title: StringFilter
-  activityLessons: ActivityLessonManyRelationFilter
-}
-
-input ActivityLessonManyRelationFilter {
-  every: ActivityLessonWhereInput
-  some: ActivityLessonWhereInput
-  none: ActivityLessonWhereInput
-}
-
-input ActivityOrderByInput {
-  id: OrderDirection
-  title: OrderDirection
-}
-
-input ActivityUpdateInput {
-  title: String
-  activityLessons: ActivityLessonRelateToManyForUpdateInput
-}
-
-input ActivityLessonRelateToManyForUpdateInput {
-  disconnect: [ActivityLessonWhereUniqueInput!]
-  set: [ActivityLessonWhereUniqueInput!]
-  create: [ActivityLessonCreateInput!]
-  connect: [ActivityLessonWhereUniqueInput!]
-}
-
-input ActivityUpdateArgs {
-  where: ActivityWhereUniqueInput!
-  data: ActivityUpdateInput!
-}
-
-input ActivityCreateInput {
-  title: String
-  activityLessons: ActivityLessonRelateToManyForCreateInput
-}
-
-input ActivityLessonRelateToManyForCreateInput {
-  create: [ActivityLessonCreateInput!]
-  connect: [ActivityLessonWhereUniqueInput!]
-}
-
-type ActivityLesson {
-  id: ID!
-  activity: Activity
-  lesson: Lesson
   order: Int
 }
 
-input ActivityLessonWhereUniqueInput {
+input UnitWhereUniqueInput {
   id: ID
 }
 
-input ActivityLessonWhereInput {
-  AND: [ActivityLessonWhereInput!]
-  OR: [ActivityLessonWhereInput!]
-  NOT: [ActivityLessonWhereInput!]
+input UnitWhereInput {
+  AND: [UnitWhereInput!]
+  OR: [UnitWhereInput!]
+  NOT: [UnitWhereInput!]
   id: IDFilter
-  activity: ActivityWhereInput
-  lesson: LessonWhereInput
+  title: StringFilter
   order: IntFilter
 }
 
@@ -350,88 +205,25 @@ input IntFilter {
   not: IntFilter
 }
 
-input ActivityLessonOrderByInput {
+input UnitOrderByInput {
   id: OrderDirection
+  title: OrderDirection
   order: OrderDirection
 }
 
-input ActivityLessonUpdateInput {
-  activity: ActivityRelateToOneForUpdateInput
-  lesson: LessonRelateToOneForUpdateInput
+input UnitUpdateInput {
+  title: String
   order: Int
 }
 
-input ActivityRelateToOneForUpdateInput {
-  create: ActivityCreateInput
-  connect: ActivityWhereUniqueInput
-  disconnect: Boolean
+input UnitUpdateArgs {
+  where: UnitWhereUniqueInput!
+  data: UnitUpdateInput!
 }
 
-input LessonRelateToOneForUpdateInput {
-  create: LessonCreateInput
-  connect: LessonWhereUniqueInput
-  disconnect: Boolean
-}
-
-input ActivityLessonUpdateArgs {
-  where: ActivityLessonWhereUniqueInput!
-  data: ActivityLessonUpdateInput!
-}
-
-input ActivityLessonCreateInput {
-  activity: ActivityRelateToOneForCreateInput
-  lesson: LessonRelateToOneForCreateInput
+input UnitCreateInput {
+  title: String
   order: Int
-}
-
-input ActivityRelateToOneForCreateInput {
-  create: ActivityCreateInput
-  connect: ActivityWhereUniqueInput
-}
-
-input LessonRelateToOneForCreateInput {
-  create: LessonCreateInput
-  connect: LessonWhereUniqueInput
-}
-
-type Lesson {
-  id: ID!
-  title: String
-  activityLessons(where: ActivityLessonWhereInput! = {}, orderBy: [ActivityLessonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ActivityLessonWhereUniqueInput): [ActivityLesson!]
-  activityLessonsCount(where: ActivityLessonWhereInput! = {}): Int
-}
-
-input LessonWhereUniqueInput {
-  id: ID
-}
-
-input LessonWhereInput {
-  AND: [LessonWhereInput!]
-  OR: [LessonWhereInput!]
-  NOT: [LessonWhereInput!]
-  id: IDFilter
-  title: StringFilter
-  activityLessons: ActivityLessonManyRelationFilter
-}
-
-input LessonOrderByInput {
-  id: OrderDirection
-  title: OrderDirection
-}
-
-input LessonUpdateInput {
-  title: String
-  activityLessons: ActivityLessonRelateToManyForUpdateInput
-}
-
-input LessonUpdateArgs {
-  where: LessonWhereUniqueInput!
-  data: LessonUpdateInput!
-}
-
-input LessonCreateInput {
-  title: String
-  activityLessons: ActivityLessonRelateToManyForCreateInput
 }
 
 """
@@ -446,36 +238,18 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createPost(data: PostCreateInput!): Post
-  createPosts(data: [PostCreateInput!]!): [Post]
-  updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
-  updatePosts(data: [PostUpdateArgs!]!): [Post]
-  deletePost(where: PostWhereUniqueInput!): Post
-  deletePosts(where: [PostWhereUniqueInput!]!): [Post]
-  createTag(data: TagCreateInput!): Tag
-  createTags(data: [TagCreateInput!]!): [Tag]
-  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
-  updateTags(data: [TagUpdateArgs!]!): [Tag]
-  deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
-  createActivity(data: ActivityCreateInput!): Activity
-  createActivities(data: [ActivityCreateInput!]!): [Activity]
-  updateActivity(where: ActivityWhereUniqueInput!, data: ActivityUpdateInput!): Activity
-  updateActivities(data: [ActivityUpdateArgs!]!): [Activity]
-  deleteActivity(where: ActivityWhereUniqueInput!): Activity
-  deleteActivities(where: [ActivityWhereUniqueInput!]!): [Activity]
-  createActivityLesson(data: ActivityLessonCreateInput!): ActivityLesson
-  createActivityLessons(data: [ActivityLessonCreateInput!]!): [ActivityLesson]
-  updateActivityLesson(where: ActivityLessonWhereUniqueInput!, data: ActivityLessonUpdateInput!): ActivityLesson
-  updateActivityLessons(data: [ActivityLessonUpdateArgs!]!): [ActivityLesson]
-  deleteActivityLesson(where: ActivityLessonWhereUniqueInput!): ActivityLesson
-  deleteActivityLessons(where: [ActivityLessonWhereUniqueInput!]!): [ActivityLesson]
-  createLesson(data: LessonCreateInput!): Lesson
-  createLessons(data: [LessonCreateInput!]!): [Lesson]
-  updateLesson(where: LessonWhereUniqueInput!, data: LessonUpdateInput!): Lesson
-  updateLessons(data: [LessonUpdateArgs!]!): [Lesson]
-  deleteLesson(where: LessonWhereUniqueInput!): Lesson
-  deleteLessons(where: [LessonWhereUniqueInput!]!): [Lesson]
+  createCourse(data: CourseCreateInput!): Course
+  createCourses(data: [CourseCreateInput!]!): [Course]
+  updateCourse(where: CourseWhereUniqueInput!, data: CourseUpdateInput!): Course
+  updateCourses(data: [CourseUpdateArgs!]!): [Course]
+  deleteCourse(where: CourseWhereUniqueInput!): Course
+  deleteCourses(where: [CourseWhereUniqueInput!]!): [Course]
+  createUnit(data: UnitCreateInput!): Unit
+  createUnits(data: [UnitCreateInput!]!): [Unit]
+  updateUnit(where: UnitWhereUniqueInput!, data: UnitUpdateInput!): Unit
+  updateUnits(data: [UnitUpdateArgs!]!): [Unit]
+  deleteUnit(where: UnitWhereUniqueInput!): Unit
+  deleteUnits(where: [UnitWhereUniqueInput!]!): [Unit]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -502,21 +276,12 @@ type Query {
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  post(where: PostWhereUniqueInput!): Post
-  postsCount(where: PostWhereInput! = {}): Int
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tag(where: TagWhereUniqueInput!): Tag
-  tagsCount(where: TagWhereInput! = {}): Int
-  activities(where: ActivityWhereInput! = {}, orderBy: [ActivityOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ActivityWhereUniqueInput): [Activity!]
-  activity(where: ActivityWhereUniqueInput!): Activity
-  activitiesCount(where: ActivityWhereInput! = {}): Int
-  activityLessons(where: ActivityLessonWhereInput! = {}, orderBy: [ActivityLessonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ActivityLessonWhereUniqueInput): [ActivityLesson!]
-  activityLesson(where: ActivityLessonWhereUniqueInput!): ActivityLesson
-  activityLessonsCount(where: ActivityLessonWhereInput! = {}): Int
-  lessons(where: LessonWhereInput! = {}, orderBy: [LessonOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LessonWhereUniqueInput): [Lesson!]
-  lesson(where: LessonWhereUniqueInput!): Lesson
-  lessonsCount(where: LessonWhereInput! = {}): Int
+  courses(where: CourseWhereInput! = {}, orderBy: [CourseOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CourseWhereUniqueInput): [Course!]
+  course(where: CourseWhereUniqueInput!): Course
+  coursesCount(where: CourseWhereInput! = {}): Int
+  units(where: UnitWhereInput! = {}, orderBy: [UnitOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UnitWhereUniqueInput): [Unit!]
+  unit(where: UnitWhereUniqueInput!): Unit
+  unitsCount(where: UnitWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
