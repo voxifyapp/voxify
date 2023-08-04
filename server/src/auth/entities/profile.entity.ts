@@ -10,24 +10,24 @@ export enum ProficiencyLevel {
 @Entity()
 export class Profile extends BaseEntity {
   @Column({
+    comment: 'Proficiency level of the user',
     type: 'enum',
     enum: ProficiencyLevel,
     nullable: true,
   })
   proficiencyLevel: ProficiencyLevel;
 
-  /** We are using this temporarily before we build out a subscription system
-   * This controls access to the platform, for now we need to just set it to some date based on free trial
-   */
   @Column({
+    comment:
+      'Controls access to the platform, for now we need to just set it to some date based on free trial',
     type: 'date',
     nullable: true,
   })
   subscriptionEndDate: Date;
 
   @Column({
+    comment: 'User ID associated with the profile',
     type: 'text',
-    /** We are making this unique as initially we'll enforce each user to have only 1 profile */
     unique: true,
   })
   userId: string;
