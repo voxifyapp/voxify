@@ -10,8 +10,18 @@ export const setProficiency = async (
   proficiency: ProficiencyLevel,
 ): Promise<ProfileEntity> => {
   return (
-    await authAxios.post('/set-proficiency-level', {
+    await authAxios.post('/profile/set-proficiency-level', {
       proficiencyLevel: proficiency,
+    })
+  ).data;
+};
+
+export const startFreeTrail = async (
+  daysToAdd: number,
+): Promise<ProfileEntity> => {
+  return (
+    await authAxios.post('/profile/add-days-to-subscription ', {
+      freeTrialDays: daysToAdd,
     })
   ).data;
 };

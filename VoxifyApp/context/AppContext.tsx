@@ -49,7 +49,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     user,
-    loading: firebaseUserLoading || !!profileData,
+    loading: firebaseUserLoading || !profileData,
     profile: profileData,
   };
 

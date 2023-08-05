@@ -13,7 +13,7 @@ import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { TamaguiProvider, Theme } from 'tamagui';
+import { TamaguiProvider, Text, Theme } from 'tamagui';
 
 GoogleSignin.configure({
   webClientId: Config.FIREBASE_WEBCLIENT_ID,
@@ -24,9 +24,13 @@ const AppStack = createNativeStackNavigator();
 const queryClient = new QueryClient();
 
 export const Routes = () => {
-  const { user, profile } = useAppContext();
+  const { user, profile, loading } = useAppContext();
 
   const currentProfileStep = useGetCurrentProfileStep(profile);
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <NavigationContainer>
