@@ -9,6 +9,7 @@ import {
   UnitRepository,
 } from 'src/lms/repositories/lms.repository';
 import { LmsService } from 'src/lms/services/lms.service';
+import { LmsController } from './lms.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Course, Unit])],
@@ -19,5 +20,6 @@ import { LmsService } from 'src/lms/services/lms.service';
     LessonRepository,
     ActivityRepository,
   ],
+  controllers: [LmsController],
 })
 export class LmsModule {}
