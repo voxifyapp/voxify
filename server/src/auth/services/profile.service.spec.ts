@@ -11,6 +11,7 @@ import {
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { ProfileRepository } from 'src/auth/profile.repository';
 import { faker } from '@faker-js/faker';
+import { mockRepository } from 'src/common/mocks/mockedRepository';
 
 describe('ProfileService', () => {
   let service: ProfileService;
@@ -18,18 +19,7 @@ describe('ProfileService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProfileService,
-        {
-          provide: ProfileRepository,
-          useValue: {
-            findOne: jest.fn(),
-            create: jest.fn(),
-            save: jest.fn(),
-            findOneBy: jest.fn(),
-          },
-        },
-      ],
+      providers: [ProfileService, mockRepository(ProfileRepository)],
     }).compile();
 
     service = module.get<ProfileService>(ProfileService);
