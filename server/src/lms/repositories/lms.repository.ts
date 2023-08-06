@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Activity } from 'src/lms/entities/activity.entity';
 import { Course } from 'src/lms/entities/course.entity';
+import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Unit } from 'src/lms/entities/unit.entity';
 import { DataSource, Repository } from 'typeorm';
 
@@ -16,10 +18,30 @@ export class UnitRepository extends Repository<Unit> {
     super(Course, dataSource.createEntityManager());
   }
 
-  async listUnitsForCourse(courseId: string) {
+  async listUnitsWithAssociatedLessonForCourse(courseId: string) {
     return await this.find({
       where: { course: { id: courseId } },
       relations: { lessons: true },
+    });
+  }
+}
+
+@Injectable()
+export class LessonRepository extends Repository<Lesson> {
+  constructor(private dataSource: DataSource) {
+    super(Lesson, dataSource.createEntityManager());
+  }
+}
+
+@Injectable()
+export class ActivityRepository extends Repository<Activity> {
+  constructor(private dataSource: DataSource) {
+    super(Activity, dataSource.createEntityManager());
+  }
+
+  async listActivitiesForLesson(lessonId: string) {
+    return await this.find({
+      where: { lesson: { id: lessonId } },
     });
   }
 }

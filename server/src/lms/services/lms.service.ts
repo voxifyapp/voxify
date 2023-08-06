@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
+  ActivityRepository,
   CourseRepository,
+  LessonRepository,
   UnitRepository,
 } from 'src/lms/repositories/lms.repository';
 
@@ -9,6 +11,8 @@ export class LmsService {
   constructor(
     private courseRepository: CourseRepository,
     private unitRepository: UnitRepository,
+    private lessonRepository: LessonRepository,
+    private activityRepository: ActivityRepository,
   ) {}
 
   /**
@@ -26,7 +30,17 @@ export class LmsService {
     return await this.unitRepository.findOneBy({ id: unitId });
   }
 
-  async getUnitsForCourse(courseId: string) {
-    return await this.unitRepository.listUnitsForCourse(courseId);
+  async getUnitsWithAssociatedLessonsForCourse(courseId: string) {
+    return await this.unitRepository.listUnitsWithAssociatedLessonForCourse(
+      courseId,
+    );
+  }
+
+  async getLessonById(lessonId: string) {
+    return await this.lessonRepository.findOneBy({ id: lessonId });
+  }
+
+  async getActivitiesForLesson(lessonId: string) {
+    return await this.activityRepository.listActivitiesForLesson(lessonId);
   }
 }

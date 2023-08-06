@@ -150,7 +150,7 @@ describe('ProfileService', () => {
 
   describe('setProficiencyLevel', () => {
     const userId = 'test-user-id';
-    const profileId = faker.datatype.uuid();
+    const profileId = faker.string.uuid();
     const proficiencyLevel = ProficiencyLevel.ADVANCED;
 
     it('should set the proficiency level of a profile', async () => {

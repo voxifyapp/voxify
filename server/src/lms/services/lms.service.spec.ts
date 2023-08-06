@@ -1,8 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { mockRepository } from 'src/common/mocks/mockedRepository';
-import { courseFactory, unitFactory } from 'src/lms/fixtures/lms.fixtures';
 import {
+  activityFactory,
+  courseFactory,
+  lessonFactory,
+  unitFactory,
+} from 'src/lms/fixtures/lms.fixtures';
+import {
+  ActivityRepository,
   CourseRepository,
+  LessonRepository,
   UnitRepository,
 } from 'src/lms/repositories/lms.repository';
 import { LmsService } from './lms.service';
@@ -11,6 +18,8 @@ describe('LmsService', () => {
   let service: LmsService;
   let courseRepo: CourseRepository;
   let unitRepo: UnitRepository;
+  let lessonRepo: LessonRepository;
+  let activityRepo: ActivityRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,12 +27,16 @@ describe('LmsService', () => {
         LmsService,
         mockRepository(CourseRepository),
         mockRepository(UnitRepository),
+        mockRepository(LessonRepository),
+        mockRepository(ActivityRepository),
       ],
     }).compile();
 
     service = module.get<LmsService>(LmsService);
     courseRepo = module.get<CourseRepository>(CourseRepository);
     unitRepo = module.get<UnitRepository>(UnitRepository);
+    lessonRepo = module.get<LessonRepository>(LessonRepository);
+    activityRepo = module.get<ActivityRepository>(ActivityRepository);
   });
 
   it('should be defined', () => {
@@ -61,11 +74,17 @@ describe('LmsService', () => {
       const courseId = '123';
       const units = unitFactory.buildList(2, { course: { id: courseId } });
 
-      unitRepo.listUnitsForCourse = jest.fn().mockResolvedValueOnce([...units]);
+      unitRepo.listUnitsWithAssociatedLessonForCourse = jest
+        .fn()
+        .mockResolvedValueOnce([...units]);
 
-      const result = await service.getUnitsForCourse(courseId);
+      const result = await service.getUnitsWithAssociatedLessonsForCourse(
+        courseId,
+      );
 
-      expect(unitRepo.listUnitsForCourse).toHaveBeenCalledWith(courseId);
+      expect(
+        unitRepo.listUnitsWithAssociatedLessonForCourse,
+      ).toHaveBeenCalledWith(courseId);
       expect(result).toEqual(units);
     });
   });
@@ -81,6 +100,46 @@ describe('LmsService', () => {
 
       expect(unitRepo.findOneBy).toHaveBeenCalledWith({ id: unitId });
       expect(result).toEqual(unit);
+    });
+  });
+
+  describe('getLessonById', () => {
+    it('should return a lesson with the given ID', async () => {
+      const lessonId = '123';
+      const lesson = lessonFactory.build({ id: lessonId });
+
+      lessonRepo.findOneBy = jest.fn().mockResolvedValueOnce({ ...lesson });
+
+      const result = await service.getLessonById(lessonId);
+
+      expect(lessonRepo.findOneBy).toHaveBeenCalledWith({ id: lessonId });
+      expect(result).toEqual(lesson);
+    });
+  });
+
+  describe('getActivitiesForLesson', () => {
+    it('should return all activities for a lesson', async () => {
+      const lessonId = '123';
+      const activities = activityFactory.buildList(
+        2,
+        {},
+        {
+          associations: {
+            lesson: lessonFactory.build({ id: lessonId }),
+          },
+        },
+      );
+
+      activityRepo.listActivitiesForLesson = jest
+        .fn()
+        .mockResolvedValueOnce([...activities]);
+
+      const result = await service.getActivitiesForLesson(lessonId);
+
+      expect(activityRepo.listActivitiesForLesson).toHaveBeenCalledWith(
+        lessonId,
+      );
+      expect(result).toEqual(activities);
     });
   });
 });
