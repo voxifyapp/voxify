@@ -34,7 +34,7 @@ export const unitFactory = Factory.define<Unit>(
       const unitRepo = await getRepository(Unit);
       return unitRepo.save(
         {
-          ...unit,
+          ...omit(unit, ['lessons']),
           course: unit.course || (await courseFactory.create()),
         },
         { reload: true },
@@ -52,27 +52,25 @@ export const unitFactory = Factory.define<Unit>(
 );
 
 export const lessonFactory = Factory.define<Lesson>(
-  ({ params, sequence, associations }) => {
-    //   onCreate(async (profile) => {
-    //     const profileRepo = await getRepository(Profile);
-    //     return profileRepo.save(
-    //       {
-    //         ...profile,
-    //         userId: profile.userId
-    //           ? profile.userId
-    //           : (await firebaseUserFactory.create()).uid,
-    //       },
-    //       { reload: true },
-    //     );
-    //   });
+  ({ params, sequence, onCreate }) => {
+    onCreate(async (lesson) => {
+      const unitRepo = await getRepository(Lesson);
+      return unitRepo.save(
+        {
+          ...lesson,
+          unit: lesson.unit || (await unitFactory.create()),
+        },
+        { reload: true },
+      );
+    });
 
     return {
       ...baseFactory.build(params),
       title: faker.lorem.sentence(5),
       order: sequence,
-      unit: associations.unit || unitFactory.build(),
+      unit: unitFactory.build(),
       activities: [],
-    } as Lesson;
+    };
   },
 );
 

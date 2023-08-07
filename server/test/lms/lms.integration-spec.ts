@@ -1,6 +1,10 @@
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { Course } from 'src/lms/entities/course.entity';
-import { courseFactory, unitFactory } from 'src/lms/fixtures/lms.fixtures';
+import {
+  courseFactory,
+  lessonFactory,
+  unitFactory,
+} from 'src/lms/fixtures/lms.fixtures';
 import * as request from 'supertest';
 import { loginAsFirebaseUser } from 'test/utils/firebase';
 import { getRepository } from 'test/utils/typeorm';
@@ -65,6 +69,22 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(units.length);
+    });
+  });
+
+  describe('/lesson/:lessonId (GET)', () => {
+    it('returns a lesson by id', async () => {
+      const profile = await profileFactory.create();
+      const course = await courseFactory.create();
+      const unit = await unitFactory.create({ course });
+      const lesson = await lessonFactory.create({ unit });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(`/lms/lesson/${lesson.id}`),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.id).toEqual(lesson.id);
     });
   });
 });
