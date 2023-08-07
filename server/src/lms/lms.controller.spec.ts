@@ -46,11 +46,9 @@ describe('LmsController', () => {
   describe('getUnitsWithAssociatedLessonsForCourse', () => {
     it('should return an array of units with associated lessons for a course', async () => {
       const courseId = 'xyz';
-      const result = unitFactory.buildList(
-        2,
-        {},
-        { associations: { course: courseFactory.build({ id: courseId }) } },
-      );
+      const result = unitFactory.buildList(2, {
+        course: courseFactory.build({ id: courseId }),
+      });
 
       service.getUnitsWithAssociatedLessonsForCourse = jest
         .fn()

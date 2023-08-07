@@ -19,6 +19,9 @@ export class Lesson extends BaseEntity {
   @OneToMany(() => Activity, (activity) => activity.lesson)
   activities: Activity[];
 
-  @ManyToOne(() => Unit, (unit) => unit.lessons)
+  @ManyToOne(() => Unit, (unit) => unit.lessons, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
   unit: Unit;
 }

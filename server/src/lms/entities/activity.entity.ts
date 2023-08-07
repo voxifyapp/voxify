@@ -31,6 +31,9 @@ export class Activity extends BaseEntity {
   })
   order: number;
 
-  @ManyToOne(() => Lesson, (lesson) => lesson.activities)
+  @ManyToOne(() => Lesson, (lesson) => lesson.activities, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
   lesson: Lesson;
 }

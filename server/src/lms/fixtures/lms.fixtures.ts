@@ -29,25 +29,23 @@ export const courseFactory = Factory.define<Course>(({ params, onCreate }) => {
 });
 
 export const unitFactory = Factory.define<Unit>(
-  ({ params, sequence, associations }) => {
-    //   onCreate(async (profile) => {
-    //     const profileRepo = await getRepository(Profile);
-    //     return profileRepo.save(
-    //       {
-    //         ...profile,
-    //         userId: profile.userId
-    //           ? profile.userId
-    //           : (await firebaseUserFactory.create()).uid,
-    //       },
-    //       { reload: true },
-    //     );
-    //   });
+  ({ params, sequence, onCreate }) => {
+    onCreate(async (unit) => {
+      const unitRepo = await getRepository(Unit);
+      return unitRepo.save(
+        {
+          ...unit,
+          course: unit.course || (await courseFactory.create()),
+        },
+        { reload: true },
+      );
+    });
 
     return {
       ...baseFactory.build(params),
       title: faker.lorem.sentence(5),
       order: sequence,
-      course: associations.course || courseFactory.build(),
+      course: courseFactory.build(),
       lessons: [],
     };
   },

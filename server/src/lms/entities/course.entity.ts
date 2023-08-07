@@ -1,7 +1,7 @@
 import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Unit } from 'src/lms/entities/unit.entity';
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {

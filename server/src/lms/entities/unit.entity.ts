@@ -16,7 +16,10 @@ export class Unit extends BaseEntity {
   })
   order: number;
 
-  @ManyToOne(() => Course, (course) => course.units)
+  @ManyToOne(() => Course, (course) => course.units, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
   course: Course;
 
   @OneToMany(() => Lesson, (lesson) => lesson.unit)

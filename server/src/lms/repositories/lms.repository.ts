@@ -15,7 +15,7 @@ export class CourseRepository extends Repository<Course> {
 @Injectable()
 export class UnitRepository extends Repository<Unit> {
   constructor(private dataSource: DataSource) {
-    super(Course, dataSource.createEntityManager());
+    super(Unit, dataSource.createEntityManager());
   }
 
   async listUnitsWithAssociatedLessonForCourse(courseId: string) {
