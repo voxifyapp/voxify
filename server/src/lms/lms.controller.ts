@@ -39,4 +39,9 @@ export class LmsController {
   async getActivitiesForLesson(lessonId: string) {
     return await this.lmsService.getActivitiesForLesson(lessonId);
   }
+
+  @Get('activities/:activityId')
+  async getActivityById(activityId: string) {
+    return await this.lmsService.getActivityById(activityId);
+  }
 }

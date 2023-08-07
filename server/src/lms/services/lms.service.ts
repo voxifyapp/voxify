@@ -41,6 +41,10 @@ export class LmsService {
     return await this.lessonRepository.findOneBy({ id: lessonId });
   }
 
+  async getActivityById(activity: string) {
+    return await this.activityRepository.findOneBy({ id: activity || null });
+  }
+
   async getActivitiesForLesson(lessonId: string) {
     return await this.activityRepository.listActivitiesForLesson(lessonId);
   }

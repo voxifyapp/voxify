@@ -91,6 +91,16 @@ describe('LmsController', () => {
     });
   });
 
+  describe('getActivityById', () => {
+    it('should return a activity by ID', async () => {
+      const result = activityFactory.build({ id: '1' });
+      service.getActivityById = jest.fn().mockResolvedValue({ ...result });
+
+      expect((await controller.getActivityById('1')).id).toBe('1');
+      expect(service.getActivityById).toBeCalledWith('1');
+    });
+  });
+
   describe('getCurrentCourseForProfile', () => {
     it('should return a course for a profile', async () => {
       const result = courseFactory.build({

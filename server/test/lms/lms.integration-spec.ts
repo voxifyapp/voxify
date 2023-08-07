@@ -104,6 +104,22 @@ describe('/lms', () => {
     });
   });
 
+  describe('/activities/:activityId (GET)', () => {
+    it('returns a activity by id', async () => {
+      const profile = await profileFactory.create();
+      const activity = await activityFactory.create();
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          `/lms/activities/${activity.id}`,
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.id).toEqual(activity.id);
+    });
+  });
+
   describe('/courses/current-course-for-profile (GET)', () => {
     it('returns a course for a profile based on proficiency', async () => {
       const profile = await profileFactory.create({

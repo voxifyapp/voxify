@@ -144,6 +144,21 @@ describe('LmsService', () => {
       expect(result).toEqual(activities);
     });
   });
+
+  describe('getActivityById', () => {
+    it('should return a activity with the given ID', async () => {
+      const activityId = '123';
+      const activity = activityFactory.build({ id: activityId });
+
+      activityRepo.findOneBy = jest.fn().mockResolvedValueOnce({ ...activity });
+
+      const result = await service.getActivityById(activityId);
+
+      expect(activityRepo.findOneBy).toHaveBeenCalledWith({ id: activityId });
+      expect(result).toEqual(activity);
+    });
+  });
+
   describe('getCourseForProfile', () => {
     it('should return a course for a profile', async () => {
       const profile = profileFactory.build({
