@@ -1,25 +1,24 @@
 import { faker } from '@faker-js/faker';
 import { Factory } from 'fishery';
+import { omit } from 'lodash';
 import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { baseFactory } from 'src/common/fixtures/base.fixture';
 import { Activity, ActivityType } from 'src/lms/entities/activity.entity';
 import { Course } from 'src/lms/entities/course.entity';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Unit } from 'src/lms/entities/unit.entity';
+import { getRepository } from 'test/utils/typeorm';
 
-export const courseFactory = Factory.define<Course>(({ params }) => {
-  //   onCreate(async (profile) => {
-  //     const profileRepo = await getRepository(Profile);
-  //     return profileRepo.save(
-  //       {
-  //         ...profile,
-  //         userId: profile.userId
-  //           ? profile.userId
-  //           : (await firebaseUserFactory.create()).uid,
-  //       },
-  //       { reload: true },
-  //     );
-  //   });
+export const courseFactory = Factory.define<Course>(({ params, onCreate }) => {
+  onCreate(async (course) => {
+    const courseRepo = await getRepository(Course);
+    return courseRepo.save(
+      {
+        ...omit(course, ['units']),
+      },
+      { reload: true },
+    );
+  });
 
   return {
     ...baseFactory.build(params),
