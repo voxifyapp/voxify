@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { mockRepository } from 'src/common/mocks/mockedRepository';
 import {
   activityFactory,
@@ -140,6 +142,27 @@ describe('LmsService', () => {
         lessonId,
       );
       expect(result).toEqual(activities);
+    });
+  });
+  describe('getCourseForProfile', () => {
+    it('should return a course for a profile', async () => {
+      const profile = profileFactory.build({
+        proficiencyLevel: ProficiencyLevel.ADVANCED,
+      });
+      const course = courseFactory.build({
+        proficiencyLevel: profile.proficiencyLevel,
+      });
+
+      courseRepo.findOneByOrFail = jest
+        .fn()
+        .mockResolvedValueOnce({ ...course });
+
+      const result = await service.getCourseForProfile(profile);
+
+      expect(courseRepo.findOneByOrFail).toHaveBeenCalledWith({
+        proficiencyLevel: profile.proficiencyLevel,
+      });
+      expect(result).toEqual(course);
     });
   });
 });

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Profile } from 'src/auth/entities/profile.entity';
 import {
   ActivityRepository,
   CourseRepository,
@@ -42,5 +43,13 @@ export class LmsService {
 
   async getActivitiesForLesson(lessonId: string) {
     return await this.activityRepository.listActivitiesForLesson(lessonId);
+  }
+
+  async getCourseForProfile(profile: Profile) {
+    const course = await this.courseRepository.findOneByOrFail({
+      proficiencyLevel: profile.proficiencyLevel || null,
+    });
+
+    return course;
   }
 }

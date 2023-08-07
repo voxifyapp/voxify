@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { Course } from 'src/lms/entities/course.entity';
 import {
@@ -99,6 +101,41 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(activities.length);
+    });
+  });
+
+  describe('/courses/current-course-for-profile (GET)', () => {
+    it('returns a course for a profile based on proficiency', async () => {
+      const profile = await profileFactory.create({
+        proficiencyLevel: ProficiencyLevel.ADVANCED,
+      });
+      const beginnerCourse = await courseFactory.create({
+        proficiencyLevel: ProficiencyLevel.BEGINNER,
+      });
+      const advancedCourse = await courseFactory.create({
+        proficiencyLevel: ProficiencyLevel.ADVANCED,
+      });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          `/lms/courses/current-course-for-profile`,
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.id).toEqual(advancedCourse.id);
+
+      profile.proficiencyLevel = ProficiencyLevel.BEGINNER;
+      (await getRepository(Profile)).save(profile);
+
+      const res2 = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          `/lms/courses/current-course-for-profile`,
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res2.body.id).toEqual(beginnerCourse.id);
     });
   });
 });

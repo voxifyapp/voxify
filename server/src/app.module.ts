@@ -6,7 +6,6 @@ import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { datasourceConfig } from 'src/typeorm.config';
 import { LmsModule } from './lms/lms.module';
-import { LmsProgressModule } from './lms-progress/lms-progress.module';
 
 @Module({
   imports: [
@@ -15,7 +14,6 @@ import { LmsProgressModule } from './lms-progress/lms-progress.module';
     }),
     AuthModule,
     LmsModule,
-    LmsProgressModule,
   ],
   providers: [
     {
