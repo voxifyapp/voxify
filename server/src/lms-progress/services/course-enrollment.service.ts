@@ -12,7 +12,7 @@ export class CourseEnrollmentService {
 
   async enrollToCourse(profile: Profile, courseId: string) {
     const course = await this.courseRepository.findOneByOrFail({
-      id: courseId,
+      id: courseId || '',
     });
 
     const existingEnrollment = await this.courseEnrollmentRepository.findOneBy({
