@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Factory } from 'fishery';
 import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
+import { baseFactory } from 'src/common/fixtures/base.fixture';
 import { getRepository } from 'test/utils/typeorm';
 
 export const profileFactory = Factory.define<Profile>(({ onCreate }) => {
@@ -19,12 +20,9 @@ export const profileFactory = Factory.define<Profile>(({ onCreate }) => {
   });
 
   return {
-    createdAt: faker.date.past(),
-    id: faker.string.uuid(),
+    ...baseFactory.build(),
     proficiencyLevel: ProficiencyLevel.MEDIUM,
     subscriptionEndDate: faker.date.future(),
-    updatedAt: faker.date.past(),
     userId: null,
-    version: 1,
   };
 });
