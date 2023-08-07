@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Profile } from 'src/auth/entities/profile.entity';
 import { CourseEnrollmentRepository } from 'src/lms-progress/repositories/course-enrollment.repository';
 import { CourseRepository } from 'src/lms/repositories/lms.repository';
@@ -15,6 +15,14 @@ export class CourseEnrollmentService {
       id: courseId,
     });
 
+    const existingEnrollment = await this.courseEnrollmentRepository.findOneBy({
+      profileId: profile.id,
+    });
+
+    if (existingEnrollment) {
+      throw new EnrollmentExistsError();
+    }
+
     const courseEnrollment =
       await this.courseEnrollmentRepository.enrollToCourse(
         profile.id,
@@ -22,5 +30,11 @@ export class CourseEnrollmentService {
       );
 
     return courseEnrollment;
+  }
+}
+
+export class EnrollmentExistsError extends BadRequestException {
+  constructor() {
+    super({ code: 'enrollment_exists', message: 'Enrollment already exists' });
   }
 }
