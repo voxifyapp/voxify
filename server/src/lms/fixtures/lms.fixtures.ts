@@ -35,7 +35,10 @@ export const unitFactory = Factory.define<Unit>(
       return unitRepo.save(
         {
           ...omit(unit, ['lessons']),
-          course: unit.course || (await courseFactory.create()),
+          course:
+            unit.course === undefined
+              ? await courseFactory.create()
+              : unit.course,
         },
         { reload: true },
       );
@@ -45,7 +48,7 @@ export const unitFactory = Factory.define<Unit>(
       ...baseFactory.build(params),
       title: faker.lorem.sentence(5),
       order: sequence,
-      course: courseFactory.build(),
+      course: undefined,
       lessons: [],
     };
   },
@@ -57,8 +60,11 @@ export const lessonFactory = Factory.define<Lesson>(
       const unitRepo = await getRepository(Lesson);
       return unitRepo.save(
         {
-          ...lesson,
-          unit: lesson.unit || (await unitFactory.create()),
+          ...omit(lesson, ['activities']),
+          unit:
+            lesson.unit === undefined
+              ? await unitFactory.create()
+              : lesson.unit,
         },
         { reload: true },
       );
@@ -68,32 +74,33 @@ export const lessonFactory = Factory.define<Lesson>(
       ...baseFactory.build(params),
       title: faker.lorem.sentence(5),
       order: sequence,
-      unit: unitFactory.build(),
+      unit: undefined,
       activities: [],
     };
   },
 );
 
 export const activityFactory = Factory.define<Activity>(
-  ({ params, sequence, associations }) => {
-    //   onCreate(async (profile) => {
-    //     const profileRepo = await getRepository(Profile);
-    //     return profileRepo.save(
-    //       {
-    //         ...profile,
-    //         userId: profile.userId
-    //           ? profile.userId
-    //           : (await firebaseUserFactory.create()).uid,
-    //       },
-    //       { reload: true },
-    //     );
-    //   });
+  ({ params, sequence, onCreate }) => {
+    onCreate(async (activity) => {
+      const activityRepo = await getRepository(Activity);
+      return activityRepo.save(
+        {
+          ...omit(activity, ['activities']),
+          lesson:
+            activity.lesson === undefined
+              ? await lessonFactory.create()
+              : activity.lesson,
+        },
+        { reload: true },
+      );
+    });
 
     return {
       ...baseFactory.build(params),
       title: faker.lorem.sentence(5),
       order: sequence,
-      lesson: associations.lesson || lessonFactory.build(),
+      lesson: undefined,
       data: {},
       type: ActivityType.FILL_IN_THE_BLANKS,
     };

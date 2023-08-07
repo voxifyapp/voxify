@@ -1,6 +1,7 @@
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { Course } from 'src/lms/entities/course.entity';
 import {
+  activityFactory,
   courseFactory,
   lessonFactory,
   unitFactory,
@@ -58,12 +59,11 @@ describe('/lms', () => {
   describe('/course/:courseId/units (GET)', () => {
     it('returns a list of units for a course', async () => {
       const profile = await profileFactory.create();
-      const course = await courseFactory.create();
-      const units = await unitFactory.createList(2, { course });
+      const units = await unitFactory.createList(2);
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(
-          `/lms/courses/${course.id}/units`,
+          `/lms/courses/${units[0].course.id}/units`,
         ),
         { uid: profile.userId },
       );
@@ -75,9 +75,7 @@ describe('/lms', () => {
   describe('/lesson/:lessonId (GET)', () => {
     it('returns a lesson by id', async () => {
       const profile = await profileFactory.create();
-      const course = await courseFactory.create();
-      const unit = await unitFactory.create({ course });
-      const lesson = await lessonFactory.create({ unit });
+      const lesson = await lessonFactory.create();
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(`/lms/lesson/${lesson.id}`),
@@ -85,6 +83,22 @@ describe('/lms', () => {
       );
 
       expect(res.body.id).toEqual(lesson.id);
+    });
+  });
+
+  describe('/lesson/:lessonId/activities (GET)', () => {
+    it('returns a list of activities for a lesson', async () => {
+      const profile = await profileFactory.create();
+      const activities = await activityFactory.createList(2);
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          `/lms/lesson/${activities[0].lesson.id}/activities`,
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.length).toEqual(activities.length);
     });
   });
 });
