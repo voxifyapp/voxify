@@ -1,5 +1,5 @@
 {
-  "name": "VoxifyApp",
+  "name": "app",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -20,6 +20,7 @@
     "@tamagui/config": "^1.39.1",
     "@tamagui/react-native-media-driver": "^1.39.3",
     "add": "^2.0.6",
+    "axios": "^1.4.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "expo": ">=49.0.0-0 <50.0.0",
     "expo-secure-store": "~12.3.1",
