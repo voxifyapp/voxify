@@ -1,33 +1,36 @@
-import { Activity } from "./activity";
+import { Activity } from './activity';
 
 export interface VideoActivityData {
-    videoUrl: string;
+  videoUrl: string;
 }
 
 export interface VideoActivityAnswer {
-    completionTime?: number;
+  completionTime?: number;
 }
 
-export const ACTIVITY_TYPE_VIDEO = "VIDEO";
-export class VideoActivity extends Activity<VideoActivityData, VideoActivityAnswer> {
-    constructor(data?: VideoActivityData) {
-        super(ACTIVITY_TYPE_VIDEO, data || {videoUrl: ""});
-    }
+export const ACTIVITY_TYPE_VIDEO = 'VIDEO';
+export class VideoActivity extends Activity<
+  VideoActivityData,
+  VideoActivityAnswer
+> {
+  constructor(data?: VideoActivityData) {
+    super(ACTIVITY_TYPE_VIDEO, data || { videoUrl: '' });
+  }
 
-    static fromExisting(data: VideoActivityData): VideoActivity {
-        const activity = new VideoActivity(data);
-        return activity;
-    }
+  static fromExisting(data: VideoActivityData): VideoActivity {
+    const activity = new VideoActivity(data);
+    return activity;
+  }
 
-    public setVideoUrl(url: string): void {
-        this.setData({...this.getData(), videoUrl: url});
-    }
+  public setVideoUrl(url: string): void {
+    this.setData({ ...this.getData(), videoUrl: url });
+  }
 
-    public getVideoUrl(): string {
-        return this.getData().videoUrl;
-    }
+  public getVideoUrl(): string {
+    return this.getData().videoUrl;
+  }
 
-    checkAnswer(answer: VideoActivityAnswer): boolean {
-        return true;
-    }
+  checkAnswer(answer: VideoActivityAnswer) {
+    return [];
+  }
 }

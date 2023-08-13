@@ -1,29 +1,35 @@
-import { ACTIVITY_TYPE_VIDEO, VideoActivity } from "../video-activity";
+import { ACTIVITY_TYPE_VIDEO, VideoActivity } from '../video-activity';
 
 describe('VideoActivity', () => {
-    it('create an empty video activity', () => {
-        const activity = new VideoActivity();
-        expect(activity.getVideoUrl()).toEqual("");
-    })
+  it('create an empty video activity', () => {
+    const activity = new VideoActivity();
+    expect(activity.getVideoUrl()).toEqual('');
+  });
 
-    it('create a video activity from existing data', () => {
-        const activity = VideoActivity.fromExisting({videoUrl: "https://www.youtube.com/watch?v=1"});
-        expect(activity.getVideoUrl()).toEqual("https://www.youtube.com/watch?v=1");
-    })
+  it('create a video activity from existing data', () => {
+    const activity = VideoActivity.fromExisting({
+      videoUrl: 'https://www.youtube.com/watch?v=1',
+    });
+    expect(activity.getVideoUrl()).toEqual('https://www.youtube.com/watch?v=1');
+  });
 
-    it('set video url', () => {
-        const activity = new VideoActivity();
-        activity.setVideoUrl("https://www.youtube.com/watch?v=1");
-        expect(activity.getVideoUrl()).toEqual("https://www.youtube.com/watch?v=1");
-    })
+  it('set video url', () => {
+    const activity = new VideoActivity();
+    activity.setVideoUrl('https://www.youtube.com/watch?v=1');
+    expect(activity.getVideoUrl()).toEqual('https://www.youtube.com/watch?v=1');
+  });
 
-    it('get data should return VIDEO type', () => {
-        const activity = VideoActivity.fromExisting({videoUrl: "https://www.youtube.com/watch?v=1"});
-        expect(activity.getData().type).toEqual(ACTIVITY_TYPE_VIDEO);
-    })
+  it('get data should return VIDEO type', () => {
+    const activity = VideoActivity.fromExisting({
+      videoUrl: 'https://www.youtube.com/watch?v=1',
+    });
+    expect(activity.getData().type).toEqual(ACTIVITY_TYPE_VIDEO);
+  });
 
-    it('check answer always returns true', () => {
-        const activity = VideoActivity.fromExisting({videoUrl: "https://www.youtube.com/watch?v=1"});
-        expect(activity.checkAnswer({})).toEqual(true);
-    })
-})
+  it('check answer always returns empty errors', () => {
+    const activity = VideoActivity.fromExisting({
+      videoUrl: 'https://www.youtube.com/watch?v=1',
+    });
+    expect(activity.checkAnswer({})).toEqual([]);
+  });
+});

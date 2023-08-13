@@ -31,4 +31,22 @@ describe('FillInTheBlanksActivity', () => {
         expect(activity.getOptions()[0].id).toEqual(activity2.getOptions()[0].id);
         expect(activity.getAnswer()).toEqual(activity2.getAnswer());
     })
+
+    it('should be able to return wrong blanks', () => {
+        const activity = new FillInTheBlanksActivity();
+        activity.setQuestion(new TextBlock("This is a $$blank1$$ day"));
+        activity.setOptions([new TextBlock("Option 1"), new TextBlock("Option 2")]);
+        activity.setAnswer({blank1:activity.getOptions()[0].id});
+
+        expect(activity.checkAnswer({blank1:activity.getOptions()[1].id})).toEqual(["blank1"]);
+    })
+
+    it('should return empty array if correct', () => {
+        const activity = new FillInTheBlanksActivity();
+        activity.setQuestion(new TextBlock("This is a $$blank1$$ day"));
+        activity.setOptions([new TextBlock("Option 1"), new TextBlock("Option 2")]);
+        activity.setAnswer({blank1:activity.getOptions()[0].id});
+
+        expect(activity.checkAnswer({blank1:activity.getOptions()[0].id})).toEqual([]);
+    })
 })

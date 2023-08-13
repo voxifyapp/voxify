@@ -18,5 +18,8 @@ export abstract class Activity<T, U> {
         this.data = data;
     }
 
-    abstract checkAnswer(answer: U): boolean;
+    /**
+     * Return empty array if there are no errors, otherwise return an array of errors
+     */
+    abstract checkAnswer(answer: U): string[];
 }
