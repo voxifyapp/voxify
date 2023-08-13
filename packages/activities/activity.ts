@@ -1,0 +1,22 @@
+export abstract class Activity<T> {
+    private data: T;
+    private type: string;
+
+    constructor(type: string, data: T) {
+        this.type = type;
+        this.data = data
+    }
+
+    /**
+     * Returns the JSON representation of the activity. Save this to the database
+     */
+    public getData(): T & {type: string} {
+        return {...this.data, type: this.type};
+    }
+
+    public setData(data: T): void {
+        this.data = data;
+    }
+
+    abstract checkAnswer(answer: object): boolean;
+}
