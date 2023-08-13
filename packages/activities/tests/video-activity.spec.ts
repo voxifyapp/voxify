@@ -21,4 +21,9 @@ describe('VideoActivity', () => {
         const activity = VideoActivity.fromExisting({videoUrl: "https://www.youtube.com/watch?v=1"});
         expect(activity.getData().type).toEqual(VIDEO);
     })
+
+    it('check answer always returns true', () => {
+        const activity = VideoActivity.fromExisting({videoUrl: "https://www.youtube.com/watch?v=1"});
+        expect(activity.checkAnswer({})).toEqual(true);
+    })
 })

@@ -4,8 +4,12 @@ export interface VideoActivityData {
     videoUrl: string;
 }
 
+export interface VideoActivityAnswer {
+    completionTime?: number;
+}
+
 export const VIDEO = "VIDEO";
-export class VideoActivity extends Activity<VideoActivityData> {
+export class VideoActivity extends Activity<VideoActivityData, VideoActivityAnswer> {
     constructor(data?: VideoActivityData) {
         super(VIDEO, data || {videoUrl: ""});
     }
@@ -23,7 +27,7 @@ export class VideoActivity extends Activity<VideoActivityData> {
         return this.getData().videoUrl;
     }
 
-    checkAnswer(answer: object): boolean {
-        return false
+    checkAnswer(answer: VideoActivityAnswer): boolean {
+        return true;
     }
 }

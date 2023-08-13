@@ -1,4 +1,4 @@
-export abstract class Activity<T> {
+export abstract class Activity<T, U> {
     private data: T;
     private type: string;
 
@@ -18,5 +18,5 @@ export abstract class Activity<T> {
         this.data = data;
     }
 
-    abstract checkAnswer(answer: object): boolean;
+    abstract checkAnswer(answer: U): boolean;
 }
