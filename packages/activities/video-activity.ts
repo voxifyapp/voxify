@@ -8,10 +8,10 @@ export interface VideoActivityAnswer {
     completionTime?: number;
 }
 
-export const VIDEO = "VIDEO";
+export const ACTIVITY_TYPE_VIDEO = "VIDEO";
 export class VideoActivity extends Activity<VideoActivityData, VideoActivityAnswer> {
     constructor(data?: VideoActivityData) {
-        super(VIDEO, data || {videoUrl: ""});
+        super(ACTIVITY_TYPE_VIDEO, data || {videoUrl: ""});
     }
 
     static fromExisting(data: VideoActivityData): VideoActivity {

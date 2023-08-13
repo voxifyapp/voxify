@@ -1,4 +1,4 @@
-import { VIDEO, VideoActivity } from "../video-activity";
+import { ACTIVITY_TYPE_VIDEO, VideoActivity } from "../video-activity";
 
 describe('VideoActivity', () => {
     it('create an empty video activity', () => {
@@ -19,7 +19,7 @@ describe('VideoActivity', () => {
 
     it('get data should return VIDEO type', () => {
         const activity = VideoActivity.fromExisting({videoUrl: "https://www.youtube.com/watch?v=1"});
-        expect(activity.getData().type).toEqual(VIDEO);
+        expect(activity.getData().type).toEqual(ACTIVITY_TYPE_VIDEO);
     })
 
     it('check answer always returns true', () => {
