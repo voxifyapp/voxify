@@ -4,10 +4,10 @@ import { TextBlock } from './blocks/text-block';
 export interface FillInTheBlanksActivityData {
   question: TextBlock;
   options: TextBlock[];
-  answer: Record<string, number>;
+  answer: Record<string, string>;
 }
 
-export type FillInTheBlanksActivityAnswer = Record<string, number>;
+export type FillInTheBlanksActivityAnswer = Record<string, string>;
 
 export const ACTIVITY_TYPE_FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS';
 
@@ -42,7 +42,7 @@ export class FillInTheBlanksActivity extends Activity<
     return this.getData().answer;
   }
 
-  setAnswer(answer: Record<string, number>): void {
+  setAnswer(answer: Record<string, string>): void {
     this.setData({ ...this.getData(), answer });
   }
 
