@@ -1,5 +1,6 @@
 import typeormConfig from 'src/typeorm.config';
 import { getTypeormConfig } from 'test/utils/typeorm';
+import { Not, IsNull } from 'typeorm';
 
 global.beforeAll(async () => {
   const connection = await typeormConfig.initialize();
@@ -13,6 +14,8 @@ global.afterEach(async () => {
 
   for (const entity of entities) {
     const repository = (await getTypeormConfig()).getRepository(entity.name); // Get repository
-    await repository.clear(); // Clear each entity table's content
+    await repository.delete({
+      id: Not(IsNull()),
+    }); // Clear each entity table's content
   }
 });

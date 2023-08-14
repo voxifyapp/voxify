@@ -1,1 +1,0 @@
-# TODO Add this firebase emulators:start --only auth --project 44840556270

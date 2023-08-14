@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { datasourceConfig } from 'src/typeorm.config';
+import { LmsModule } from './lms/lms.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { datasourceConfig } from 'src/typeorm.config';
       ...datasourceConfig,
     }),
     AuthModule,
+    LmsModule,
   ],
   providers: [
     {

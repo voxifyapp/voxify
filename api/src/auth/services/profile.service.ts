@@ -32,7 +32,7 @@ export class ProfileService {
   /**
    * Add days to subscription if there is no current subscription
    */
-  async addDaysToSubscription(profileId: number, daysToAdd: number) {
+  async addDaysToSubscription(profileId: string, daysToAdd: number) {
     const profile = await this.profileRepository.findOneBy({ id: profileId });
 
     if (!profile) throw new NotFoundException({ profileId });
@@ -49,7 +49,7 @@ export class ProfileService {
    * Set proficiency level if not already set
    */
   async setProficiencyLevel(
-    profileId: number,
+    profileId: string,
     proficiencyLevel: ProficiencyLevel,
   ) {
     const profile = await this.profileRepository.findOneBy({ id: profileId });
