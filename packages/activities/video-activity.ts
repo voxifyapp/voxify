@@ -17,11 +17,6 @@ export class VideoActivity extends Activity<
     super(ACTIVITY_TYPE_VIDEO, data || { videoUrl: '' });
   }
 
-  static fromExisting(data: VideoActivityData): VideoActivity {
-    const activity = new VideoActivity(data);
-    return activity;
-  }
-
   public setVideoUrl(url: string): void {
     this.setData({ ...this.getData(), videoUrl: url });
   }
@@ -30,7 +25,7 @@ export class VideoActivity extends Activity<
     return this.getData().videoUrl;
   }
 
-  checkAnswer(answer: VideoActivityAnswer) {
+  checkAnswer() {
     return [];
   }
 }
