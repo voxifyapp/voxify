@@ -16,8 +16,9 @@ describe('FillInTheBlanksActivity', () => {
     activity.setAnswer({ blank1: activity.getOptions()[0].id });
     expect(activity.getQuestion().text).toEqual('This i a $$blank1$$ day');
     expect(activity.getOptions().length).toEqual(2);
+    console.log(activity.getAnswer());
     expect(activity.getAnswer()).toEqual({
-      [activity.getOptions()[0].id]: 'Option 1',
+      blank1: activity.getOptions()[0].id,
     });
   });
 

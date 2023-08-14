@@ -18,7 +18,15 @@ export class FillInTheBlanksActivity extends Activity<
   constructor(data?: FillInTheBlanksActivityData) {
     super(
       ACTIVITY_TYPE_FILL_IN_THE_BLANKS,
-      data || { question: new TextBlock(''), options: [], answer: {} },
+      data
+        ? {
+            ...data,
+            question: new TextBlock(data.question.text, data.question),
+            options: data.options.map(
+              (option) => new TextBlock(option.text, option),
+            ),
+          }
+        : { question: new TextBlock(''), options: [], answer: {} },
     );
   }
 

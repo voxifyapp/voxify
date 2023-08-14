@@ -21,7 +21,13 @@ export class MultipleChoiceActivity extends Activity<
   constructor(data?: MultipleChoiceActivityData) {
     super(
       ACTIVITY_TYPE_MULTIPLE_CHOICE,
-      data || { question: new TextBlock(''), options: [], answer: [] },
+      data
+        ? {
+            ...data,
+            question: new TextBlock(data.question.text, data.question),
+            options: data.options.map((o) => new TextBlock(o.text, o)),
+          }
+        : { question: new TextBlock(''), options: [], answer: [] },
     );
   }
 
