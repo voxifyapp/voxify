@@ -20,6 +20,12 @@ import { LmsController } from './lms.controller';
     LessonRepository,
     ActivityRepository,
   ],
+  exports: [
+    CourseRepository,
+    UnitRepository,
+    LessonRepository,
+    ActivityRepository,
+  ],
   controllers: [LmsController],
 })
 export class LmsModule {}

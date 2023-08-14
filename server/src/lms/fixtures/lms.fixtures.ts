@@ -86,7 +86,7 @@ export const activityFactory = Factory.define<Activity>(
       const activityRepo = await getRepository(Activity);
       return activityRepo.save(
         {
-          ...omit(activity, ['activities']),
+          ...omit(activity, []),
           lesson:
             activity.lesson === undefined
               ? await lessonFactory.create()

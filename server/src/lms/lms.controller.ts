@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
+import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import { LmsService } from 'src/lms/services/lms.service';
 
 @Controller('lms')
@@ -8,6 +9,13 @@ export class LmsController {
   @Get('courses')
   async getCourses() {
     return await this.lmsService.getCourses();
+  }
+
+  @Get('courses/current-course-for-profile')
+  async getCurrentCourseForProfile(
+    @Req() req: AuthenticatedRequestWithProfile,
+  ) {
+    return await this.lmsService.getCourseForProfile(req.currentProfile);
   }
 
   @Get('courses/:courseId')
@@ -30,5 +38,10 @@ export class LmsController {
   @Get('lesson/:lessonId/activities')
   async getActivitiesForLesson(lessonId: string) {
     return await this.lmsService.getActivitiesForLesson(lessonId);
+  }
+
+  @Get('activities/:activityId')
+  async getActivityById(activityId: string) {
+    return await this.lmsService.getActivityById(activityId);
   }
 }

@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { mockRepository } from 'src/common/mocks/mockedRepository';
 import {
   activityFactory,
@@ -140,6 +142,42 @@ describe('LmsService', () => {
         lessonId,
       );
       expect(result).toEqual(activities);
+    });
+  });
+
+  describe('getActivityById', () => {
+    it('should return a activity with the given ID', async () => {
+      const activityId = '123';
+      const activity = activityFactory.build({ id: activityId });
+
+      activityRepo.findOneBy = jest.fn().mockResolvedValueOnce({ ...activity });
+
+      const result = await service.getActivityById(activityId);
+
+      expect(activityRepo.findOneBy).toHaveBeenCalledWith({ id: activityId });
+      expect(result).toEqual(activity);
+    });
+  });
+
+  describe('getCourseForProfile', () => {
+    it('should return a course for a profile', async () => {
+      const profile = profileFactory.build({
+        proficiencyLevel: ProficiencyLevel.ADVANCED,
+      });
+      const course = courseFactory.build({
+        proficiencyLevel: profile.proficiencyLevel,
+      });
+
+      courseRepo.findOneByOrFail = jest
+        .fn()
+        .mockResolvedValueOnce({ ...course });
+
+      const result = await service.getCourseForProfile(profile);
+
+      expect(courseRepo.findOneByOrFail).toHaveBeenCalledWith({
+        proficiencyLevel: profile.proficiencyLevel,
+      });
+      expect(result).toEqual(course);
     });
   });
 });
