@@ -29,3 +29,6 @@ jobs:
 
       - name: Run linters on App
         run: cd app && yarn install && npm run lint
+
+      - name: Run linters on activities
+        run: cd packages/activities && yarn install && npm run lint

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.ts\" --fix",
+    "test": "jest"
+  },
   "devDependencies": {
     "typescript": "^5.1.3",
     "@types/jest": "^29.5.3",
