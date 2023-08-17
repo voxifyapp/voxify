@@ -6,9 +6,10 @@ import {
   ProfileCompletionStep,
   useGetCurrentProfileStep,
 } from '@voxify/hooks/profile';
-import { HomeScreen } from '@voxify/modules/auth/screens/HomeScreen';
 import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
 import { ProfileSetup } from '@voxify/modules/auth/screens/ProfileSetup/ProfileSetup';
+import { HomeScreen } from '@voxify/modules/main/screens/HomeScreen';
+import { LessonScreen } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
 import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
@@ -39,7 +40,10 @@ export const Routes = () => {
           {currentProfileStep !== ProfileCompletionStep.COMPLETE ? (
             <AuthStack.Screen name="Profile Setup" component={ProfileSetup} />
           ) : (
-            <AuthStack.Screen name="Home" component={HomeScreen} />
+            <>
+              <AuthStack.Screen name="Lesson" component={LessonScreen} />
+              <AuthStack.Screen name="Home" component={HomeScreen} />
+            </>
           )}
         </AppStack.Navigator>
       ) : (

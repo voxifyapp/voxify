@@ -41,7 +41,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const { data: profileData } = useQuery({
+  const { data: profileData, isLoading: profileDataLoading } = useQuery({
     queryKey: FETCH_OR_CREATE_PROFILE_QUERY,
     queryFn: fetchOrCreateProfile,
     enabled: !!user,
@@ -49,7 +49,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     user,
-    loading: firebaseUserLoading || !profileData,
+    loading: firebaseUserLoading || profileDataLoading,
     profile: profileData,
   };
 
