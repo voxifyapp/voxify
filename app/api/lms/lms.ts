@@ -1,5 +1,5 @@
 import { authAxios } from '@voxify/axiosClient';
-import { LessonEntity } from '@voxify/types/lms/lms';
+import { ActivityEntity, LessonEntity } from '@voxify/types/lms/lms';
 
 export const GET_LESSON = 'GET_LESSON_WITH_ACTIVITIES';
 export const getLesson = async (lessonId: string): Promise<LessonEntity> => {
@@ -7,6 +7,8 @@ export const getLesson = async (lessonId: string): Promise<LessonEntity> => {
 };
 
 export const GET_LESSON_ACTIVITIES = 'GET_LESSON_ACTIVITIES';
-export const getLessonActivities = async (lessonId: string) => {
+export const getLessonActivities = async (
+  lessonId: string,
+): Promise<ActivityEntity[]> => {
   return (await authAxios.get(`/lms/lesson/${lessonId}/activities`)).data;
 };
