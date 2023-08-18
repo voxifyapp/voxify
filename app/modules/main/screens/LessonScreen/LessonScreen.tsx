@@ -6,7 +6,6 @@ import {
 } from '@voxify/api/lms/lms';
 import { Activity } from '@voxify/modules/main/screens/LessonScreen/components/Activity';
 import React from 'react';
-import { Button } from 'react-native';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
 

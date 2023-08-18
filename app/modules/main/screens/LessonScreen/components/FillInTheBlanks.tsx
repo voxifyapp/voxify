@@ -78,14 +78,16 @@ const SegmentRenderer = ({
   >;
 }) => {
   if (segment.match(FillInTheBlanksActivity.BLANK_FORMAT)) {
-    const optionIdForBlank = activity.getAnswer()[segment];
-    const answerForBlank = activity
-      .getOptions()
-      .find(option => option.id === optionIdForBlank)?.text;
     if (userAnswer[segment]) {
+      const optionIdForBlank = userAnswer[segment];
+      const answerForBlank = activity
+        .getOptions()
+        .find(option => option.id === optionIdForBlank)?.text;
       return (
         <Button
-          onPress={() => setUserAnswer(prev => omit(prev, [segment]))}
+          onPress={() => {
+            setUserAnswer(prev => omit(prev, [segment]));
+          }}
           theme="green">
           {answerForBlank}
         </Button>

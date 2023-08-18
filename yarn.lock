@@ -2616,7 +2616,7 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
-"@react-native-firebase/app@^18.1.0":
+"@react-native-firebase/app@18.3.0":
   version "18.3.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.3.0.tgz#8e19eb3f9e6d9596c1d0d904bca3a2effafe9d4f"
   integrity sha512-4sJf5mM551Y6E8D1hQufAU/PNEecJEaJbF4Me0JyclI2RXUHlTxJUpAsB/gxPY74LY99FaogFsDEB+3BuZ2B9w==
@@ -2624,7 +2624,7 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/auth@^18.1.0":
+"@react-native-firebase/auth@18.3.0":
   version "18.3.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-18.3.0.tgz#25eca6e2f98ccd3d030fe0c4bf6ab734a26c1f1f"
   integrity sha512-2Z33pG+41RvYX6NxQfRhle+wAfhDKYStSANMVT4NMQKKhgmxryH0CXcfHA0RvfQysdrmBVX2td7l6hXriYL70A==
