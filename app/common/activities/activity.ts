@@ -19,6 +19,11 @@ export abstract class Activity<T, U> {
   }
 
   /**
+   * Does all the necessary validation and builds the activity to a serializable format.
+   */
+  abstract build(): T & { type: string };
+
+  /**
    * Return empty array if there are no errors, otherwise return an array of errors
    */
   abstract checkAnswer(answer: U): string[];

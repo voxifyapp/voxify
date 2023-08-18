@@ -7,6 +7,9 @@ export interface FillInTheBlanksActivityData {
   answer: Record<string, string>;
 }
 
+/**
+ * The answer is a map of blank name to the option id
+ */
 export type FillInTheBlanksActivityAnswer = Record<string, string>;
 
 export const ACTIVITY_TYPE_FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS';
@@ -23,13 +26,20 @@ export class FillInTheBlanksActivity extends Activity<
             ...data,
             question: new TextBlock(data.question.text, data.question),
             options: data.options.map(
-              (option) => new TextBlock(option.text, option),
+              option => new TextBlock(option.text, option),
             ),
           }
         : { question: new TextBlock(''), options: [], answer: {} },
     );
   }
 
+  static blank(name: string) {
+    return `$$${name}$$`;
+  }
+
+  /**
+   * Make sure to include the blanks using the blank() function
+   */
   setQuestion(question: TextBlock): void {
     this.setData({ ...this.getData(), question });
   }
@@ -67,5 +77,9 @@ export class FillInTheBlanksActivity extends Activity<
     }
 
     return errors;
+  }
+
+  build() {
+    return this.getData();
   }
 }
