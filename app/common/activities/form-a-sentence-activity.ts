@@ -65,4 +65,8 @@ export class FormASentenceActivity extends Activity<
     }
     return [];
   }
+
+  build(): FormASentenceActivityData & { type: string } {
+    return this.getData();
+  }
 }

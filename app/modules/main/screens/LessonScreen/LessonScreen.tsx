@@ -29,7 +29,7 @@ export const LessonScreen = () => {
   return (
     <View>
       <H1>{lessonData!.title}</H1>
-      <Activity activity={lessonActivities![0]} />
+      <Activity activity={lessonActivities![1]} />
     </View>
   );
 };
