@@ -6,12 +6,13 @@ import {
 } from '@voxify/api/lms/lms';
 import { Activity } from '@voxify/modules/main/screens/LessonScreen/components/Activity';
 import React from 'react';
+import { Button } from 'react-native';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
 
 export const LessonScreen = () => {
   const lessonId = 'fdfb262e-cf99-4c31-84ed-574bb3f53241';
-  const { isLoading: isLessonLoading } = useQuery({
+  const { data: lessonData, isLoading: isLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
   });
@@ -28,7 +29,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <H1>Lesson Screen 2</H1>
+      <H1>{lessonData!.title}</H1>
       <Activity activity={lessonActivities![0]} />
     </View>
   );

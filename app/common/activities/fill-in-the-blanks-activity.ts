@@ -33,6 +33,7 @@ export class FillInTheBlanksActivity extends Activity<
     );
   }
 
+  static BLANK_FORMAT = /\$\$[a-zA-Z0-9_]+\$\$/g;
   static blank(name: string) {
     return `$$${name}$$`;
   }
