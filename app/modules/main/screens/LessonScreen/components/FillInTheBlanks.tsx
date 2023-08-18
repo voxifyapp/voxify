@@ -18,7 +18,10 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   const options = activity.getOptions();
 
   // question segments is question split by the blanks with format $$blank$$
-  const questionSegments = question.split(' ');
+  // TODO May cause problem if blank is immediately surrounded by an punctuation, fix
+  const questionSegments = question.split(FillInTheBlanksActivity.BLANK_FORMAT);
+
+  console.log(questionSegments);
 
   const blanks = questionSegments.filter(segment =>
     segment.match(FillInTheBlanksActivity.BLANK_FORMAT),
