@@ -1,7 +1,9 @@
 import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
+import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
 import { FillInTheBlanks } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
+import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import React from 'react';
 import { H1 } from 'tamagui';
@@ -23,6 +25,14 @@ export const Activity = ({ activity }: Props) => {
     return (
       <FormASentence
         activity={new FormASentenceActivity(activity.data as any)}
+      />
+    );
+  }
+
+  if (activity.type === ActivityType.MULTIPLE_CHOICE) {
+    return (
+      <MultipleChoice
+        activity={new MultipleChoiceActivity(activity.data as any)}
       />
     );
   }

@@ -10,7 +10,7 @@ export interface MultipleChoiceActivityData {
   answer: string[];
 }
 
-export type MultipleChoiceActivityAnswer = string[];
+export type MultipleChoiceActivityAnswer = { answer: string[] };
 
 export const ACTIVITY_TYPE_MULTIPLE_CHOICE = 'MULTIPLE_CHOICE';
 
@@ -25,7 +25,7 @@ export class MultipleChoiceActivity extends Activity<
         ? {
             ...data,
             question: new TextBlock(data.question.text, data.question),
-            options: data.options.map((o) => new TextBlock(o.text, o)),
+            options: data.options.map(o => new TextBlock(o.text, o)),
           }
         : { question: new TextBlock(''), options: [], answer: [] },
     );
@@ -61,12 +61,16 @@ export class MultipleChoiceActivity extends Activity<
   checkAnswer(answer: MultipleChoiceActivityAnswer) {
     const answerBank = this.getAnswer();
     const errors = [];
-    for (const selectedOption of answer) {
+    for (const selectedOption of answer.answer) {
       if (answerBank.indexOf(selectedOption) === -1) {
         errors.push(selectedOption);
       }
     }
 
     return errors;
+  }
+
+  build() {
+    return this.getData();
   }
 }

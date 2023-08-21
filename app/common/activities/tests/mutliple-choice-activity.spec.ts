@@ -38,9 +38,9 @@ describe('MultipleChoiceActivity', () => {
     activity.setOptions([new TextBlock('Option 1'), new TextBlock('Option 2')]);
     activity.setAnswer([activity.getOptions()[0].id]);
 
-    expect(activity.checkAnswer([activity.getOptions()[1].id])).toEqual([
-      activity.getOptions()[1].id,
-    ]);
+    expect(
+      activity.checkAnswer({ answer: [activity.getOptions()[1].id] }),
+    ).toEqual([activity.getOptions()[1].id]);
   });
 
   it('should return empty array if correct', () => {
@@ -48,6 +48,8 @@ describe('MultipleChoiceActivity', () => {
     activity.setOptions([new TextBlock('Option 1'), new TextBlock('Option 2')]);
     activity.setAnswer([activity.getOptions()[0].id]);
 
-    expect(activity.checkAnswer([activity.getOptions()[0].id])).toEqual([]);
+    expect(
+      activity.checkAnswer({ answer: [activity.getOptions()[0].id] }),
+    ).toEqual([]);
   });
 });

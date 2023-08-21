@@ -21,8 +21,6 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   // TODO May cause problem if blank is immediately surrounded by an punctuation, fix
   const questionSegments = question.split(FillInTheBlanksActivity.BLANK_FORMAT);
 
-  console.log(questionSegments);
-
   const blanks = questionSegments.filter(segment =>
     segment.match(FillInTheBlanksActivity.BLANK_FORMAT),
   );
