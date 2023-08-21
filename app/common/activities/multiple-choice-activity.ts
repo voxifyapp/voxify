@@ -51,6 +51,10 @@ export class MultipleChoiceActivity extends Activity<
     return this.getData().answer;
   }
 
+  getIsMultipleAnswer() {
+    return this.getAnswer().length > 1;
+  }
+
   setAnswer(answer: string[]): void {
     this.setData({ ...this.getData(), answer });
   }

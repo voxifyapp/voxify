@@ -14,8 +14,6 @@ export const MultipleChoice = ({ activity }: Props) => {
     answer: [],
   });
 
-  console.log(userAnswer);
-
   return (
     <YStack>
       <H3>{activity.getQuestion().text}</H3>
@@ -29,6 +27,9 @@ export const MultipleChoice = ({ activity }: Props) => {
             onPress={() => {
               // set answer, if option.id already exists remove it. Or else add it
               setUserAnswer(prev => {
+                if (!activity.getIsMultipleAnswer()) {
+                  return { answer: [option.id] };
+                }
                 const newAnswer = [...prev.answer];
                 if (newAnswer.includes(option.id)) {
                   newAnswer.splice(newAnswer.indexOf(option.id), 1);
