@@ -45,7 +45,7 @@ export const FormASentence = ({ activity }: Props) => {
           </Button>
         ))}
       </XStack>
-      <XStack flexWrap="wrap" space="$3" spaceDirection="both" marginTop="$6">
+      <XStack flexWrap="wrap" space="$3" marginTop="$6">
         {remainingWords.map((word, index) => (
           <Button
             key={index}
