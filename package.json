@@ -3,7 +3,8 @@
   "workspaces": {
     "packages": [
       "app",
-      "api"
+      "api",
+      "packages/*"
     ],
     "nohoist": [
       "app/**"

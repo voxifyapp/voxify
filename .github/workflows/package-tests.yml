@@ -1,4 +1,4 @@
-name: Server Tests
+name: Package Tests
 
 on:
   # Trigger the workflow on push or pull request,
@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  run-tests:
+  run-unit-tests:
     name: Run tests
     runs-on: ubuntu-latest
 
@@ -25,16 +25,9 @@ jobs:
           node-version: 18
 
       - name: Install deps
-        working-directory: ./api
+        working-directory: ./packages/activities
         run: yarn install
 
       - name: Run unit tests
-        working-directory: ./api
+        working-directory: ./packages/activities
         run: npm run test
-
-      - name: Install firebase tools
-        run: npm install -g firebase-tools
-
-      - name: Run integration tests
-        working-directory: ./api
-        run: npm run test:integration
