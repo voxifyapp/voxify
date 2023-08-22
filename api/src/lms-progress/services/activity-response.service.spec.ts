@@ -3,8 +3,9 @@ import { ActivityResponseService } from './activity-response.service';
 import { ActivityResponseRepository } from 'src/lms-progress/repositories/activity-response.repository';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
+import { mockRepository } from 'src/common/mocks/mockedRepository';
 
-describe('ActivityResponseServiceService', () => {
+describe('ActivityResponseService', () => {
   let service: ActivityResponseService;
   let repository: ActivityResponseRepository;
 
@@ -12,12 +13,7 @@ describe('ActivityResponseServiceService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ActivityResponseService,
-        {
-          provide: ActivityResponseRepository,
-          useValue: {
-            create: jest.fn(),
-          },
-        },
+        mockRepository(ActivityResponseRepository),
       ],
     }).compile();
 
