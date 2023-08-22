@@ -23,11 +23,6 @@
     "typeorm:migrations:run": "npm run typeorm -- migration:run",
     "typeorm:migrations:revert": "npm run typeorm -- migration:revert"
   },
-  "workspaces": {
-    "nohoist": [
-      "typeorm"
-    ]
-  },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
