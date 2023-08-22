@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ActivityResponseServiceService } from './activity-response-service.service';
+import { ActivityResponseService } from './activity-response.service';
 import { ActivityResponseRepository } from 'src/lms-progress/repositories/activity-response.repository';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
 
 describe('ActivityResponseServiceService', () => {
-  let service: ActivityResponseServiceService;
+  let service: ActivityResponseService;
   let repository: ActivityResponseRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ActivityResponseServiceService,
+        ActivityResponseService,
         {
           provide: ActivityResponseRepository,
           useValue: {
@@ -21,9 +21,7 @@ describe('ActivityResponseServiceService', () => {
       ],
     }).compile();
 
-    service = module.get<ActivityResponseServiceService>(
-      ActivityResponseServiceService,
-    );
+    service = module.get<ActivityResponseService>(ActivityResponseService);
     repository = module.get<ActivityResponseRepository>(
       ActivityResponseRepository,
     );
@@ -40,10 +38,7 @@ describe('ActivityResponseServiceService', () => {
 
     repository.create = jest.fn().mockResolvedValue({ ...data, id: 'arid' });
 
-    const activiyResponse = await service.createActivityResponse(
-      profileId,
-      data,
-    );
+    const activityResponse = await service.create(profileId, data);
 
     expect(repository.create).toHaveBeenCalledWith({
       activity: { id: data.activityId },
@@ -53,6 +48,6 @@ describe('ActivityResponseServiceService', () => {
       result: data.result,
     });
 
-    expect(activiyResponse.id).toEqual('arid');
+    expect(activityResponse.id).toEqual('arid');
   });
 });

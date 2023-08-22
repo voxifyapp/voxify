@@ -3,13 +3,10 @@ import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity
 import { ActivityResponseRepository } from 'src/lms-progress/repositories/activity-response.repository';
 
 @Injectable()
-export class ActivityResponseServiceService {
+export class ActivityResponseService {
   constructor(private activityResponseRepo: ActivityResponseRepository) {}
 
-  async createActivityResponse(
-    profileId: string,
-    data: CreateActivityResponseDto,
-  ) {
+  async create(profileId: string, data: CreateActivityResponseDto) {
     return await this.activityResponseRepo.create({
       activity: { id: data.activityId },
       profile: { id: profileId },
