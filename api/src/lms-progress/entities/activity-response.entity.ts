@@ -1,3 +1,4 @@
+import { Profile } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Activity } from 'src/lms/entities/activity.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
@@ -27,6 +28,11 @@ export class ActivityResponse extends BaseEntity {
     comment: 'Did the user pass or fail this activity?',
   })
   result: ResultType;
+
+  @ManyToOne(() => Profile, {
+    onDelete: 'CASCADE',
+  })
+  profile: Profile;
 
   @ManyToOne(() => Activity, {
     onDelete: 'CASCADE',
