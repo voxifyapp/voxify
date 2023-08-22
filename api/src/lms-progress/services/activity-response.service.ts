@@ -17,12 +17,15 @@ export class ActivityResponseService {
 
     if (!activity) throw new NotFoundException('Activity not found');
 
-    return await this.activityResponseRepo.create({
-      activity: { id: data.activityId },
-      profile: { id: profileId },
-      responseData: data.responseData,
-      timeTaken: data.timeTaken,
-      result: data.result,
-    });
+    return await this.activityResponseRepo.save(
+      {
+        activityId: activity.id,
+        profileId: profileId,
+        responseData: data.responseData,
+        timeTaken: data.timeTaken,
+        result: data.result,
+      },
+      { reload: true },
+    );
   }
 }

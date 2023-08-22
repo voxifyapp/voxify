@@ -40,17 +40,20 @@ describe('ActivityResponseService', () => {
       const activity = { id: data.activityId };
 
       activityRepo.findOne = jest.fn().mockResolvedValue(activity);
-      repository.create = jest.fn().mockResolvedValue({ ...data, id: 'arid' });
+      repository.save = jest.fn().mockResolvedValue({ ...data, id: 'arid' });
 
       const activityResponse = await service.create(profileId, data);
 
-      expect(repository.create).toHaveBeenCalledWith({
-        activity: { id: data.activityId },
-        profile: { id: profileId },
-        responseData: data.responseData,
-        timeTaken: data.timeTaken,
-        result: data.result,
-      });
+      expect(repository.save).toHaveBeenCalledWith(
+        {
+          activityId: data.activityId,
+          profileId: profileId,
+          responseData: data.responseData,
+          timeTaken: data.timeTaken,
+          result: data.result,
+        },
+        { reload: true },
+      );
 
       expect(activityRepo.findOne).toHaveBeenCalledWith({
         where: { id: data.activityId },

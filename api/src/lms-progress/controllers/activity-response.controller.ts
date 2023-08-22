@@ -3,7 +3,7 @@ import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ActivityResponseService } from 'src/lms-progress/services/activity-response.service';
 
-@Controller('activity-response')
+@Controller('lms-progress/activity-responses')
 export class ActivityResponseController {
   constructor(private activityResponseService: ActivityResponseService) {}
 

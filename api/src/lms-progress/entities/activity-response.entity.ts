@@ -33,9 +33,13 @@ export class ActivityResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   profile: Profile;
+  @Column()
+  profileId: string;
 
   @ManyToOne(() => Activity, {
     onDelete: 'CASCADE',
   })
   activity: Activity;
+  @Column()
+  activityId: string;
 }

@@ -25,6 +25,8 @@ export const activityResponseFactory = Factory.define<ActivityResponse>(
     return {
       ...baseFactory.build(params),
       activity: undefined,
+      activityId: undefined,
+      profileId: undefined,
       result: ResultType.SUCCESS,
       responseData: {},
       timeTaken: faker.number.float({ max: 100, min: 0 }),
