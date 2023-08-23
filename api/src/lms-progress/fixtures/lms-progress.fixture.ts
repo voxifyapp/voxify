@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Factory } from 'fishery';
+import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { baseFactory } from 'src/common/fixtures/base.fixture';
 import {
   ActivityResponse,
@@ -7,6 +8,8 @@ import {
 } from 'src/lms-progress/entities/activity-response.entity';
 import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
+import { unitFactory } from 'src/lms/fixtures/lms.fixtures';
+import { listenOnCreateForFixture } from 'test/utils/fixtures';
 
 export const activityResponseFactory = Factory.define<ActivityResponse>(
   ({ params }) => {
@@ -64,20 +67,15 @@ export const lessonResponseFactory = Factory.define<LessonResponse>(
 );
 
 export const unitResponseFactory = Factory.define<UnitResponse>(
-  ({ params }) => {
-    // onCreate(async (activity) => {
-    //   const activityRepo = await getRepository(Activity);
-    //   return activityRepo.save(
-    //     {
-    //       ...omit(activity, []),
-    //       lesson:
-    //         activity.lesson === undefined
-    //           ? await lessonFactory.create()
-    //           : activity.lesson,
-    //     },
-    //     { reload: true },
-    //   );
-    // });
+  ({ params, onCreate }) => {
+    listenOnCreateForFixture({
+      onCreate,
+      relationships: {
+        unitId: unitFactory,
+        profileId: profileFactory,
+      },
+      Schema: UnitResponse,
+    });
 
     return {
       ...baseFactory.build(params),
