@@ -28,4 +28,17 @@ export class ActivityResponseService {
       { reload: true },
     );
   }
+
+  async getActivityResponses(
+    profileId: string,
+    filters: { forActivityId?: string },
+  ) {
+    const activityResponses =
+      await this.activityResponseRepo.getActivityResponsesForProfile(
+        profileId,
+        filters,
+      );
+
+    return activityResponses;
+  }
 }

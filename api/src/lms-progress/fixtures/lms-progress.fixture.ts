@@ -8,24 +8,23 @@ import {
 } from 'src/lms-progress/entities/activity-response.entity';
 import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
-import { lessonFactory, unitFactory } from 'src/lms/fixtures/lms.fixtures';
+import {
+  activityFactory,
+  lessonFactory,
+  unitFactory,
+} from 'src/lms/fixtures/lms.fixtures';
 import { listenOnCreateForFixture } from 'test/utils/fixtures';
 
 export const activityResponseFactory = Factory.define<ActivityResponse>(
-  ({ params }) => {
-    // onCreate(async (activity) => {
-    //   const activityRepo = await getRepository(Activity);
-    //   return activityRepo.save(
-    //     {
-    //       ...omit(activity, []),
-    //       lesson:
-    //         activity.lesson === undefined
-    //           ? await lessonFactory.create()
-    //           : activity.lesson,
-    //     },
-    //     { reload: true },
-    //   );
-    // });
+  ({ params, onCreate }) => {
+    listenOnCreateForFixture({
+      onCreate,
+      relationships: {
+        activityId: activityFactory,
+        profileId: profileFactory,
+      },
+      Schema: ActivityResponse,
+    });
 
     return {
       ...baseFactory.build(params),

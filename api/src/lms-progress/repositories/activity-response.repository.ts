@@ -7,4 +7,18 @@ export class ActivityResponseRepository extends Repository<ActivityResponse> {
   constructor(private dataSource: DataSource) {
     super(ActivityResponse, dataSource.createEntityManager());
   }
+
+  async getActivityResponsesForProfile(
+    profileId: string,
+    filters: { forActivityId?: string } = {},
+  ) {
+    const activityResponses = await this.find({
+      where: {
+        profileId,
+        activityId: filters.forActivityId,
+      },
+    });
+
+    return activityResponses;
+  }
 }

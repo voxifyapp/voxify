@@ -4,9 +4,10 @@ import { loginAsFirebaseUser } from 'test/utils/firebase';
 import * as request from 'supertest';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
+import { activityResponseFactory } from 'src/lms-progress/fixtures/lms-progress.fixture';
 
 describe('/lms-progress', () => {
-  describe('/activity-response (POST)', () => {
+  describe('/activity-responses (POST)', () => {
     it('should create a new activity response', async () => {
       const profile = await profileFactory.create();
       const activity = await activityFactory.create();
@@ -29,6 +30,52 @@ describe('/lms-progress', () => {
 
       expect(res.body).not.toBeNull();
       expect(res.body.activityId).toBe(activity.id);
+    });
+  });
+
+  describe('/activity-responses (GET)', () => {
+    let profile;
+    let activityResponsesForProfile;
+
+    beforeEach(async () => {
+      profile = await profileFactory.create();
+
+      activityResponsesForProfile = await activityResponseFactory.createList(
+        3,
+        {
+          profileId: profile.id,
+        },
+      );
+
+      // For another profile
+      await activityResponseFactory.createList(3, {
+        activity: activityResponsesForProfile[0].activityId,
+      });
+    });
+
+    it('should return all activity responses for a profile', async () => {
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          '/lms-progress/activity-responses',
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res.body).not.toBeNull();
+      expect(res.body.length).toBe(activityResponsesForProfile.length);
+    });
+
+    it('should return all activity responses for a profile for a particular activity', async () => {
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .get('/lms-progress/activity-responses')
+          .query({
+            forActivityId: activityResponsesForProfile[0].activityId,
+          }),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.length).toBe(1);
     });
   });
 });

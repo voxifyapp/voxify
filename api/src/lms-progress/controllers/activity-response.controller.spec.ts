@@ -51,4 +51,29 @@ describe('ActivityResponseController', () => {
       });
     });
   });
+
+  describe('findAll', () => {
+    it('should return all activity responses for a profile', async () => {
+      const req: AuthenticatedRequestWithProfile = {
+        currentProfile: { id: 'profile-id' },
+      } as any;
+
+      const expectedResult = [
+        activityResponseFactory.build({
+          id: 'arid',
+          profileId: 'profile-id',
+        }),
+      ];
+      service.getActivityResponses = jest
+        .fn()
+        .mockResolvedValue(expectedResult);
+
+      const result = await controller.findAll(req, 'activity-id');
+
+      expect(result).toBe(expectedResult);
+      expect(service.getActivityResponses).toHaveBeenCalledWith('profile-id', {
+        forActivityId: 'activity-id',
+      });
+    });
+  });
 });

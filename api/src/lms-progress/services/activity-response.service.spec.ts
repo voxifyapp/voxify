@@ -6,6 +6,7 @@ import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
 import { mockRepository } from 'src/common/mocks/mockedRepository';
 import { ActivityRepository } from 'src/lms/repositories/lms.repository';
 import { NotFoundException } from '@nestjs/common';
+import { activityResponseFactory } from 'src/lms-progress/fixtures/lms-progress.fixture';
 
 describe('ActivityResponseService', () => {
   let service: ActivityResponseService;
@@ -75,6 +76,30 @@ describe('ActivityResponseService', () => {
 
       await expect(service.create(profileId, data)).rejects.toThrowError(
         NotFoundException,
+      );
+    });
+  });
+
+  describe('getActivityResponses', () => {
+    it('should return activity responses for profile', async () => {
+      const profileId = '123';
+      const activityId = '456';
+      const activityResponses = activityResponseFactory.buildList(3, {
+        profileId,
+      });
+
+      repository.getActivityResponsesForProfile = jest
+        .fn()
+        .mockResolvedValue([...activityResponses]);
+
+      const result = await service.getActivityResponses(profileId, {
+        forActivityId: activityId,
+      });
+
+      expect(result).toEqual(activityResponses);
+      expect(repository.getActivityResponsesForProfile).toHaveBeenCalledWith(
+        profileId,
+        { forActivityId: activityId },
       );
     });
   });

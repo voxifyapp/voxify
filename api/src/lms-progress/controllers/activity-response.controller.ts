@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ActivityResponseService } from 'src/lms-progress/services/activity-response.service';
@@ -18,5 +26,18 @@ export class ActivityResponseController {
       data,
     );
     return profile;
+  }
+
+  @Get()
+  async findAll(
+    @Req() req: AuthenticatedRequestWithProfile,
+    @Query('forActivityId') forActivityId?: string,
+  ) {
+    const activityResponses =
+      await this.activityResponseService.getActivityResponses(
+        req.currentProfile.id,
+        { forActivityId },
+      );
+    return activityResponses;
   }
 }
