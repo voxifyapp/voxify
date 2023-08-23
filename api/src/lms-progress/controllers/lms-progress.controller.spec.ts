@@ -18,17 +18,15 @@ import { lessonFactory, unitFactory } from 'src/lms/fixtures/lms.fixtures';
 
 describe('LessonResponseController', () => {
   let controller: LessonResponseController;
-  let unitResponseController: UnitResponseController;
   let service: LmsProgressService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [LessonResponseController, UnitResponseController],
+      controllers: [LessonResponseController],
       providers: [mockService(LmsProgressService)],
     }).compile();
 
     controller = module.get(LessonResponseController);
-    unitResponseController = module.get(UnitResponseController);
     service = module.get(LmsProgressService);
   });
 
@@ -59,6 +57,42 @@ describe('LessonResponseController', () => {
     });
   });
 
+  describe('findAll', () => {
+    it('should return a list of lesson responses', async () => {
+      const req: AuthenticatedRequestWithProfile = {
+        currentProfile: { id: 'profile-id' },
+      } as any;
+      const forLessonId = 'lesson-id';
+      const expectedResult = lessonResponseFactory.buildList(4, {
+        lessonId: forLessonId,
+      });
+
+      service.getLessonResponses = jest.fn().mockResolvedValue(expectedResult);
+
+      const result = await controller.findAll(req, forLessonId);
+
+      expect(result).toBe(expectedResult);
+      expect(service.getLessonResponses).toHaveBeenCalledWith('profile-id', {
+        forLessonId: forLessonId,
+      });
+    });
+  });
+});
+
+describe('UnitResponseController', () => {
+  let unitResponseController: UnitResponseController;
+  let service: LmsProgressService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [LessonResponseController, UnitResponseController],
+      providers: [mockService(LmsProgressService)],
+    }).compile();
+
+    unitResponseController = module.get(UnitResponseController);
+    service = module.get(LmsProgressService);
+  });
+
   describe('createUnitResponse', () => {
     it('should create a new activity response', async () => {
       const unitId = 'unit-id';
@@ -80,6 +114,27 @@ describe('LessonResponseController', () => {
       expect(result).toBe(expectedResult);
       expect(service.createUnitResponse).toHaveBeenCalledWith('profile-id', {
         unitId,
+      });
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return a list of unit responses', async () => {
+      const req: AuthenticatedRequestWithProfile = {
+        currentProfile: { id: 'profile-id' },
+      } as any;
+      const forUnitId = 'unit-id';
+      const expectedResult = unitResponseFactory.buildList(4, {
+        unitId: forUnitId,
+      });
+
+      service.getUnitResponses = jest.fn().mockResolvedValue(expectedResult);
+
+      const result = await unitResponseController.findAll(req, forUnitId);
+
+      expect(result).toBe(expectedResult);
+      expect(service.getUnitResponses).toHaveBeenCalledWith('profile-id', {
+        forUnitId,
       });
     });
   });
