@@ -3,7 +3,7 @@ import { ActivityResponseController } from './activity-response.controller';
 import { ActivityResponseService } from 'src/lms-progress/services/activity-response.service';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { AuthenticatedRequestWithProfile } from 'src/common/request';
-import { activityResponseFactory } from 'src/lms-progress/fixtures/activity-response.fixture';
+import { activityResponseFactory } from 'src/lms-progress/fixtures/lms-progress.fixture';
 import { activityFactory } from 'src/lms/fixtures/lms.fixtures';
 import { mockService } from 'src/common/mocks/mockService';
 
