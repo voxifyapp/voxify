@@ -8,11 +8,23 @@ export class LessonResponseRepository extends Repository<LessonResponse> {
   constructor(private dataSource: DataSource) {
     super(LessonResponse, dataSource.createEntityManager());
   }
+
+  async getLessonResponses(profileId, filter: { forLessonId?: string }) {
+    return await this.find({
+      where: { profileId, lessonId: filter.forLessonId },
+    });
+  }
 }
 
 @Injectable()
 export class UnitResponseRepository extends Repository<UnitResponse> {
   constructor(private dataSource: DataSource) {
     super(UnitResponse, dataSource.createEntityManager());
+  }
+
+  async getUnitResponses(profileId, filter: { forUnitId?: string }) {
+    return await this.find({
+      where: { profileId, unitId: filter.forUnitId },
+    });
   }
 }

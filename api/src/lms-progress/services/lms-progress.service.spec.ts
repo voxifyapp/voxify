@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { mockRepository } from 'src/common/mocks/mockedRepository';
+import * as findOr404 from 'src/common/utils/find-or-404';
 import {
   lessonResponseFactory,
   unitResponseFactory,
@@ -15,7 +16,6 @@ import {
   UnitRepository,
 } from 'src/lms/repositories/lms.repository';
 import { LmsProgressService } from './lms-progress.service';
-import * as findOr404 from 'src/common/utils/find-or-404';
 
 describe('LmsProgressService', () => {
   let service: LmsProgressService;
@@ -123,6 +123,50 @@ describe('LmsProgressService', () => {
       await expect(service.createUnitResponse(profileId, data)).rejects.toThrow(
         NotFoundException,
       );
+    });
+  });
+
+  describe('getLessonResponses', () => {
+    it('should create a lesson response', async () => {
+      const lessonId = '123';
+      const profileId = '456';
+
+      const lessons = lessonResponseFactory.buildList(4, { profileId });
+
+      lessonResponseRepo.getLessonResponses = jest
+        .fn()
+        .mockResolvedValue(lessons);
+
+      const result = await service.getLessonResponses(profileId, {
+        forLessonId: lessonId,
+      });
+
+      expect(lessonResponseRepo.getLessonResponses).toHaveBeenCalledWith(
+        profileId,
+        { forLessonId: lessonId },
+      );
+      expect(result).toEqual(lessons);
+    });
+  });
+
+  describe('getUnitResponses', () => {
+    it('should create a lesson response', async () => {
+      const unitId = '123';
+      const profileId = '456';
+
+      const units = unitResponseFactory.buildList(4, { profileId });
+
+      unitResponseRepo.getUnitResponses = jest.fn().mockResolvedValue(units);
+
+      const result = await service.getUnitResponses(profileId, {
+        forUnitId: unitId,
+      });
+
+      expect(unitResponseRepo.getUnitResponses).toHaveBeenCalledWith(
+        profileId,
+        { forUnitId: unitId },
+      );
+      expect(result).toEqual(units);
     });
   });
 });

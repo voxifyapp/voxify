@@ -48,5 +48,8 @@ describe('/lms-progress', () => {
       expect(res.body.unitId).toBe(unit.id);
       expect(res.body.profileId).toBe(profile.id);
     });
+
+    // /unit-responses (GET)
+    // /lesson-responses (GET)
   });
 });

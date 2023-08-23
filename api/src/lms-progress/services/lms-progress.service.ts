@@ -43,4 +43,28 @@ export class LmsProgressService {
 
     return lessonResponse;
   }
+
+  async getLessonResponses(
+    profileId: string,
+    filters: { forLessonId?: string } = {},
+  ) {
+    const lessonResponses = await this.lessonResponseRepo.getLessonResponses(
+      profileId,
+      filters,
+    );
+
+    return lessonResponses;
+  }
+
+  async getUnitResponses(
+    profileId: string,
+    filters: { forUnitId?: string } = {},
+  ) {
+    const unitResponses = await this.unitResponseRepo.getUnitResponses(
+      profileId,
+      filters,
+    );
+
+    return unitResponses;
+  }
 }
