@@ -1,4 +1,3 @@
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Factory, OnCreateFn } from 'fishery';
 import { omit } from 'lodash';
 import { BaseEntity } from 'src/common/entities/base.entity';
@@ -26,7 +25,7 @@ export const createOnCreateEntityForFixture = async <T extends BaseEntity>({
       await Promise.all(
         Object.entries(relationships).map(async ([key, factory]) => [
           key,
-          entity[key] ?? (await factory.create()).id,
+          entity[key] === undefined ? (await factory.create()).id : entity[key],
         ]),
       ),
     ),

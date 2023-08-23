@@ -3,7 +3,10 @@ import {
   CreateLessonResponseDto,
   CreateUnitResponseDto,
 } from 'src/lms-progress/dtos/lms-progress.dto';
-import { unitResponseFactory } from 'src/lms-progress/fixtures/lms-progress.fixture';
+import {
+  lessonResponseFactory,
+  unitResponseFactory,
+} from 'src/lms-progress/fixtures/lms-progress.fixture';
 import { lessonFactory, unitFactory } from 'src/lms/fixtures/lms.fixtures';
 import * as request from 'supertest';
 import { loginAsFirebaseUser } from 'test/utils/firebase';
@@ -62,20 +65,78 @@ describe('/lms-progress', () => {
         profileId: profile.id,
       });
 
-      // const data: CreateUnitResponseDto = {
-      //   unitId: unit.id,
-      // };
+      // Other unit responses for unrelated units
+      await unitResponseFactory.createList(3, {
+        unitId: (await unitFactory.create()).id,
+        profileId: profile.id,
+      });
 
-      // const res = await loginAsFirebaseUser(
-      //   request(global.app.getHttpServer())
-      //     .post('/lms-progress/unit-responses')
-      //     .send(data),
-      //   { uid: profile.userId },
-      // );
+      // Other unit responses (for other users)
+      await unitResponseFactory.createList(3, {
+        unitId: unit.id,
+      });
 
-      // expect(res.body.unitId).toBe(unit.id);
-      // expect(res.body.profileId).toBe(profile.id);
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .get('/lms-progress/unit-responses')
+          .query({
+            forUnitId: unit.id,
+          }),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.length).toBe(unitResponsesForUnit.length);
+      expect(res.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            profileId: profile.id,
+          }),
+        ]),
+      );
     });
   });
   // /lesson-responses (GET)
+  describe('/lesson-responses (GET)', () => {
+    it('should return a list of lesson responses for profile', async () => {
+      const profile = await profileFactory.create();
+      const lesson = await lessonFactory.create();
+
+      const lessonResponsesForLesson = await lessonResponseFactory.createList(
+        3,
+        {
+          lessonId: lesson.id,
+          profileId: profile.id,
+        },
+      );
+
+      // Other lesson responses for unrelated lessons
+      await lessonResponseFactory.createList(3, {
+        lessonId: (await lessonFactory.create()).id,
+        profileId: profile.id,
+      });
+
+      // Other lesson responses (for other users)
+      await lessonResponseFactory.createList(3, {
+        lessonId: lesson.id,
+      });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .get('/lms-progress/lesson-responses')
+          .query({
+            forLessonId: lesson.id,
+          }),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.length).toBe(lessonResponsesForLesson.length);
+      expect(res.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            profileId: profile.id,
+          }),
+        ]),
+      );
+    });
+  });
 });
