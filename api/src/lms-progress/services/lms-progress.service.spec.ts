@@ -15,6 +15,7 @@ import {
   UnitRepository,
 } from 'src/lms/repositories/lms.repository';
 import { LmsProgressService } from './lms-progress.service';
+import * as findOr404 from 'src/common/utils/find-or-404';
 
 describe('LmsProgressService', () => {
   let service: LmsProgressService;
@@ -43,16 +44,18 @@ describe('LmsProgressService', () => {
     );
     lessonRepo = moduleRef.get<LessonRepository>(LessonRepository);
     unitRepo = moduleRef.get<UnitRepository>(UnitRepository);
+
+    jest.spyOn(findOr404, 'findOneOr404');
   });
 
-  describe('createUnitResponse', () => {
+  describe('createLessonResponse', () => {
     it('should create a lesson response', async () => {
       const lessonId = '123';
       const profileId = '456';
       const data = { lessonId };
 
       const lesson = lessonFactory.build({ id: lessonId });
-      lessonRepo.findOne = jest.fn().mockResolvedValue(lesson);
+      jest.spyOn(findOr404, 'findOneOr404').mockResolvedValue(lesson);
 
       const lessonResponse = { lessonId: lesson.id, profileId };
       lessonResponseRepo.save = jest
@@ -61,9 +64,7 @@ describe('LmsProgressService', () => {
 
       const result = await service.createLessonResponse(profileId, data);
 
-      expect(lessonRepo.findOne).toHaveBeenCalledWith({
-        where: { id: lessonId },
-      });
+      expect(findOr404.findOneOr404).toHaveBeenCalledWith(lessonRepo, lessonId);
       expect(lessonResponseRepo.save).toHaveBeenCalledWith(lessonResponse, {
         reload: true,
       });
@@ -76,7 +77,9 @@ describe('LmsProgressService', () => {
       const profileId = '456';
       const data = { lessonId };
 
-      lessonRepo.findOne = jest.fn().mockResolvedValue(null);
+      jest
+        .spyOn(findOr404, 'findOneOr404')
+        .mockRejectedValueOnce(new NotFoundException());
 
       await expect(
         service.createLessonResponse(profileId, data),
@@ -91,7 +94,7 @@ describe('LmsProgressService', () => {
       const data = { unitId };
 
       const unit = unitFactory.build({ id: unitId });
-      unitRepo.findOne = jest.fn().mockResolvedValue(unit);
+      jest.spyOn(findOr404, 'findOneOr404').mockResolvedValue(unit);
 
       const unitResponse = { unitId: unit.id, profileId };
       unitResponseRepo.save = jest
@@ -100,9 +103,7 @@ describe('LmsProgressService', () => {
 
       const result = await service.createUnitResponse(profileId, data);
 
-      expect(unitRepo.findOne).toHaveBeenCalledWith({
-        where: { id: unitId },
-      });
+      expect(findOr404.findOneOr404).toHaveBeenCalledWith(unitRepo, unitId);
       expect(unitResponseRepo.save).toHaveBeenCalledWith(unitResponse, {
         reload: true,
       });
@@ -115,7 +116,9 @@ describe('LmsProgressService', () => {
       const profileId = '456';
       const data = { unitId };
 
-      unitRepo.findOne = jest.fn().mockResolvedValue(null);
+      jest
+        .spyOn(findOr404, 'findOneOr404')
+        .mockRejectedValueOnce(new NotFoundException());
 
       await expect(service.createUnitResponse(profileId, data)).rejects.toThrow(
         NotFoundException,
