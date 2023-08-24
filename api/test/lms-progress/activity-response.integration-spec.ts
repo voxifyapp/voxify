@@ -1,10 +1,10 @@
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
-import { activityFactory } from 'src/lms/fixtures/lms.fixtures';
-import { loginAsFirebaseUser } from 'test/utils/firebase';
-import * as request from 'supertest';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
 import { activityResponseFactory } from 'src/lms-progress/fixtures/lms-progress.fixture';
+import { activityFactory } from 'src/lms/fixtures/lms.fixtures';
+import * as request from 'supertest';
+import { loginAsFirebaseUser } from 'test/utils/firebase';
 
 describe('/lms-progress', () => {
   describe('/activity-responses (POST)', () => {

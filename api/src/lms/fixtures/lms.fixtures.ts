@@ -7,6 +7,7 @@ import { Activity, ActivityType } from 'src/lms/entities/activity.entity';
 import { Course } from 'src/lms/entities/course.entity';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Unit } from 'src/lms/entities/unit.entity';
+import { listenOnCreateForFixture } from 'test/utils/fixtures';
 import { getRepository } from 'test/utils/typeorm';
 
 export const courseFactory = Factory.define<Course>(({ params, onCreate }) => {
@@ -82,18 +83,12 @@ export const lessonFactory = Factory.define<Lesson>(
 
 export const activityFactory = Factory.define<Activity>(
   ({ params, sequence, onCreate }) => {
-    onCreate(async (activity) => {
-      const activityRepo = await getRepository(Activity);
-      return activityRepo.save(
-        {
-          ...omit(activity, []),
-          lesson:
-            activity.lesson === undefined
-              ? await lessonFactory.create()
-              : activity.lesson,
-        },
-        { reload: true },
-      );
+    listenOnCreateForFixture({
+      onCreate,
+      Schema: Activity,
+      relationships: {
+        lessonId: lessonFactory,
+      },
     });
 
     return {
@@ -101,6 +96,7 @@ export const activityFactory = Factory.define<Activity>(
       title: faker.lorem.sentence(5),
       order: sequence,
       lesson: undefined,
+      lessonId: undefined,
       data: {},
       type: ActivityType.FILL_IN_THE_BLANKS,
     };
