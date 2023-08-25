@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import { Activity } from './activity';
 import { TextBlock } from './blocks/text-block';
 
@@ -31,5 +30,9 @@ export class PronunciationActivity extends Activity<
   //TODO Need to implement after finalizing the Speech to Text API
   checkAnswer() {
     return [];
+  }
+
+  build() {
+    return this.getData();
   }
 }
