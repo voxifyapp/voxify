@@ -1,4 +1,3 @@
-import { TextBlock } from '@voxify/common/activities/blocks/text-block';
 import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
 import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
@@ -6,7 +5,7 @@ import { PronunciationActivity } from '@voxify/common/activities/pronunciation-a
 import { FillInTheBlanks } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
-import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation';
+import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import React from 'react';
 import { H1 } from 'tamagui';
