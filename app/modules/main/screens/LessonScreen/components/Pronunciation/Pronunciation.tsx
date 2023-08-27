@@ -5,6 +5,7 @@ import {
   matchReferenceStringWithInput,
 } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/intersection';
 import React from 'react';
+import { PERMISSIONS, request } from 'react-native-permissions';
 import { Button, H2, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -12,7 +13,9 @@ type Props = {
 };
 
 export const Pronunciation = ({ activity }: Props) => {
-  const { started, start, stop, recognized } = useVoiceRecognition();
+  const { started, recognized, start } = useVoiceRecognition({
+    recordAudio: true,
+  });
 
   const referenceStringArray = convertStringToArray(activity.getPrompt().text);
 
@@ -20,6 +23,18 @@ export const Pronunciation = ({ activity }: Props) => {
     activity.getPrompt().text,
     recognized,
   );
+
+  const startRecording = async () => {
+    try {
+      // TODO Refactor this into a common component
+      await request(PERMISSIONS.ANDROID.RECORD_AUDIO);
+
+      start('en-IN');
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  };
 
   return (
     <YStack alignItems="center">
@@ -39,15 +54,13 @@ export const Pronunciation = ({ activity }: Props) => {
       </XStack>
       <Button
         onPress={() => {
-          if (started) {
-            stop();
-          } else {
-            start('en-IN');
-          }
+          startRecording();
         }}
         theme="green">
         {started ? 'Stop' : 'Start'} Recording
       </Button>
+
+      <Button theme="red">Listen to your recording</Button>
     </YStack>
   );
 };
