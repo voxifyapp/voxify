@@ -28,4 +28,8 @@ export class VideoActivity extends Activity<
   checkAnswer() {
     return [];
   }
+
+  build() {
+    return this.getData();
+  }
 }
