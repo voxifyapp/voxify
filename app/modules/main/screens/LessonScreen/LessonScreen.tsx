@@ -11,7 +11,7 @@ import { H1, View } from 'tamagui';
 
 export const LessonScreen = () => {
   const lessonId = 'fdfb262e-cf99-4c31-84ed-574bb3f53241';
-  const { data: lessonData, isLoading: isLessonLoading } = useQuery({
+  const { isLoading: isLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
   });
@@ -28,7 +28,6 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <H1>{lessonData!.title}</H1>
       <Activity activity={lessonActivities![4]} />
     </View>
   );
