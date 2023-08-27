@@ -1,55 +1,23 @@
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
 import { useEffect, useState } from 'react';
 
-
 export const useVoiceRecognition = (
-  { recordAudio }: { recordAudio?: boolean } = { recordAudio: false },
+  {}: { recordAudio?: boolean } = { recordAudio: false },
 ) => {
   const [started, setStarted] = useState(false);
   const [recognized, setRecognized] = useState<string>('');
-  // let audioRecorderPlayer = useRef<AudioRecorderPlayer>(
-  //   new AudioRecorderPlayer(),
-  // ).current;
-  // let firstRun = useRef(true);
 
-  // useEffect(() => {
-  //   if (recordAudio) {
-  //     (async () => {
-  //       try {
-  //         if (started) {
-  //           await audioRecorderPlayer.startRecorder(
-  //             undefined,
-  //             {
-  //               AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
-  //               AudioSourceAndroid: AudioSourceAndroidType.MIC,
-  //               AVModeIOS: AVModeIOSOption.measurement,
-  //             },
-  //             false,
-  //           );
-  //         } else {
-  //           if (!firstRun.current) {
-  //             const result = await audioRecorderPlayer.stopRecorder();
-  //             console.log(result);
-  //           }
-  //         }
-  //       } catch (err) {
-  //         console.error(err);
-  //       }
-  //       firstRun.current = false;
-  //     })();
-  //   }
-  // }, [started, audioRecorderPlayer, recordAudio]);
-
-  const onSpeechStart = async () => {
+  const onSpeechStart = (e: any) => {
+    console.log('onSpeechStart: ', e);
     setStarted(true);
   };
 
-  const onSpeechEnd = () => {
+  const onSpeechEnd = (e: any) => {
+    console.log('onSpeechEnd: ', e);
     setStarted(false);
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
-    // TODO Set recognized to this value
     console.log('onSpeechResults: ', e);
   };
 
