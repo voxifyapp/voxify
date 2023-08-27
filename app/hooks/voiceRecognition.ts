@@ -7,28 +7,24 @@ export const useVoiceRecognition = (
   const [started, setStarted] = useState(false);
   const [recognized, setRecognized] = useState<string>('');
 
-  const onSpeechStart = (e: any) => {
-    console.log('onSpeechStart: ', e);
+  const onSpeechStart = () => {
     setStarted(true);
   };
 
-  const onSpeechEnd = (e: any) => {
-    console.log('onSpeechEnd: ', e);
+  const onSpeechEnd = () => {
     setStarted(false);
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
-    console.log('onSpeechResults: ', e);
+    e.value?.length && setRecognized(e.value[0]);
   };
 
   const onSpeechPartialResults = (e: SpeechResultsEvent) => {
-    console.log('onSpeechPartialResults: ', e);
-    setRecognized(e.value![0]);
+    e.value?.length && setRecognized(e.value[0]);
   };
 
-  const onSpeechError = (e: any) => {
+  const onSpeechError = () => {
     setStarted(false);
-    console.log(e);
   };
 
   useEffect(() => {
@@ -46,7 +42,6 @@ export const useVoiceRecognition = (
   return {
     started,
     recognized,
-    start: Voice.start,
-    stop: Voice.stop,
+    Voice,
   };
 };

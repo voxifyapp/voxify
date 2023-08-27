@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const Pronunciation = ({ activity }: Props) => {
-  const { started, start, stop, recognized } = useVoiceRecognition();
+  const { started, Voice, recognized } = useVoiceRecognition();
 
   const referenceStringArray = convertStringToArray(activity.getPrompt().text);
 
@@ -39,10 +39,8 @@ export const Pronunciation = ({ activity }: Props) => {
       </XStack>
       <Button
         onPress={() => {
-          if (started) {
-            stop();
-          } else {
-            start('en-IN');
+          if (!started) {
+            Voice.start('en-IN');
           }
         }}
         theme="green">
