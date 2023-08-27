@@ -1,6 +1,7 @@
 import { VideoActivity } from '@voxify/common/activities/video-activity';
 import React from 'react';
-import { H1, YStack } from 'tamagui';
+import RNVideo from 'react-native-video';
+import { YStack } from 'tamagui';
 
 type Props = {
   activity: VideoActivity;
@@ -9,7 +10,16 @@ type Props = {
 export const Video = ({ activity }: Props) => {
   return (
     <YStack>
-      <H1>{activity.getVideoUrl()}</H1>
+      <RNVideo
+        resizeMode="cover"
+        paused={false}
+        onBandwidthUpdate={data => console.log(data)}
+        onBuffer={data => console.log(data)}
+        reportBandwidth={true}
+        onPlaybackStalled={() => console.log('Stalled')}
+        source={{ uri: activity.getVideoUrl() }}
+        style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+      />
     </YStack>
   );
 };
