@@ -4,7 +4,7 @@ import {
   getLesson,
   getLessonActivities,
 } from '@voxify/api/lms/lms';
-import { Activity } from '@voxify/modules/main/screens/LessonScreen/components/Activity';
+import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
@@ -28,7 +28,8 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <Activity activity={lessonActivities![4]} />
+      <ActivityStepper activities={lessonActivities!} />
+      {/* <Activity activity={lessonActivities![4]} /> */}
     </View>
   );
 };
