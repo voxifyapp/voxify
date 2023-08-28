@@ -1,5 +1,7 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import { Activity } from '@voxify/modules/main/screens/LessonScreen/components/Activity';
+//TODO Remove lint ignores above
+import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import React from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
@@ -7,7 +9,7 @@ import { Spacer, YStack } from 'tamagui';
 
 const activityAspectRatio = 9 / 15;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-const width = screenWidth / 1.2;
+const width = screenWidth / 1.1;
 const height = width / activityAspectRatio;
 
 const firstAndLastElementMargin = (screenHeight - height) / 2;
@@ -17,8 +19,17 @@ type Props = {
 };
 
 export const ActivityStepper = ({ activities }: Props) => {
+  // for (let i = 0; i < 5; i++) {
+  //   activities.push(
+  //     ...activities.map(a => ({
+  //       ...a,
+  //       id: '' + Math.floor(Math.random() * 10000) + 1,
+  //     })),
+  //   );
+  // }
+
   return (
-    <YStack style={{ backgroundColor: 'darkgray' }}>
+    <YStack theme="green" backgroundColor={'$blue2Dark'}>
       <FlatList
         data={activities}
         contentContainerStyle={{
@@ -36,7 +47,7 @@ export const ActivityStepper = ({ activities }: Props) => {
         renderItem={({ item: activity, index }) => (
           <View
             style={{
-              backgroundColor: 'red',
+              backgroundColor: 'white',
               borderRadius: 10,
               width,
               height,
@@ -46,7 +57,7 @@ export const ActivityStepper = ({ activities }: Props) => {
                   ? firstAndLastElementMargin
                   : undefined,
             }}>
-            <Activity activity={activity} />
+            <ActivityStep activity={activity} />
           </View>
         )}
       />

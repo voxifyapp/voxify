@@ -4,7 +4,7 @@ import {
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { omit } from 'lodash';
 import React, { useState } from 'react';
-import { Button, H3, XStack, YStack } from 'tamagui';
+import { Button, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
@@ -18,20 +18,21 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   const options = activity.getOptions();
 
   // question segments is question split by the blanks with format $$blank$$
-  // TODO May cause problem if blank is immediately surrounded by an punctuation, fix
-  const questionSegments = question.split(FillInTheBlanksActivity.BLANK_FORMAT);
+  // TODO Need to fix, it looks like because we are splitting it only by the blank format,
+  // the rendering is affected (goes to a new line even if there is space)
+  const questionSegments = question.split(
+    new RegExp(FillInTheBlanksActivity.BLANK_FORMAT),
+  );
 
   const blanks = questionSegments.filter(segment =>
     segment.match(FillInTheBlanksActivity.BLANK_FORMAT),
   );
 
   // Gets the next blank that the user has not answered
-  const getNextUserAnswerBlank = () => {
-    return blanks.find(blank => !userAnswer[blank]);
-  };
+  const nextUserBlank = blanks.find(blank => !userAnswer[blank]);
 
   return (
-    <YStack>
+    <YStack padding="$3" fullscreen>
       <XStack flexWrap="wrap">
         {questionSegments.map((segment, index) => (
           <SegmentRenderer
@@ -48,12 +49,12 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           .filter(option => !new Set(Object.values(userAnswer)).has(option.id))
           .map(option => (
             <Button
-              disabled={!getNextUserAnswerBlank()}
+              disabled={!nextUserBlank}
               key={option.id}
               onPress={() => {
                 setUserAnswer(prev => ({
                   ...prev,
-                  [getNextUserAnswerBlank()!]: option.id,
+                  [nextUserBlank!]: option.id,
                 }));
               }}
               theme={'green'}>
@@ -61,6 +62,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             </Button>
           ))}
       </XStack>
+      <Stack flex={1} />
+      <Button disabled={!!nextUserBlank}>Check Answer</Button>
     </YStack>
   );
 };

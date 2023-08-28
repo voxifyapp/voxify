@@ -10,13 +10,12 @@ import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/compone
 import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import React from 'react';
-import { H1 } from 'tamagui';
 
 type Props = {
   activity: ActivityEntity;
 };
 
-export const Activity = ({ activity }: Props) => {
+export const ActivityRenderer = ({ activity }: Props) => {
   if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
     return (
       <FillInTheBlanks
@@ -53,5 +52,5 @@ export const Activity = ({ activity }: Props) => {
     );
   }
 
-  return <H1>Activity 2</H1>;
+  return null;
 };
