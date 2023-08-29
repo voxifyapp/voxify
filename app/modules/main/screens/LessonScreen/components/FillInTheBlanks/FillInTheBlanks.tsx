@@ -1,15 +1,12 @@
-import {
-  FillInTheBlanksActivity,
-  FillInTheBlanksAnswerErrorsType,
-} from '@voxify/common/activities/fill-in-the-blanks-activity';
+import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
 
 import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/fillInTheBlanksContext';
-import React, { useEffect, useState } from 'react';
-import { Button, H3, Stack, XStack, YStack } from 'tamagui';
+import React, { useEffect } from 'react';
+import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
@@ -18,8 +15,7 @@ type Props = {
 export const FillInTheBlanks = ({ activity }: Props) => {
   const contextValue = useCreateFillInTheBlanksContext({ activity });
 
-  const { options, questionSegments, nextUserBlank, send, state, EventTypes } =
-    contextValue;
+  const { options, questionSegments, send, state, EventTypes } = contextValue;
 
   useEffect(() => {
     send({ type: EventTypes.FOCUS });
@@ -29,9 +25,6 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   console.log(state);
 
-  // Stores if there are any answer errors, null if answer is not yet checked
-  const [answerErrors, setAnswerErrors] =
-    useState<FillInTheBlanksAnswerErrorsType | null>(null);
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
       <YStack padding="$3" fullscreen>
@@ -47,7 +40,12 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             )
             .map(option => (
               <Button
-                disabled={!nextUserBlank}
+                disabled={
+                  !state.can({
+                    type: EventTypes.ADD_WORD,
+                    payload: { optionId: option.id },
+                  })
+                }
                 key={option.id}
                 onPress={() => {
                   send({
@@ -61,14 +59,13 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             ))}
         </XStack>
         <Stack flex={1} />
-        {answerErrors === null ? (
-          <Button
-            onPress={() => setAnswerErrors(activity.checkAnswer(userAnswer))}>
+        {state.can({ type: EventTypes.CHECK_ANSWER }) && (
+          <Button onPress={() => send({ type: EventTypes.CHECK_ANSWER })}>
             Check Answer
           </Button>
-        ) : (
-          <H3>{answerErrors.wrongBlanks.length === 0 ? 'Correct' : 'Error'}</H3>
         )}
+        {state.matches('FOCUSED.CORRECT_ANSWER') && <H1>Correct</H1>}
+        {state.matches('FOCUSED.WRONG_ANSWER') && <H1>Wrong</H1>}
       </YStack>
     </FillInTheBlanksContextProvider>
   );
@@ -87,6 +84,12 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
         .find(option => option.id === optionIdForBlank)?.text;
       return (
         <Button
+          disabled={
+            !state.can({
+              type: EventTypes.REMOVE_WORD,
+              payload: { blankId: segment },
+            })
+          }
           onPress={() => {
             send({
               type: EventTypes.REMOVE_WORD,

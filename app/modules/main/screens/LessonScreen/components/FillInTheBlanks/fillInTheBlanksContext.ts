@@ -8,9 +8,9 @@ type ContextData = {
 };
 
 export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
-  const { machine, derivedValues, EventTypes } = fillInTheBlanksMachine;
+  const { machine, derivedValues, EventTypes, States } = fillInTheBlanksMachine;
   const [state, send] = useMachine(machine, {
-    context: { activity, userAnswer: {} },
+    context: { activity, userAnswer: {}, answerErrors: null },
   });
 
   return {
@@ -18,6 +18,7 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
     send,
     state,
     EventTypes,
+    States,
   };
 }
 
