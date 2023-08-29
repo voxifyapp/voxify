@@ -16,7 +16,8 @@
           services: never;
         };
         eventsCausingActions: {
-          
+          "addWord": "ADD_WORD";
+"removeWord": "REMOVE_WORD";
         };
         eventsCausingDelays: {
           
@@ -27,7 +28,7 @@
         eventsCausingServices: {
           
         };
-        matchesStates: "FOCUSED" | "UNFOCUSED";
+        matchesStates: "FOCUSED" | "FOCUSED.WORKING" | "UNFOCUSED" | { "FOCUSED"?: "WORKING"; };
         tags: never;
       }
   

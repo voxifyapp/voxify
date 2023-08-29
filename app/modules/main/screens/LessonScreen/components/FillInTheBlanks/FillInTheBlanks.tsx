@@ -2,7 +2,7 @@ import {
   FillInTheBlanksActivity,
   FillInTheBlanksAnswerErrorsType,
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { EventTypes } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/fillInTheBlanks.machine';
+
 import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
@@ -18,14 +18,16 @@ type Props = {
 export const FillInTheBlanks = ({ activity }: Props) => {
   const contextValue = useCreateFillInTheBlanksContext({ activity });
 
-  const { options, questionSegments, nextUserBlank, send, state } =
+  const { options, questionSegments, nextUserBlank, send, state, EventTypes } =
     contextValue;
 
   useEffect(() => {
     send({ type: EventTypes.FOCUS });
-  }, [send]);
+  }, [EventTypes.FOCUS, send]);
 
   const { userAnswer } = state.context;
+
+  console.log(state);
 
   // Stores if there are any answer errors, null if answer is not yet checked
   const [answerErrors, setAnswerErrors] =
@@ -73,7 +75,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 };
 
 const SegmentRenderer = ({ segment }: { segment: string }) => {
-  const { state, send } = useFillInTheBlanksContext();
+  const { state, send, EventTypes } = useFillInTheBlanksContext();
 
   const { userAnswer, activity } = state.context;
 
