@@ -1,8 +1,9 @@
 import {
   FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
+  FillInTheBlanksAnswerErrorsType,
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { omit } from 'lodash';
+import { flattenDeep, omit } from 'lodash';
 import React, { useState } from 'react';
 import { Button, H3, Stack, XStack, YStack } from 'tamagui';
 
@@ -15,16 +16,18 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     {},
   );
   // Stores if there are any answer errors, null if answer is not yet checked
-  const [answerErrors, setAnswerErrors] = useState<string[] | null>(null);
+  const [answerErrors, setAnswerErrors] =
+    useState<FillInTheBlanksAnswerErrorsType | null>(null);
 
   const question = activity.getQuestion().text;
   const options = activity.getOptions();
 
-  // question segments is question split by the blanks with format $$blank$$
-  // TODO Need to fix, it looks like because we are splitting it only by the blank format,
-  // the rendering is affected (goes to a new line even if there is space)
-  const questionSegments = question.split(
-    new RegExp(FillInTheBlanksActivity.BLANK_FORMAT),
+  // question segments is question split by $$blank$$ and then by spaces
+  // We do this for edge cases with commas and other punctuation
+  const questionSegments = flattenDeep(
+    question
+      .split(new RegExp(FillInTheBlanksActivity.BLANK_FORMAT))
+      .map(segment => segment.split(' ')),
   );
 
   const blanks = questionSegments.filter(segment =>
@@ -72,7 +75,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           Check Answer
         </Button>
       ) : (
-        <H3>{answerErrors.length === 0 ? 'Correct' : 'Error'}</H3>
+        <H3>{answerErrors.wrongBlanks.length === 0 ? 'Correct' : 'Error'}</H3>
       )}
     </YStack>
   );
