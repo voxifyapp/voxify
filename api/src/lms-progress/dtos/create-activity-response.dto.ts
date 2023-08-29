@@ -1,12 +1,12 @@
 import { IsEnum, IsNumber, IsObject, IsUUID } from 'class-validator';
-import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
+import { ActivityResponseResultType } from 'src/lms-progress/entities/activity-response.entity';
 
 export class CreateActivityResponseDto {
   @IsUUID()
   activityId: string;
 
-  @IsEnum(ResultType)
-  result: ResultType;
+  @IsEnum(ActivityResponseResultType)
+  result: ActivityResponseResultType;
 
   @IsObject()
   responseData: object;

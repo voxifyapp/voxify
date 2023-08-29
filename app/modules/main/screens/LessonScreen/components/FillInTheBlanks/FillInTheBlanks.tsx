@@ -14,6 +14,9 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   const [userAnswer, setUserAnswer] = useState<FillInTheBlanksActivityAnswer>(
     {},
   );
+  // Stores if there are any answer errors, null if answer is not yet checked
+  const [answerErrors, setAnswerErrors] = useState<string[] | null>(null);
+
   const question = activity.getQuestion().text;
   const options = activity.getOptions();
 
@@ -63,7 +66,14 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           ))}
       </XStack>
       <Stack flex={1} />
-      <Button disabled={!!nextUserBlank}>Check Answer</Button>
+      {answerErrors === null ? (
+        <Button
+          onPress={() => setAnswerErrors(activity.checkAnswer(userAnswer))}>
+          Check Answer
+        </Button>
+      ) : (
+        <H3>{answerErrors.length === 0 ? 'Correct' : 'Error'}</H3>
+      )}
     </YStack>
   );
 };
@@ -97,7 +107,7 @@ const SegmentRenderer = ({
         </Button>
       );
     }
-    return <H3>____ </H3>;
+    return <H3>____</H3>;
   }
 
   return <H3>{segment} </H3>;

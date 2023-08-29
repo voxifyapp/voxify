@@ -1,6 +1,6 @@
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
-import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
+import { ActivityResponseResultType } from 'src/lms-progress/entities/activity-response.entity';
 import { activityResponseFactory } from 'src/lms-progress/fixtures/lms-progress.fixture';
 import { activityFactory } from 'src/lms/fixtures/lms.fixtures';
 import * as request from 'supertest';
@@ -18,7 +18,7 @@ describe('/lms-progress', () => {
           test: 'test',
         },
         timeTaken: 10,
-        result: ResultType.SUCCESS,
+        result: ActivityResponseResultType.SUCCESS,
       };
 
       const res = await loginAsFirebaseUser(

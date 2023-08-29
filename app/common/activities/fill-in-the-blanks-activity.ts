@@ -65,10 +65,9 @@ export class FillInTheBlanksActivity extends Activity<
     this.setData({ ...this.getData(), answer });
   }
 
-  /**
-   * Returns blanks that are incorrect, else returns nothing
-   */
-  checkAnswer(answer: FillInTheBlanksActivityAnswer) {
+  checkAnswer(
+    answer: FillInTheBlanksActivityAnswer,
+  ): FillInTheBlanksAnswerErrorsType {
     const answerBank = this.getAnswer();
     const errors = [];
     for (const blank in answer) {
@@ -77,10 +76,14 @@ export class FillInTheBlanksActivity extends Activity<
       }
     }
 
-    return errors;
+    return { wrongBlanks: errors };
   }
 
   build() {
     return this.getData();
   }
 }
+
+export type FillInTheBlanksAnswerErrorsType = {
+  wrongBlanks: string[];
+};
