@@ -20,6 +20,7 @@
     "@tamagui/babel-plugin": "^1.52.9",
     "@tamagui/config": "^1.52.9",
     "@tamagui/react-native-media-driver": "^1.52.9",
+    "@xstate/react": "^3.2.2",
     "add": "^2.0.6",
     "axios": "^1.4.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
@@ -35,6 +36,7 @@
     "react-native-video": "^5.2.1",
     "react-query": "^3.39.3",
     "tamagui": "^1.52.9",
+    "xstate": "^4.38.2",
     "yarn": "^1.22.19"
   },
   "devDependencies": {

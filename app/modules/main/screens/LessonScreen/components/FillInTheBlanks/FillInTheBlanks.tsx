@@ -1,10 +1,14 @@
 import {
   FillInTheBlanksActivity,
-  FillInTheBlanksActivityAnswer,
   FillInTheBlanksAnswerErrorsType,
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { flattenDeep, omit } from 'lodash';
-import React, { useState } from 'react';
+import { EventTypes } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/fillInTheBlanks.machine';
+import {
+  FillInTheBlanksContextProvider,
+  useCreateFillInTheBlanksContext,
+  useFillInTheBlanksContext,
+} from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/fillInTheBlanksContext';
+import React, { useEffect, useState } from 'react';
 import { Button, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -12,88 +16,67 @@ type Props = {
 };
 
 export const FillInTheBlanks = ({ activity }: Props) => {
-  const [userAnswer, setUserAnswer] = useState<FillInTheBlanksActivityAnswer>(
-    {},
-  );
+  const contextValue = useCreateFillInTheBlanksContext({ activity });
+
+  const { options, questionSegments, nextUserBlank, send, state } =
+    contextValue;
+
+  useEffect(() => {
+    send({ type: EventTypes.FOCUS });
+  }, [send]);
+
+  const { userAnswer } = state.context;
+
   // Stores if there are any answer errors, null if answer is not yet checked
   const [answerErrors, setAnswerErrors] =
     useState<FillInTheBlanksAnswerErrorsType | null>(null);
-
-  const question = activity.getQuestion().text;
-  const options = activity.getOptions();
-
-  // question segments is question split by $$blank$$ and then by spaces
-  // We do this for edge cases with commas and other punctuation
-  const questionSegments = flattenDeep(
-    question
-      .split(new RegExp(FillInTheBlanksActivity.BLANK_FORMAT))
-      .map(segment => segment.split(' ')),
-  );
-
-  const blanks = questionSegments.filter(segment =>
-    segment.match(FillInTheBlanksActivity.BLANK_FORMAT),
-  );
-
-  // Gets the next blank that the user has not answered
-  const nextUserBlank = blanks.find(blank => !userAnswer[blank]);
-
   return (
-    <YStack padding="$3" fullscreen>
-      <XStack flexWrap="wrap">
-        {questionSegments.map((segment, index) => (
-          <SegmentRenderer
-            setUserAnswer={setUserAnswer}
-            activity={activity}
-            userAnswer={userAnswer}
-            key={index}
-            segment={segment}
-          />
-        ))}
-      </XStack>
-      <XStack flexWrap="wrap" space="$3">
-        {options
-          .filter(option => !new Set(Object.values(userAnswer)).has(option.id))
-          .map(option => (
-            <Button
-              disabled={!nextUserBlank}
-              key={option.id}
-              onPress={() => {
-                setUserAnswer(prev => ({
-                  ...prev,
-                  [nextUserBlank!]: option.id,
-                }));
-              }}
-              theme={'green'}>
-              {option.text}
-            </Button>
+    <FillInTheBlanksContextProvider value={contextValue}>
+      <YStack padding="$3" fullscreen>
+        <XStack flexWrap="wrap">
+          {questionSegments.map((segment, index) => (
+            <SegmentRenderer key={index} segment={segment} />
           ))}
-      </XStack>
-      <Stack flex={1} />
-      {answerErrors === null ? (
-        <Button
-          onPress={() => setAnswerErrors(activity.checkAnswer(userAnswer))}>
-          Check Answer
-        </Button>
-      ) : (
-        <H3>{answerErrors.wrongBlanks.length === 0 ? 'Correct' : 'Error'}</H3>
-      )}
-    </YStack>
+        </XStack>
+        <XStack flexWrap="wrap" space="$3">
+          {options
+            .filter(
+              option => !new Set(Object.values(userAnswer)).has(option.id),
+            )
+            .map(option => (
+              <Button
+                disabled={!nextUserBlank}
+                key={option.id}
+                onPress={() => {
+                  send({
+                    type: EventTypes.ADD_WORD,
+                    payload: { optionId: option.id },
+                  });
+                }}
+                theme={'green'}>
+                {option.text}
+              </Button>
+            ))}
+        </XStack>
+        <Stack flex={1} />
+        {answerErrors === null ? (
+          <Button
+            onPress={() => setAnswerErrors(activity.checkAnswer(userAnswer))}>
+            Check Answer
+          </Button>
+        ) : (
+          <H3>{answerErrors.wrongBlanks.length === 0 ? 'Correct' : 'Error'}</H3>
+        )}
+      </YStack>
+    </FillInTheBlanksContextProvider>
   );
 };
 
-const SegmentRenderer = ({
-  segment,
-  userAnswer,
-  activity,
-  setUserAnswer,
-}: {
-  segment: string;
-  userAnswer: FillInTheBlanksActivityAnswer;
-  activity: FillInTheBlanksActivity;
-  setUserAnswer: React.Dispatch<
-    React.SetStateAction<FillInTheBlanksActivityAnswer>
-  >;
-}) => {
+const SegmentRenderer = ({ segment }: { segment: string }) => {
+  const { state, send } = useFillInTheBlanksContext();
+
+  const { userAnswer, activity } = state.context;
+
   if (segment.match(FillInTheBlanksActivity.BLANK_FORMAT)) {
     if (userAnswer[segment]) {
       const optionIdForBlank = userAnswer[segment];
@@ -103,7 +86,10 @@ const SegmentRenderer = ({
       return (
         <Button
           onPress={() => {
-            setUserAnswer(prev => omit(prev, [segment]));
+            send({
+              type: EventTypes.REMOVE_WORD,
+              payload: { blankId: segment },
+            });
           }}
           theme="green">
           {answerForBlank}
