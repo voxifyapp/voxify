@@ -7,17 +7,13 @@ import { flattenDeep, omit } from 'lodash';
 import { assign, createMachine } from 'xstate';
 
 enum States {
-  UNFOCUSED = 'UNFOCUSED',
-  FOCUSED = 'FOCUSED',
-  FOCUSED_WORKING = 'WORKING',
-  FOCUSED_CHECK_ANSWER = 'CHECK_ANSWER',
-  FOCUSED_CORRECT_ANSWER = 'CORRECT_ANSWER',
-  FOCUSED_WRONG_ANSWER = 'WRONG_ANSWER',
+  WORKING = 'WORKING',
+  CHECK_ANSWER = 'CHECK_ANSWER',
+  CORRECT_ANSWER = 'CORRECT_ANSWER',
+  WRONG_ANSWER = 'WRONG_ANSWER',
 }
 
 enum EventTypes {
-  FOCUS = 'FOCUS',
-  UNFOCUS = 'UNFOCUS',
   ADD_WORD = 'ADD_WORD',
   REMOVE_WORD = 'REMOVE_WORD',
   CHECK_ANSWER = 'CHECK_ANSWER',
@@ -54,8 +50,6 @@ const derivedValues = (context: ContextType) => {
   return { question, options, nextUserBlank, questionSegments, blanks };
 };
 
-type FocusEvent = { type: EventTypes.FOCUS };
-type UnfocusEvent = { type: EventTypes.UNFOCUS };
 type AddWordEvent = {
   type: EventTypes.ADD_WORD;
   payload: { optionId: string };
@@ -69,72 +63,48 @@ type CheckAnswerEvent = { type: EventTypes.CHECK_ANSWER };
 export const fillInTheBlanksMachine = {
   machine: createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgFUA5AMQHkBhMgZQFEARAYlocYG0AGALqJQABwD2sXABdcY-MJAAPRAEYAnAFYSAFj4A2AEwaANCACeqgMwGAvjdNoseQqS5M27Sm96CF4yTJyCsoI6lq6hibmiAAcKiQadg4YOATEJN5sJADqNABKANIAkhQA4uwAgqysAPq5eaz8Qkgg-tKy8i0hKioGJADsURYIGnpqJJqWvYn2II6pLhn07qw5+cVl7HnMALI0AGrMdfmNvi1tgZ2gIWr9psPa-dpJcynO6Zmr9RvldAASzDoBRqFQojGyzDyTT8EnaQS6iAM-T6BjUehig3uiD0-T4On0Rhe83ermWLFW-0BwNB4Mh7Gh51hl2CiH6li0TzUaLU2hiBm0BnUWIQhhi+MiGj4MUMeksRLeaVJ3CylKBILBELy9JUzVETI6LIQbI52i5Y15-MFamF6L0EwJGkl0oMspUdlm+DEEDgCmJiphAQNCIQAFo9MKQ1oudGuXwNDFLI81DF5U5FeRqGS2AG4VclIgBcKMQkE5Yy+WK3LZn7Fp8c8zg6bhZZpQk+O3BRoeXoVHpUwsPlmvusSqV60HrqpBSQy13LJjoiLcfbIv2SUtlRSAWqaZrx-DJyMXTp59pzXyBULF3pHuKDImnr0VHw1Gv058SHR8ts6AAVdW0nk+55jcBhihouLshoz4tmyBg2seKijEY6Ltio-QqCm1YKrWQ45HkNBlABe6MoGB75ggahIiQMTaNoLYaIKeh8NY4bXrRJB6MhowxGhGFYXYQA */
-      initial: States.UNFOCUSED,
+      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYATCSF79B-QEYNAGhABPREYDsNkhoCsAZiNabR5wE5HXm84BfAPM0LDxCUj56ZhYqAFEAWQoANTjeakFRFWlZBSUVdQQADg0HL3KfLw0qoqKtI3MrYqMSR0MjIqMANm1HRyCQjBwCYnJqaNYAYQAJOMmabjYGAGUyOKphMSQQHPlFZW3C5yEdLS8uopsur2c2s67GxHd7LyEurQ0NY+8bDTeBkChYYREgzOYLJardYsTbZGR7fKHRBXRwkGxtE4uXxaa42R4ILS3Eivd59dE47r9YKAobhUZg+aLFZrKgwoxbSTwvIHUCFFFojFaLFeHF+fFnUp-d4aIwnQkaGxBan4KQQOAqIF0ohw3L7AqIAC0qIqJtNXiKD0shq6AM1I0i40YTB1CJ5amsQiKJCKtyqQkcnR6PQaVoJNi9UqFfz8fS0-tttPtoNmjMhLJd3P1CD6XQczl+fmcXzOfXFjlKJKF5SEry0Hy0CbCScm1HikwAKkyoVQM3qkQgfKjy9durYq25xUWSEZHKSND04zKfY3gaMyFQKMwu+ntrtM-3B61515RzZx1pxSKSF1Z1XqkURUUXEqAkA */
+      initial: States.WORKING,
       schema: {
-        events: {} as
-          | FocusEvent
-          | UnfocusEvent
-          | AddWordEvent
-          | RemoveWordEvent
-          | CheckAnswerEvent,
+        events: {} as AddWordEvent | RemoveWordEvent | CheckAnswerEvent,
       },
       context: {} as ContextType,
       tsTypes: {} as import('./fillInTheBlanks.machine.typegen').Typegen0,
       states: {
-        [States.UNFOCUSED]: {
+        [States.WORKING]: {
           on: {
-            [EventTypes.FOCUS]: {
-              target: States.FOCUSED,
+            [EventTypes.ADD_WORD]: {
+              cond: 'canAddWords',
+              target: States.WORKING,
+              actions: 'addWord',
             },
-          },
-        },
-        [States.FOCUSED]: {
-          on: {
-            [EventTypes.UNFOCUS]: {
-              target: States.UNFOCUSED,
-            },
-          },
-
-          initial: States.FOCUSED_WORKING,
-
-          states: {
-            [States.FOCUSED_WORKING]: {
-              on: {
-                [EventTypes.ADD_WORD]: {
-                  cond: 'canAddWords',
-                  target: States.FOCUSED_WORKING,
-                  actions: 'addWord',
-                },
-                [EventTypes.REMOVE_WORD]: [
-                  {
-                    target: States.FOCUSED_WORKING,
-                    actions: 'removeWord',
-                  },
-                ],
-                [EventTypes.CHECK_ANSWER]: [
-                  {
-                    cond: context =>
-                      derivedValues(context).nextUserBlank === undefined,
-                    target: States.FOCUSED_CHECK_ANSWER,
-                  },
-                ],
+            [EventTypes.REMOVE_WORD]: [
+              {
+                target: States.WORKING,
+                actions: 'removeWord',
               },
-            },
-            [States.FOCUSED_CHECK_ANSWER]: {
-              entry: 'checkAnswer',
-              always: [
-                {
-                  target: States.FOCUSED_CORRECT_ANSWER,
-                  cond: 'correctAnswer',
-                },
-                { target: States.FOCUSED_WRONG_ANSWER },
-              ],
-            },
-            [States.FOCUSED_CORRECT_ANSWER]: {},
-            [States.FOCUSED_WRONG_ANSWER]: {},
+            ],
+            [EventTypes.CHECK_ANSWER]: [
+              {
+                cond: context =>
+                  derivedValues(context).nextUserBlank === undefined,
+                target: States.CHECK_ANSWER,
+              },
+            ],
           },
         },
+        [States.CHECK_ANSWER]: {
+          entry: 'checkAnswer',
+          always: [
+            {
+              target: States.CORRECT_ANSWER,
+              cond: 'correctAnswer',
+            },
+            { target: States.WRONG_ANSWER },
+          ],
+        },
+        [States.CORRECT_ANSWER]: {},
+        [States.WRONG_ANSWER]: {},
       },
     },
     {

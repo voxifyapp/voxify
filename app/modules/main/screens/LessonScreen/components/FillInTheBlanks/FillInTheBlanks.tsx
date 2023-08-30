@@ -5,7 +5,7 @@ import {
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/fillInTheBlanksContext';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -17,13 +17,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   const { options, questionSegments, send, state, EventTypes } = contextValue;
 
-  useEffect(() => {
-    send({ type: EventTypes.FOCUS });
-  }, [EventTypes.FOCUS, send]);
-
   const { userAnswer } = state.context;
-
-  console.log(state);
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
@@ -64,8 +58,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             Check Answer
           </Button>
         )}
-        {state.matches('FOCUSED.CORRECT_ANSWER') && <H1>Correct</H1>}
-        {state.matches('FOCUSED.WRONG_ANSWER') && <H1>Wrong</H1>}
+        {state.matches('CORRECT_ANSWER') && <H1>Correct</H1>}
+        {state.matches('WRONG_ANSWER') && <H1>Wrong</H1>}
       </YStack>
     </FillInTheBlanksContextProvider>
   );
