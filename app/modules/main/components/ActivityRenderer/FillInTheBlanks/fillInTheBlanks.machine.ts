@@ -63,8 +63,8 @@ type UnFocusedEvent = { type: EventTypes.UNFOCUSED };
 export const fillInTheBlanksMachine = {
   machine: createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYAHAGYSARn0B2fVoBsATiEAmIxZ1aANCACeiffZI7rFk1ts6FlpBGgC+oc5oWHiEpHz0zCxUAKIAshQAasm81IKiKtKyCkoq6ggArNblJGbG+rVVQvoaQc5uCL5eRmblur7+2uGRGDgExOTUCawAwgASydM03GwMAMpkyVTCYkgghfKKyrtlxhZeFr5mOkJ29eVCGm2a+noPGtZXtc0PFkMgUaNYhNaIxWABVBgAMQo0zBq2SeR2khkBxKx3ctRIQh0+msGm05XK9jMRieCC0+hI9yENOx1h0PTMWi0fwBMXGcwWSxW602LG2BRRxSOoDKHzMXlx5UM2KMhIuj1ciB6lLMQgsGhsPgsUpZEX+I3ZpE5i2Waw2VH5+iReyFh1KiHFkqqMp0cqJGrJJiEBnVDh0Gm6zJ05VZhrGpAh0Nh8I4LGjcIRAt2+2FDoQHh9mrM9MsWjlRiMDLJARI2aqWm0fRuYeiEZIAAU2Im4wnY8nkUV7eiM5jsbj8Vp5QzSUqM4Wy+UcS9ur0Lvpwvr8FIIHAVGyI4Ku2jRYgALRmMl76oXU+Fok58pGd61wHjeKgreokVqTQ3Eje+zSwlV0ftHwaCQ1j+JW1jND4FJDreRokCa3LmpsT5pj2V5kiSPpql++JmBo5SWNB9YpKsYIADIACqrEh3a7gg+J6PofpBmYObMX+iB4dYXhEpq3gMcy9IEUCRGkRRsHUCk0xkWavJUFRO6vrROq+vYTEsSSaEtCQQ72PYDGFsEYT6huQnJMR5GrOQVAUMw0kWnJL5lC0lIMSpTLMeKbEIEYQhaFxKnvEO5SBtYgnjFGMItvZ6bvCWFgSlcwEQQGNJGFBRnhkCTaRSmdryY51hkh4nEXiGzSBDhi6hEAA */
-      initial: 'UNFOCUSED',
+      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYAHAGYSARn0B2fQDYhRoQFYrOraYA0IAJ6J9ATgBMJHZ-fmjKy13dy17KwBfCKc0LDxCUj56ZhYqAFEAWQoANTTeakFRFWlZBSUVdQQrTysSU2N9HVMQ92qwp1cEfx8jUw0jUMDTXosomIwcAmJyamTWAGEACTT5mm42BgBlMjSqYTEkEBL5RWVDyvr9EnchU09LEI8g-Q7Ee6ESa3r3DQ8BrRsYxAsUmCRmtEYrAAqgwAGIUeZQzZpQoHSQyE7lc5ueqfHT6TwadxmTz2Iw6V4ILRXIktYy3RqEyLRYETeLTJYrNYbba7Fj7YoYspnUCVTymUw+An9LRCIRmQKUvruOpCdw6HRGDQSjxCHRAkHs0ic1brLY7Kj8-Roo5C04VN4SqWEoyy+XDKyUyxaAxqpqeQwaTVCLQGtlTUgMCgAFW4m2jbCo0ZRLHhiORqMFpXt2IQnj1Bg0t1+VjV2g0npcb3JJCLd2sGnuQ2Z4ziEZIAAU2EiU2me5nDsdhQ6EGYrnrpcS7mSKVXR0YjLXbGqARKfhoK1EWfgpBA4CpDRGs5iRWpEABaRxzy+fOV3+930lhttgpKQ4-D3O-H0b2z4-RaNq5K9JSfh6KS9xWPUViuvKC7PqCHLLKaPIWh+OaiogMFKqYPrmOq+LiiE9ymAhRokOkmxQgAMtGmzoVimEIBuej6H6ViNK65i+JSUEfDoVgEX0phQaYdhke2lE0XRJDzNQ6TzLGqG7Axp6VESVxseqHGavYeqeEq-QkAC6rNForoDOSElglJtGbOQVAUMwZq8lQqkjhpvraZxek8XOliSgJ2mkh47jwSyh5glGsbxomyYcO5X4GXOfi1GJkH2J44oeKGEXhmCXb9olTGNpSHjeIJYk6HKTRQY2W4REAA */
+      initial: 'NOT_STARTED',
       schema: {
         events: {} as
           | AddWordEvent
@@ -73,6 +73,7 @@ export const fillInTheBlanksMachine = {
           | FocusedEvent
           | UnFocusedEvent,
       },
+      predictableActionArguments: true,
       context: {} as ContextType,
       tsTypes: {} as import('./fillInTheBlanks.machine.typegen').Typegen0,
       states: {
@@ -93,7 +94,6 @@ export const fillInTheBlanksMachine = {
               {
                 cond: context =>
                   derivedValues(context).nextUserBlank === undefined,
-                actions: 'pauseTimer',
                 target: 'CHECK_ANSWER',
               },
             ],
@@ -105,7 +105,7 @@ export const fillInTheBlanksMachine = {
         },
 
         CHECK_ANSWER: {
-          entry: 'checkAnswer',
+          entry: ['pauseTimer', 'checkAnswer'],
           always: [
             {
               target: 'RESULTS.CORRECT_ANSWER',
@@ -122,7 +122,7 @@ export const fillInTheBlanksMachine = {
           },
         },
 
-        UNFOCUSED: {
+        NOT_STARTED: {
           on: {
             [EventTypes.FOCUSED]: {
               target: 'WORKING',

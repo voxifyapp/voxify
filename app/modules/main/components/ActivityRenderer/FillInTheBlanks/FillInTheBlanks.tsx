@@ -6,7 +6,7 @@ import {
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -14,9 +14,11 @@ type Props = {
 };
 
 export const FillInTheBlanks = ({ activity }: Props) => {
-  const contextValue = useCreateFillInTheBlanksContext({ activity });
+  const contextValue = useCreateFillInTheBlanksContext(
+    useMemo(() => ({ activity }), [activity]),
+  );
 
-  const { onComplete } = useActivityRendererContext();
+  const {} = useActivityRendererContext();
 
   const { options, questionSegments, send, state, EventTypes } = contextValue;
   const { userAnswer } = state.context;

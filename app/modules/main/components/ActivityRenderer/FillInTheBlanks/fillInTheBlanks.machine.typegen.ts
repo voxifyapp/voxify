@@ -34,7 +34,7 @@
         eventsCausingServices: {
           
         };
-        matchesStates: "CHECK_ANSWER" | "PAUSED" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "UNFOCUSED" | "WORKING" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER"; };
+        matchesStates: "CHECK_ANSWER" | "NOT_STARTED" | "PAUSED" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "WORKING" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER"; };
         tags: never;
       }
   
