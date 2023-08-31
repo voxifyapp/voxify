@@ -63,7 +63,7 @@ type UnFocusedEvent = { type: EventTypes.UNFOCUSED };
 export const fillInTheBlanksMachine = {
   machine: createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYAHAGYSARn0B2AExCTG-SYCsOgJxGANCACeiY0ZIajOq3a3e+na2AL4hzmhYeISkfPTMLFQAogCyFABqSbzUgqIq0rIKSirqCNY2JABsxvo6lXYN5Vpazm4IWvok5UI9JrUmzSamYREYOATE5NTxrADCABJJszTcbAwAymRJVMJiSCAF8orK+6WV1p52QtV2Fr7WxpWtiEOXJpXvRv5aNh06IyBIuMYlNaIxWABVBgAMQoswh6ySuT2khkR2KpxeGmsJDMvh0PQcWgutWeCEMnSEdnOxJ0NkqlSMlQBQOikwWSxWa022xYu3yaKKJ1ApXelRIvgs32sDyMMp0ZMqPxIcoGVP03XeGhZYzZpA5y1WGy2VD5+hRB0FxxKLwZEqsGmlsvlZKMllx5S+ZjsdKE1jsOqiE1IDAoABVuOsw2wqGGkSxYfDEciBYVrZiEHiDBprmZzv7dMEyTZPNZHUZrjmvlSA+FAbrgyQAApsBHxxNtlP7Q5Cm2Z7G4oT4wlGYlGUmudzVLrUi5aeo6f1usJ1-BSCBwFSs4Op9HCtSIAC0T0nCEPOP8PSv156dMDwMmcXBu97GY0lQ0Xmx930AR81mLUcvHeEtrGqawhC+e89RIA0uWNbYX3TEVEAuRUAi8IINA0AZjGsH5mTrbcQWSdYIQAGTDdYkIxFCEGwvR9CpHRTBMOkmJYjQyTLcUINwuklVY6DG1IiiqNg6hklmCNuRNGj91KR1OiYn1WPYoc3XQylzC+fwLkqOlrGEkikjIyj1nIKgKGYI0eSoeS+yUgxmLUvoNK408fDsLodJ+L5misfRjMmUMIyjGM4w4By3xMYstCEFUmXeXRGVMD5gtIFtO2iuicLJfQBxzD8mSZOcNS0FcQiAA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAYQAkBRNmgfQCCDAMpkuVANoAGALqJQABwD2sXABdcS-PJAAPRAHYATEZIAOM0csAWAKwBGe1LMA2ewBoQAT0QmAnCQGUgDM9i4GrrYmwWYAvrGeaFh4hKSUtIysAKoMAGIUbFnCXAAi0nJIIMqqGlo6+ghGdiT2Zga2UrbB7bYG3baePgj2XYFGLm7WwdZ+IX3xiRg4BMTk1PTMJLl0ADI7fIx8ACrcfABCO0I0wiwCJSV86WWyOtXqmtqVDVOmtn79Lj8HSMs3ag181gMJDsoVsbiCUj81hcCxASWWqTWGU22z2BwYx1OFyuNyoXAAshQAGpcR7UZ4VRQqd51L6ISG2EiI-p+VxImIhcHDBxcqRisJ+AwGCb2YKo9EpVacHj8ISicQscqvZm1T6gBrjFwkYJSZFtYLwvx+IxC9pGlxw4JGJy2GbGWzypaK0jK3iCERiKia+yMqo6j71XwTY2mlzmy3WoVmKSmB0uC3WexAqJ2T3JFakBgUI58YRHARUI6lFj5QrFBnamoRtmNEItaxSdMGawmMzTG3eRAmqQkcKS50xeyZkJ5jGrAAKAiK1dry4blTeusjjWarXanX6vX6QqMppIJgmUml1qalg9qPwSggcB0CoLjZZer0iAAtC4hT+RjBCQVqgWB4FygkaJegWWIbEwH5bi2MTWCQfwAkCKaggMg4IOmaFilIU6uMi1hmMis7enBmRbLs+yHCctLEgw1yIc2+rsr00IwvY0pGAYTimkK0xmCBnbjLyfxGHCKJQW+mK+qqAbiGxrIcQgvS2haIFmH44R9OJUmUbBZLCFkOxHMIqlft8UwtERvTjB2t59kKLintCnahD2iJEURxmYqZ5mWSQbDUGSbAlmqgbWduMz2PZIzGC4zlka5uHtKhszpqedhzK0AWrEFFnCOQVAUMw-rqlQsUtvFiWOSlKZpcESayp56YpcmRHSZBiz5piRYlmWFZViUtXqT2wlNC0cJWCMroxLYcRyTBmKLmuE3fggU24VOqFTk6CIgiETTxPEQA */
       initial: 'NOT_STARTED',
       schema: {
         events: {} as
@@ -78,18 +78,25 @@ export const fillInTheBlanksMachine = {
       tsTypes: {} as import('./fillInTheBlanks.machine.typegen').Typegen0,
       states: {
         WORKING: {
-          on: {
-            [EventTypes.ADD_WORD]: {
-              cond: 'canAddWords',
-              target: 'WORKING',
-              actions: 'addWord',
-            },
-            [EventTypes.REMOVE_WORD]: [
-              {
-                target: 'WORKING',
-                actions: 'removeWord',
+          initial: 'FILL_IN_THE_BLANKS',
+          states: {
+            FILL_IN_THE_BLANKS: {
+              on: {
+                [EventTypes.ADD_WORD]: {
+                  cond: 'canAddWords',
+                  target: 'FILL_IN_THE_BLANKS',
+                  actions: 'addWord',
+                },
+                [EventTypes.REMOVE_WORD]: [
+                  {
+                    target: 'FILL_IN_THE_BLANKS',
+                    actions: 'removeWord',
+                  },
+                ],
               },
-            ],
+            },
+          },
+          on: {
             [EventTypes.CHECK_ANSWER]: [
               {
                 cond: context =>
