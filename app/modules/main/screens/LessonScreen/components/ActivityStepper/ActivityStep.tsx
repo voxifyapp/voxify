@@ -1,4 +1,4 @@
-import { ActivityRenderer } from '@voxify/modules/main/screens/LessonScreen/components/ActivityRenderer/ActivityRenderer';
+import { ActivityRenderer } from '@voxify/modules/main/components/ActivityRenderer/ActivityRenderer';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import React from 'react';
 
@@ -10,9 +10,7 @@ export const ActivityStep = ({ activity }: Props) => {
   return (
     <ActivityRenderer
       activity={activity}
-      onComplete={({ timeTakenToCompleteInMillis }) =>
-        console.log(timeTakenToCompleteInMillis)
-      }
+      onComplete={async data => console.log(data)}
     />
   );
 };

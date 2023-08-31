@@ -1,6 +1,6 @@
 import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { fillInTheBlanksMachine } from '@voxify/modules/main/screens/LessonScreen/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanks.machine';
+import { fillInTheBlanksMachine } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanks.machine';
 import { useMachine } from '@xstate/react';
 
 type ContextData = {
@@ -24,6 +24,7 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
     send,
     state,
     EventTypes,
+    machine,
   };
 }
 

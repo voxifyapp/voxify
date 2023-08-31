@@ -1,10 +1,11 @@
 import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 
 import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
-} from '@voxify/modules/main/screens/LessonScreen/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
+} from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import React, { useEffect } from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
@@ -14,6 +15,8 @@ type Props = {
 
 export const FillInTheBlanks = ({ activity }: Props) => {
   const contextValue = useCreateFillInTheBlanksContext({ activity });
+
+  const { onComplete } = useActivityRendererContext();
 
   const { options, questionSegments, send, state, EventTypes } = contextValue;
   const { userAnswer } = state.context;
