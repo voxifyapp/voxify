@@ -5,6 +5,7 @@ import { PronunciationActivity } from '@voxify/common/activities/pronunciation-a
 import { VideoActivity } from '@voxify/common/activities/video-activity';
 import {
   ActivityRendererContextProvider,
+  ActivityRendererOnCompleteType,
   useCreateActivityRendererContext,
 } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
@@ -17,7 +18,7 @@ import React from 'react';
 
 type Props = {
   activity: ActivityEntity;
-  onComplete: (data: { timeTakenToCompleteInMillis: number }) => Promise<any>;
+  onComplete: ActivityRendererOnCompleteType;
 };
 
 export const ActivityRenderer = ({ activity, onComplete }: Props) => {

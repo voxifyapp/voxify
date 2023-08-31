@@ -7,6 +7,7 @@ export enum ActivityResponseResultType {
 
 export interface ActivityResponseEntity extends BaseEntity {
   result: ActivityResponseResultType;
+  /** In seconds */
   timeTaken: number;
   responseData: object;
   profileId: string;

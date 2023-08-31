@@ -63,7 +63,7 @@ type UnFocusedEvent = { type: EventTypes.UNFOCUSED };
 export const fillInTheBlanksMachine = {
   machine: createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYAHAGYSARn0B2fQDYhRoQFYrOraYA0IAJ6J9ATgBMJHZ-fmjKy13dy17KwBfCKc0LDxCUj56ZhYqAFEAWQoANTTeakFRFWlZBSUVdQQrTysSU2N9HVMQ92qwp1cEfx8jUw0jUMDTXosomIwcAmJyamTWAGEACTT5mm42BgBlMjSqYTEkEBL5RWVDyvr9EnchU09LEI8g-Q7Ee6ESa3r3DQ8BrRsYxAsUmCRmtEYrAAqgwAGIUeZQzZpQoHSQyE7lc5ueqfHT6TwadxmTz2Iw6V4ILRXIktYy3RqEyLRYETeLTJYrNYbba7Fj7YoYspnUCVTymUw+An9LRCIRmQKUvruOpCdw6HRGDQSjxCHRAkHs0ic1brLY7Kj8-Roo5C04VN4SqWEoyy+XDKyUyxaAxqpqeQwaTVCLQGtlTUgMCgAFW4m2jbCo0ZRLHhiORqMFpXt2IQnj1Bg0t1+VjV2g0npcb3JJCLd2sGnuQ2Z4ziEZIAAU2EiU2me5nDsdhQ6EGYrnrpcS7mSKVXR0YjLXbGqARKfhoK1EWfgpBA4CpDRGs5iRWpEABaRxzy+fOV3+930lhttgpKQ4-D3O-H0b2z4-RaNq5K9JSfh6KS9xWPUViuvKC7PqCHLLKaPIWh+OaiogMFKqYPrmOq+LiiE9ymAhRokOkmxQgAMtGmzoVimEIBuej6H6ViNK65i+JSUEfDoVgEX0phQaYdhke2lE0XRJDzNQ6TzLGqG7Axp6VESVxseqHGavYeqeEq-QkAC6rNForoDOSElglJtGbOQVAUMwZq8lQqkjhpvraZxek8XOliSgJ2mkh47jwSyh5glGsbxomyYcO5X4GXOfi1GJkH2J44oeKGEXhmCXb9olTGNpSHjeIJYk6HKTRQY2W4REAA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYAHAGYSARn0B2AExCTG-SYCsOgJxGANCACeiY0ZIajOq3a3e+na2AL4hzmhYeISkfPTMLFQAogCyFABqSbzUgqIq0rIKSirqCNY2JABsxvo6lXYN5Vpazm4IWvok5UI9JrUmzSamYREYOATE5NTxrADCABJJszTcbAwAymRJVMJiSCAF8orK+6WV1p52QtV2Fr7WxpWtiEOXJpXvRv5aNh06IyBIuMYlNaIxWABVBgAMQoswh6ySuT2khkR2KpxeGmsJDMvh0PQcWgutWeCEMnSEdnOxJ0NkqlSMlQBQOikwWSxWa022xYu3yaKKJ1ApXelRIvgs32sDyMMp0ZMqPxIcoGVP03XeGhZYzZpA5y1WGy2VD5+hRB0FxxKLwZEqsGmlsvlZKMllx5S+ZjsdKE1jsOqiE1IDAoABVuOsw2wqGGkSxYfDEciBYVrZiEHiDBprmZzv7dMEyTZPNZHUZrjmvlSA+FAbrgyQAApsBHxxNtlP7Q5Cm2Z7G4oT4wlGYlGUmudzVLrUi5aeo6f1usJ1-BSCBwFSs4Op9HCtSIAC0T0nCEPOP8PSv156dMDwMmcXBu97GY0lQ0Xmx930AR81mLUcvHeEtrGqawhC+e89RIA0uWNbYX3TEVEAuRUAi8IINA0AZjGsH5mTrbcQWSdYIQAGTDdYkIxFCEGwvR9CpHRTBMOkmJYjQyTLcUINwuklVY6DG1IiiqNg6hklmCNuRNGj91KR1OiYn1WPYoc3XQylzC+fwLkqOlrGEkikjIyj1nIKgKGYI0eSoeS+yUgxmLUvoNK408fDsLodJ+L5misfRjMmUMIyjGM4w4By3xMYstCEFUmXeXRGVMD5gtIFtO2iuicLJfQBxzD8mSZOcNS0FcQiAA */
       initial: 'NOT_STARTED',
       schema: {
         events: {} as
@@ -99,7 +99,6 @@ export const fillInTheBlanksMachine = {
             ],
             [EventTypes.UNFOCUSED]: {
               target: 'PAUSED',
-              actions: ['pauseTimer'],
             },
           },
         },
@@ -120,22 +119,26 @@ export const fillInTheBlanksMachine = {
             CORRECT_ANSWER: {},
             WRONG_ANSWER: {},
           },
+          invoke: {
+            src: 'onActivityCompleted',
+          },
         },
 
         NOT_STARTED: {
           on: {
             [EventTypes.FOCUSED]: {
               target: 'WORKING',
-              actions: ['setStartTime'],
+              actions: ['startTimer'],
             },
           },
         },
 
         PAUSED: {
+          entry: ['pauseTimer'],
           on: {
             [EventTypes.FOCUSED]: {
               target: 'WORKING',
-              actions: ['resumeTimer'],
+              actions: ['startTimer'],
             },
           },
         },
@@ -162,16 +165,13 @@ export const fillInTheBlanksMachine = {
             answerErrors: context.activity.checkAnswer(context.userAnswer),
           };
         }),
-        setStartTime: assign({ startTimeInMillis: dayjs().valueOf() }),
+        startTimer: assign({ startTimeInMillis: dayjs().valueOf() }),
         pauseTimer: assign(context => {
           return {
             totalTimeSpentInMillis:
               context.totalTimeSpentInMillis +
               (Date.now() - context.startTimeInMillis),
           };
-        }),
-        resumeTimer: assign({
-          startTimeInMillis: dayjs().valueOf(),
         }),
       },
       guards: {

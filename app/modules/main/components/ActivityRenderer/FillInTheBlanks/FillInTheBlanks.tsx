@@ -1,5 +1,4 @@
 import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 
 import {
   FillInTheBlanksContextProvider,
@@ -17,8 +16,6 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   const contextValue = useCreateFillInTheBlanksContext(
     useMemo(() => ({ activity }), [activity]),
   );
-
-  const {} = useActivityRendererContext();
 
   const { options, questionSegments, send, state, EventTypes } = contextValue;
   const { userAnswer } = state.context;
