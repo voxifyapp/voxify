@@ -3,7 +3,7 @@ import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence
 import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
 import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
 import { VideoActivity } from '@voxify/common/activities/video-activity';
-import { FillInTheBlanks } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/FillInTheBlanks';
+import { FillInTheBlanks } from '@voxify/modules/main/screens/LessonScreen/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
@@ -13,6 +13,7 @@ import React from 'react';
 
 type Props = {
   activity: ActivityEntity;
+  onComplete: (data: { timeTakenToCompleteInMillis: number }) => any;
 };
 
 export const ActivityRenderer = ({ activity }: Props) => {

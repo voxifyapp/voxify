@@ -24,6 +24,7 @@
     "add": "^2.0.6",
     "axios": "^1.4.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "dayjs": "^1.11.9",
     "expo": ">=49.0.0-0 <50.0.0",
     "expo-secure-store": "~12.3.1",
     "lodash": "^4.17.21",

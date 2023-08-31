@@ -3,6 +3,7 @@ import {
   FillInTheBlanksActivityAnswer,
   FillInTheBlanksAnswerErrorsType,
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
+import dayjs from 'dayjs';
 import { flattenDeep, omit } from 'lodash';
 import { assign, createMachine } from 'xstate';
 
@@ -10,12 +11,16 @@ enum EventTypes {
   ADD_WORD = 'ADD_WORD',
   REMOVE_WORD = 'REMOVE_WORD',
   CHECK_ANSWER = 'CHECK_ANSWER',
+  FOCUSED = 'FOCUSED',
+  UNFOCUSED = 'UNFOCUSED',
 }
 
 type ContextType = {
   userAnswer: FillInTheBlanksActivityAnswer;
   activity: FillInTheBlanksActivity;
   answerErrors: FillInTheBlanksAnswerErrorsType | null;
+  startTimeInMillis: number;
+  totalTimeSpentInMillis: number;
 };
 
 const derivedValues = (context: ContextType) => {
@@ -52,14 +57,21 @@ type RemoveWordEvent = {
   payload: { blankId: string };
 };
 type CheckAnswerEvent = { type: EventTypes.CHECK_ANSWER };
+type FocusedEvent = { type: EventTypes.FOCUSED };
+type UnFocusedEvent = { type: EventTypes.UNFOCUSED };
 
 export const fillInTheBlanksMachine = {
   machine: createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRAE4hJIQGYAjACYALBv0BWAOyXDANkOGANCACeifdZIbLB3bqHGJkJCdgC+oc5oWHiEpHz0zCxUAKIAshQAasm81IKiKtKyCkoq6gj6uoYk5gYm+hoAHPrGug16zm4ITdX1Ghq2Hv31hg3hkRg4BMTk1AmsAMIAEsnzNNxsDADKZMlUwmJIIIXyisqHZf5VI1rm5ra3+gP6HYiGlg1ednZ9Qub6TSYxiAopNYiQlis1httrsWPsCjITiVzoh-MYvA1bLpzMZbA1brZLL8XghbITqhpKn9dMZzIZ9PUgSCYtMIat1lsdlQ4foDpJEcUzqAytSSP8GsZmuYApTWiSyZYKVT3mZgmTwhEQPgpBA4CpmVMiAiiqdSohbCSALTmLyWPoaaWGGqWUyMzUGsHxRhMY1IoVqdxCD4NSohSzmRr6X5CSwkt4aEiBey2H5-AHGJkTFmkNlQzm7X2Cs0IKwknG2T5Yiy6Sz1amZ6KGkgpTYAVQAMgAVTaF00okvGEkSitJvyBO19dXurNNlsd7vg6gpeadjkwqi95HCwNOVyaPyVvwBCMDcyjaeNsFzrubchUCjMNdczf+spR3edPpVUeqvwNTHnuEQA */
-      initial: 'WORKING',
+      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYAHAGYSARn0B2fVoBsATiEAmIxZ1aANCACeiffZI7rFk1ts6FlpBGgC+oc5oWHiEpHz0zCxUAKIAshQAasm81IKiKtKyCkoq6ggArNblJGbG+rVVQvoaQc5uCL5eRmblur7+2uGRGDgExOTUCawAwgASydM03GwMAMpkyVTCYkgghfKKyrtlxhZeFr5mOkJ29eVCGm2a+noPGtZXtc0PFkMgUaNYhNaIxWABVBgAMQo0zBq2SeR2khkBxKx3ctRIQh0+msGm05XK9jMRieCC0+hI9yENOx1h0PTMWi0fwBMXGcwWSxW602LG2BRRxSOoDKHzMXlx5UM2KMhIuj1ciB6lLMQgsGhsPgsUpZEX+I3ZpE5i2Waw2VH5+iReyFh1KiHFkqqMp0cqJGrJJiEBnVDh0Gm6zJ05VZhrGpAh0Nh8I4LGjcIRAt2+2FDoQHh9mrM9MsWjlRiMDLJARI2aqWm0fRuYeiEZIAAU2Im4wnY8nkUV7eiM5jsbj8Vp5QzSUqM4Wy+UcS9ur0Lvpwvr8FIIHAVGyI4Ku2jRYgALRmMl76oXU+Fok58pGd61wHjeKgreokVqTQ3Eje+zSwlV0ftHwaCQ1j+JW1jND4FJDreRokCa3LmpsT5pj2V5kiSPpql++JmBo5SWNB9YpKsYIADIACqrEh3a7gg+J6PofpBmYObMX+iB4dYXhEpq3gMcy9IEUCRGkRRsHUCk0xkWavJUFRO6vrROq+vYTEsSSaEtCQQ72PYDGFsEYT6huQnJMR5GrOQVAUMw0kWnJL5lC0lIMSpTLMeKbEIEYQhaFxKnvEO5SBtYgnjFGMItvZ6bvCWFgSlcwEQQGNJGFBRnhkCTaRSmdryY51hkh4nEXiGzSBDhi6hEAA */
+      initial: 'UNFOCUSED',
       schema: {
-        events: {} as AddWordEvent | RemoveWordEvent | CheckAnswerEvent,
+        events: {} as
+          | AddWordEvent
+          | RemoveWordEvent
+          | CheckAnswerEvent
+          | FocusedEvent
+          | UnFocusedEvent,
       },
       context: {} as ContextType,
       tsTypes: {} as import('./fillInTheBlanks.machine.typegen').Typegen0,
@@ -81,9 +93,14 @@ export const fillInTheBlanksMachine = {
               {
                 cond: context =>
                   derivedValues(context).nextUserBlank === undefined,
+                actions: 'pauseTimer',
                 target: 'CHECK_ANSWER',
               },
             ],
+            [EventTypes.UNFOCUSED]: {
+              target: 'PAUSED',
+              actions: ['pauseTimer'],
+            },
           },
         },
 
@@ -102,6 +119,24 @@ export const fillInTheBlanksMachine = {
           states: {
             CORRECT_ANSWER: {},
             WRONG_ANSWER: {},
+          },
+        },
+
+        UNFOCUSED: {
+          on: {
+            [EventTypes.FOCUSED]: {
+              target: 'WORKING',
+              actions: ['setStartTime'],
+            },
+          },
+        },
+
+        PAUSED: {
+          on: {
+            [EventTypes.FOCUSED]: {
+              target: 'WORKING',
+              actions: ['resumeTimer'],
+            },
           },
         },
       },
@@ -126,6 +161,17 @@ export const fillInTheBlanksMachine = {
           return {
             answerErrors: context.activity.checkAnswer(context.userAnswer),
           };
+        }),
+        setStartTime: assign({ startTimeInMillis: dayjs().valueOf() }),
+        pauseTimer: assign(context => {
+          return {
+            totalTimeSpentInMillis:
+              context.totalTimeSpentInMillis +
+              (Date.now() - context.startTimeInMillis),
+          };
+        }),
+        resumeTimer: assign({
+          startTimeInMillis: dayjs().valueOf(),
         }),
       },
       guards: {

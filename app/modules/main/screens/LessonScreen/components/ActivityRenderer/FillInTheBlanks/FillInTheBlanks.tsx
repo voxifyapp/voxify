@@ -4,8 +4,8 @@ import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
-} from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks/fillInTheBlanksContext';
-import React from 'react';
+} from '@voxify/modules/main/screens/LessonScreen/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
+import React, { useEffect } from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -16,11 +16,15 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   const contextValue = useCreateFillInTheBlanksContext({ activity });
 
   const { options, questionSegments, send, state, EventTypes } = contextValue;
-
   const { userAnswer } = state.context;
+
+  useEffect(() => {
+    send({ type: EventTypes.FOCUSED });
+  }, [send, EventTypes.FOCUSED]);
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
+      <H1>{state.context.totalTimeSpentInMillis / 1000}</H1>
       <YStack padding="$3" fullscreen>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (

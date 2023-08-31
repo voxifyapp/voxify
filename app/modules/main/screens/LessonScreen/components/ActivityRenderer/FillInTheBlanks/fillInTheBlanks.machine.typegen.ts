@@ -19,7 +19,10 @@
         eventsCausingActions: {
           "addWord": "ADD_WORD";
 "checkAnswer": "CHECK_ANSWER";
+"pauseTimer": "CHECK_ANSWER" | "UNFOCUSED";
 "removeWord": "REMOVE_WORD";
+"resumeTimer": "FOCUSED";
+"setStartTime": "FOCUSED";
         };
         eventsCausingDelays: {
           
@@ -31,7 +34,7 @@
         eventsCausingServices: {
           
         };
-        matchesStates: "CHECK_ANSWER" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "WORKING" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER"; };
+        matchesStates: "CHECK_ANSWER" | "PAUSED" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "UNFOCUSED" | "WORKING" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER"; };
         tags: never;
       }
   
