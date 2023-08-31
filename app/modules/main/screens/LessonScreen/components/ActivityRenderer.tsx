@@ -19,7 +19,6 @@ export const ActivityRenderer = ({ activity }: Props) => {
   if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
     return (
       <FillInTheBlanks
-        activityEntity={activity}
         activity={new FillInTheBlanksActivity(activity.data as any)}
       />
     );

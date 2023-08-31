@@ -58,8 +58,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             Check Answer
           </Button>
         )}
-        {state.matches('CORRECT_ANSWER') && <H1>Correct</H1>}
-        {state.matches('WRONG_ANSWER') && <H1>Wrong</H1>}
+        {state.matches('RESULTS.CORRECT_ANSWER') && <H1>Correct</H1>}
+        {state.matches('RESULTS.WRONG_ANSWER') && <H1>Wrong</H1>}
       </YStack>
     </FillInTheBlanksContextProvider>
   );

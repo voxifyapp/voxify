@@ -6,13 +6,6 @@ import {
 import { flattenDeep, omit } from 'lodash';
 import { assign, createMachine } from 'xstate';
 
-enum States {
-  WORKING = 'WORKING',
-  CHECK_ANSWER = 'CHECK_ANSWER',
-  CORRECT_ANSWER = 'CORRECT_ANSWER',
-  WRONG_ANSWER = 'WRONG_ANSWER',
-}
-
 enum EventTypes {
   ADD_WORD = 'ADD_WORD',
   REMOVE_WORD = 'REMOVE_WORD',
@@ -63,24 +56,24 @@ type CheckAnswerEvent = { type: EventTypes.CHECK_ANSWER };
 export const fillInTheBlanksMachine = {
   machine: createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRABYATCSF79B-QEYNAGhABPREYDsNkhoCsAZiNabR5wE5HXm84BfAPM0LDxCUj56ZhYqAFEAWQoANTjeakFRFWlZBSUVdQQADg0HL3KfLw0qoqKtI3MrYqMSR0MjIqMANm1HRyCQjBwCYnJqaNYAYQAJOMmabjYGAGUyOKphMSQQHPlFZW3C5yEdLS8uopsur2c2s67GxHd7LyEurQ0NY+8bDTeBkChYYREgzOYLJardYsTbZGR7fKHRBXRwkGxtE4uXxaa42R4ILS3Eivd59dE47r9YKAobhUZg+aLFZrKgwoxbSTwvIHUCFFFojFaLFeHF+fFnUp-d4aIwnQkaGxBan4KQQOAqIF0ohw3L7AqIAC0qIqJtNXiKD0shq6AM1I0i40YTB1CJ5amsQiKJCKtyqQkcnR6PQaVoJNi9UqFfz8fS0-tttPtoNmjMhLJd3P1CD6XQczl+fmcXzOfXFjlKJKF5SEry0Hy0CbCScm1HikwAKkyoVQM3qkQgfKjy9durYq25xUWSEZHKSND04zKfY3gaMyFQKMwu+ntrtM-3B61515RzZx1pxSKSF1Z1XqkURUUXEqAkA */
-      initial: States.WORKING,
+      /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEBiAQQBEOB9SqjgNoAGALqJQABwD2sXABdcU-OJAAPRAE4hJIQGYAjACYALBv0BWAOyXDANkOGANCACeifdZIbLB3bqHGJkJCdgC+oc5oWHiEpHz0zCxUAKIAshQAasm81IKiKtKyCkoq6gj6uoYk5gYm+hoAHPrGug16zm4ITdX1Ghq2Hv31hg3hkRg4BMTk1AmsAMIAEsnzNNxsDADKZMlUwmJIIIXyisqHZf5VI1rm5ra3+gP6HYiGlg1ednZ9Qub6TSYxiAopNYiQlis1httrsWPsCjITiVzoh-MYvA1bLpzMZbA1brZLL8XghbITqhpKn9dMZzIZ9PUgSCYtMIat1lsdlQ4foDpJEcUzqAytSSP8GsZmuYApTWiSyZYKVT3mZgmTwhEQPgpBA4CpmVMiAiiqdSohbCSALTmLyWPoaaWGGqWUyMzUGsHxRhMY1IoVqdxCD4NSohSzmRr6X5CSwkt4aEiBey2H5-AHGJkTFmkNlQzm7X2Cs0IKwknG2T5Yiy6Sz1amZ6KGkgpTYAVQAMgAVTaF00okvGEkSitJvyBO19dXurNNlsd7vg6gpeadjkwqi95HCwNOVyaPyVvwBCMDcyjaeNsFzrubchUCjMNdczf+spR3edPpVUeqvwNTHnuEQA */
+      initial: 'WORKING',
       schema: {
         events: {} as AddWordEvent | RemoveWordEvent | CheckAnswerEvent,
       },
       context: {} as ContextType,
       tsTypes: {} as import('./fillInTheBlanks.machine.typegen').Typegen0,
       states: {
-        [States.WORKING]: {
+        WORKING: {
           on: {
             [EventTypes.ADD_WORD]: {
               cond: 'canAddWords',
-              target: States.WORKING,
+              target: 'WORKING',
               actions: 'addWord',
             },
             [EventTypes.REMOVE_WORD]: [
               {
-                target: States.WORKING,
+                target: 'WORKING',
                 actions: 'removeWord',
               },
             ],
@@ -88,23 +81,29 @@ export const fillInTheBlanksMachine = {
               {
                 cond: context =>
                   derivedValues(context).nextUserBlank === undefined,
-                target: States.CHECK_ANSWER,
+                target: 'CHECK_ANSWER',
               },
             ],
           },
         },
-        [States.CHECK_ANSWER]: {
+
+        CHECK_ANSWER: {
           entry: 'checkAnswer',
           always: [
             {
-              target: States.CORRECT_ANSWER,
+              target: 'RESULTS.CORRECT_ANSWER',
               cond: 'correctAnswer',
             },
-            { target: States.WRONG_ANSWER },
+            'RESULTS.WRONG_ANSWER',
           ],
         },
-        [States.CORRECT_ANSWER]: {},
-        [States.WRONG_ANSWER]: {},
+
+        RESULTS: {
+          states: {
+            CORRECT_ANSWER: {},
+            WRONG_ANSWER: {},
+          },
+        },
       },
     },
     {
@@ -139,5 +138,4 @@ export const fillInTheBlanksMachine = {
   ),
   derivedValues,
   EventTypes,
-  States,
 };

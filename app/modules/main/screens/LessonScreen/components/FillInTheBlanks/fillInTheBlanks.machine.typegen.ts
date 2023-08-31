@@ -31,7 +31,7 @@
         eventsCausingServices: {
           
         };
-        matchesStates: "CHECK_ANSWER" | "CORRECT_ANSWER" | "WORKING" | "WRONG_ANSWER";
+        matchesStates: "CHECK_ANSWER" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "WORKING" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER"; };
         tags: never;
       }
   
