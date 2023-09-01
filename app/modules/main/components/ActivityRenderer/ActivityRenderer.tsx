@@ -9,12 +9,17 @@ import {
   useCreateActivityRendererContext,
 } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
+import {
+  EventTypes,
+  activityRendererMachine,
+} from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
 import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
-import React from 'react';
+import { useMachine } from '@xstate/react';
+import React, { useEffect } from 'react';
 
 type Props = {
   activity: ActivityEntity;
@@ -24,10 +29,17 @@ type Props = {
 export const ActivityRenderer = ({ activity, onComplete }: Props) => {
   const contextValue = useCreateActivityRendererContext({ onComplete });
 
+  const [state, send] = useMachine(activityRendererMachine);
+
+  useEffect(() => {
+    send(EventTypes.FOCUSED);
+  }, [send]);
+
   const activityToRender = () => {
     if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
       return (
         <FillInTheBlanks
+          isActive={state.matches('WORKING')}
           activity={new FillInTheBlanksActivity(activity.data as any)}
         />
       );

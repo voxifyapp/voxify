@@ -10,6 +10,7 @@ import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
+  isActive: boolean;
 };
 
 export const FillInTheBlanks = ({ activity }: Props) => {
@@ -26,8 +27,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <H1>{state.context.totalTimeSpentInMillis / 1000}</H1>
       <YStack padding="$3" fullscreen>
+        <H1>{state.context.totalTimeSpentInMillis / 1000}</H1>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
