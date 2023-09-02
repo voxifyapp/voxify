@@ -55,8 +55,6 @@ const ActivitySelector = () => {
     activityRendererActor.send({ type: 'FOCUSED' });
   }, [activityRendererActor]);
 
-  console.log(activityRendererActor.getSnapshot()?.context);
-
   if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
     return (
       <FillInTheBlanks

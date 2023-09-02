@@ -19,14 +19,14 @@ type Props = {
 };
 
 export const ActivityStepper = ({ activities }: Props) => {
-  // for (let i = 0; i < 5; i++) {
-  //   activities.push(
-  //     ...activities.map(a => ({
-  //       ...a,
-  //       id: '' + Math.floor(Math.random() * 10000) + 1,
-  //     })),
-  //   );
-  // }
+  for (let i = 0; i < 3; i++) {
+    activities.push(
+      ...activities.map(a => ({
+        ...a,
+        id: '' + Math.floor(Math.random() * 10000) + 1,
+      })),
+    );
+  }
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
