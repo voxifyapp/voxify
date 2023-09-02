@@ -6,7 +6,7 @@ import {
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -18,16 +18,17 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     useMemo(() => ({ activity }), [activity]),
   );
 
-  const { options, questionSegments, send, state, EventTypes } = contextValue;
-  const { userAnswer } = state.context;
+  const activityRendererActor = ActivityRendererMachineContext.useActorRef();
 
-  useEffect(() => {
-    send({ type: EventTypes.FOCUSED });
-  }, [send, EventTypes.FOCUSED]);
+  const { options, questionSegments, send, state } = contextValue;
+  const { userAnswer } = state.context;
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <H1>{state.context.totalTimeSpentInMillis / 1000}</H1>
+      <H1>
+        {activityRendererActor.getSnapshot()!.context.totalTimeSpentInMillis /
+          1000}
+      </H1>
       <YStack padding="$3" fullscreen>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
@@ -43,14 +44,14 @@ export const FillInTheBlanks = ({ activity }: Props) => {
               <Button
                 disabled={
                   !state.can({
-                    type: EventTypes.ADD_WORD,
+                    type: 'add_word',
                     payload: { optionId: option.id },
                   })
                 }
                 key={option.id}
                 onPress={() => {
                   send({
-                    type: EventTypes.ADD_WORD,
+                    type: 'add_word',
                     payload: { optionId: option.id },
                   });
                 }}
@@ -60,20 +61,21 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             ))}
         </XStack>
         <Stack flex={1} />
-        {state.can({ type: EventTypes.CHECK_ANSWER }) && (
-          <Button onPress={() => send({ type: EventTypes.CHECK_ANSWER })}>
+        {activityRendererActor.getSnapshot()?.can({ type: 'FINISH' }) && (
+          <Button
+            onPress={() => activityRendererActor.send({ type: 'SET_RESULT' })}>
             Check Answer
           </Button>
         )}
-        {state.matches('RESULTS.CORRECT_ANSWER') && <H1>Correct</H1>}
-        {state.matches('RESULTS.WRONG_ANSWER') && <H1>Wrong</H1>}
+        {/* {state.matches('RESULTS.CORRECT_ANSWER') && <H1>Correct</H1>}
+        {state.matches('RESULTS.WRONG_ANSWER') && <H1>Wrong</H1>} */}
       </YStack>
     </FillInTheBlanksContextProvider>
   );
 };
 
 const SegmentRenderer = ({ segment }: { segment: string }) => {
-  const { state, send, EventTypes } = useFillInTheBlanksContext();
+  const { state, send } = useFillInTheBlanksContext();
 
   const { userAnswer, activity } = state.context;
 
@@ -87,13 +89,13 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
         <Button
           disabled={
             !state.can({
-              type: EventTypes.REMOVE_WORD,
+              type: 'remove_word',
               payload: { blankId: segment },
             })
           }
           onPress={() => {
             send({
-              type: EventTypes.REMOVE_WORD,
+              type: 'remove_word',
               payload: { blankId: segment },
             });
           }}
