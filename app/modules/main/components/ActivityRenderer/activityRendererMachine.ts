@@ -1,15 +1,22 @@
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import dayjs from 'dayjs';
 import { assign, createMachine } from 'xstate';
 
 type ContextType = {
   startTimeInMillis: number;
   totalTimeSpentInMillis: number;
+  userAnswer: any | null;
+  result: ActivityResponseResultType;
 };
 
 export const activityRendererMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAVgAs6kgCYAzPdfP7t5+oCM9gAc9gA0IACeiJ62JADsjra2gbHqAGyxrqkAvllhaFh4hKSUtIysnDz8JfTMkgoMsorKalqWBkam5pY2CACc6k5+sX6BfuqeY-aprmGRCK7qsSQDK+q9zqlBm7Y5eRg4BMTk1DXl3HzHpbXSjHRsABIa2kgg7SZmFi89tr2uy36JewpH7qWzDWaIAF+ZarTLOeF+TyBXYgfIHIqXU4iSokAAKXCUKhk8kJLWeekM7y6X0Q62cLlGfmco16vQCrkCEIQzlsqRItlhgX8yVi2VyqP2hSO1TK2IuNwYd3uROUwiovDYCgAMhwnm1KZ1PqAer4nOMmRzmb1UqCglznMM4gKBs4Rt4hrEUWipcUTrKKhd1ZqdZIg7xda0Xm9Dd07GM4uM0qlmYk-Ot7Y7Ys71K7grYPV7JYdSI1SXL+PVS81iU0VHqowaPrHuTySI5k65rWlAjz0xE7I44vZWazYoFtm5CwViyQqypy7OSdXK0u65GKR0mzSWzF224u6kez9nFzh04eSsNqk3a4dij8PoIHBLN7i-rN9TjYgALReLm-+wYRWQJfk8RZhk9cVXwxGVmHLd8qSNaxED-fsEGmNsR16fNMgGNNeindFpT9OCA34QRhAqMQVAQmNt3cXp+WTIJRlcMd0l6LlXAWIcsIWNkNjBQifUxf1ziqEimForcvwQYFlmYoYESmHx7Q5Fxs0SXoQP8eJhJnWCzhxfFSWkz9kIQMYwX5Mdxm4tjAh8WJ7VSGJ1ECezUlcn5Yn6O89mnGDJIXBUlRohsPyQnpYhPNCASWdzPKBaYAliSCAqI30riMwMNW1DgzKiqJ4hIHshRAvxXMCRzOTQh16QvF03XzNL9IxOdxHgiLEObVC5kcel4hHewhl5TxnDao4OoXFda3EQrmxi09rRIezuNTH57GHfyJUCqbV06sjFzmhb6J7UqmSmDY3GmeFUmWwJSrWjbei27CchyIA */
-    context: { startTimeInMillis: 0, totalTimeSpentInMillis: 0 } as ContextType,
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAFgCcARhKOA7I4AcrgKwAaEACeiADMPiSu6sGOAEyOnt7B6tGuwQC+qf5oWHiEpJS0jKycPPz59MySCgyyispqWpYGRqbmljYIHh7qJABstuo93kNu3q4ejv5BCMHe0SS2CTFxHglJKemZGDgExOTU5UXcfHsFFQBmBLiw2BraSCBNJmYW9+3ejj3hfoGIju8bICy21yJwOIhKJAAClwlCoZPJYfU7npDE9Wq9EPYkl91JF1O8fGMJj9pupnPZFrF4olkmkMoCtjldmVCuDjtJGHQ2AAJOGwMDGFgAJzgAFcADbGW6NVEtF6gdrRXEkSIxb5TaL2WzzVyDbweHorGnrelApl5fas4rHKi8NgKAAyHEktuUHGl90ecradicLncXnVITcJCVUSpRrWdM22R2pBqiLZ-CqCbq8NqKg9KOazx9CGi0W88wGhcmiH1nzDS2pawBZrjJFTKiTjYRaZTbczDU9stzGPzheLPVLJISRYi4eWq2S6Xp+H0EDglnruRlOfRCsQAFporYywgd7Y64yGyzmEm12j5dZELv9z1giRvMfYyCz4cIYJhMUxCpL97+2CRIVXDINpl1UNVQjacTRjYFmUtc9rVKRCmH-PtNwQQ0i0pLoCVGcZ92iDxHwnatI1pF94ItU4P2OaFEXQjcbwQRxIg8FVbB6LFhkJQiSSiboEj6bwFk8B8ekcKjzVBK0jn4DkGC5XlxCY692lcaJ9zcewSC6ewPC1bxJN1HwPGk09UJbV1HQ4NS8xmItNUNHx9yiVxwigqdjWjBlX12JtxAvHt13U289xJWxbA4qtoJ8iyQUClsOwzVSQqvPNNP3UTnDGESxINYJJISgLOyC5DW1S+zAI8OZxl3DxbFcWwlnULVsqi0MDQWAqJKk2cgA */
+    context: {
+      startTimeInMillis: 0,
+      totalTimeSpentInMillis: 0,
+      userAnswer: null,
+    } as ContextType,
     tsTypes: {} as import('./activityRendererMachine.typegen').Typegen0,
     states: {
       WORKING_STATE: {
@@ -27,8 +34,9 @@ export const activityRendererMachine = createMachine(
               UNFOCUSED: {
                 target: 'PAUSED',
               },
-              FINISH: {
+              finish: {
                 target: 'FINISHED',
+                actions: 'setUserAnswer',
               },
             },
             entry: 'startTimer',
@@ -43,18 +51,19 @@ export const activityRendererMachine = createMachine(
           },
           FINISHED: {
             on: {
-              SET_RESULT: {
+              set_result: {
                 target: 'RESULT',
+                actions: 'setResult',
               },
             },
           },
           RESULT: {
-            on: {
-              RESET: {
-                target: 'WORKING',
-                cond: 'Focused',
-              },
-            },
+            // on: {
+            //   RESET: {
+            //     target: 'WORKING',
+            //     cond: 'Focused',
+            //   },
+            // },
           },
         },
       },
@@ -83,9 +92,9 @@ export const activityRendererMachine = createMachine(
       events: {} as
         | { type: 'FOCUSED' }
         | { type: 'UNFOCUSED' }
-        | { type: 'SET_RESULT' }
-        | { type: 'RESET' }
-        | { type: 'FINISH' },
+        | { type: 'set_result'; result: ActivityResponseResultType }
+        // | { type: 'RESET' }
+        | { type: 'finish'; userAnswer: any },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -100,9 +109,11 @@ export const activityRendererMachine = createMachine(
             (dayjs().valueOf() - context.startTimeInMillis),
         };
       }),
+      setUserAnswer: assign((_, { userAnswer }) => ({ userAnswer })),
+      setResult: assign((_, { result }) => ({ result })),
     },
     services: {},
-    guards: { Focused: () => false },
+    // guards: { Focused: () => false },
     delays: {},
   },
 );

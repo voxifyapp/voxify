@@ -37,8 +37,6 @@ export const ActivityRenderer = ({
     activityEntity,
   });
 
-  console.log('HERE!');
-
   return (
     <ActivityRendererMachineContext.Provider>
       <ActivityRendererContextProvider value={contextValue}>

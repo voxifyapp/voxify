@@ -17,14 +17,16 @@
           services: never;
         };
         eventsCausingActions: {
-          "pauseTimer": "FINISH" | "UNFOCUSED" | "xstate.stop";
-"startTimer": "FOCUSED" | "RESET";
+          "pauseTimer": "UNFOCUSED" | "finish" | "xstate.stop";
+"setResult": "set_result";
+"setUserAnswer": "finish";
+"startTimer": "FOCUSED";
         };
         eventsCausingDelays: {
           
         };
         eventsCausingGuards: {
-          "Focused": "RESET";
+          
         };
         eventsCausingServices: {
           

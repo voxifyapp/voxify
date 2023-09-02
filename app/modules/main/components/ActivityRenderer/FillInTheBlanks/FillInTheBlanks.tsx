@@ -1,4 +1,7 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
+import {
+  FillInTheBlanksActivity,
+  FillInTheBlanksAnswerErrorsType,
+} from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { ActivityRendererMachineContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRenderer';
 
 import {
@@ -6,7 +9,8 @@ import {
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
-import React, { useMemo } from 'react';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import React, { useMemo, useState } from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -22,6 +26,23 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   const { options, questionSegments, send, state } = contextValue;
   const { userAnswer } = state.context;
+
+  const [_, setAnswerErrors] = useState<FillInTheBlanksAnswerErrorsType | null>(
+    null,
+  );
+
+  const onCheckAnswerClicked = () => {
+    activityRendererActor.send({ type: 'finish', userAnswer });
+    const answerErrors = activity.checkAnswer(userAnswer);
+    setAnswerErrors(answerErrors);
+    activityRendererActor.send({
+      type: 'set_result',
+      result:
+        answerErrors?.wrongBlanks.length === 0
+          ? ActivityResponseResultType.SUCCESS
+          : ActivityResponseResultType.FAIL,
+    });
+  };
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
@@ -61,14 +82,21 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             ))}
         </XStack>
         <Stack flex={1} />
-        {activityRendererActor.getSnapshot()?.can({ type: 'FINISH' }) && (
-          <Button
-            onPress={() => activityRendererActor.send({ type: 'SET_RESULT' })}>
-            Check Answer
-          </Button>
+        {activityRendererActor
+          .getSnapshot()
+          ?.can({ type: 'finish', userAnswer }) && (
+          <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
         )}
-        {/* {state.matches('RESULTS.CORRECT_ANSWER') && <H1>Correct</H1>}
-        {state.matches('RESULTS.WRONG_ANSWER') && <H1>Wrong</H1>} */}
+        {activityRendererActor
+          .getSnapshot()
+          ?.matches({ WORKING_STATE: 'RESULT' }) && (
+          <>
+            {activityRendererActor.getSnapshot()?.context.result ===
+              ActivityResponseResultType.SUCCESS && <H1>Correct</H1>}
+            {activityRendererActor.getSnapshot()?.context.result ===
+              ActivityResponseResultType.FAIL && <H1>Wrong</H1>}
+          </>
+        )}
       </YStack>
     </FillInTheBlanksContextProvider>
   );
