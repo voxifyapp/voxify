@@ -12,7 +12,7 @@ export const ActivityStep = ({ activity }: Props) => {
   return (
     <ActivityRenderer
       activity={activity}
-      onComplete={data =>
+      onActivityResults={data =>
         mutate({
           responseData: data.data,
           timeTaken: data.timeTakenToCompleteInMillis / 1000,

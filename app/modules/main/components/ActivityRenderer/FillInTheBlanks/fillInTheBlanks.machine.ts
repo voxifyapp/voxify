@@ -127,7 +127,7 @@ export const fillInTheBlanksMachine = {
             WRONG_ANSWER: {},
           },
           invoke: {
-            src: 'onActivityCompleted',
+            src: 'onActivityResults',
           },
         },
 

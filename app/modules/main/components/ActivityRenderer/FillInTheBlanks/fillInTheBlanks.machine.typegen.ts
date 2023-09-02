@@ -8,13 +8,13 @@
 "xstate.init": { type: "xstate.init" };
         };
         invokeSrcNameMap: {
-          "onActivityCompleted": "done.invoke.(machine).RESULTS:invocation[0]";
+          "onActivityResults": "done.invoke.(machine).RESULTS:invocation[0]";
         };
         missingImplementations: {
           actions: never;
           delays: never;
           guards: never;
-          services: "onActivityCompleted";
+          services: "onActivityResults";
         };
         eventsCausingActions: {
           "addWord": "ADD_WORD";
@@ -31,9 +31,10 @@
 "correctAnswer": "";
         };
         eventsCausingServices: {
-          "onActivityCompleted": "";
+          "onActivityResults": "";
         };
-        matchesStates: "CHECK_ANSWER" | "NOT_STARTED" | "PAUSED" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "WORKING" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER"; };
+        matchesStates: "CHECK_ANSWER" | "NOT_STARTED" | "PAUSED" | "RESULTS" | "RESULTS.CORRECT_ANSWER" | "RESULTS.WRONG_ANSWER" | "WORKING" | "WORKING.FILL_IN_THE_BLANKS" | { "RESULTS"?: "CORRECT_ANSWER" | "WRONG_ANSWER";
+"WORKING"?: "FILL_IN_THE_BLANKS"; };
         tags: never;
       }
   

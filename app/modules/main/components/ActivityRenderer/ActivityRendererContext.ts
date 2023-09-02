@@ -8,12 +8,14 @@ export type ActivityRendererOnCompleteType = (data: {
 }) => any;
 
 type ContextData = {
-  onComplete: ActivityRendererOnCompleteType;
+  onActivityResults: ActivityRendererOnCompleteType;
 };
 
-export function useCreateActivityRendererContext({ onComplete }: ContextData) {
+export function useCreateActivityRendererContext({
+  onActivityResults,
+}: ContextData) {
   return {
-    onComplete,
+    onActivityResults,
   };
 }
 

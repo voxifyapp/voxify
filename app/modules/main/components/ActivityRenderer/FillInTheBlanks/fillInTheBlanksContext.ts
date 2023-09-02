@@ -10,7 +10,7 @@ type ContextData = {
 };
 
 export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
-  const { onComplete } = useActivityRendererContext();
+  const { onActivityResults } = useActivityRendererContext();
   const { machine, derivedValues, EventTypes } = fillInTheBlanksMachine;
   const [state, send] = useMachine(machine, {
     context: {
@@ -21,8 +21,8 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
       startTimeInMillis: 0,
     },
     services: {
-      onActivityCompleted: context => () => {
-        onComplete({
+      onActivityResults: context => () => {
+        onActivityResults({
           timeTakenToCompleteInMillis: context.totalTimeSpentInMillis,
           data: state.context.userAnswer,
           result: ActivityResponseResultType.SUCCESS,

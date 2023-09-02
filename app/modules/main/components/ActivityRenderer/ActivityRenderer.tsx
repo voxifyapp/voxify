@@ -18,11 +18,11 @@ import React from 'react';
 
 type Props = {
   activity: ActivityEntity;
-  onComplete: ActivityRendererOnCompleteType;
+  onActivityResults: ActivityRendererOnCompleteType;
 };
 
-export const ActivityRenderer = ({ activity, onComplete }: Props) => {
-  const contextValue = useCreateActivityRendererContext({ onComplete });
+export const ActivityRenderer = ({ activity, onActivityResults }: Props) => {
+  const contextValue = useCreateActivityRendererContext({ onActivityResults });
 
   const activityToRender = () => {
     if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
