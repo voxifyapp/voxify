@@ -11,7 +11,7 @@ export const ActivityStep = ({ activity }: Props) => {
   const { mutate } = useActivityResponse({ activityEntity: activity });
   return (
     <ActivityRenderer
-      activity={activity}
+      activityEntity={activity}
       onActivityResults={data =>
         mutate({
           responseData: data.data,

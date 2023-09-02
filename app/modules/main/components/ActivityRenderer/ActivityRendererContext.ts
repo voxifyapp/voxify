@@ -1,5 +1,6 @@
 import { createCtx } from '@voxify/common/utils/contextUtils';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityEntity } from '@voxify/types/lms/lms';
 
 export type ActivityRendererOnCompleteType = (data: {
   timeTakenToCompleteInMillis: number;
@@ -9,13 +10,16 @@ export type ActivityRendererOnCompleteType = (data: {
 
 type ContextData = {
   onActivityResults: ActivityRendererOnCompleteType;
+  activityEntity: ActivityEntity;
 };
 
 export function useCreateActivityRendererContext({
   onActivityResults,
+  activityEntity,
 }: ContextData) {
   return {
     onActivityResults,
+    activityEntity,
   };
 }
 
