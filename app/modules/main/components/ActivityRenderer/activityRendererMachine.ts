@@ -11,7 +11,7 @@ type ContextType = {
 
 export const activityRendererMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAFgCcARhKOA7I4AcrgKwAaEACeiADMPiSu6sGOAEyOnt7B6tGuwQC+qf5oWHiEpJS0jKycPPz59MySCgyyispqWpYGRqbmljYIHh7qJABstuo93kNu3q4ejv5BCMHe0SS2CTFxHglJKemZGDgExOTU5UXcfHsFFQBmBLiw2BraSCBNJmYW9+3ejj3hfoGIju8bICy21yJwOIhKJAAClwlCoZPJYfU7npDE9Wq9EPYkl91JF1O8fGMJj9pupnPZFrF4olkmkMoCtjldmVCuDjtJGHQ2AAJOGwMDGFgAJzgAFcADbGW6NVEtF6gdrRXEkSIxb5TaL2WzzVyDbweHorGnrelApl5fas4rHKi8NgKAAyHEktuUHGl90ecradicLncXnVITcJCVUSpRrWdM22R2pBqiLZ-CqCbq8NqKg9KOazx9CGi0W88wGhcmiH1nzDS2pawBZrjJFTKiTjYRaZTbczDU9stzGPzheLPVLJISRYi4eWq2S6Xp+H0EDglnruRlOfRCsQAFporYywgd7Y64yGyzmEm12j5dZELv9z1giRvMfYyCz4cIYJhMUxCpL97+2CRIVXDINpl1UNVQjacTRjYFmUtc9rVKRCmH-PtNwQQ0i0pLoCVGcZ92iDxHwnatI1pF94ItU4P2OaFEXQjcbwQRxIg8FVbB6LFhkJQiSSiboEj6bwFk8B8ekcKjzVBK0jn4DkGC5XlxCY692lcaJ9zcewSC6ewPC1bxJN1HwPGk09UJbV1HQ4NS8xmItNUNHx9yiVxwigqdjWjBlX12JtxAvHt13U289xJWxbA4qtoJ8iyQUClsOwzVSQqvPNNP3UTnDGESxINYJJISgLOyC5DW1S+zAI8OZxl3DxbFcWwlnULVsqi0MDQWAqJKk2cgA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgDM9kgEYALOoBs72wFYAHADsfgCcngA0IACedj62JOoJCfZ+bh7BAbYBAL5ZEWhYeISklLSMrJw8-CX0zJIKDLKKympalgZGpuaWNggOTm6e3v5BoR4R0QjOPs7xierJqemZOXkYOATE5NQ15dx8W6W1AGYEuLDYGtpIIO0mZhbXPf7qJB4+HrZvvoEhzuOIzhSJEy9lcrmc9kWGWyuRA+XWRQOOxElRIAAUuEoVDJ5FiWlc9IY7l1HnZHC53F51N8RuEonZ1DMfHMFq40tCVnC1oVNtUyij9tJGHQ2AAJbGwMDGFgAJzgAFcADbGS5tImdB6gHqBOJswJfYa-f6TIEgsEQqHLWHwnmkRp4gX8er25o4poqVXXW4a7p2XwkSm+Y1suLMxKs9lW1YFDZ23HNR0kF3Y53xj2tL3q+6+3r+wM+YPOOJzeYpNlLGGw-D6CBwSw22NqjrZ0kIAC0tlcxo7rk5DcRfOYjqbxM11jsXfpCA8Th8fe5saR-Iq+0EwgqYhUI59rYyxt8oZZZcjMOjCN522Xeyql+Y25bWsQ9lCJB8etCNJCdImzg8flm4bHhW84xgOt67KiGJ4veJKPpMbguOowTPtShqjMaUwBPEfiOPYARuH48zqP4IHnsU4GJkKDAiuK4gwWOPQBK4wQBnh0yxGhfxTrY6iuK+R6WqeXKgRehwQfsVC8GwCgADIcPRObOAkWF6gEBo-MEXETDxfFhkkQEctaC6Ism4jDpmzaweOvSThM9idvxgGCaRtpJmmZkrk6DTuQpu62IW-7qDhjj4a4hH2J4LmLqZlE+RZo45skcQpL4UyfuhU6uDxr7BXhBFER4OQ5EAA */
     context: {
       startTimeInMillis: 0,
       totalTimeSpentInMillis: 0,
@@ -92,7 +92,11 @@ export const activityRendererMachine = createMachine(
       events: {} as
         | { type: 'FOCUSED' }
         | { type: 'UNFOCUSED' }
-        | { type: 'set_result'; result: ActivityResponseResultType }
+        | {
+            type: 'set_result';
+            result: ActivityResponseResultType;
+            userAnswer: any;
+          }
         // | { type: 'RESET' }
         | { type: 'finish'; userAnswer: any },
     },
@@ -110,7 +114,10 @@ export const activityRendererMachine = createMachine(
         };
       }),
       setUserAnswer: assign((_, { userAnswer }) => ({ userAnswer })),
-      setResult: assign((_, { result }) => ({ result })),
+      setResult: assign((_, { result, userAnswer }) => ({
+        result,
+        userAnswer,
+      })),
     },
     services: {},
     // guards: { Focused: () => false },

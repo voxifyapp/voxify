@@ -3,7 +3,7 @@ import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity
 import { ActivityEntity } from '@voxify/types/lms/lms';
 
 export type ActivityRendererOnCompleteType = (data: {
-  timeTakenToCompleteInMillis: number;
+  timeTakenToCompleteInSeconds: number;
   data: any;
   result: ActivityResponseResultType;
 }) => any;

@@ -41,16 +41,17 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         answerErrors?.wrongBlanks.length === 0
           ? ActivityResponseResultType.SUCCESS
           : ActivityResponseResultType.FAIL,
+      userAnswer,
     });
   };
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <H1>
-        {activityRendererActor.getSnapshot()!.context.totalTimeSpentInMillis /
-          1000}
-      </H1>
       <YStack padding="$3" fullscreen>
+        <H1>
+          {activityRendererActor.getSnapshot()!.context.totalTimeSpentInMillis /
+            1000}
+        </H1>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />

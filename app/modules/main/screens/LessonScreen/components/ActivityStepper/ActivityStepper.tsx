@@ -3,9 +3,10 @@
 //TODO Remove lint ignores above
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { Spacer, YStack } from 'tamagui';
+import { atom, useAtomValue } from 'jotai';
 
 const activityAspectRatio = 9 / 15;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -18,26 +19,33 @@ type Props = {
   activities: ActivityEntity[];
 };
 
+export const completedActivitiesAtom = atom<Record<string, any>>({});
+
 export const ActivityStepper = ({ activities }: Props) => {
-  for (let i = 0; i < 3; i++) {
-    activities.push(
-      ...activities.map(a => ({
+  const renderedActivities: ActivityEntity[] = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < 100; i++) {
+      const a = activities[0];
+      result.push({
         ...a,
-        id: '' + Math.floor(Math.random() * 10000) + 1,
-      })),
-    );
-  }
+        id: '' + Math.floor(Math.random() * 1000000) + 1,
+      });
+    }
+    return result;
+  }, [activities]);
+
+  const completedActivities = useAtomValue(completedActivitiesAtom);
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
       <FlatList
-        data={activities}
+        data={renderedActivities}
         contentContainerStyle={{
           flexGrow: 1,
           alignItems: 'center',
         }}
         disableIntervalMomentum
-        snapToOffsets={activities.map((_, index) => {
+        snapToOffsets={renderedActivities.map((_, index) => {
           const offset = index * (height + 20);
           return offset;
         })}
@@ -53,7 +61,7 @@ export const ActivityStepper = ({ activities }: Props) => {
               height,
               marginTop: index === 0 ? firstAndLastElementMargin : undefined,
               marginBottom:
-                index === activities.length - 1
+                index === renderedActivities.length - 1
                   ? firstAndLastElementMargin
                   : undefined,
             }}>

@@ -37,6 +37,14 @@ export const ActivityRenderer = ({
     activityEntity,
   });
 
+  useEffect(() => {
+    console.log('Mounted', activityEntity.id);
+
+    return () => {
+      console.log('Unmounted', activityEntity.id);
+    };
+  }, [activityEntity]);
+
   return (
     <ActivityRendererMachineContext.Provider>
       <ActivityRendererContextProvider value={contextValue}>
@@ -47,9 +55,26 @@ export const ActivityRenderer = ({
 };
 
 const ActivitySelector = () => {
-  const { activityEntity: activity } = useActivityRendererContext();
+  const { activityEntity: activity, onActivityResults } =
+    useActivityRendererContext();
 
   const activityRendererActor = ActivityRendererMachineContext.useActorRef();
+
+  useEffect(() => {
+    return activityRendererActor.subscribe(state => {
+      if (
+        state.matches('WORKING_STATE.RESULT') &&
+        state.event.type === 'set_result'
+      ) {
+        onActivityResults({
+          result: state.context.result,
+          data: state.context.userAnswer,
+          timeTakenToCompleteInSeconds:
+            state.context.totalTimeSpentInMillis / 1000,
+        });
+      }
+    }).unsubscribe;
+  }, [activityRendererActor, onActivityResults]);
 
   useEffect(() => {
     activityRendererActor.send({ type: 'FOCUSED' });
