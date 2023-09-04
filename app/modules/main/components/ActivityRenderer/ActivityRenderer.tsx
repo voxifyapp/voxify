@@ -42,11 +42,9 @@ export const ActivityRenderer = React.memo(
     }, [activityEntity]);
 
     return (
-      <ActivityRendererMachineContext.Provider>
-        <ActivityRendererContextProvider value={contextValue}>
-          <ActivitySelector />
-        </ActivityRendererContextProvider>
-      </ActivityRendererMachineContext.Provider>
+      <ActivityRendererContextProvider value={contextValue}>
+        <ActivitySelector />
+      </ActivityRendererContextProvider>
     );
   },
 );
@@ -55,7 +53,9 @@ const ActivitySelector = () => {
   const { activityEntity: activity, onActivityResults } =
     useActivityRendererContext();
 
-  const activityRendererActor = ActivityRendererMachineContext.useActorRef();
+  const { machineService } = useActivityRendererContext();
+
+  const activityRendererActor = machineService;
 
   useEffect(() => {
     return activityRendererActor.subscribe(state => {

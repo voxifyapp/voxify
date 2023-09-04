@@ -2,7 +2,7 @@ import {
   FillInTheBlanksActivity,
   FillInTheBlanksAnswerErrorsType,
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { ActivityRendererMachineContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRenderer';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 
 import {
   FillInTheBlanksContextProvider,
@@ -22,7 +22,9 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     useMemo(() => ({ activity }), [activity]),
   );
 
-  const activityRendererActor = ActivityRendererMachineContext.useActorRef();
+  const { machineService } = useActivityRendererContext();
+
+  const activityRendererActor = machineService;
 
   const { options, questionSegments, send, state } = contextValue;
   const { userAnswer } = state.context;
