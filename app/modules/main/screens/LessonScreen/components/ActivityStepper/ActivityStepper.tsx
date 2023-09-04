@@ -3,9 +3,9 @@
 //TODO Remove lint ignores above
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { Spacer, YStack } from 'tamagui';
+import { Button, Spacer, XStack, YStack } from 'tamagui';
 import { atom, useAtomValue } from 'jotai';
 
 const activityAspectRatio = 9 / 15;
@@ -22,6 +22,7 @@ type Props = {
 export const completedActivitiesAtom = atom<Record<string, any>>({});
 
 export const ActivityStepper = ({ activities }: Props) => {
+  const listRef = useRef<FlatList<ActivityEntity>>(null);
   const renderedActivities: ActivityEntity[] = useMemo(() => {
     const result = [];
     for (let i = 0; i < 100; i++) {
@@ -34,12 +35,37 @@ export const ActivityStepper = ({ activities }: Props) => {
     return result;
   }, [activities]);
 
-  const completedActivities = useAtomValue(completedActivitiesAtom);
+  // const completedActivities = useAtomValue(completedActivitiesAtom);
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
+      <XStack zIndex={100} theme="green">
+        <Button
+          onPress={() =>
+            listRef.current?.scrollToIndex({
+              index: Math.floor(Math.random() * 98) + 1,
+              animated: true,
+            })
+          }>
+          Scroll
+        </Button>
+        <Button onPress={() => listRef.current?.scrollToIndex({ index: 0 })}>
+          Scroll To Top
+        </Button>
+      </XStack>
       <FlatList
+        getItemLayout={(data, index) => ({
+          index: index,
+          offset: index * (height + 20),
+          length: height + 20,
+        })}
+        onScrollToIndexFailed={info => {
+          console.log('Failed', info);
+        }}
+        ref={listRef}
         data={renderedActivities}
+        initialNumToRender={5}
+        maxToRenderPerBatch={3}
         contentContainerStyle={{
           flexGrow: 1,
           alignItems: 'center',

@@ -6,16 +6,18 @@ type ContextType = {
   startTimeInMillis: number;
   totalTimeSpentInMillis: number;
   userAnswer: any | null;
+  answerError: any | null;
   result: ActivityResponseResultType;
 };
 
 export const activityRendererMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgDM9kgEYALOoBs72wFYAHADsfgCcngA0IACedj62JOoJCfZ+bh7BAbYBAL5ZEWhYeISklLSMrJw8-CX0zJIKDLKKympalgZGpuaWNggOTm6e3v5BoR4R0QjOPs7xierJqemZOXkYOATE5NQ15dx8W6W1AGYEuLDYGtpIIO0mZhbXPf7qJB4+HrZvvoEhzuOIzhSJEy9lcrmc9kWGWyuRA+XWRQOOxElRIAAUuEoVDJ5FiWlc9IY7l1HnZHC53F51N8RuEonZ1DMfHMFq40tCVnC1oVNtUyij9tJGHQ2AAJbGwMDGFgAJzgAFcADbGS5tImdB6gHqBOJswJfYa-f6TIEgsEQqHLWHwnmkRp4gX8er25o4poqVXXW4a7p2XwkSm+Y1suLMxKs9lW1YFDZ23HNR0kF3Y53xj2tL3q+6+3r+wM+YPOOJzeYpNlLGGw-D6CBwSw22NqjrZ0kIAC0tlcxo7rk5DcRfOYjqbxM11jsXfpCA8Th8fe5saR-Iq+0EwgqYhUI59rYyxt8oZZZcjMOjCN522Xeyql+Y25bWsQ9lCJB8etCNJCdImzg8flm4bHhW84xgOt67KiGJ4veJKPpMbguOowTPtShqjMaUwBPEfiOPYARuH48zqP4IHnsU4GJkKDAiuK4gwWOPQBK4wQBnh0yxGhfxTrY6iuK+R6WqeXKgRehwQfsVC8GwCgADIcPRObOAkWF6gEBo-MEXETDxfFhkkQEctaC6Ism4jDpmzaweOvSThM9idvxgGCaRtpJmmZkrk6DTuQpu62IW-7qDhjj4a4hH2J4LmLqZlE+RZo45skcQpL4UyfuhU6uDxr7BXhBFER4OQ5EAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgDM9kgEYALOoBs72wFYAHADsfgCcngA0IACedj62JOoJCfZ+bh7BAbYBAL5ZEWhYeISklLSMrJw8-CX0zJIKDLKKympalgZGpuaWNggOTm6e3v5BoR4R0QjOPs7xierJqemZOXkYOATE5NQ15dx8W6W1AGYEuLDYGtpIIO0mZhbXPf7qJB4+HrZvvoEhzuOIzhSJEy9lcrmc9kWGWyuRA+XWRQOOxElRIAAUuEoVDJ5FiWlc9IY7l1HnZHC53F51N8RuEonZ1DMfHMFq40tCVnC1oVNtUyij9tJGHQ2AAJbGwMDGFgAJzgAFcADbGS5tImdB6gHqBOJswJfYa-f6TIEgsEQqHLWHwnmkRp4gX8er25o4poqVXXW4a7p2WyuEgpZwBeaAoIfezG2LBEiQ4Oufw-DzqPycm0bO245qOkgu7HOrMe1pe9X3X29f2B5zB0NJhzG1xBKvxxPh9QBHw5WH4fQQOCWdNFNUdMukhAAWkrPmCCb1zlsEICIb8xsnTmCG43ni8048EbT3IzSP5FT4w+Jmusdlcxo8TmZCWcjPsnmnKYPBSPfOYOcEwgqYgqOePpjhkxq+HED5JCkbJLDCqyfoi367KiyHAaOWqIPYoQkD4eqhDSIR0hMzgeH4syJKy7JWghCK8tsJ57PwGJ4uhJKYZMbguOowTYdShqjMaUwBPEfiOPYARuH48zqP4H50cUDE-qe-BCgwIriuIbGXj0ASuDGrgSdMsQCX89K9OoAZQfMMHUfBXKIfRhwofsVC8GwCgADIcNp5ZPu2JB6gEBo-MEZkTLYlm4SytlwfJtq5oW4iOr5Y4OIFskJpCda2MEtjGthMxxgE9iRc4G6uLlnbWoeiJ5slKkkAW7paSWI7sVeCCSRleE+Nl4a2LlDZ+AGITMgEeULuV7j2YOmz1Tm9WpRxyRxAuE1kWCe7TPYPjDSJ2HjZN1Yzu2XZZEAA */
     context: {
       startTimeInMillis: 0,
       totalTimeSpentInMillis: 0,
       userAnswer: null,
+      answerError: null,
     } as ContextType,
     tsTypes: {} as import('./activityRendererMachine.typegen').Typegen0,
     states: {
@@ -96,6 +98,7 @@ export const activityRendererMachine = createMachine(
             type: 'set_result';
             result: ActivityResponseResultType;
             userAnswer: any;
+            answerError: any | null;
           }
         // | { type: 'RESET' }
         | { type: 'finish'; userAnswer: any },
@@ -114,9 +117,10 @@ export const activityRendererMachine = createMachine(
         };
       }),
       setUserAnswer: assign((_, { userAnswer }) => ({ userAnswer })),
-      setResult: assign((_, { result, userAnswer }) => ({
+      setResult: assign((_, { result, userAnswer, answerError }) => ({
         result,
         userAnswer,
+        answerError,
       })),
     },
     services: {},

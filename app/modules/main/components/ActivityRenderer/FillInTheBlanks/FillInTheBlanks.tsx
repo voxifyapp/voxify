@@ -42,6 +42,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           ? ActivityResponseResultType.SUCCESS
           : ActivityResponseResultType.FAIL,
       userAnswer,
+      answerError: answerErrors,
     });
   };
 

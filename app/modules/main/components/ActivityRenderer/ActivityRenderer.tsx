@@ -28,31 +28,28 @@ export const ActivityRendererMachineContext = createActorContext(
   activityRendererMachine,
 );
 
-export const ActivityRenderer = ({
-  activityEntity,
-  onActivityResults,
-}: Props) => {
-  const contextValue = useCreateActivityRendererContext({
-    onActivityResults,
-    activityEntity,
-  });
+export const ActivityRenderer = React.memo(
+  ({ activityEntity, onActivityResults }: Props) => {
+    const contextValue = useCreateActivityRendererContext({
+      onActivityResults,
+      activityEntity,
+    });
 
-  useEffect(() => {
-    console.log('Mounted', activityEntity.id);
+    useEffect(() => {
+      return () => {
+        console.log('Unmounted', activityEntity.id);
+      };
+    }, [activityEntity]);
 
-    return () => {
-      console.log('Unmounted', activityEntity.id);
-    };
-  }, [activityEntity]);
-
-  return (
-    <ActivityRendererMachineContext.Provider>
-      <ActivityRendererContextProvider value={contextValue}>
-        <ActivitySelector />
-      </ActivityRendererContextProvider>
-    </ActivityRendererMachineContext.Provider>
-  );
-};
+    return (
+      <ActivityRendererMachineContext.Provider>
+        <ActivityRendererContextProvider value={contextValue}>
+          <ActivitySelector />
+        </ActivityRendererContextProvider>
+      </ActivityRendererMachineContext.Provider>
+    );
+  },
+);
 
 const ActivitySelector = () => {
   const { activityEntity: activity, onActivityResults } =
