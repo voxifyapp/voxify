@@ -120,20 +120,10 @@ export const activityRendererMachine = createMachine(
   },
   {
     actions: {
-      startTimer: assign(context => {
-        console.log(
-          'Start Timer Timer:',
-          context.startTimeInMillis,
-          context.totalTimeSpentInMillis,
-        );
+      startTimer: assign(_ => {
         return { startTimeInMillis: dayjs().valueOf() };
       }),
       pauseTimer: assign(context => {
-        console.log(
-          'Pause Timer:',
-          context.startTimeInMillis,
-          context.totalTimeSpentInMillis,
-        );
         return {
           totalTimeSpentInMillis:
             context.totalTimeSpentInMillis +
