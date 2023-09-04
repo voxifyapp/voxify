@@ -5,7 +5,7 @@ import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/com
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Dimensions, FlatList, View, ViewToken } from 'react-native';
 import { Button, Spacer, XStack, YStack } from 'tamagui';
 
@@ -47,17 +47,19 @@ export const ActivityStepper = ({ activities }: Props) => {
     length: height + 20,
   });
 
-  const onViewableItemsChanged = useCallback(
-    ({
-      viewableItems,
-    }: {
-      viewableItems: ViewToken[];
-      changed: ViewToken[];
-    }) => {
-      viewableItems[0] && setCurrentActiveIndex(viewableItems[0].index!);
+  const viewabilityConfigCallbackPairs = useRef([
+    {
+      viewabilityConfig: { itemVisiblePercentThreshold: 100 },
+      onViewableItemsChanged: ({
+        viewableItems,
+      }: {
+        viewableItems: ViewToken[];
+        changed: ViewToken[];
+      }) => {
+        viewableItems[0] && setCurrentActiveIndex(viewableItems[0].index!);
+      },
     },
-    [],
-  );
+  ]);
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
@@ -76,9 +78,11 @@ export const ActivityStepper = ({ activities }: Props) => {
         </Button>
       </XStack>
       <FlatList
+        decelerationRate={0.8}
         getItemLayout={getItemLayout}
         ref={listRef}
         data={renderedActivities}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         contentContainerStyle={{
           alignItems: 'center',
         }}
@@ -86,8 +90,6 @@ export const ActivityStepper = ({ activities }: Props) => {
         snapToOffsets={renderedActivities.map((_, index) => {
           return getItemLayout(_, index).offset;
         })}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
         ItemSeparatorComponent={() => <Spacer size={20} />}
         keyExtractor={(activity, index) => activity.id || `${index}`}
         renderItem={({ item: activity, index }) => (
