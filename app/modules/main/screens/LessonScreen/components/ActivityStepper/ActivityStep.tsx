@@ -10,32 +10,36 @@ import React from 'react';
 type Props = {
   activity: ActivityEntity;
   restoreData?: ActivityRendererMachineRestoreDataType;
+  isActive: boolean;
 };
 
-export const ActivityStep = React.memo(({ activity, restoreData }: Props) => {
-  // const { mutate } = useActivityResponse({ activityEntity: activity });
+export const ActivityStep = React.memo(
+  ({ activity, restoreData, isActive }: Props) => {
+    // const { mutate } = useActivityResponse({ activityEntity: activity });
 
-  const setCompletedActivities = useSetAtom(completedActivitiesAtom);
+    const setCompletedActivities = useSetAtom(completedActivitiesAtom);
 
-  const onActivityResultsCallback: ActivityRendererOnCompleteType =
-    async data => {
-      setCompletedActivities(prev => ({
-        ...prev,
-        [activity.id]: data,
-      }));
-      console.log('MUTATE');
-      // mutate({
-      //   responseData: data.data,
-      //   timeTaken: data.timeTakenToCompleteInSeconds,
-      //   result: data.result,
-      // });
-    };
+    const onActivityResultsCallback: ActivityRendererOnCompleteType =
+      async data => {
+        setCompletedActivities(prev => ({
+          ...prev,
+          [activity.id]: data,
+        }));
+        console.log('MUTATE');
+        // mutate({
+        //   responseData: data.data,
+        //   timeTaken: data.timeTakenToCompleteInSeconds,
+        //   result: data.result,
+        // });
+      };
 
-  return (
-    <ActivityRenderer
-      restoreData={restoreData}
-      activityEntity={activity}
-      onActivityResults={onActivityResultsCallback}
-    />
-  );
-});
+    return (
+      <ActivityRenderer
+        isActive={isActive}
+        restoreData={restoreData}
+        activityEntity={activity}
+        onActivityResults={onActivityResultsCallback}
+      />
+    );
+  },
+);

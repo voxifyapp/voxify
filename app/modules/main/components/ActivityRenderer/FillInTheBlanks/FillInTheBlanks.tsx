@@ -22,9 +22,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     useMemo(() => ({ activity }), [activity]),
   );
 
-  const { machineService } = useActivityRendererContext();
-
-  const activityRendererActor = machineService;
+  const { machineService: activityRendererMachineService } =
+    useActivityRendererContext();
 
   const { options, questionSegments, send, state } = contextValue;
   const { userAnswer } = state.context;
@@ -33,11 +32,12 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     null,
   );
 
+  //TODO Right now, hydration of states does not set the userAnswer and answerErrors properly. Fix.
   const onCheckAnswerClicked = () => {
-    activityRendererActor.send({ type: 'finish', userAnswer });
+    activityRendererMachineService.send({ type: 'finish', userAnswer });
     const answerErrors = activity.checkAnswer(userAnswer);
     setAnswerErrors(answerErrors);
-    activityRendererActor.send({
+    activityRendererMachineService.send({
       type: 'set_result',
       result:
         answerErrors?.wrongBlanks.length === 0
@@ -50,12 +50,23 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <YStack padding="$3" fullscreen>
+      <YStack
+        opacity={
+          activityRendererMachineService
+            .getSnapshot()
+            .matches('FOCUSED_STATE.UNFOCUSED')
+            ? 0.2
+            : 1
+        }
+        padding="$3"
+        fullscreen>
         <H1>
-          {activityRendererActor.getSnapshot()!.context.totalTimeSpentInMillis /
-            1000}
+          {activityRendererMachineService.getSnapshot()!.context
+            .totalTimeSpentInMillis / 1000}
         </H1>
-        <H5>{JSON.stringify(machineService.getSnapshot().value)}</H5>
+        <H5>
+          {JSON.stringify(activityRendererMachineService.getSnapshot().value)}
+        </H5>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
@@ -73,7 +84,9 @@ export const FillInTheBlanks = ({ activity }: Props) => {
                     type: 'add_word',
                     payload: { optionId: option.id },
                   }) ||
-                  !machineService.getSnapshot().matches('WORKING_STATE.WORKING')
+                  !activityRendererMachineService
+                    .getSnapshot()
+                    .matches('WORKING_STATE.WORKING')
                 }
                 key={option.id}
                 onPress={() => {
@@ -88,18 +101,18 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             ))}
         </XStack>
         <Stack flex={1} />
-        {activityRendererActor
+        {activityRendererMachineService
           .getSnapshot()
           ?.can({ type: 'finish', userAnswer }) && (
           <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
         )}
-        {activityRendererActor
+        {activityRendererMachineService
           .getSnapshot()
           ?.matches({ WORKING_STATE: 'RESULT' }) && (
           <>
-            {activityRendererActor.getSnapshot()?.context.result ===
+            {activityRendererMachineService.getSnapshot()?.context.result ===
               ActivityResponseResultType.SUCCESS && <H1>Correct</H1>}
-            {activityRendererActor.getSnapshot()?.context.result ===
+            {activityRendererMachineService.getSnapshot()?.context.result ===
               ActivityResponseResultType.FAIL && <H1>Wrong</H1>}
           </>
         )}

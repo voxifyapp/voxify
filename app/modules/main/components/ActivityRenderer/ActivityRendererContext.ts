@@ -6,7 +6,6 @@ import {
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
 
 export type ActivityRendererOnCompleteType = (data: {
   timeTakenToCompleteInSeconds: number;
@@ -24,19 +23,8 @@ type ContextData = {
 export function useCreateActivityRendererContext({
   onActivityResults,
   activityEntity,
-  restoreData,
 }: ContextData) {
   const [_, __, machineService] = useMachine(activityRendererMachine);
-
-  useEffect(() => {
-    if (machineService.initialized) {
-      if (restoreData) {
-        machineService.send({ type: 'RESTORE_DATA', restoreData });
-      } else {
-        machineService.send({ type: 'FOCUSED' });
-      }
-    }
-  }, [machineService, machineService.initialized, restoreData]);
 
   return {
     onActivityResults,

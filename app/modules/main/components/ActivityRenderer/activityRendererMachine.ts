@@ -16,7 +16,7 @@ export type ActivityRendererMachineRestoreDataType = Omit<
 >;
 export const activityRendererMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgAsAThKOAjOtcB2VwFZ1ADk9-R3UANgAaEABPRABmdWdg-3t7V1jXe1DHT1tPAF88yLQsPEJSSlpGVk4efkFhGrEVSSpeTmpeFnEeLg1tJBADI1NzSxsEdUiYiYKijBwCYnJqemYRWuXK5kkFBllFZTUtSyGTMwsB8dtY2JIMsPt1Wx9A4LCpxF9XEnVf39j-Bksjl8oUQMUFmVNqtqtw+NCqpIAGYEXCwbB9E6GM6jS6IF7qEihHyhWzE56vNwfBCuQEkXKxFJpIHZXKzcHzUpLCow9bwgAKXCUzX2wqO-T02JGF1AVxud0eoUeFKCIQi0TsHhIfj+AJZIPZEK55RWVT5-GkjDobAAEs1YGBjCwAE5wACuABtjJiBqdpWNEIFbCRMoFyS9Va5qbTvgymelMqzQXMSotSKLDuaSLsMyL5GKfZLhucAwhbA4SICvOp0q9SbFqT5bM50l57C86wFDZy0yRc+Is-2dnt84dC4MpSW8WWK1XPDXaUF69T7EFK642x2l+pPD4CmD8PoIHBLEa01ji7jZYgALSOdXTG9tlyOV-32k+eIM7upqE8s01HwF44jK1i3vY-jUjegQhm+77+J+TyeLEP6QtypprIBdRCOsTTiMB-rTjk1LPMGOr-ICiYGmCZ5-hhsIbP+zAEVO14ILEITaqGIQqm8D6fKE-g-H8NaUcCbI0T2dFbAxApCocLFXmBNIZHcCQcU8EZ8dGPieD8-g3LE3gQTW6gvKhxoIphcIWlatoqIpoHjJ4TghkZPi+LxVIamW6j2NqIl6lREkpmhJoyVmrRsAoAAyHCOaW7g7iGgmeOGlJRj5th+QFupiUmFm9v25oJdO1whmZ7a1ku5aOLY1Icd8rYuVu-ihDue6Sb+SzFVh2YjgcDm+pOSnOd8jw+FVi5tbVK7JJWjh+J4dW2BujiPMmHLdemo4qIOu34cNl5OXE-jBqty2CSkoTEmkPhzXpHFLSta0bfueRAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgDM9kgEYALOoBstgKwAaEACedt4A7CRe3uqeIQCcMSHOziGuAL4p-mhYeISklLSMrJw8-ILCRWIqklS8nNS8LOI8XBraSCAGRqbmljYIDk5unj7+QQj2tuok6g6us7ZxCUmp6SCZOATE5NT0zCLFW-nMkgoMsorKalqWHSZmFm29Pk7erh4x6t7eSaEAHM62I0Qzm8HnCPiiHli8USyTSGQw6xyBx2hW4fGRBUkADMCLhYNgWtdDLdug9EB51M4phFgT4fiEfjFnICEM4PK4SLYQvZZq55tClnDVgjsps8ii9uiAApcJSVM5yy6tPTErr3UCPRwudwRFkTML-SLRBYw5bwrIbXLbAqS-jSRh0NgACUqsDAxhYACc4ABXAA2xkJbRuap6iEZthI9MitO89MZzMCQPZnO5vP5i1hKzWotICoutpIJ3z8vkiqDKs6dzDfR8JB1wyTCA8wPrIQ8IJiGZhQpzlpIJfEhcHx1OZYuFfaqurZNr3nrQz8TZBHPiHbe3aSaRW+H0EDglj7OSJVdJGsQAFpbK4WVeOVEH4+nyFeyL++KbUU+CeSerrHYbybDwnFcOI4m8ewflsNlITNYULSRD9di-EohD2CpxB-UNZxCAEm1sFMXjZNMPGAhk4KPMVrWQtF+CQpgsJnc8EFcZxJhiCDBjpBl3g8FlgSpJ9IRNQVszfRDqNRfYZUVRiz3-Vk3BcdQYnsbx4lY6CVMA0Y2UjEJ1B+HlKUcdRXC+V8EKow4pPRe0GEdF1MODad5N6dsYijVx7HbbxuITfj6RII0IShTMKPE6yJRQkhqjYBQABkODkv9ejYrkoxCGM-LjHj+JiDksofYSBSzc1EU2QdbRSmtrxZbywjXTtNzK+CKrzccVELYtOucytfxrXCWVCQT1PeAjTPM5xLPagdeuHXqatnSDIz+a8flcZJ-jYgrhu5YKxumYD7DMiztyAA */
     context: {
       startTimeInMillis: 0,
       totalTimeSpentInMillis: 0,
@@ -120,8 +120,20 @@ export const activityRendererMachine = createMachine(
   },
   {
     actions: {
-      startTimer: assign({ startTimeInMillis: dayjs().valueOf() }),
+      startTimer: assign(context => {
+        console.log(
+          'Start Timer Timer:',
+          context.startTimeInMillis,
+          context.totalTimeSpentInMillis,
+        );
+        return { startTimeInMillis: dayjs().valueOf() };
+      }),
       pauseTimer: assign(context => {
+        console.log(
+          'Pause Timer:',
+          context.startTimeInMillis,
+          context.totalTimeSpentInMillis,
+        );
         return {
           totalTimeSpentInMillis:
             context.totalTimeSpentInMillis +

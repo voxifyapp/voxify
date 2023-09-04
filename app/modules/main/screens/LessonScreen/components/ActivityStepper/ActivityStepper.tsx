@@ -5,8 +5,8 @@ import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/com
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
-import React, { useMemo, useRef } from 'react';
-import { Dimensions, FlatList, View } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Dimensions, FlatList, View, ViewToken } from 'react-native';
 import { Button, Spacer, XStack, YStack } from 'tamagui';
 
 const activityAspectRatio = 9 / 15;
@@ -25,10 +25,11 @@ export const completedActivitiesAtom = atom<
 >({});
 
 export const ActivityStepper = ({ activities }: Props) => {
+  const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const listRef = useRef<FlatList<ActivityEntity>>(null);
   const renderedActivities: ActivityEntity[] = useMemo(() => {
     const result = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 2; i++) {
       const a = activities[0];
       result.push({
         ...a,
@@ -39,6 +40,24 @@ export const ActivityStepper = ({ activities }: Props) => {
   }, [activities]);
 
   const completedActivities = useAtomValue(completedActivitiesAtom);
+
+  const getItemLayout = (_: any, index: number) => ({
+    index: index,
+    offset: index * (height + 20),
+    length: height + 20,
+  });
+
+  const onViewableItemsChanged = useCallback(
+    ({
+      viewableItems,
+    }: {
+      viewableItems: ViewToken[];
+      changed: ViewToken[];
+    }) => {
+      viewableItems[0] && setCurrentActiveIndex(viewableItems[0].index!);
+    },
+    [],
+  );
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
@@ -57,30 +76,20 @@ export const ActivityStepper = ({ activities }: Props) => {
         </Button>
       </XStack>
       <FlatList
-        getItemLayout={(data, index) => ({
-          index: index,
-          offset: index * (height + 20),
-          length: height + 20,
-        })}
-        onScrollToIndexFailed={info => {
-          console.log('Failed', info);
-        }}
+        getItemLayout={getItemLayout}
         ref={listRef}
         data={renderedActivities}
-        initialNumToRender={5}
-        maxToRenderPerBatch={3}
         contentContainerStyle={{
-          flexGrow: 1,
           alignItems: 'center',
         }}
         disableIntervalMomentum
         snapToOffsets={renderedActivities.map((_, index) => {
-          const offset = index * (height + 20);
-          return offset;
+          return getItemLayout(_, index).offset;
         })}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
         ItemSeparatorComponent={() => <Spacer size={20} />}
-        style={{ width: '100%', height: '100%' }}
-        keyExtractor={(activity, index) => activity?.id || `${index}`}
+        keyExtractor={(activity, index) => activity.id || `${index}`}
         renderItem={({ item: activity, index }) => (
           <View
             style={{
@@ -97,6 +106,7 @@ export const ActivityStepper = ({ activities }: Props) => {
             <ActivityStep
               restoreData={completedActivities[activity.id]}
               activity={activity}
+              isActive={index === currentActiveIndex}
             />
           </View>
         )}

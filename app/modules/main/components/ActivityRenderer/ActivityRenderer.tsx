@@ -26,6 +26,7 @@ type Props = {
   activityEntity: ActivityEntity;
   onActivityResults: ActivityRendererOnCompleteType;
   restoreData?: ActivityRendererMachineRestoreDataType;
+  isActive: boolean;
 };
 
 export const ActivityRendererMachineContext = createActorContext(
@@ -36,12 +37,25 @@ export const ActivityRenderer = ({
   activityEntity,
   onActivityResults,
   restoreData,
+  isActive,
 }: Props) => {
   const contextValue = useCreateActivityRendererContext({
     onActivityResults,
     activityEntity,
     restoreData,
   });
+
+  const { machineService } = contextValue;
+
+  useEffect(() => {
+    if (restoreData) {
+      machineService.send({ type: 'RESTORE_DATA', restoreData });
+    }
+  }, [machineService, restoreData]);
+
+  useEffect(() => {
+    machineService.send({ type: isActive ? 'FOCUSED' : 'UNFOCUSED' });
+  }, [isActive, machineService]);
 
   useEffect(() => {
     return () => {
