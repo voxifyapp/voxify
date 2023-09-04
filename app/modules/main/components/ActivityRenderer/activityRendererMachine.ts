@@ -2,7 +2,7 @@ import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity
 import dayjs from 'dayjs';
 import { assign, createMachine } from 'xstate';
 
-type ContextType = {
+export type ActivityRendererMachinContextType = {
   startTimeInMillis: number;
   totalTimeSpentInMillis: number;
   userAnswer: any | null;
@@ -10,15 +10,19 @@ type ContextType = {
   result: ActivityResponseResultType;
 };
 
+export type ActivityRendererMachineRestoreDataType = Omit<
+  ActivityRendererMachinContextType,
+  'startTimeInMillis' | 'totalTimeSpentInMillis'
+>;
 export const activityRendererMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgDM9kgEYALOoBs72wFYAHADsfgCcngA0IACedj62JOoJCfZ+bh7BAbYBAL5ZEWhYeISklLSMrJw8-CX0zJIKDLKKympalgZGpuaWNggOTm6e3v5BoR4R0QjOPs7xierJqemZOXkYOATE5NQ15dx8W6W1AGYEuLDYGtpIIO0mZhbXPf7qJB4+HrZvvoEhzuOIzhSJEy9lcrmc9kWGWyuRA+XWRQOOxElRIAAUuEoVDJ5FiWlc9IY7l1HnZHC53F51N8RuEonZ1DMfHMFq40tCVnC1oVNtUyij9tJGHQ2AAJbGwMDGFgAJzgAFcADbGS5tImdB6gHqBOJswJfYa-f6TIEgsEQqHLWHwnmkRp4gX8er25o4poqVXXW4a7p2WyuEgpZwBeaAoIfezG2LBEiQ4Oufw-DzqPycm0bO245qOkgu7HOrMe1pe9X3X29f2B5zB0NJhzG1xBKvxxPh9QBHw5WH4fQQOCWdNFNUdMukhAAWkrPmCCb1zlsEICIb8xsnTmCG43ni8048EbT3IzSP5FT4w+Jmusdlcxo8TmZCWcjPsnmnKYPBSPfOYOcEwgqYgqOePpjhkxq+HED5JCkbJLDCqyfoi367KiyHAaOWqIPYoQkD4eqhDSIR0hMzgeH4syJKy7JWghCK8tsJ57PwGJ4uhJKYZMbguOowTYdShqjMaUwBPEfiOPYARuH48zqP4H50cUDE-qe-BCgwIriuIbGXj0ASuDGrgSdMsQCX89K9OoAZQfMMHUfBXKIfRhwofsVC8GwCgADIcNp5ZPu2JB6gEBo-MEZkTLYlm4SytlwfJtq5oW4iOr5Y4OIFskJpCda2MEtjGthMxxgE9iRc4G6uLlnbWoeiJ5slKkkAW7paSWI7sVeCCSRleE+Nl4a2LlDZ+AGITMgEeULuV7j2YOmz1Tm9WpRxyRxAuE1kWCe7TPYPjDSJ2HjZN1Yzu2XZZEAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgAsAThKOAjOtcB2VwFZ1ADk9-R3UANgAaEABPRABmdWdg-3t7V1jXe1DHT1tPAF88yLQsPEJSSlpGVk4efkFhGrEVSSpeTmpeFnEeLg1tJBADI1NzSxsEdUiYiYKijBwCYnJqemYRWuXK5kkFBllFZTUtSyGTMwsB8dtY2JIMsPt1Wx9A4LCpxF9XEnVf39j-Bksjl8oUQMUFmVNqtqtw+NCqpIAGYEXCwbB9E6GM6jS6IF7qEihHyhWzE56vNwfBCuQEkXKxFJpIHZXKzcHzUpLCow9bwgAKXCUzX2wqO-T02JGF1AVxud0eoUeFKCIQi0TsHhIfj+AJZIPZEK55RWVT5-GkjDobAAEs1YGBjCwAE5wACuABtjJiBqdpWNEIFbCRMoFyS9Va5qbTvgymelMqzQXMSotSKLDuaSLsMyL5GKfZLhucAwhbA4SICvOp0q9SbFqT5bM50l57C86wFDZy0yRc+Is-2dnt84dC4MpSW8WWK1XPDXaUF69T7EFK642x2l+pPD4CmD8PoIHBLEa01ji7jZYgALSOdXTG9tlyOV-32k+eIM7upqE8s01HwF44jK1i3vY-jUjegQhm+77+J+TyeLEP6QtypprIBdRCOsTTiMB-rTjk1LPMGOr-ICiYGmCZ5-hhsIbP+zAEVO14ILEITaqGIQqm8D6fKE-g-H8NaUcCbI0T2dFbAxApCocLFXmBNIZHcCQcU8EZ8dGPieD8-g3LE3gQTW6gvKhxoIphcIWlatoqIpoHjJ4TghkZPi+LxVIamW6j2NqIl6lREkpmhJoyVmrRsAoAAyHCOaW7g7iGgmeOGlJRj5th+QFupiUmFm9v25oJdO1whmZ7a1ku5aOLY1Icd8rYuVu-ihDue6Sb+SzFVh2YjgcDm+pOSnOd8jw+FVi5tbVK7JJWjh+J4dW2BujiPMmHLdemo4qIOu34cNl5OXE-jBqty2CSkoTEmkPhzXpHFLSta0bfueRAA */
     context: {
       startTimeInMillis: 0,
       totalTimeSpentInMillis: 0,
       userAnswer: null,
       answerError: null,
-    } as ContextType,
+    } as ActivityRendererMachinContextType,
     tsTypes: {} as import('./activityRendererMachine.typegen').Typegen0,
     states: {
       WORKING_STATE: {
@@ -28,6 +32,10 @@ export const activityRendererMachine = createMachine(
             on: {
               FOCUSED: {
                 target: 'WORKING',
+              },
+              RESTORE_DATA: {
+                target: 'RESULT',
+                actions: 'restoreData',
               },
             },
           },
@@ -101,7 +109,11 @@ export const activityRendererMachine = createMachine(
             answerError: any | null;
           }
         // | { type: 'RESET' }
-        | { type: 'finish'; userAnswer: any },
+        | { type: 'finish'; userAnswer: any }
+        | {
+            type: 'RESTORE_DATA';
+            restoreData: ActivityRendererMachineRestoreDataType;
+          },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -122,6 +134,7 @@ export const activityRendererMachine = createMachine(
         userAnswer,
         answerError,
       })),
+      restoreData: assign((_, { restoreData }) => ({ ...restoreData })),
     },
     services: {},
     // guards: { Focused: () => false },

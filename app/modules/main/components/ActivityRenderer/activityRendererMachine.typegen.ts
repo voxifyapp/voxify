@@ -18,6 +18,7 @@
         };
         eventsCausingActions: {
           "pauseTimer": "UNFOCUSED" | "finish" | "xstate.stop";
+"restoreData": "RESTORE_DATA";
 "setResult": "set_result";
 "setUserAnswer": "finish";
 "startTimer": "FOCUSED";

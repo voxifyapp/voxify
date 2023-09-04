@@ -11,7 +11,7 @@ import {
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import React, { useMemo, useState } from 'react';
-import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
+import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
@@ -55,6 +55,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           {activityRendererActor.getSnapshot()!.context.totalTimeSpentInMillis /
             1000}
         </H1>
+        <H5>{JSON.stringify(machineService.getSnapshot().value)}</H5>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
@@ -71,7 +72,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
                   !state.can({
                     type: 'add_word',
                     payload: { optionId: option.id },
-                  })
+                  }) ||
+                  !machineService.getSnapshot().matches('WORKING_STATE.WORKING')
                 }
                 key={option.id}
                 onPress={() => {

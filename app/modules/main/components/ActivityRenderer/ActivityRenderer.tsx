@@ -10,7 +10,10 @@ import {
   useCreateActivityRendererContext,
 } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
-import { activityRendererMachine } from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
+import {
+  ActivityRendererMachineRestoreDataType,
+  activityRendererMachine,
+} from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
@@ -22,60 +25,60 @@ import React, { useEffect } from 'react';
 type Props = {
   activityEntity: ActivityEntity;
   onActivityResults: ActivityRendererOnCompleteType;
+  restoreData?: ActivityRendererMachineRestoreDataType;
 };
 
 export const ActivityRendererMachineContext = createActorContext(
   activityRendererMachine,
 );
 
-export const ActivityRenderer = React.memo(
-  ({ activityEntity, onActivityResults }: Props) => {
-    const contextValue = useCreateActivityRendererContext({
-      onActivityResults,
-      activityEntity,
-    });
-
-    useEffect(() => {
-      return () => {
-        console.log('Unmounted', activityEntity.id);
-      };
-    }, [activityEntity]);
-
-    return (
-      <ActivityRendererContextProvider value={contextValue}>
-        <ActivitySelector />
-      </ActivityRendererContextProvider>
-    );
-  },
-);
-
-const ActivitySelector = () => {
-  const { activityEntity: activity, onActivityResults } =
-    useActivityRendererContext();
-
-  const { machineService } = useActivityRendererContext();
-
-  const activityRendererActor = machineService;
+export const ActivityRenderer = ({
+  activityEntity,
+  onActivityResults,
+  restoreData,
+}: Props) => {
+  const contextValue = useCreateActivityRendererContext({
+    onActivityResults,
+    activityEntity,
+    restoreData,
+  });
 
   useEffect(() => {
-    return activityRendererActor.subscribe(state => {
+    return () => {
+      console.log('Unmounted', activityEntity.id);
+    };
+  }, [activityEntity]);
+
+  return (
+    <ActivityRendererContextProvider value={contextValue}>
+      <ActivitySelector />
+    </ActivityRendererContextProvider>
+  );
+};
+
+const ActivitySelector = () => {
+  const {
+    activityEntity: activity,
+    machineService,
+    onActivityResults,
+  } = useActivityRendererContext();
+
+  useEffect(() => {
+    return machineService.subscribe(state => {
       if (
         state.matches('WORKING_STATE.RESULT') &&
         state.event.type === 'set_result'
       ) {
         onActivityResults({
           result: state.context.result,
-          data: state.context.userAnswer,
+          userAnswer: state.context.userAnswer,
           timeTakenToCompleteInSeconds:
             state.context.totalTimeSpentInMillis / 1000,
+          answerError: state.context.answerError,
         });
       }
     }).unsubscribe;
-  }, [activityRendererActor, onActivityResults]);
-
-  useEffect(() => {
-    activityRendererActor.send({ type: 'FOCUSED' });
-  }, [activityRendererActor]);
+  }, [machineService, onActivityResults]);
 
   if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
     return (

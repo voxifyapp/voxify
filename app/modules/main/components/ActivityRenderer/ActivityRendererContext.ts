@@ -1,33 +1,42 @@
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { activityRendererMachine } from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
+import {
+  ActivityRendererMachineRestoreDataType,
+  activityRendererMachine,
+} from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import { ActivityEntity } from '@voxify/types/lms/lms';
+import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { interpret } from 'xstate';
 
 export type ActivityRendererOnCompleteType = (data: {
   timeTakenToCompleteInSeconds: number;
-  data: any;
+  userAnswer: any;
   result: ActivityResponseResultType;
+  answerError: any;
 }) => any;
 
 type ContextData = {
   onActivityResults: ActivityRendererOnCompleteType;
   activityEntity: ActivityEntity;
+  restoreData?: ActivityRendererMachineRestoreDataType;
 };
 
 export function useCreateActivityRendererContext({
   onActivityResults,
   activityEntity,
+  restoreData,
 }: ContextData) {
-  const machineService = interpret(activityRendererMachine);
+  const [_, __, machineService] = useMachine(activityRendererMachine);
 
   useEffect(() => {
-    machineService.start();
-    return () => {
-      machineService.stop();
-    };
-  }, [machineService]);
+    if (machineService.initialized) {
+      if (restoreData) {
+        machineService.send({ type: 'RESTORE_DATA', restoreData });
+      } else {
+        machineService.send({ type: 'FOCUSED' });
+      }
+    }
+  }, [machineService, machineService.initialized, restoreData]);
 
   return {
     onActivityResults,

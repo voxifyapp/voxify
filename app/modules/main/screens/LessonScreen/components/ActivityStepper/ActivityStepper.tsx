@@ -1,12 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 //TODO Remove lint ignores above
+import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
+import { atom, useAtomValue } from 'jotai';
 import React, { useMemo, useRef } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { Button, Spacer, XStack, YStack } from 'tamagui';
-import { atom, useAtomValue } from 'jotai';
 
 const activityAspectRatio = 9 / 15;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -19,7 +20,9 @@ type Props = {
   activities: ActivityEntity[];
 };
 
-export const completedActivitiesAtom = atom<Record<string, any>>({});
+export const completedActivitiesAtom = atom<
+  Record<string, ActivityRendererMachineRestoreDataType>
+>({});
 
 export const ActivityStepper = ({ activities }: Props) => {
   const listRef = useRef<FlatList<ActivityEntity>>(null);
@@ -35,7 +38,7 @@ export const ActivityStepper = ({ activities }: Props) => {
     return result;
   }, [activities]);
 
-  // const completedActivities = useAtomValue(completedActivitiesAtom);
+  const completedActivities = useAtomValue(completedActivitiesAtom);
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
@@ -91,7 +94,10 @@ export const ActivityStepper = ({ activities }: Props) => {
                   ? firstAndLastElementMargin
                   : undefined,
             }}>
-            <ActivityStep activity={activity} />
+            <ActivityStep
+              restoreData={completedActivities[activity.id]}
+              activity={activity}
+            />
           </View>
         )}
       />
