@@ -50,16 +50,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <YStack
-        opacity={
-          activityRendererMachineService
-            .getSnapshot()
-            .matches('FOCUSED_STATE.UNFOCUSED')
-            ? 0.2
-            : 1
-        }
-        padding="$3"
-        fullscreen>
+      <YStack padding="$3" fullscreen>
         <H1>
           {activityRendererMachineService.getSnapshot()!.context
             .totalTimeSpentInMillis / 1000}

@@ -33,42 +33,39 @@ export const ActivityRendererMachineContext = createActorContext(
   activityRendererMachine,
 );
 
-export const ActivityRenderer = ({
-  activityEntity,
-  onActivityResults,
-  restoreData,
-  isActive,
-}: Props) => {
-  const contextValue = useCreateActivityRendererContext({
-    onActivityResults,
-    activityEntity,
-    restoreData,
-  });
+export const ActivityRenderer = React.memo(
+  ({ activityEntity, onActivityResults, restoreData, isActive }: Props) => {
+    const contextValue = useCreateActivityRendererContext({
+      onActivityResults,
+      activityEntity,
+      restoreData,
+    });
 
-  const { machineService } = contextValue;
+    const { machineService } = contextValue;
 
-  useEffect(() => {
-    if (restoreData) {
-      machineService.send({ type: 'RESTORE_DATA', restoreData });
-    }
-  }, [machineService, restoreData]);
+    useEffect(() => {
+      if (restoreData) {
+        machineService.send({ type: 'RESTORE_DATA', restoreData });
+      }
+    }, [machineService, restoreData]);
 
-  useEffect(() => {
-    machineService.send({ type: isActive ? 'FOCUSED' : 'UNFOCUSED' });
-  }, [isActive, machineService]);
+    useEffect(() => {
+      machineService.send({ type: isActive ? 'FOCUSED' : 'UNFOCUSED' });
+    }, [isActive, machineService]);
 
-  useEffect(() => {
-    return () => {
-      console.log('Unmounted', activityEntity.id);
-    };
-  }, [activityEntity]);
+    useEffect(() => {
+      return () => {
+        console.log('Unmounted', activityEntity.id);
+      };
+    }, [activityEntity.id]);
 
-  return (
-    <ActivityRendererContextProvider value={contextValue}>
-      <ActivitySelector />
-    </ActivityRendererContextProvider>
-  );
-};
+    return (
+      <ActivityRendererContextProvider value={contextValue}>
+        <ActivitySelector />
+      </ActivityRendererContextProvider>
+    );
+  },
+);
 
 const ActivitySelector = () => {
   const {

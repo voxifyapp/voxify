@@ -29,7 +29,7 @@ export const ActivityStepper = ({ activities }: Props) => {
   const listRef = useRef<FlatList<ActivityEntity>>(null);
   const renderedActivities: ActivityEntity[] = useMemo(() => {
     const result = [];
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 100; i++) {
       const a = activities[0];
       result.push({
         ...a,
