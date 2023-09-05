@@ -82,6 +82,10 @@ export class FillInTheBlanksActivity extends Activity<
   build() {
     return this.getData();
   }
+
+  build() {
+    return this.getData();
+  }
 }
 
 export type FillInTheBlanksAnswerErrorsType = {
