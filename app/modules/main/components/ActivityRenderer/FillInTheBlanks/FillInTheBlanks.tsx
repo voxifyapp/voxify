@@ -1,7 +1,4 @@
-import {
-  FillInTheBlanksActivity,
-  FillInTheBlanksAnswerErrorsType,
-} from '@voxify/common/activities/fill-in-the-blanks-activity';
+import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 
 import {
@@ -10,7 +7,7 @@ import {
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -25,14 +22,25 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
-  const { options, questionSegments, send, state } = contextValue;
-  const { userAnswer } = state.context;
+  const {
+    options,
+    questionSegments,
+    userAnswer,
+    setUserAnswer,
+    setAnswerErrors,
+    addWord,
+    canAddWord,
+  } = contextValue;
 
-  const [_, setAnswerErrors] = useState<FillInTheBlanksAnswerErrorsType | null>(
-    null,
-  );
+  useEffect(() => {
+    return activityRendererMachineService.subscribe(state => {
+      if (state.event.type === 'RESTORE_DATA') {
+        setUserAnswer(state.context.userAnswer);
+        setAnswerErrors(state.context.answerError);
+      }
+    }).unsubscribe;
+  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
 
-  //TODO Right now, hydration of states does not set the userAnswer and answerErrors properly. Fix.
   const onCheckAnswerClicked = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });
     const answerErrors = activity.checkAnswer(userAnswer);
@@ -70,21 +78,10 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             )
             .map(option => (
               <Button
-                disabled={
-                  !state.can({
-                    type: 'add_word',
-                    payload: { optionId: option.id },
-                  }) ||
-                  !activityRendererMachineService
-                    .getSnapshot()
-                    .matches('WORKING_STATE.WORKING')
-                }
+                disabled={!canAddWord}
                 key={option.id}
                 onPress={() => {
-                  send({
-                    type: 'add_word',
-                    payload: { optionId: option.id },
-                  });
+                  addWord(option.id);
                 }}
                 theme={'green'}>
                 {option.text}
@@ -113,9 +110,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 };
 
 const SegmentRenderer = ({ segment }: { segment: string }) => {
-  const { state, send } = useFillInTheBlanksContext();
-
-  const { userAnswer, activity } = state.context;
+  const { userAnswer, activity, removeWord, canRemoveWord } =
+    useFillInTheBlanksContext();
 
   if (segment.match(FillInTheBlanksActivity.BLANK_FORMAT)) {
     if (userAnswer[segment]) {
@@ -125,17 +121,9 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
         .find(option => option.id === optionIdForBlank)?.text;
       return (
         <Button
-          disabled={
-            !state.can({
-              type: 'remove_word',
-              payload: { blankId: segment },
-            })
-          }
+          disabled={!canRemoveWord}
           onPress={() => {
-            send({
-              type: 'remove_word',
-              payload: { blankId: segment },
-            });
+            removeWord(segment);
           }}
           theme="green">
           {answerForBlank}
