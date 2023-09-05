@@ -14,8 +14,14 @@ export const FormASentence = ({ activity }: Props) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
-  const { userAnswer, wordBank, setAnswerErrors, removeWord, addWord } =
-    contextValue;
+  const {
+    userAnswer,
+    wordBank,
+    setAnswerErrors,
+    removeWord,
+    addWord,
+    isWorkingState,
+  } = contextValue;
 
   const onCheckAnswer = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });
@@ -36,14 +42,22 @@ export const FormASentence = ({ activity }: Props) => {
       <H3>{activity.getPrompt().text}</H3>
       <XStack flexWrap="wrap" marginTop="$6">
         {userAnswer.answer.map((word, index) => (
-          <Button key={index} onPress={() => removeWord(index)} theme={'green'}>
+          <Button
+            key={index}
+            disabled={!isWorkingState}
+            onPress={() => removeWord(index)}
+            theme={'green'}>
             {word}
           </Button>
         ))}
       </XStack>
       <XStack flexWrap="wrap" space="$3" marginTop="$6">
         {wordBank.map((word, index) => (
-          <Button key={index} onPress={() => addWord(word)} theme={'green'}>
+          <Button
+            disabled={!isWorkingState}
+            key={index}
+            onPress={() => addWord(word)}
+            theme={'green'}>
             {word}
           </Button>
         ))}
