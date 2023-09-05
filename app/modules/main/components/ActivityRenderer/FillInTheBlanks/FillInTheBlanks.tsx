@@ -7,7 +7,7 @@ import {
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -15,9 +15,7 @@ type Props = {
 };
 
 export const FillInTheBlanks = ({ activity }: Props) => {
-  const contextValue = useCreateFillInTheBlanksContext(
-    useMemo(() => ({ activity }), [activity]),
-  );
+  const contextValue = useCreateFillInTheBlanksContext({ activity });
 
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
@@ -41,7 +39,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     }).unsubscribe;
   }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
 
-  const onCheckAnswerClicked = () => {
+  const onCheckAnswer = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });
     const answerErrors = activity.checkAnswer(userAnswer);
     setAnswerErrors(answerErrors);
@@ -92,7 +90,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         {activityRendererMachineService
           .getSnapshot()
           ?.can({ type: 'finish', userAnswer }) && (
-          <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
+          <Button onPress={onCheckAnswer}>Check Answer</Button>
         )}
         {activityRendererMachineService
           .getSnapshot()

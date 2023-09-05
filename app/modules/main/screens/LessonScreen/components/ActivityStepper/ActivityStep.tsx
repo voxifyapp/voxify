@@ -27,7 +27,10 @@ export const ActivityStep = React.memo(
             [activity.id]: data,
           }));
           mutate({
-            responseData: data.userAnswer,
+            responseData: {
+              userAnswer: data.userAnswer,
+              answerError: data.answerError,
+            },
             timeTaken: data.timeTakenToCompleteInSeconds,
             result: data.result,
           });

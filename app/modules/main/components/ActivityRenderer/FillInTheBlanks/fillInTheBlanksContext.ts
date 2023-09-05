@@ -25,7 +25,7 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
 
   const derived = derivedValues({ userAnswer, activity });
 
-  const isWorkingState = (condition: boolean) => {
+  const isWorkingStateAnd = (condition: boolean) => {
     return (
       condition &&
       activityRendererMachineService
@@ -47,8 +47,8 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
     },
     setAnswerErrors,
     answerErrors,
-    canAddWord: isWorkingState(!!derived.nextUserBlank),
-    canRemoveWord: isWorkingState(Object.keys(userAnswer).length > 0),
+    canAddWord: isWorkingStateAnd(!!derived.nextUserBlank),
+    canRemoveWord: isWorkingStateAnd(Object.keys(userAnswer).length > 0),
   };
 }
 

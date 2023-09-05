@@ -10,11 +10,11 @@ import {
   useCreateActivityRendererContext,
 } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
+import { FormASentence } from '@voxify/modules/main/components/ActivityRenderer/FormASentence/FormASentence';
 import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
 } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
 import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
