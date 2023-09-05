@@ -7,7 +7,7 @@ import {
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -24,20 +24,10 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     options,
     questionSegments,
     userAnswer,
-    setUserAnswer,
     setAnswerErrors,
     addWord,
     canAddWord,
   } = contextValue;
-
-  useEffect(() => {
-    return activityRendererMachineService.subscribe(state => {
-      if (state.event.type === 'RESTORE_DATA') {
-        setUserAnswer(state.context.userAnswer);
-        setAnswerErrors(state.context.answerError);
-      }
-    }).unsubscribe;
-  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
 
   const onCheckAnswer = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });

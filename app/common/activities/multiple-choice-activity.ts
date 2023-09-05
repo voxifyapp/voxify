@@ -62,19 +62,25 @@ export class MultipleChoiceActivity extends Activity<
   /**
    * Returns options that are incorrect, else returns nothing
    */
-  checkAnswer(answer: MultipleChoiceActivityAnswer) {
+  checkAnswer(
+    answer: MultipleChoiceActivityAnswer,
+  ): MultipleChoiceAnswerErrorsType {
     const answerBank = this.getAnswer();
-    const errors = [];
+    const wrongOptions = [];
     for (const selectedOption of answer.answer) {
       if (answerBank.indexOf(selectedOption) === -1) {
-        errors.push(selectedOption);
+        wrongOptions.push(selectedOption);
       }
     }
 
-    return errors;
+    return { wrongOptions };
   }
 
   build() {
     return this.getData();
   }
 }
+
+export type MultipleChoiceAnswerErrorsType = {
+  wrongOptions: string[];
+};

@@ -5,10 +5,10 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
-import React from 'react';
+import { ActivityEntity } from '@voxify/types/lms/lms';
+import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
-import { slice } from 'lodash';
 
 export const LessonScreen = () => {
   const lessonId = 'fdfb262e-cf99-4c31-84ed-574bb3f53241';
@@ -23,13 +23,27 @@ export const LessonScreen = () => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
+  let tempActivities: ActivityEntity[] = useMemo(() => {
+    const result = [];
+    if (lessonActivities) {
+      for (let i = 0; i < 100; i++) {
+        const a = lessonActivities![2];
+        result.push({
+          ...a,
+          id: '' + Math.floor(Math.random() * 1000000) + 1,
+        });
+      }
+    }
+    return result;
+  }, [lessonActivities]);
+
   if (isLessonLoading || isLessonActivitiesLoading) {
     return <H1>Loading...</H1>;
   }
 
   return (
     <View>
-      <ActivityStepper activities={slice(lessonActivities!, 0)} />
+      <ActivityStepper activities={tempActivities} />
     </View>
   );
 };
