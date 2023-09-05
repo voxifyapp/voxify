@@ -1,5 +1,8 @@
 import { configureEnv } from 'common/configure-env';
 import { Profile } from 'src/auth/entities/profile.entity';
+import { ActivityResponse } from 'src/lms-progress/entities/activity-response.entity';
+import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
+import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
 import { Activity } from 'src/lms/entities/activity.entity';
 import { Course } from 'src/lms/entities/course.entity';
 import { Lesson } from 'src/lms/entities/lesson.entity';
@@ -17,7 +20,16 @@ configureEnv();
 export const datasourceConfig: PostgresConnectionOptions = {
   type: 'postgres',
   url: process.env.POSTGRES_URL,
-  entities: [Profile, Course, Unit, Lesson, Activity],
+  entities: [
+    Profile,
+    Course,
+    Unit,
+    Lesson,
+    Activity,
+    ActivityResponse,
+    LessonResponse,
+    UnitResponse,
+  ],
 };
 
 /** This datasource is only used by the TypeORM CLI */
