@@ -23,7 +23,7 @@ export const activityRendererMachine = createMachine(
       userAnswer: null,
       answerError: null,
     } as ActivityRendererMachinContextType,
-    tsTypes: {} as import('./activityRendererMachine.typegen').Typegen0,
+    tsTypes: {} as import('./activityRenderer.machine.typegen').Typegen0,
     states: {
       WORKING_STATE: {
         initial: 'NOT_STARTED',

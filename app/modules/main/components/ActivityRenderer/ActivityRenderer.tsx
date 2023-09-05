@@ -13,7 +13,7 @@ import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRendere
 import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
-} from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
+} from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
@@ -53,12 +53,6 @@ export const ActivityRenderer = React.memo(
       machineService.send({ type: isActive ? 'FOCUSED' : 'UNFOCUSED' });
     }, [isActive, machineService]);
 
-    useEffect(() => {
-      return () => {
-        console.log('Unmounted', activityEntity.id);
-      };
-    }, [activityEntity.id]);
-
     return (
       <ActivityRendererContextProvider value={contextValue}>
         <ActivitySelector />
@@ -74,6 +68,7 @@ const ActivitySelector = () => {
     onActivityResults,
   } = useActivityRendererContext();
 
+  // If there was a 'set_result' event which led to the 'WORKING_STATE.RESULT' let's invoke the callback
   useEffect(() => {
     return machineService.subscribe(state => {
       if (

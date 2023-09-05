@@ -1,6 +1,6 @@
 import { ActivityRenderer } from '@voxify/modules/main/components/ActivityRenderer/ActivityRenderer';
 import { ActivityRendererOnCompleteType } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
-import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRendererMachine';
+import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { completedActivitiesAtom } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import { useActivityResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useActivityResponse';
 import { ActivityEntity } from '@voxify/types/lms/lms';
