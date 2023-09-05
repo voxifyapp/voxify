@@ -5,9 +5,10 @@ import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/com
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
-import React, { useMemo, useRef, useState } from 'react';
+import { slice } from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, View, ViewToken } from 'react-native';
-import { Button, Spacer, XStack, YStack } from 'tamagui';
+import { Spacer, YStack } from 'tamagui';
 
 const activityAspectRatio = 9 / 15;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -27,19 +28,31 @@ export const completedActivitiesAtom = atom<
 export const ActivityStepper = ({ activities }: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const listRef = useRef<FlatList<ActivityEntity>>(null);
-  const renderedActivities: ActivityEntity[] = useMemo(() => {
-    const result = [];
-    for (let i = 0; i < 100; i++) {
-      const a = activities[0];
-      result.push({
-        ...a,
-        id: '' + Math.floor(Math.random() * 1000000) + 1,
-      });
-    }
-    return result;
-  }, [activities]);
+
+  let renderedActivities = activities;
 
   const completedActivities = useAtomValue(completedActivitiesAtom);
+
+  const nextActivityToCompleteIndex = renderedActivities.findIndex(
+    activity => !completedActivities[activity.id],
+  );
+
+  renderedActivities = slice(
+    renderedActivities,
+    0,
+    nextActivityToCompleteIndex + 1,
+  );
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (nextActivityToCompleteIndex) {
+        listRef.current?.scrollToIndex({
+          animated: true,
+          index: nextActivityToCompleteIndex,
+        });
+      }
+    }, 1000);
+  }, [nextActivityToCompleteIndex]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,
@@ -63,20 +76,6 @@ export const ActivityStepper = ({ activities }: Props) => {
 
   return (
     <YStack theme="green" backgroundColor={'$blue2Dark'}>
-      <XStack zIndex={100} theme="green">
-        <Button
-          onPress={() =>
-            listRef.current?.scrollToIndex({
-              index: Math.floor(Math.random() * 98) + 1,
-              animated: true,
-            })
-          }>
-          Scroll
-        </Button>
-        <Button onPress={() => listRef.current?.scrollToIndex({ index: 0 })}>
-          Scroll To Top
-        </Button>
-      </XStack>
       <FlatList
         decelerationRate={0.8}
         getItemLayout={getItemLayout}
