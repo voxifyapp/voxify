@@ -29,7 +29,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <ActivityStepper activities={slice(lessonActivities!, 1)} />
+      <ActivityStepper activities={slice(lessonActivities!, 0)} />
     </View>
   );
 };

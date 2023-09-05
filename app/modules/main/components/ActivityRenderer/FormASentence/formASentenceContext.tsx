@@ -4,31 +4,22 @@ import {
   FormASentenceAnswerErrorType,
 } from '@voxify/common/activities/form-a-sentence-activity';
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
-import { useState } from 'react';
-
+import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
 type ContextData = {
   activity: FormASentenceActivity;
 };
 
 export function useCreateFormASentenceContext({ activity }: ContextData) {
-  const { machineService: activityRendererMachineService } =
-    useActivityRendererContext();
-
-  const [userAnswer, setUserAnswer] = useState<FormASentenceActivityAnswer>({
-    answer: [],
-  });
-  const [answerErrors, setAnswerErrors] =
-    useState<FormASentenceAnswerErrorType | null>(null);
-
-  const isWorkingStateAnd = (condition: boolean) => {
-    return (
-      condition &&
-      activityRendererMachineService
-        .getSnapshot()
-        .matches('WORKING_STATE.WORKING')
-    );
-  };
+  const {
+    userAnswer,
+    setUserAnswer,
+    answerErrors,
+    setAnswerErrors,
+    isWorkingStateAnd,
+  } = useGetActivityRendererHookExtras<
+    FormASentenceActivityAnswer,
+    FormASentenceAnswerErrorType
+  >({ answer: [] });
 
   const words = activity.getWords();
   const wordBank = [...words];
@@ -41,7 +32,6 @@ export function useCreateFormASentenceContext({ activity }: ContextData) {
 
   return {
     activity,
-    setUserAnswer,
     userAnswer,
     setAnswerErrors,
     answerErrors,

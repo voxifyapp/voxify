@@ -4,35 +4,27 @@ import {
   FillInTheBlanksAnswerErrorsType,
 } from '@voxify/common/activities/fill-in-the-blanks-activity';
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { derivedValues } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/derivedValues';
+import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
 import { omit } from 'lodash';
-import { useState } from 'react';
 
 type ContextData = {
   activity: FillInTheBlanksActivity;
 };
 
 export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
-  const { machineService: activityRendererMachineService } =
-    useActivityRendererContext();
-
-  const [userAnswer, setUserAnswer] = useState<FillInTheBlanksActivityAnswer>(
-    {},
-  );
-  const [answerErrors, setAnswerErrors] =
-    useState<FillInTheBlanksAnswerErrorsType | null>(null);
+  const {
+    userAnswer,
+    setUserAnswer,
+    answerErrors,
+    setAnswerErrors,
+    isWorkingStateAnd,
+  } = useGetActivityRendererHookExtras<
+    FillInTheBlanksActivityAnswer,
+    FillInTheBlanksAnswerErrorsType
+  >({});
 
   const derived = derivedValues({ userAnswer, activity });
-
-  const isWorkingStateAnd = (condition: boolean) => {
-    return (
-      condition &&
-      activityRendererMachineService
-        .getSnapshot()
-        .matches('WORKING_STATE.WORKING')
-    );
-  };
 
   return {
     activity,
