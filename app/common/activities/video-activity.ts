@@ -5,7 +5,7 @@ export interface VideoActivityData {
 }
 
 export interface VideoActivityAnswer {
-  completionTime?: number;
+  completionPercent?: number;
 }
 
 export const ACTIVITY_TYPE_VIDEO = 'VIDEO';
@@ -25,11 +25,13 @@ export class VideoActivity extends Activity<
     return this.getData().videoUrl;
   }
 
-  checkAnswer() {
-    return [];
+  checkAnswer(): VideoActivityAnswerErrorsType {
+    return {};
   }
 
   build() {
     return this.getData();
   }
 }
+
+export type VideoActivityAnswerErrorsType = {};

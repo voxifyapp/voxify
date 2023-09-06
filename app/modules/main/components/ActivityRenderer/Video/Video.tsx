@@ -1,5 +1,11 @@
-import { VideoActivity } from '@voxify/common/activities/video-activity';
+import {
+  VideoActivity,
+  VideoActivityAnswer,
+  VideoActivityAnswerErrorsType,
+} from '@voxify/common/activities/video-activity';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import React from 'react';
 import RNVideo from 'react-native-video';
 import { Stack, YStack } from 'tamagui';
@@ -9,27 +15,38 @@ type Props = {
 };
 
 export const Video = ({ activity }: Props) => {
-  const { isWorkingStateAnd } = useGetActivityRendererHookExtras({ activity });
+  const { machineService: activityRendererMachineService } =
+    useActivityRendererContext();
+
+  const { isWorkingStateAnd } = useGetActivityRendererHookExtras<
+    VideoActivityAnswer,
+    VideoActivityAnswerErrorsType
+  >({});
 
   const shouldPlayVideo = isWorkingStateAnd(true);
 
-  console.log(shouldPlayVideo);
-
-  console.log('render video');
+  const onCheckAnswer = (userAnswer: VideoActivityAnswer) => {
+    activityRendererMachineService.send({ type: 'finish', userAnswer });
+    const answerErrors = activity.checkAnswer();
+    activityRendererMachineService.send({
+      type: 'set_result',
+      result: ActivityResponseResultType.SUCCESS,
+      answerError: answerErrors,
+      userAnswer,
+    });
+  };
 
   return (
     <YStack>
       {shouldPlayVideo ? (
         <RNVideo
           resizeMode="cover"
-          onLoadStart={() => console.log('onLoadStart')}
-          onLoad={data => console.log('onLoad', data)}
-          onBandwidthUpdate={data => console.log(data)}
-          onBuffer={data => console.log(data)}
           reportBandwidth={true}
-          onPlaybackStalled={() => console.log('Stalled')}
+          onEnd={() => {
+            onCheckAnswer({ completionPercent: 100 });
+          }}
           source={{
-            uri: 'https://pub-a7f2b1be55e640dbbdb1294dd2b6e300.r2.dev/My Movie.mp4',
+            uri: activity.getVideoUrl(),
           }}
           style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
         />

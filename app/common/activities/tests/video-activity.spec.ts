@@ -30,6 +30,6 @@ describe('VideoActivity', () => {
     const activity = new VideoActivity({
       videoUrl: 'https://www.youtube.com/watch?v=1',
     });
-    expect(activity.checkAnswer()).toEqual([]);
+    expect(activity.checkAnswer()).toEqual({});
   });
 });
