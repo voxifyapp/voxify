@@ -1,11 +1,14 @@
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
 import { useEffect, useState } from 'react';
 
-export const useVoiceRecognition = (
-  {}: { recordAudio?: boolean } = { recordAudio: false },
-) => {
+export const useVoiceRecognition = ({
+  onResults,
+  onSpeechRealtimeRecognition,
+}: {
+  onResults: (recognizedWords: string) => void;
+  onSpeechRealtimeRecognition: (recognizedWords: string) => void;
+}) => {
   const [started, setStarted] = useState(false);
-  const [recognized, setRecognized] = useState<string>('');
 
   const onSpeechStart = () => {
     setStarted(true);
@@ -16,11 +19,11 @@ export const useVoiceRecognition = (
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
-    e.value?.length && setRecognized(e.value[0]);
+    e.value?.length && onResults(e.value[0]);
   };
 
   const onSpeechPartialResults = (e: SpeechResultsEvent) => {
-    e.value?.length && setRecognized(e.value[0]);
+    e.value?.length && onSpeechRealtimeRecognition(e.value[0]);
   };
 
   const onSpeechError = () => {
@@ -37,11 +40,11 @@ export const useVoiceRecognition = (
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
     started,
-    recognized,
     Voice,
   };
 };

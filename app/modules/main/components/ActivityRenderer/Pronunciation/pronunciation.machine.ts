@@ -1,31 +1,34 @@
 import { createMachine } from 'xstate';
 
-export const machine = createMachine(
+export const pronunciationMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgEkA5MgFTIEEAZAYgHUB5AJQGlKBxAbQAMAXUSgADgHtYuAC65J+MSAAeiAEwBWABwl1ggMwBGLQBoQAT0RGD6gL53zaLHkKkGZAMrUAolQq8TBRs1AD67Nx8QqJIIFIy8orKaghauvrGZpaI2kYkmg5OGDgExCQe3n58TAAKHGwAwj6entHK8XIKSrEpmgBsmnpG2gDsmuZWCCZ9JAAsRn2LS8uLDo4g+JIQcMrOJW7t0p1JPYgAtH0T532FIHuuZZQ09AyHCV3JiLPqVwgAnAYSIJtAZQWDwQZZrd7qV3F5fP5eG9jt1QClZrYSEYRsMxr9piQ-gsVisRtDig9SHVGs1PHxkYlUapEH0-n8gUZ+llJgSiSSSWs7EA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgEkA5MgFTIEEAZAYgHUB5AJQGlKBxAbQAMAXUSgADgHtYuAC65J+MSAAeiAIwA2AMwkA7NoAs2vQFYANCACeiAEynb+0wF9nltFjyFSAZWp0OagBRABEmCjZqAH12bj4hUSQQKRl5RWU1BC1dA2MzSxsEW0FHe1d3DBwCYhI-AOCwlVhZdFkwEnQAMzaAJ2RTQUEiJg8q71r-QNCE5RS5BSUkzMNNQRJTdVNNewK7QwAOEk1jk9OTgE5ykFGvGoYyPyCqCl4mAAUONgBhIJ8fGaSczSi1AmX2hlMR32+Wsdls5xIhi0ZzOlzc10qt1I90ez1eEWisR4LwBEmk83SS0QKzWGy2O1hCH26nWgzZ7LZ6lc6PwkggcGUN2qRFm5OBGUQAFpNLsEJLIedFUrlUr9porkLxpQaPQGKLUgsJQhDLZZbYkSR1GV0ZqanUpiF9RSQapENoTPpBNorRZGea9EcUSi0RVPMKSDjgnineKqQgdIZEeCTL7CupzrokUHTiGMWHxh9vr8fKEY4a4+c9AiDnlU3CEedkdnNGjXEA */
     initial: 'INITIAL',
+    tsTypes: {} as import('./pronunciation.machine.typegen').Typegen0,
     states: {
       INITIAL: {
         on: {
-          WORKING: {
-            // Responsible for recording the audio clip
-            // also renders out the real time text recognition
-            target: 'LISTENING',
-          },
+          WORKING: 'STARTED',
         },
       },
-
+      STARTED: {
+        on: {
+          NOT_WORKING: 'INITIAL',
+        },
+        after: {
+          500: { target: 'LISTENING' },
+        },
+      },
       LISTENING: {
         on: {
-          NOT_WORKING: {
-            target: 'INITIAL',
-          },
-
-          PROCESS: 'PROCESSING',
+          PROCESS: 'PROCESSED',
+          NOT_WORKING: 'INITIAL',
         },
+        entry: 'startListening',
+        exit: 'stopListening',
       },
 
-      PROCESSING: {},
+      PROCESSED: {},
     },
     schema: {
       events: {} as
