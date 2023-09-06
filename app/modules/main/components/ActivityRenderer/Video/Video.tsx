@@ -45,6 +45,7 @@ export const Video = ({ activity }: Props) => {
           onEnd={() => {
             onCheckAnswer({ completionPercent: 100 });
           }}
+          controls={true}
           source={{
             uri: activity.getVideoUrl(),
           }}
