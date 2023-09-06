@@ -6,20 +6,18 @@
         internalEvents: {
           "xstate.after(500)#(machine).STARTED": { type: "xstate.after(500)#(machine).STARTED" };
 "xstate.init": { type: "xstate.init" };
-"xstate.stop": { type: "xstate.stop" };
         };
         invokeSrcNameMap: {
           
         };
         missingImplementations: {
-          actions: "startListening" | "stopListening";
+          actions: never;
           delays: never;
           guards: never;
           services: never;
         };
         eventsCausingActions: {
-          "startListening": "xstate.after(500)#(machine).STARTED";
-"stopListening": "NOT_WORKING" | "PROCESS" | "xstate.stop";
+          
         };
         eventsCausingDelays: {
           

@@ -24,8 +24,6 @@ export const pronunciationMachine = createMachine(
           PROCESS: 'PROCESSED',
           NOT_WORKING: 'INITIAL',
         },
-        entry: 'startListening',
-        exit: 'stopListening',
       },
 
       PROCESSED: {},

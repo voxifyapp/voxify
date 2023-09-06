@@ -1,7 +1,9 @@
 import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
 import { useVoiceRecognition } from '@voxify/hooks/voiceRecognition';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { useCreatePronunciationContext } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
 import { pronunciationMachine } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.machine';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
 import { H1, XStack, YStack } from 'tamagui';
@@ -12,7 +14,24 @@ type Props = {
 
 export const Pronunciation = ({ activity }: Props) => {
   const contextValue = useCreatePronunciationContext({ activity });
-  const { isWorkingState, setUserAnswer, userAnswer } = contextValue;
+  const { isWorkingState, setUserAnswer, userAnswer, setAnswerErrors } =
+    contextValue;
+  const { machineService: activityRendererMachineService } =
+    useActivityRendererContext();
+
+  const onCheckAnswer = () => {
+    activityRendererMachineService.send({ type: 'finish', userAnswer });
+    const answerErrors = activity.checkAnswer(userAnswer);
+    setAnswerErrors(answerErrors);
+    activityRendererMachineService.send({
+      type: 'set_result',
+      result: answerErrors?.correct
+        ? ActivityResponseResultType.SUCCESS
+        : ActivityResponseResultType.FAIL,
+      userAnswer,
+      answerError: answerErrors,
+    });
+  };
 
   const { Voice } = useVoiceRecognition({
     onResults: recognizedWords => {
@@ -23,16 +42,15 @@ export const Pronunciation = ({ activity }: Props) => {
     },
   });
 
-  const [_, send] = useMachine(pronunciationMachine, {
-    actions: {
-      startListening: () => {
+  const [_, send, actor] = useMachine(pronunciationMachine);
+
+  useEffect(() => {
+    return actor.subscribe(e => {
+      if (e.matches('LISTENING')) {
         Voice.start('en-IN');
-      },
-      stopListening: () => {
-        Voice.stop();
-      },
-    },
-  });
+      }
+    }).unsubscribe;
+  }, [Voice, actor]);
 
   console.log(_);
 
