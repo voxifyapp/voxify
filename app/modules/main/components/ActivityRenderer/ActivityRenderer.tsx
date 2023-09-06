@@ -17,7 +17,7 @@ import {
 } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { MultipleChoice } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
-import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
+import { Video } from '@voxify/modules/main/components/ActivityRenderer/Video/Video';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import { createActorContext } from '@xstate/react';
 import React, { useEffect } from 'react';
