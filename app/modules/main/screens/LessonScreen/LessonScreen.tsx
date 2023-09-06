@@ -26,8 +26,8 @@ export const LessonScreen = () => {
   let tempActivities: ActivityEntity[] = useMemo(() => {
     const result = [];
     if (lessonActivities) {
-      for (let i = 0; i < 10; i++) {
-        const a = lessonActivities![4];
+      for (let i = 0; i < 1; i++) {
+        const a = lessonActivities![3];
         result.push({
           ...a,
           id: '' + Math.floor(Math.random() * 1000000) + 1,

@@ -3,7 +3,7 @@ import { useVoiceRecognition } from '@voxify/hooks/voiceRecognition';
 import {
   convertStringToArray,
   matchReferenceStringWithInput,
-} from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/intersection';
+} from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/intersection';
 import React from 'react';
 import { Button, H2, XStack, YStack } from 'tamagui';
 
