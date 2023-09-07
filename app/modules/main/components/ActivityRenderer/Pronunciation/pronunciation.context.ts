@@ -17,6 +17,7 @@ export function useCreatePronunciationContext({ activity }: ContextData) {
     setAnswerErrors,
     setUserAnswer,
     isWorkingStateAnd,
+    isShowResultState,
   } = useGetActivityRendererHookExtras<
     PronunciationActivityAnswer,
     PronunciationAnswerErrorType

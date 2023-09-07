@@ -21,6 +21,7 @@ export const useGetActivityRendererHookExtras = <
   useEffect(() => {
     return activityRendererMachineService.subscribe(state => {
       if (state.event.type === 'RESTORE_DATA') {
+        console.log('Restoring data');
         setUserAnswer(state.context.userAnswer);
         setAnswerErrors(state.context.answerError);
       }

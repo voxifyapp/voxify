@@ -51,13 +51,12 @@ export class PronunciationActivity extends Activity<
    * Takes in a reference string and an input string, and returns an array the same size of the reference string, with the words that were matched in the input string.
    * Each element in returned array is either a string or null. based on whether it was matched or not
    */
-  static matchReferenceStringWithInput(reference: string, input: string) {
-    const referenceArray = this.convertStringToArray(reference).map(word =>
-      this.sanitizeWord(word),
-    );
-    const inputArray = this.convertStringToArray(input).map(word =>
-      this.sanitizeWord(word),
-    );
+  static matchReferenceStringWithInput(
+    reference: string,
+    input: string,
+  ): (string | null)[] {
+    const referenceArray = this.convertStringToSanitizedWordArray(reference);
+    const inputArray = this.convertStringToSanitizedWordArray(input);
 
     let referenceIntersectionWords = new Array(referenceArray.length).fill(
       false,
@@ -79,6 +78,12 @@ export class PronunciationActivity extends Activity<
     return referenceIntersectionWords;
   }
 
+  static convertStringToSanitizedWordArray = (value: string) => {
+    return this.convertStringToArray(value).map(word =>
+      this.sanitizeWord(word),
+    );
+  };
+
   static sanitizeWord(word: string) {
     return word.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
   }
@@ -91,10 +96,23 @@ export class PronunciationActivity extends Activity<
     answer: PronunciationActivityAnswer,
   ): PronunciationAnswerErrorType {
     //If more than half the words are not detected, let's return wrong
+    const matchArray = PronunciationActivity.matchReferenceStringWithInput(
+      this.getPrompt().text,
+      answer.recognizedWords,
+    );
 
-    // if(answer.wordArray.filter(word => word === null).length > this.getPrompt().text) {}
+    const numberOfWordsNotMatched = matchArray.filter(a => a === null).length;
+    if (numberOfWordsNotMatched > matchArray.length / 2) {
+      return {
+        correct: false,
+        recognizedPercent: (numberOfWordsNotMatched / matchArray.length) * 100,
+      };
+    }
 
-    return { correct: true };
+    return {
+      correct: true,
+      recognizedPercent: (numberOfWordsNotMatched / matchArray.length) * 100,
+    };
   }
 
   build() {
@@ -104,4 +122,5 @@ export class PronunciationActivity extends Activity<
 
 export type PronunciationAnswerErrorType = {
   correct: boolean;
+  recognizedPercent: number;
 };

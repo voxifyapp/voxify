@@ -7,7 +7,7 @@ export type ActivityRendererMachinContextType = {
   totalTimeSpentInMillis: number;
   userAnswer: any | null;
   answerError: any | null;
-  result: ActivityResponseResultType;
+  result: ActivityResponseResultType | null;
 };
 
 export type ActivityRendererMachineRestoreDataType = Omit<
@@ -22,6 +22,7 @@ export const activityRendererMachine = createMachine(
       totalTimeSpentInMillis: 0,
       userAnswer: null,
       answerError: null,
+      result: null,
     } as ActivityRendererMachinContextType,
     tsTypes: {} as import('./activityRenderer.machine.typegen').Typegen0,
     states: {

@@ -27,6 +27,7 @@ type Props = {
   onActivityResults: ActivityRendererOnCompleteType;
   restoreData?: ActivityRendererMachineRestoreDataType;
   isActive: boolean;
+  index?: number;
 };
 
 export const ActivityRendererMachineContext = createActorContext(
@@ -34,11 +35,18 @@ export const ActivityRendererMachineContext = createActorContext(
 );
 
 export const ActivityRenderer = React.memo(
-  ({ activityEntity, onActivityResults, restoreData, isActive }: Props) => {
+  ({
+    activityEntity,
+    onActivityResults,
+    restoreData,
+    isActive,
+    index,
+  }: Props) => {
     const contextValue = useCreateActivityRendererContext({
       onActivityResults,
       activityEntity,
       restoreData,
+      index,
     });
 
     const { machineService } = contextValue;
@@ -47,7 +55,10 @@ export const ActivityRenderer = React.memo(
       if (restoreData) {
         machineService.send({ type: 'RESTORE_DATA', restoreData });
       }
-    }, [machineService, restoreData]);
+      // We are disabling this because we don't want to restore any time restore data changes
+      // It should only happen in the first mount
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [machineService]);
 
     useEffect(() => {
       machineService.send({ type: isActive ? 'FOCUSED' : 'UNFOCUSED' });

@@ -20,6 +20,7 @@ export const useVoiceRecognition = ({
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
     e.value?.length && onResults(e.value[0]);
+    Voice.destroy().then(Voice.removeAllListeners);
   };
 
   const onSpeechPartialResults = (e: SpeechResultsEvent) => {
@@ -28,6 +29,7 @@ export const useVoiceRecognition = ({
 
   const onSpeechError = () => {
     setStarted(false);
+    Voice.destroy().then(Voice.removeAllListeners);
   };
 
   useEffect(() => {

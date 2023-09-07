@@ -18,11 +18,13 @@ type ContextData = {
   onActivityResults: ActivityRendererOnCompleteType;
   activityEntity: ActivityEntity;
   restoreData?: ActivityRendererMachineRestoreDataType;
+  index?: number;
 };
 
 export function useCreateActivityRendererContext({
   onActivityResults,
   activityEntity,
+  index,
 }: ContextData) {
   const [_, __, machineService] = useMachine(activityRendererMachine);
 
@@ -30,6 +32,7 @@ export function useCreateActivityRendererContext({
     onActivityResults,
     activityEntity,
     machineService,
+    index,
   };
 }
 
