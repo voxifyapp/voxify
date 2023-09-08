@@ -2,7 +2,7 @@ import { createMachine } from 'xstate';
 
 export const pronunciationMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgEkA5MgFTIEEAZAYgHUB5AJQGlKBxAbQAMAXUSgADgHtYuAC65J+MSAAeiAIwA2AMwkA7NoAs2gBwAmTQE5LZs5fWGANCACeiMwFYz+j4MG29Y0sPbQ8AXzDnNCw8QlIAZWo6DmoAUQARJgo2agB9dm4+IVEkECkZeUVlNQQtXQNjcysbOwdnNwQzfxJPP0FLPUtDQxCIqIwcAmISROS0zJVYWXRZMBJ0ADNVgCdkX0EiJmjJuJmklIzi5XK5BSVSmsNNQRIPdQ9NJ8tNE2CzbXa7kMJhImjBmj0ZhMgj0ENCmjGIGOsWmDDIiVSVAovCYAAUOGwAMKpeLxK6lG6Ve6gGqwvSvbTqf7DJ56N4A1xAkF9PwOPwmCECxHIqakNEYrE47J5Ao8bHkiTSW5VB6IJ4vN4fL4-P4cjomdSvHnaRkDfx6EzCiYosXotKSpgANTYZGJuQ4qUJbF4FDotDYFFyADE6GQGAqykqqdVEHSGUyjMMIezAbVfiRDNYBiYTB5fpmEYj8JIIHBlCK4tco3cYwgALSaVMNkg81utvRWmKi8hUWiMKsVGuqhCGMypsyGQ1M-aCbRmdSBKGdk7TWYXdID5XU1SIE30vSz96mfoH7TfceGengsHQ5NGDyGZc2kji+18TfR4c6QwZkzGZ5eJmXRjpynSji2JgmnOHhssE6hMk+3b4kSJLxBkH5DjSGizt4ELqLmOGCMYegXiCM6CHyggChahbjF2pzOq6qTup63q9mQAbBqGDDoRS1YqlhtQ4aCej4b4c5EdoJGgfhlgkFmwT8lo3z-BEERAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgEkA5MgFTIEEAZAYgHUB5AJQGlKBxAbQAMAXUSgADgHtYuAC65J+MSAAeiAIwAmdQDYSmgJw6AHABYDAZm2bNAdlsAaEAE9EmnYJK6dOg+tMArMYWpjqapgC+EU5oWHiEpADK1HQc1ACiACJMFGzUAPrs3HxCokggUjLyispqCFq6+kZmltZ2ji5uggYkPj5BxoIW6kPG6lExGDgExCTJqRnZKrCy6LJgJOgAZusATsgBgoJETLHTCXMpaVmlypVyCkrldVoBpvohw1Zvxh2uCGMSOYDCCTAMDLZzBMQGd4rMGGRkukqBReEwAAocNgAYXSiUSt3K92qT1AdU0RxIglCBnCpkEtkEv00Tn+mgCPXZR10-gMxgCFgM0NhM1ICKRKLRuQKRR4qMJEmkDxqzy6nmpvjpDKZthZnQQFkGVKORwsJkFDJ0wqmcLFiIykqYADU2GRcfkOOlsWxeFRaGwKPkAGJ0MgMBUVJUk2pqqk0rWM5ms2O2Q5HdwGIaaL7WuKikiYnF4xJZJie+ZpCPEx4xhC2CyeNOCGwBLQedTJhDszlpnnmfmC3PnWYut3pD1en1+sgB4Ohhil8tXahVqM11V1hskJsttuCDv6imeVMmjNZnPRGE2-NLhZ8JirqrrskaI49ULMo72TN6tndbcms2OhWMBdhRJe+CSBAcDKCKCR3GuKovggAC0OidmhQ62uQ06MAhT5IaoGgjO8ARhKYqahBRpimJ22gBCQJ6mhClFjFh+YVos+HKqSRH1Ba+g6GR6giT8gy-m4Wi9H0358mMAQBOxFzig6fDcdGG6mBJCCZtuTaGhYqYchYSmzIWuL4lk6nPnxAQUvoAS2JmzYDsYbl0RyjG9jovIDkKl5wSOrrup63q+jQM6BiGYZWUSiG8XUgQ9LYYwNoIraZgpBh0fuDmnr457qCZAXXhct5pGpcUEQliDGD5+hDFowQWBygjoYeTIAdyRVWP4bngREQA */
     initial: 'INITIAL',
     tsTypes: {} as import('./pronunciation.machine.typegen').Typegen0,
     states: {
@@ -29,15 +29,27 @@ export const pronunciationMachine = createMachine(
         },
       },
 
-      PROCESSED: {},
-      VOICE_RECOGNITION_FAILED: {},
+      PROCESSED: {
+        on: {
+          RESTART: 'RESTARTING',
+        },
+      },
+      VOICE_RECOGNITION_FAILED: {
+        on: {
+          RESTART: 'RESTARTING',
+        },
+      },
+      RESTARTING: {
+        always: 'INITIAL',
+      },
     },
     schema: {
       events: {} as
         | { type: 'WORKING' }
         | { type: 'NOT_WORKING' }
         | { type: 'PROCESS' }
-        | { type: 'VOICE_RECOGNITION_FAIL' },
+        | { type: 'VOICE_RECOGNITION_FAIL' }
+        | { type: 'RESTART' },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,

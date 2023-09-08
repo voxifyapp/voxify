@@ -6,6 +6,7 @@ import {
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { useMachine } from '@xstate/react';
+import { useCallback } from 'react';
 
 export type ActivityRendererOnCompleteType = (data: {
   timeTakenToCompleteInSeconds: number;
@@ -28,11 +29,16 @@ export function useCreateActivityRendererContext({
 }: ContextData) {
   const [_, __, machineService] = useMachine(activityRendererMachine);
 
+  const restart = useCallback(() => {
+    machineService.send('RESTART');
+  }, [machineService]);
+
   return {
     onActivityResults,
     activityEntity,
     machineService,
     index,
+    restart,
   };
 }
 

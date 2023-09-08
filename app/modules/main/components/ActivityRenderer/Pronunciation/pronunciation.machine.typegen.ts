@@ -28,7 +28,7 @@
         eventsCausingServices: {
           
         };
-        matchesStates: "INITIAL" | "LISTENING" | "PROCESSED" | "STARTED" | "VOICE_RECOGNITION_FAILED";
+        matchesStates: "INITIAL" | "LISTENING" | "PROCESSED" | "RESTARTING" | "STARTED" | "VOICE_RECOGNITION_FAILED";
         tags: never;
       }
   

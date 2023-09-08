@@ -14,16 +14,19 @@ export type ActivityRendererMachineRestoreDataType = Omit<
   ActivityRendererMachinContextType,
   'startTimeInMillis' | 'totalTimeSpentInMillis'
 >;
+
+const initialState: ActivityRendererMachinContextType = {
+  startTimeInMillis: 0,
+  totalTimeSpentInMillis: 0,
+  userAnswer: null,
+  answerError: null,
+  result: null,
+};
+
 export const activityRendererMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgDM9kgEYALOoBstgKwAaEACedt4A7CRe3uqeIQCcMSHOziGuAL4p-mhYeISklLSMrJw8-ILCRWIqklS8nNS8LOI8XBraSCAGRqbmljYIDk5unj7+QQj2tuok6g6us7ZxCUmp6SCZOATE5NT0zCLFW-nMkgoMsorKalqWHSZmFm29Pk7erh4x6t7eSaEAHM62I0Qzm8HnCPiiHli8USyTSGQw6xyBx2hW4fGRBUkADMCLhYNgWtdDLdug9EB51M4phFgT4fiEfjFnICEM4PK4SLYQvZZq55tClnDVgjsps8ii9uiAApcJSVM5yy6tPTErr3UCPRwudwRFkTML-SLRBYw5bwrIbXLbAqS-jSRh0NgACUqsDAxhYACc4ABXAA2xkJbRuap6iEZthI9MitO89MZzMCQPZnO5vP5i1hKzWotICoutpIJ3z8vkiqDKs6dzDfR8JB1wyTCA8wPrIQ8IJiGZhQpzlpIJfEhcHx1OZYuFfaqurZNr3nrQz8TZBHPiHbe3aSaRW+H0EDglj7OSJVdJGsQAFpbK4WVeOVEH4+nyFeyL++KbUU+CeSerrHYbybDwnFcOI4m8ewflsNlITNYULSRD9di-EohD2CpxB-UNZxCAEm1sFMXjZNMPGAhk4KPMVrWQtF+CQpgsJnc8EFcZxJhiCDBjpBl3g8FlgSpJ9IRNQVszfRDqNRfYZUVRiz3-Vk3BcdQYnsbx4lY6CVMA0Y2UjEJ1B+HlKUcdRXC+V8EKow4pPRe0GEdF1MODad5N6dsYijVx7HbbxuITfj6RII0IShTMKPE6yJRQkhqjYBQABkODkv9ejYrkoxCGM-LjHj+JiDksofYSBSzc1EU2QdbRSmtrxZbywjXTtNzK+CKrzccVELYtOucytfxrXCWVCQT1PeAjTPM5xLPagdeuHXqatnSDIz+a8flcZJ-jYgrhu5YKxumYD7DMiztyAA */
-    context: {
-      startTimeInMillis: 0,
-      totalTimeSpentInMillis: 0,
-      userAnswer: null,
-      answerError: null,
-      result: null,
-    } as ActivityRendererMachinContextType,
+    /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAOgHUB5AJQGkBJAOQHEB9AZQBUBBDgURIYUO7blT4ARAMQAxCgGEAqm17iA2gAYAuolAAHAPaxcAF1z78OkAA9EAJgAsADhIBGe+oBsAZnUu3AVkcvW38AGhAAT0R7AHZ7EliPf384v3VPGP8AXyzwtCw8QlJKWkZWTh5+QWEKsRVJKl5Oal4WcR4uDW0kEAMjU3NLGwQHZzdPHz97QOCwyMQXfw8SGa9-Nfs3WxdHFxy8jBwCYnJqemYRStPS5kkFBllFZTUtSz6TMwse4Zdt9RXFoFHABOLwxGJg2zhKIIewhEjqGK7LxgjypTz7ED5I5Fa7ncrcPh4sqSABmBFwsGwXTehg+g2+Cz+AOSjhBYIhMSh8xGSJIHhC6UyO0RtiCmOxhROJXxlyJAAUuEp6o9lS9uno6QMvqAfg4vCRgUbQTFEb51CFoYgwfEUsjHOl1F5pvYPBLDlLimcynL+NJGHQ2AAJeqwMDGFgAJzgAFcADbGGk9d7aoZM+zxWzAjxBOFeDzZrlWhCLFwIx1Op1I4HgxzugrHL03AlXRpsBQAGQ4DSaog4Sc1-U+aYQ-k2KwF-m2wPUjgLGeLPn8CRiSQd6nWQQh9Zx0u9FwqRLbfZJA96WuHjIQjin-JiOznwKcY489kXLgNPiNs9+vn8vh3T1iQPQl+GPLgxFPFwNXPIcGV1RAxzLJYQmnWd5zfHk1mXGskhSJ8p1sWwYkAxsSFVZ5fRIe4KJVeQ1TPFNLwQkZ4XcAVXSdNl8xSYsc3iXDAhcOIkhCOtcixD0yNo8QqJku4Hno55GIveDrDsNjPAcDwuKCJIYj450VzXfwayfHTskxfB9AgOBLElRtaTgnV1IQABaBxiw8g1jV8vzgTnUjcRlH1D14Jz6Rc4ZPJ5bwVgrUsQScGc3Qkhzgv3FsiWqS46nECLUyvIseRcGd+UcewZ1KpI-FsIK92bKiQuYArmNclx0mXdiQlXCr0jRYss3iRIlkcYiZ2ddR7HqptZTCkhFTVVq1J+MFgRILMc2CNZMjhRcglcDw3FNAVdhBVKDgbDLGvm-0GEDEN8uTVSooWNaNuzIJbB2sduRhHZbBIL8JotFFpm3NKpOuubQJINtOw4ZbXtheFgXWD9hPnV8XA8YthPWh1vx8b7nRSGbgKysDewgjgyiRkdTWGrSc242xfFxrC-BWUyQQBtFthIyGrpOGTfXpq8YphF9DVXZIvGEh172BcnRfmmilJUcWWOKmFX3+ZIjR2HSISm8TLt3UhVdhmStdcrwxpIXYHBrNm0bFP7EFfA0N0NudER8JwchyIA */
+    context: initialState,
     tsTypes: {} as import('./activityRenderer.machine.typegen').Typegen0,
     states: {
       WORKING_STATE: {
@@ -69,12 +72,21 @@ export const activityRendererMachine = createMachine(
             },
           },
           RESULT: {
-            // on: {
-            //   RESET: {
-            //     target: 'WORKING',
-            //     cond: 'Focused',
-            //   },
-            // },
+            on: {
+              RESTART: 'RESTARTING',
+            },
+          },
+          RESTARTING: {
+            always: [
+              {
+                target: 'WORKING',
+                cond: 'Focused',
+              },
+              {
+                target: 'NOT_STARTED',
+              },
+            ],
+            entry: 'restart',
           },
         },
       },
@@ -114,7 +126,8 @@ export const activityRendererMachine = createMachine(
         | {
             type: 'RESTORE_DATA';
             restoreData: ActivityRendererMachineRestoreDataType;
-          },
+          }
+        | { type: 'RESTART' },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -138,9 +151,13 @@ export const activityRendererMachine = createMachine(
         answerError,
       })),
       restoreData: assign((_, { restoreData }) => ({ ...restoreData })),
+      restart: assign(initialState),
     },
     services: {},
-    // guards: { Focused: () => false },
+    guards: {
+      Focused: (_, __, actor) =>
+        actor.state.matches({ FOCUSED_STATE: 'FOCUSED' }),
+    },
     delays: {},
   },
 );
