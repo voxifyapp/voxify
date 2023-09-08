@@ -67,8 +67,8 @@ export const Pronunciation = ({ activity }: Props) => {
           onCheckAnswer({ recognizedWords: result.value?.[0] || '' });
         };
 
-        Voice.onSpeechError = error => {
-          console.log('onSpeechError', error);
+        Voice.onSpeechError = () => {
+          pronunciationMachineActor.send('VOICE_RECOGNITION_FAIL');
         };
 
         Voice.onSpeechEnd = error => {
