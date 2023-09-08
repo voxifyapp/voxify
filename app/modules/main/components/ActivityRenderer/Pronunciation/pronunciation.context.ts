@@ -5,12 +5,16 @@ import {
   PronunciationAnswerErrorType,
 } from '@voxify/common/activities/pronunciation-activity';
 import { createCtx } from '@voxify/common/utils/contextUtils';
+import { pronunciationMachine } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.machine';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
+import { useMachine } from '@xstate/react';
 type ContextData = {
   activity: PronunciationActivity;
 };
 
 export function useCreatePronunciationContext({ activity }: ContextData) {
+  const [_, __, pronunciationMachineActor] = useMachine(pronunciationMachine);
+
   const {
     userAnswer,
     answerErrors,
@@ -21,7 +25,7 @@ export function useCreatePronunciationContext({ activity }: ContextData) {
   } = useGetActivityRendererHookExtras<
     PronunciationActivityAnswer,
     PronunciationAnswerErrorType
-  >({ recognizedWords: '' });
+  >({ recognizedWords: '' }, {});
 
   return {
     activity,
@@ -29,6 +33,8 @@ export function useCreatePronunciationContext({ activity }: ContextData) {
     setAnswerErrors,
     setUserAnswer,
     answerErrors,
+    pronunciationMachineActor,
+    isShowResultState,
     isWorkingState: isWorkingStateAnd(true),
   };
 }

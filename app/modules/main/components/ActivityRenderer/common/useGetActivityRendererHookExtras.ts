@@ -9,6 +9,7 @@ export const useGetActivityRendererHookExtras = <
   ActivityAnswerErrorType,
 >(
   initalAnswer: ActivityAnswerType,
+  options: { onDataRestored?: () => void } = {},
 ) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
@@ -21,12 +22,13 @@ export const useGetActivityRendererHookExtras = <
   useEffect(() => {
     return activityRendererMachineService.subscribe(state => {
       if (state.event.type === 'RESTORE_DATA') {
-        console.log('Restoring data');
+        console.log('Restore data');
         setUserAnswer(state.context.userAnswer);
         setAnswerErrors(state.context.answerError);
+        options.onDataRestored?.();
       }
     }).unsubscribe;
-  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
+  }, [activityRendererMachineService, options, setAnswerErrors, setUserAnswer]);
 
   const isWorkingStateAnd = (condition: boolean) => {
     return (

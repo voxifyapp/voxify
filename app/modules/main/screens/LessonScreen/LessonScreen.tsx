@@ -26,7 +26,7 @@ export const LessonScreen = () => {
   let tempActivities: ActivityEntity[] = useMemo(() => {
     const result = [];
     if (lessonActivities) {
-      for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < 2; i++) {
         const a = lessonActivities![3];
         result.push({
           ...a,

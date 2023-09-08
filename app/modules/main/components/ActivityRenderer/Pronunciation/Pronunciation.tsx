@@ -1,14 +1,12 @@
+import Voice from '@react-native-voice/voice';
 import {
   PronunciationActivity,
   PronunciationActivityAnswer,
 } from '@voxify/common/activities/pronunciation-activity';
-import { useVoiceRecognition } from '@voxify/hooks/voiceRecognition';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { useCreatePronunciationContext } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
-import { pronunciationMachine } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.machine';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
-import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button, H1, H3, XStack, YStack } from 'tamagui';
 
 type Props = {
@@ -17,52 +15,80 @@ type Props = {
 
 export const Pronunciation = ({ activity }: Props) => {
   const contextValue = useCreatePronunciationContext({ activity });
-  const { isWorkingState, setUserAnswer, userAnswer, setAnswerErrors } =
-    contextValue;
+  const {
+    isWorkingState,
+    setUserAnswer,
+    userAnswer,
+    setAnswerErrors,
+    pronunciationMachineActor,
+  } = contextValue;
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
-  const [_, __, actor] = useMachine(pronunciationMachine);
-
-  const onCheckAnswer = (userAnswer: PronunciationActivityAnswer) => {
-    actor.send('PROCESS');
-    activityRendererMachineService.send({
-      type: 'finish',
-      userAnswer,
-    });
-    const answerErrors = activity.checkAnswer(userAnswer);
-    setAnswerErrors(answerErrors);
-    activityRendererMachineService.send({
-      type: 'set_result',
-      result: answerErrors?.correct
-        ? ActivityResponseResultType.SUCCESS
-        : ActivityResponseResultType.FAIL,
-      userAnswer,
-      answerError: answerErrors,
-    });
-  };
-
-  const { Voice } = useVoiceRecognition({
-    onResults: recognizedWords => {
-      setUserAnswer({ recognizedWords });
-      onCheckAnswer({ recognizedWords });
+  const onCheckAnswer = useCallback(
+    (userAnswer: PronunciationActivityAnswer) => {
+      pronunciationMachineActor.send('PROCESS');
+      activityRendererMachineService.send({
+        type: 'finish',
+        userAnswer,
+      });
+      const answerErrors = activity.checkAnswer(userAnswer);
+      setAnswerErrors(answerErrors);
+      activityRendererMachineService.send({
+        type: 'set_result',
+        result: answerErrors?.correct
+          ? ActivityResponseResultType.SUCCESS
+          : ActivityResponseResultType.FAIL,
+        userAnswer,
+        answerError: answerErrors,
+      });
     },
-    onSpeechRealtimeRecognition: recognizedWords => {
-      setUserAnswer({ recognizedWords });
-    },
-  });
+    [
+      activity,
+      activityRendererMachineService,
+      pronunciationMachineActor,
+      setAnswerErrors,
+    ],
+  );
 
   useEffect(() => {
-    return actor.subscribe(async e => {
+    const unsubscribe = pronunciationMachineActor.subscribe(async e => {
       if (e.matches('LISTENING') && e.changed) {
+        // Remove any existing listeners and attach listeners for the current activity
+        await Voice.destroy();
+        Voice.removeAllListeners();
+
+        Voice.onSpeechPartialResults = result => {
+          setUserAnswer({ recognizedWords: result.value?.[0] || '' });
+        };
+
+        Voice.onSpeechResults = result => {
+          setUserAnswer({ recognizedWords: result.value?.[0] || '' });
+          onCheckAnswer({ recognizedWords: result.value?.[0] || '' });
+        };
+
+        Voice.onSpeechError = error => {
+          console.log('onSpeechError', error);
+        };
+
+        Voice.onSpeechEnd = error => {
+          console.log('onSpeechEnd', error);
+        };
+
         Voice.start('en-IN');
       }
     }).unsubscribe;
-  }, [Voice, actor]);
+
+    return () => {
+      unsubscribe();
+      Voice.destroy;
+      Voice.removeAllListeners();
+    };
+  }, [onCheckAnswer, pronunciationMachineActor, setUserAnswer]);
 
   useEffect(() => {
-    actor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
-  }, [isWorkingState, actor]);
+    pronunciationMachineActor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
+  }, [isWorkingState, pronunciationMachineActor]);
 
   const referenceStringArray = PronunciationActivity.convertStringToArray(
     activity.getPrompt().text,
@@ -74,7 +100,7 @@ export const Pronunciation = ({ activity }: Props) => {
 
   return (
     <YStack alignItems="center" p="$3" justifyContent="center" fullscreen>
-      <H3>{actor.getSnapshot().value}</H3>
+      <H3>{pronunciationMachineActor.getSnapshot().value}</H3>
       <XStack flex={1} flexWrap="wrap" justifyContent="center">
         {referenceStringArray.map((word, index) => {
           const hasMatched = matchResults[index];
