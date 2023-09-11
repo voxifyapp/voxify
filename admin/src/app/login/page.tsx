@@ -1,9 +1,9 @@
-import { Input } from '@mantine/core';
+import LoginForm from '@/app/login/LoginForm';
 
 export default function Login() {
   return (
     <section>
-      <Input />
+      <LoginForm />
     </section>
   );
 }

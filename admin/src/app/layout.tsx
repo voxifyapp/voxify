@@ -1,4 +1,3 @@
-import { MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -14,9 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <MantineProvider>
-        <body>{children}</body>
-      </MantineProvider>
+      <body>{children}</body>
     </html>
   );
 }
