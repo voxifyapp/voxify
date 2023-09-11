@@ -3,6 +3,7 @@
 import { auth } from '@/lib/firebase';
 import { Box, Button, Stack, TextField } from '@mui/material';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function LoginForm() {
@@ -17,7 +18,7 @@ export default function LoginForm() {
     );
 
     const idToken = await firebaseCredential.user.getIdToken();
-    console.log(idToken);
+    await signIn('credentials', { idToken, callbackUrl: '/' });
   };
 
   return (
