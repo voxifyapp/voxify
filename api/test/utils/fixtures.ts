@@ -19,16 +19,17 @@ export const createOnCreateEntityForFixture = async <T extends BaseEntity>({
   entity,
   relationships,
 }: CreateOnCreateEntityForFixtureParams<T>): Promise<T> => {
+  const relations = Object.fromEntries(
+    await Promise.all(
+      Object.entries(relationships).map(async ([key, factory]) => [
+        key,
+        entity[key] === undefined ? (await factory.create()).id : entity[key],
+      ]),
+    ),
+  );
   return {
     ...omit(entity, Object.keys(relationships)),
-    ...Object.fromEntries(
-      await Promise.all(
-        Object.entries(relationships).map(async ([key, factory]) => [
-          key,
-          entity[key] === undefined ? (await factory.create()).id : entity[key],
-        ]),
-      ),
-    ),
+    ...relations,
   } as T;
 };
 
