@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { ProfileGuard } from 'src/auth/profile.guard';
 import { datasourceConfig } from 'src/typeorm.config';
 import { LmsModule } from './lms/lms.module';
 import { LmsProgressModule } from './lms-progress/lms-progress.module';
@@ -29,6 +30,7 @@ import { AdminModule } from './admin/admin.module';
       }),
     },
     { provide: APP_GUARD, useExisting: AuthGuard },
+    { provide: APP_GUARD, useExisting: ProfileGuard },
   ],
 })
 export class AppModule {

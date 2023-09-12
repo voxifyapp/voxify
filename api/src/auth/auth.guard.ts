@@ -9,10 +9,7 @@ import { Request } from 'express';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { FirebaseService } from 'src/auth/services/firebase.service';
 import { ProfileService } from 'src/auth/services/profile.service';
-import {
-  DOES_NOT_REQUIRE_PROFILE_KEY,
-  IS_PUBLIC_KEY,
-} from 'src/common/decorators/auth';
+import { IS_PUBLIC_KEY } from 'src/common/decorators/auth';
 
 /**
  * Guard that runs globally before all routes.
@@ -32,10 +29,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    const doesNotRequireProfile = this.reflector.getAllAndOverride<boolean>(
-      DOES_NOT_REQUIRE_PROFILE_KEY,
-      [context.getHandler(), context.getClass()],
-    );
+
     const request = context.switchToHttp().getRequest();
 
     // Get the user from the request header
@@ -56,15 +50,6 @@ export class AuthGuard implements CanActivate {
       if (!isPublic) {
         throw new UnauthorizedException();
       }
-    }
-
-    // Get profile for the user
-    const profile = await this.profileService.findProfileForUser(
-      decodedUser.uid,
-    );
-    request['currentProfile'] = profile;
-    if (!profile && !doesNotRequireProfile) {
-      throw new ProfileDoesNotExistError();
     }
 
     return true;
