@@ -5,9 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Request } from 'express';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
-import { ProfileService } from 'src/auth/services/profile.service';
+import { AdminProfileService } from 'src/admin/services/admin-profile.service';
 import { DOES_NOT_REQUIRE_PROFILE_KEY } from 'src/common/decorators/auth';
 
 /**
@@ -15,9 +14,9 @@ import { DOES_NOT_REQUIRE_PROFILE_KEY } from 'src/common/decorators/auth';
  * Enforces a user has a profile unless a DOES_NOT_REQUIRE_PROFILE_KEY is set to the route/controller
  */
 @Injectable()
-export class ProfileGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(
-    private profileService: ProfileService,
+    private adminProfileService: AdminProfileService,
     private reflector: Reflector,
   ) {}
 
@@ -31,20 +30,20 @@ export class ProfileGuard implements CanActivate {
     const decodedUser: DecodedIdToken = request['decodedFirebaseUser'];
 
     // Get profile for the user
-    const profile = await this.profileService.findProfileForUser(
+    const profile = await this.adminProfileService.findProfileForUser(
       decodedUser.uid,
     );
     request['currentProfile'] = profile;
     if (!profile && !doesNotRequireProfile) {
-      throw new ProfileDoesNotExistError();
+      throw new AdminProfileDoesNotExistError();
     }
 
     return true;
   }
 }
 
-export class ProfileDoesNotExistError extends UnauthorizedException {
+export class AdminProfileDoesNotExistError extends UnauthorizedException {
   constructor() {
-    super({ type: 'profile_does_not_exist' });
+    super({ type: 'admin_profile_does_not_exist' });
   }
 }
