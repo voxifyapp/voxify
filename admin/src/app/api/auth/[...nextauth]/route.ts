@@ -2,27 +2,45 @@ import firebaseAdmin from '@/lib/firebaseAdmin';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const handler = NextAuth({
+export const nextAuthOptions = NextAuth({
   providers: [
     CredentialsProvider({
       credentials: {
         idToken: { type: 'string' },
       },
-      authorize: async (credentials, req): Promise<any> => {
+      authorize: async (credentials, req) => {
         if (credentials && credentials.idToken) {
           const idToken = credentials.idToken;
           const decoded = await firebaseAdmin.auth().verifyIdToken(idToken);
-          return { ...decoded };
+          return {
+            id: decoded.uid,
+            email: decoded.email,
+            // As a quick way to pass firebase idtoken into the jwt callback
+            name: idToken,
+          };
         }
         return null;
       },
     }),
   ],
-  secret: process.env.NEXT_AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    signIn: async user => {
+      return true;
+    },
+    jwt: ({ token, user }) => {
+      token.firebaseIdToken = user.name;
+      user.name = '';
+      return { ...token, name: '' };
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
   pages: {
     signIn: '/login',
   },
   debug: process.env.NODE_ENV !== 'production',
 });
 
-export { handler as GET, handler as POST };
+export { nextAuthOptions as GET, nextAuthOptions as POST };

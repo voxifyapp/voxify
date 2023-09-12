@@ -18,7 +18,7 @@ export default function LoginForm() {
     );
 
     const idToken = await firebaseCredential.user.getIdToken();
-    await signIn('credentials', { idToken, callbackUrl: '/' });
+    await signIn('credentials', { idToken, callbackUrl: '/dashboard' });
   };
 
   return (
