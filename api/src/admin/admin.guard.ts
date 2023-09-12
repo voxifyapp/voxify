@@ -7,7 +7,6 @@ import {
 import { Reflector } from '@nestjs/core';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { AdminProfileService } from 'src/admin/services/admin-profile.service';
-import { DOES_NOT_REQUIRE_PROFILE_KEY } from 'src/common/decorators/auth';
 
 /**
  * Guard that runs globally before all routes.
@@ -22,10 +21,6 @@ export class AdminGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const doesNotRequireProfile = this.reflector.getAllAndOverride<boolean>(
-      DOES_NOT_REQUIRE_PROFILE_KEY,
-      [context.getHandler(), context.getClass()],
-    );
 
     const decodedUser: DecodedIdToken = request['decodedFirebaseUser'];
 
@@ -33,8 +28,8 @@ export class AdminGuard implements CanActivate {
     const profile = await this.adminProfileService.findProfileForUser(
       decodedUser.uid,
     );
-    request['currentProfile'] = profile;
-    if (!profile && !doesNotRequireProfile) {
+    request['adminProfile'] = profile;
+    if (!profile) {
       throw new AdminProfileDoesNotExistError();
     }
 

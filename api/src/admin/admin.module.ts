@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Course } from 'src/lms/entities/course.entity';
 import { CourseService } from 'src/admin/services/course.service';
 import { AdminProfileService } from './services/admin-profile.service';
-import { AdminProfile } from 'src/admin/entities/admin.profile.entity';
+import { AdminProfile } from 'src/admin/entities/admin-profile.entity';
 
 @Module({
   controllers: [CourseController],
