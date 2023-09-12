@@ -8,5 +8,5 @@ import { getFirebaseTokenForRequest } from '@/lib/firebaseAdmin';
 export default async function Dashboard() {
   const token = await getFirebaseTokenForRequest();
 
-  return <h1>Dashboard</h1>;
+  return <h3>Dashboard</h3>;
 }
