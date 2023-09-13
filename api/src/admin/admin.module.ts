@@ -1,14 +1,23 @@
 import { Module } from '@nestjs/common';
-import { CourseController } from './controllers/course.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Course } from 'src/lms/entities/course.entity';
-import { CourseService } from 'src/admin/services/course.service';
-import { AdminProfileService } from './services/admin-profile.service';
 import { AdminProfile } from 'src/admin/entities/admin-profile.entity';
+import { CourseService } from 'src/admin/services/course.service';
+import { Activity } from 'src/lms/entities/activity.entity';
+import { Course } from 'src/lms/entities/course.entity';
+import { Lesson } from 'src/lms/entities/lesson.entity';
+import { Unit } from 'src/lms/entities/unit.entity';
+import { CourseController } from './controllers/course.controller';
+import { LessonController } from './controllers/lesson.controller';
+import { AdminProfileService } from './services/admin-profile.service';
+import { LessonService } from './services/lesson.service';
+import { UnitService } from './services/unit.service';
+import { UnitController } from './controllers/unit.controller';
 
 @Module({
-  controllers: [CourseController],
-  providers: [CourseService, AdminProfileService],
-  imports: [TypeOrmModule.forFeature([Course, AdminProfile])],
+  controllers: [CourseController, LessonController, UnitController],
+  providers: [CourseService, AdminProfileService, LessonService, UnitService],
+  imports: [
+    TypeOrmModule.forFeature([Course, AdminProfile, Unit, Lesson, Activity]),
+  ],
 })
 export class AdminModule {}
