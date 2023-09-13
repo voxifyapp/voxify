@@ -4,7 +4,6 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { AdminProfileService } from 'src/admin/services/admin-profile.service';
 
@@ -14,10 +13,7 @@ import { AdminProfileService } from 'src/admin/services/admin-profile.service';
  */
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(
-    private adminProfileService: AdminProfileService,
-    private reflector: Reflector,
-  ) {}
+  constructor(private adminProfileService: AdminProfileService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

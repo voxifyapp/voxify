@@ -8,19 +8,16 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { FirebaseService } from 'src/auth/services/firebase.service';
-import { ProfileService } from 'src/auth/services/profile.service';
 import { IS_PUBLIC_KEY } from 'src/common/decorators/auth';
 
 /**
  * Guard that runs globally before all routes.
  * Enforces a user is authenticated to access a route, unless the route is marked as Public.
- * It also checks if the user has a profile associated with their account, unless the route is marked as DoesNotRequireProfile.
  */
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private firebaseService: FirebaseService,
-    private profileService: ProfileService,
     private reflector: Reflector,
   ) {}
 
@@ -46,7 +43,7 @@ export class AuthGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       request['decodedFirebaseUser'] = decodedUser;
-    } catch {
+    } catch (e) {
       if (!isPublic) {
         throw new UnauthorizedException();
       }

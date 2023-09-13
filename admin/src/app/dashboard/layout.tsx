@@ -29,7 +29,7 @@ export default function RootLayout({
           </Toolbar>
         </Container>
       </AppBar>
-      <div style={{ marginTop: '36px' }}>{children}</div>
+      <div style={{ marginTop: '84px' }}>{children}</div>
     </Stack>
   );
 }
