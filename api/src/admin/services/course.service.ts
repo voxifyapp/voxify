@@ -10,4 +10,14 @@ export class CourseService {
   async getCourses() {
     return await this.courseRepository.find();
   }
+
+  async createCourse({
+    title,
+    proficiencyLevel,
+  }: Pick<Course, 'title' | 'proficiencyLevel'>) {
+    return await this.courseRepository.save({
+      title,
+      proficiencyLevel,
+    });
+  }
 }
