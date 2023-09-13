@@ -2,6 +2,7 @@
 
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import Modal from '@/lib/components/Modal';
+import { Course } from '@/types/course';
 import { ProficiencyLevel } from '@/types/profile';
 import {
   Button,
@@ -11,34 +12,34 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 export default function CreateCourseModal() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [proficiencyLevel, setProficiencyLevel] = useState<ProficiencyLevel>(
     ProficiencyLevel.BEGINNER,
   );
-  const [loading, setLoading] = useState(false);
 
-  const onCreate = async () => {
-    setLoading(true);
-    try {
-      await clientFetchApiWithAuth('/admin/courses/', {
+  const { isLoading: loading, ...addCourseMutation } = useMutation(
+    ({ title, proficiencyLevel }: Pick<Course, 'title' | 'proficiencyLevel'>) =>
+      clientFetchApiWithAuth('/admin/courses/', {
         method: 'POST',
         body: JSON.stringify({
           title,
           proficiencyLevel,
         }),
-      });
-    } catch (err: any) {
-      alert(err.message);
-    }
-
-    router.back();
-    setLoading(false);
-  };
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['courses']);
+        router.back();
+      },
+    },
+  );
 
   return (
     <Modal>
@@ -59,7 +60,11 @@ export default function CreateCourseModal() {
           <MenuItem value={ProficiencyLevel.ADVANCED}>Advanced</MenuItem>
         </Select>
         <Stack direction={'row'}>
-          <Button onClick={onCreate} disabled={loading}>
+          <Button
+            onClick={() =>
+              addCourseMutation.mutate({ title, proficiencyLevel })
+            }
+            disabled={loading}>
             Create course
           </Button>
           {loading && <CircularProgress />}
