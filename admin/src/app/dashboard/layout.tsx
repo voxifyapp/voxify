@@ -1,5 +1,4 @@
 import { AppBar, Container, Stack, Toolbar } from '@mui/material';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 
 const pages = [
@@ -9,11 +8,7 @@ const pages = [
   },
 ];
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <Stack>
       <AppBar>
@@ -29,7 +24,7 @@ export default function RootLayout({
           </Toolbar>
         </Container>
       </AppBar>
-      <div style={{ marginTop: '84px' }}>{children}</div>
+      <div style={{ marginTop: '84px' }}>{props.children}</div>
     </Stack>
   );
 }
