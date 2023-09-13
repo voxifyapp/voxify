@@ -15,9 +15,11 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
 
 export default function Courses() {
+  const router = useRouter();
   const { data: courses, isLoading } = useQuery({
     queryKey: ['courses'],
     queryFn: async () =>
@@ -42,7 +44,10 @@ export default function Courses() {
         <TableBody>
           {courses &&
             courses.map(course => (
-              <TableRow key={course.id}>
+              <TableRow
+                hover
+                key={course.id}
+                onClick={() => router.push(`/dashboard/courses/${course.id}`)}>
                 <TableCell>{course.id}</TableCell>
                 <TableCell>{course.title}</TableCell>
                 <TableCell>{course.proficiencyLevel}</TableCell>
