@@ -8,6 +8,7 @@ export enum ActivityType {
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
   PRONUNCIATION = 'PRONUNCIATION',
   FORM_A_SENTENCE = 'FORM_A_SENTENCE',
+  TEXT = 'TEXT',
 }
 
 @Entity()
@@ -18,6 +19,12 @@ export class Activity extends BaseEntity {
     enum: ActivityType,
   })
   type: ActivityType;
+
+  @Column({
+    comment: 'The heading of the activity',
+    type: 'text',
+  })
+  heading: string;
 
   @Column({
     comment: 'The data related to the activity',
