@@ -4,7 +4,7 @@ import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { baseFactory } from 'src/common/fixtures/base.fixture';
 import {
   ActivityResponse,
-  ResultType,
+  ActivityResponseResultType,
 } from 'src/lms-progress/entities/activity-response.entity';
 import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
@@ -31,7 +31,7 @@ export const activityResponseFactory = Factory.define<ActivityResponse>(
       activity: undefined,
       activityId: undefined,
       profileId: undefined,
-      result: ResultType.SUCCESS,
+      result: ActivityResponseResultType.SUCCESS,
       responseData: {},
       timeTaken: faker.number.float({ max: 100, min: 0 }),
       profile: undefined,

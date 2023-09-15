@@ -3,7 +3,7 @@ import { BaseEntity } from 'src/common/entities/base.entity';
 import { Activity } from 'src/lms/entities/activity.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
 
-export enum ResultType {
+export enum ActivityResponseResultType {
   SUCCESS = 'SUCCESS',
   FAIL = 'FAIL',
 }
@@ -27,7 +27,7 @@ export class ActivityResponse extends BaseEntity {
   @Column({
     comment: 'Did the user pass or fail this activity?',
   })
-  result: ResultType;
+  result: ActivityResponseResultType;
 
   @ManyToOne(() => Profile, {
     onDelete: 'CASCADE',
