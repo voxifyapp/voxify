@@ -46,6 +46,7 @@ export default function Units() {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell>Title</TableCell>
+              <TableCell>Order</TableCell>
               <TableCell>For Course</TableCell>
               <TableCell>Created At</TableCell>
             </TableRow>
@@ -56,6 +57,7 @@ export default function Units() {
                 <TableRow hover key={unit.id}>
                   <TableCell>{unit.id}</TableCell>
                   <TableCell>{unit.title}</TableCell>
+                  <TableCell>{unit.order}</TableCell>
                   <TableCell>{unit.course.title}</TableCell>
                   <TableCell>
                     {dayjs(unit.createdAt).format('DD MMM YYYY')}

@@ -8,5 +8,6 @@ export type Course = {
 
 export type Unit = {
   title: string;
+  order: number;
   courseId: string;
 } & BaseEntity;

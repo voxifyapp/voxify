@@ -25,8 +25,12 @@ export const clientFetchApiWithAuth = async <T>(
     redirect('/login');
   }
 
-  if (result.status !== 200 && result.status !== 201)
-    throw new Error('something went wrong');
+  const data = await result.json();
 
-  return (await result.json()) as T;
+  if (result.status !== 200 && result.status !== 201) {
+    console.log(data?.message);
+    throw new Error(data?.message as string);
+  }
+
+  return data as T;
 };
