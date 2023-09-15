@@ -9,10 +9,12 @@ import { redirect } from 'next/navigation';
  */
 export const clientFetchApiWithAuth = async <T>(
   url: string,
-  params?: RequestInit,
+  params?: RequestInit & { query?: Record<string, string> },
 ) => {
+  let finalUrl = process.env.NEXT_PUBLIC_API_URL! + url;
+  if (params?.query) finalUrl += '?' + new URLSearchParams(params.query);
   const idToken = await auth.currentUser?.getIdToken();
-  const result = await fetch(process.env.NEXT_PUBLIC_API_URL! + url, {
+  const result = await fetch(finalUrl, {
     ...params,
     headers: {
       Authorization: 'Bearer ' + idToken,

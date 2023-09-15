@@ -16,9 +16,11 @@ import { useMutation, useQueryClient } from 'react-query';
 export default function CreateUnitModal({
   open,
   onClose,
+  defaultCourseId,
 }: {
   open: boolean;
   onClose: () => void;
+  defaultCourseId?: string | null;
 }) {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState('');
@@ -55,7 +57,10 @@ export default function CreateUnitModal({
       setOrder('');
       reset();
     }
-  }, [open, reset]);
+    if (open) {
+      setCourseId(defaultCourseId || '');
+    }
+  }, [defaultCourseId, open, reset]);
 
   return (
     <ClientModal open={open} onClose={onClose}>

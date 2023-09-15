@@ -4,6 +4,7 @@ import CreateUnitModal from '@/app/dashboard/units/CreateUnitModal';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Course, Unit } from '@/types/lms';
 import {
+  Box,
   Button,
   CircularProgress,
   Paper,
@@ -15,30 +16,34 @@ import {
   TableRow,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 export default function Units() {
+  const searchParams = useSearchParams();
+  const courseId = searchParams.get('courseId');
+
   const [modalOpen, setModalOpen] = useState(false);
-  const router = useRouter();
   const { data: units, isLoading } = useQuery({
     queryKey: ['units'],
     queryFn: async () =>
       await clientFetchApiWithAuth<(Unit & { course: Course })[]>(
         '/admin/units',
+        { query: { ...(courseId ? { courseId } : {}) } },
       ),
   });
 
-  const { courseId } = useSearchParams() as { courseId?: string };
-
   return (
-    <>
-      <CreateUnitModal open={modalOpen} onClose={() => setModalOpen(false)} />
+    <Box padding={2}>
+      <CreateUnitModal
+        defaultCourseId={courseId}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
       <TableContainer component={Paper}>
         {isLoading && <CircularProgress />}
-        {courseId && <h1>For Course: {courseId}</h1>}
+        {courseId && <h3>For Course: {courseId}</h3>}
         <Button onClick={() => setModalOpen(true)}>Create Unit</Button>
 
         <Table>
@@ -67,6 +72,6 @@ export default function Units() {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 }

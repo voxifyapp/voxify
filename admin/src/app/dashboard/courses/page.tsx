@@ -44,11 +44,16 @@ export default function Courses() {
         <TableBody>
           {courses &&
             courses.map(course => (
-              <TableRow
-                hover
-                key={course.id}
-                onClick={() => router.push(`/dashboard/courses/`)}>
-                <TableCell>{course.id}</TableCell>
+              <TableRow hover key={course.id}>
+                <TableCell>
+                  <Link
+                    href={{
+                      pathname: `/dashboard/units/`,
+                      query: { courseId: course.id },
+                    }}>
+                    {course.id}
+                  </Link>
+                </TableCell>
                 <TableCell>{course.title}</TableCell>
                 <TableCell>{course.proficiencyLevel}</TableCell>
                 <TableCell>
