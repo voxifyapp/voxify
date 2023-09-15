@@ -12,7 +12,7 @@ export const Video = ({ activity }: Props) => {
     <YStack>
       <RNVideo
         resizeMode="cover"
-        paused={false}
+        paused={true}
         onBandwidthUpdate={data => console.log(data)}
         onBuffer={data => console.log(data)}
         reportBandwidth={true}

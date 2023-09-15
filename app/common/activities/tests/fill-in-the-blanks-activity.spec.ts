@@ -43,7 +43,7 @@ describe('FillInTheBlanksActivity', () => {
 
     expect(
       activity.checkAnswer({ $$blank1$$: activity.getOptions()[1].id }),
-    ).toEqual(['$$blank1$$']);
+    ).toEqual(expect.objectContaining({ wrongBlanks: ['$$blank1$$'] }));
   });
 
   it('should return empty array if correct', () => {
@@ -54,6 +54,6 @@ describe('FillInTheBlanksActivity', () => {
 
     expect(
       activity.checkAnswer({ $$blank1$$: activity.getOptions()[0].id }),
-    ).toEqual([]);
+    ).toEqual(expect.objectContaining({ wrongBlanks: [] }));
   });
 });

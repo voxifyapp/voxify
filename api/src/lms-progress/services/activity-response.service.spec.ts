@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ActivityResponseService } from './activity-response.service';
 import { ActivityResponseRepository } from 'src/lms-progress/repositories/activity-response.repository';
 import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
-import { ResultType } from 'src/lms-progress/entities/activity-response.entity';
+import { ActivityResponseResultType } from 'src/lms-progress/entities/activity-response.entity';
 import { mockRepository } from 'src/common/mocks/mockedRepository';
 import { ActivityRepository } from 'src/lms/repositories/lms.repository';
 import { NotFoundException } from '@nestjs/common';
@@ -36,7 +36,7 @@ describe('ActivityResponseService', () => {
         activityId: '456',
         responseData: {},
         timeTaken: 10,
-        result: ResultType.SUCCESS,
+        result: ActivityResponseResultType.SUCCESS,
       };
       const activity = { id: data.activityId };
 
@@ -69,7 +69,7 @@ describe('ActivityResponseService', () => {
         activityId: '456',
         responseData: {},
         timeTaken: 10,
-        result: ResultType.SUCCESS,
+        result: ActivityResponseResultType.SUCCESS,
       };
 
       activityRepo.findOne = jest.fn().mockResolvedValue(null);

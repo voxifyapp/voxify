@@ -24,7 +24,7 @@ export abstract class Activity<T, U> {
   abstract build(): T & { type: string };
 
   /**
-   * Return empty array if there are no errors, otherwise return an array of errors
+   * Checks if the answer is correct, returns an object specific to the activity if not
    */
-  abstract checkAnswer(answer: U): string[];
+  abstract checkAnswer(answer: U): any;
 }
