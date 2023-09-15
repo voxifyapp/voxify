@@ -7,7 +7,6 @@ import { useMutation } from 'react-query';
 
 type Props = {
   activityEntity: ActivityEntity;
-  //   activity: T;
 };
 
 export const useActivityResponse = ({ activityEntity }: Props) => {

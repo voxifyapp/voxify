@@ -8,7 +8,7 @@ import {
   ActivityRendererOnCompleteType,
   useActivityRendererContext,
   useCreateActivityRendererContext,
-} from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+} from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
 import {
   ActivityRendererMachineRestoreDataType,

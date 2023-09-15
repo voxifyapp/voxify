@@ -1,5 +1,5 @@
 import { ActivityRenderer } from '@voxify/modules/main/components/ActivityRenderer/ActivityRenderer';
-import { ActivityRendererOnCompleteType } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+import { ActivityRendererOnCompleteType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { completedActivitiesAtom } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import { useActivityResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useActivityResponse';
@@ -21,7 +21,7 @@ export const ActivityStep = React.memo(
 
     const onActivityResultsCallback: ActivityRendererOnCompleteType =
       useCallback(
-        async data => {
+        data => {
           setCompletedActivities(prev => ({
             ...prev,
             [activity.id]: data,

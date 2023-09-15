@@ -3,7 +3,7 @@ import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
 } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { useMachine } from '@xstate/react';
 

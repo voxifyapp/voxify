@@ -1,4 +1,4 @@
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import dayjs from 'dayjs';
 import { assign, createMachine } from 'xstate';
 
@@ -67,14 +67,7 @@ export const activityRendererMachine = createMachine(
               },
             },
           },
-          RESULT: {
-            // on: {
-            //   RESET: {
-            //     target: 'WORKING',
-            //     cond: 'Focused',
-            //   },
-            // },
-          },
+          RESULT: {},
         },
       },
       FOCUSED_STATE: {
@@ -108,7 +101,6 @@ export const activityRendererMachine = createMachine(
             userAnswer: any;
             answerError: any | null;
           }
-        // | { type: 'RESET' }
         | { type: 'finish'; userAnswer: any }
         | {
             type: 'RESTORE_DATA';

@@ -1,12 +1,12 @@
 import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import React, { useEffect, useMemo } from 'react';
 import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
 
