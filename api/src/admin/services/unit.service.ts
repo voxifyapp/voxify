@@ -14,6 +14,7 @@ export class UnitService {
       where: {
         courseId,
       },
+      relations: { course: true },
       withDeleted: true,
     });
   }

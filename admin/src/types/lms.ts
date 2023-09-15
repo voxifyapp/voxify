@@ -5,3 +5,8 @@ export type Course = {
   title: string;
   proficiencyLevel: ProficiencyLevel;
 } & BaseEntity;
+
+export type Unit = {
+  title: string;
+  courseId: string;
+} & BaseEntity;

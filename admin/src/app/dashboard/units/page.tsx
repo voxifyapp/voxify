@@ -1,7 +1,7 @@
 'use client';
 
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
-import { Course } from '@/types/lms';
+import { Course, Unit } from '@/types/lms';
 import {
   Button,
   CircularProgress,
@@ -15,44 +15,46 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from 'react-query';
 
-export default function Courses() {
+export default function Units() {
   const router = useRouter();
-  const { data: courses, isLoading } = useQuery({
-    queryKey: ['courses'],
+  const { data: units, isLoading } = useQuery({
+    queryKey: ['units'],
     queryFn: async () =>
-      await clientFetchApiWithAuth<Course[]>('/admin/courses'),
+      await clientFetchApiWithAuth<(Unit & { course: Course })[]>(
+        '/admin/units',
+      ),
   });
+
+  const { courseId } = useSearchParams() as { courseId?: string };
 
   return (
     <TableContainer component={Paper}>
       {isLoading && <CircularProgress />}
-      <Link href="/dashboard/courses/create-edit">
-        <Button>Create Course</Button>
+      {courseId && <h1>For Course: {courseId}</h1>}
+      <Link href="/dashboard/units/create-edit">
+        <Button>Create Unit</Button>
       </Link>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell>Proficiency Level</TableCell>
+            <TableCell>For Course</TableCell>
             <TableCell>Created At</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {courses &&
-            courses.map(course => (
-              <TableRow
-                hover
-                key={course.id}
-                onClick={() => router.push(`/dashboard/courses/`)}>
-                <TableCell>{course.id}</TableCell>
-                <TableCell>{course.title}</TableCell>
-                <TableCell>{course.proficiencyLevel}</TableCell>
+          {units &&
+            units.map(unit => (
+              <TableRow hover key={unit.id}>
+                <TableCell>{unit.id}</TableCell>
+                <TableCell>{unit.title}</TableCell>
+                <TableCell>{unit.course.title}</TableCell>
                 <TableCell>
-                  {dayjs(course.createdAt).format('DD MMM YYYY')}
+                  {dayjs(unit.createdAt).format('DD MMM YYYY')}
                 </TableCell>
               </TableRow>
             ))}

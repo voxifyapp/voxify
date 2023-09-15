@@ -2,7 +2,7 @@
 
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import Modal from '@/lib/components/Modal';
-import { Course } from '@/types/course';
+import { Course } from '@/types/lms';
 import { ProficiencyLevel } from '@/types/profile';
 import {
   Button,
