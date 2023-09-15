@@ -1,5 +1,6 @@
 'use client';
 
+import CreateUnitModal from '@/app/dashboard/units/CreateUnitModal';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Course, Unit } from '@/types/lms';
 import {
@@ -16,9 +17,11 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 export default function Units() {
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
   const { data: units, isLoading } = useQuery({
     queryKey: ['units'],
@@ -31,35 +34,37 @@ export default function Units() {
   const { courseId } = useSearchParams() as { courseId?: string };
 
   return (
-    <TableContainer component={Paper}>
-      {isLoading && <CircularProgress />}
-      {courseId && <h1>For Course: {courseId}</h1>}
-      <Link href="/dashboard/units/create-edit">
-        <Button>Create Unit</Button>
-      </Link>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>For Course</TableCell>
-            <TableCell>Created At</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {units &&
-            units.map(unit => (
-              <TableRow hover key={unit.id}>
-                <TableCell>{unit.id}</TableCell>
-                <TableCell>{unit.title}</TableCell>
-                <TableCell>{unit.course.title}</TableCell>
-                <TableCell>
-                  {dayjs(unit.createdAt).format('DD MMM YYYY')}
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <CreateUnitModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <TableContainer component={Paper}>
+        {isLoading && <CircularProgress />}
+        {courseId && <h1>For Course: {courseId}</h1>}
+        <Button onClick={() => setModalOpen(true)}>Create Unit</Button>
+
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>For Course</TableCell>
+              <TableCell>Created At</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {units &&
+              units.map(unit => (
+                <TableRow hover key={unit.id}>
+                  <TableCell>{unit.id}</TableCell>
+                  <TableCell>{unit.title}</TableCell>
+                  <TableCell>{unit.course.title}</TableCell>
+                  <TableCell>
+                    {dayjs(unit.createdAt).format('DD MMM YYYY')}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
