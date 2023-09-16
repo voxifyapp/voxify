@@ -12,10 +12,12 @@ import { AdminProfileService } from './services/admin-profile.service';
 import { LessonService } from './services/lesson.service';
 import { UnitService } from './services/unit.service';
 import { UnitController } from './controllers/unit.controller';
+import { ActivityService } from './services/activity.service';
+import { ActivityController } from './controllers/activity.controller';
 
 @Module({
-  controllers: [CourseController, LessonController, UnitController],
-  providers: [CourseService, AdminProfileService, LessonService, UnitService],
+  controllers: [CourseController, LessonController, UnitController, ActivityController],
+  providers: [CourseService, AdminProfileService, LessonService, UnitService, ActivityService],
   imports: [
     TypeOrmModule.forFeature([Course, AdminProfile, Unit, Lesson, Activity]),
   ],

@@ -8,15 +8,15 @@ import { Lesson } from 'src/lms/entities/Lesson.entity';
 @DoesNotRequireProfile()
 @UseGuards(AdminGuard)
 export class LessonController {
-  constructor(private readonly LessonService: LessonService) {}
+  constructor(private readonly lessonService: LessonService) {}
 
   @Get()
   async findAll(@Query('unitId') unitId?: string) {
-    return await this.LessonService.getLessons({ unitId });
+    return await this.lessonService.getLessons({ unitId });
   }
 
   @Post()
   async create(@Body() lesson: Pick<Lesson, 'title' | 'order' | 'unitId'>) {
-    return await this.LessonService.createLesson(lesson);
+    return await this.lessonService.createLesson(lesson);
   }
 }
