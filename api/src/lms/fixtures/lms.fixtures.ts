@@ -71,6 +71,7 @@ export const lessonFactory = Factory.define<Lesson>(
       title: faker.lorem.sentence(5),
       order: sequence,
       unit: undefined,
+      unitId: undefined,
       activities: [],
     };
   },

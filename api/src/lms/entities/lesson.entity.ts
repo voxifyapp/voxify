@@ -24,4 +24,7 @@ export class Lesson extends BaseEntity {
     nullable: true,
   })
   unit: Unit;
+
+  @Column({ nullable: true })
+  unitId: string;
 }
