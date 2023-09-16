@@ -4,6 +4,7 @@ import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Activity, Lesson } from '@/types/lms';
 import {
   Box,
+  Button,
   CircularProgress,
   Paper,
   Table,
@@ -14,6 +15,7 @@ import {
   TableRow,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from 'react-query';
 
@@ -33,6 +35,9 @@ export default function Units() {
   return (
     <Box padding={2}>
       <TableContainer component={Paper}>
+        <Link href={{ pathname: '/dashboard/activities/create-activity' }}>
+          <Button>Create Activity</Button>
+        </Link>
         {isLoading && <CircularProgress />}
         {lessonId && <h3>For Lesson: {lessonId}</h3>}
         <Table>
