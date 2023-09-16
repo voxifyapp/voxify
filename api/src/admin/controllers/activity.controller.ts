@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
-import { ActivityService } from 'src/admin/services/Activity.service';
+import { ActivityService } from 'src/admin/services/activity.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
 import { Activity } from 'src/lms/entities/Activity.entity';
 

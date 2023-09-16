@@ -16,8 +16,19 @@ import { ActivityService } from './services/activity.service';
 import { ActivityController } from './controllers/activity.controller';
 
 @Module({
-  controllers: [CourseController, LessonController, UnitController, ActivityController],
-  providers: [CourseService, AdminProfileService, LessonService, UnitService, ActivityService],
+  controllers: [
+    CourseController,
+    LessonController,
+    UnitController,
+    ActivityController,
+  ],
+  providers: [
+    CourseService,
+    AdminProfileService,
+    LessonService,
+    UnitService,
+    ActivityService,
+  ],
   imports: [
     TypeOrmModule.forFeature([Course, AdminProfile, Unit, Lesson, Activity]),
   ],

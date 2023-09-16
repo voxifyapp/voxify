@@ -17,6 +17,10 @@ const pages = [
     href: '/dashboard/lessons',
     label: 'Lessons',
   },
+  {
+    href: '/dashboard/activities',
+    label: 'Activities',
+  },
 ];
 
 const queryClient = new QueryClient();

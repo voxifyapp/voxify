@@ -16,6 +16,7 @@ import {
   TableRow,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -60,7 +61,15 @@ export default function Units() {
             {lessons &&
               lessons.map(lesson => (
                 <TableRow hover key={lesson.id}>
-                  <TableCell>{lesson.id}</TableCell>
+                  <TableCell>
+                    <Link
+                      href={{
+                        pathname: '/dashboard/activities',
+                        query: { lessonId: lesson.id },
+                      }}>
+                      {lesson.id}
+                    </Link>
+                  </TableCell>
                   <TableCell>{lesson.title}</TableCell>
                   <TableCell>{lesson.order}</TableCell>
                   <TableCell>{lesson.unit?.title}</TableCell>
