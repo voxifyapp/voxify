@@ -11,3 +11,9 @@ export type Unit = {
   order: number;
   courseId: string;
 } & BaseEntity;
+
+export type Lesson = {
+  title: string;
+  order: number;
+  unitId?: string;
+} & BaseEntity;
