@@ -1,5 +1,6 @@
 'use client';
 
+import ActivityEditor from '@/app/dashboard/activities/create-activity/components/ActivityEditor';
 import { ActivityType } from '@/types/lms';
 import { Box, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
@@ -38,6 +39,8 @@ export default function CreateActivity() {
             </MenuItem>
           ))}
         </Select>
+
+        <ActivityEditor type={activityType} />
       </Stack>
     </Box>
   );
