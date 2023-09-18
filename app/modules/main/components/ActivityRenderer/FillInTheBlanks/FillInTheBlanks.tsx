@@ -1,4 +1,4 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
+import { FillInTheBlanksActivity } from '@packages/activity-builder';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 import {

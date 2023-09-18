@@ -1,4 +1,4 @@
-import { VideoActivity } from '@voxify/common/activities/video-activity';
+import { VideoActivity } from '@packages/activity-builder';
 import React from 'react';
 import RNVideo from 'react-native-video';
 import { YStack } from 'tamagui';

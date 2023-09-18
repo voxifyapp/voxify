@@ -1,4 +1,4 @@
-import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
+import { PronunciationActivity } from '@packages/activity-builder';
 import { useVoiceRecognition } from '@voxify/hooks/voiceRecognition';
 import {
   convertStringToArray,

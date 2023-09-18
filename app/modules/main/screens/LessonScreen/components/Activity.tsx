@@ -1,8 +1,10 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
-import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
-import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
-import { VideoActivity } from '@voxify/common/activities/video-activity';
+import {
+  FillInTheBlanksActivity,
+  FormASentenceActivity,
+  MultipleChoiceActivity,
+  PronunciationActivity,
+  VideoActivity,
+} from '@packages/activity-builder';
 import { FillInTheBlanks } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';

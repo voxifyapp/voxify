@@ -1,8 +1,3 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
-import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
-import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
-import { VideoActivity } from '@voxify/common/activities/video-activity';
 import {
   ActivityRendererContextProvider,
   ActivityRendererOnCompleteType,
@@ -21,6 +16,13 @@ import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Vide
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import { createActorContext } from '@xstate/react';
 import React, { useEffect } from 'react';
+import {
+  FillInTheBlanksActivity,
+  FormASentenceActivity,
+  MultipleChoiceActivity,
+  VideoActivity,
+  PronunciationActivity,
+} from '@packages/activity-builder';
 
 type Props = {
   activityEntity: ActivityEntity;

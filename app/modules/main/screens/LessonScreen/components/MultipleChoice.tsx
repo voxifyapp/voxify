@@ -1,7 +1,7 @@
 import {
   MultipleChoiceActivity,
   MultipleChoiceActivityAnswer,
-} from '@voxify/common/activities/multiple-choice-activity';
+} from '@packages/activity-builder';
 import React, { useState } from 'react';
 import { Button, H3, SelectIcon, XStack, YStack } from 'tamagui';
 
