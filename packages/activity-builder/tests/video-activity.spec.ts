@@ -1,34 +1,35 @@
-import { ACTIVITY_TYPE_VIDEO, VideoActivity } from '../video-activity';
+import { ActivityType } from "../activity";
+import { VideoActivity } from "../video-activity";
 
-describe('VideoActivity', () => {
-  it('create an empty video activity', () => {
+describe("VideoActivity", () => {
+  it("create an empty video activity", () => {
     const activity = new VideoActivity();
-    expect(activity.getVideoUrl()).toEqual('');
+    expect(activity.getVideoUrl()).toEqual("");
   });
 
-  it('create a video activity from existing data', () => {
+  it("create a video activity from existing data", () => {
     const activity = new VideoActivity({
-      videoUrl: 'https://www.youtube.com/watch?v=1',
+      videoUrl: "https://www.youtube.com/watch?v=1",
     });
-    expect(activity.getVideoUrl()).toEqual('https://www.youtube.com/watch?v=1');
+    expect(activity.getVideoUrl()).toEqual("https://www.youtube.com/watch?v=1");
   });
 
-  it('set video url', () => {
+  it("set video url", () => {
     const activity = new VideoActivity();
-    activity.setVideoUrl('https://www.youtube.com/watch?v=1');
-    expect(activity.getVideoUrl()).toEqual('https://www.youtube.com/watch?v=1');
+    activity.setVideoUrl("https://www.youtube.com/watch?v=1");
+    expect(activity.getVideoUrl()).toEqual("https://www.youtube.com/watch?v=1");
   });
 
-  it('get data should return VIDEO type', () => {
+  it("get data should return VIDEO type", () => {
     const activity = new VideoActivity({
-      videoUrl: 'https://www.youtube.com/watch?v=1',
+      videoUrl: "https://www.youtube.com/watch?v=1",
     });
-    expect(activity.getData().type).toEqual(ACTIVITY_TYPE_VIDEO);
+    expect(activity.getData().type).toEqual(ActivityType.VIDEO);
   });
 
-  it('check answer always returns empty errors', () => {
+  it("check answer always returns empty errors", () => {
     const activity = new VideoActivity({
-      videoUrl: 'https://www.youtube.com/watch?v=1',
+      videoUrl: "https://www.youtube.com/watch?v=1",
     });
     expect(activity.checkAnswer()).toEqual([]);
   });
