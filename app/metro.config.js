@@ -9,6 +9,12 @@ const config = {
     unstable_enableSymlinks: true,
     nodeModulesPaths: [path.resolve(__dirname, 'node_modules')],
   },
+
+  /**
+   * We are using yarn workspaces
+   * All the deps are nohoisted
+   * Because of this we need to watch folders that we want to use in the package
+   */
   watchFolders: [path.resolve(__dirname, '../packages/activity-builder')],
 };
 
