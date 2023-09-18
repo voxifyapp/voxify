@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MultipleChoiceActivity = exports.ACTIVITY_TYPE_MULTIPLE_CHOICE = void 0;
+exports.MultipleChoiceActivity = void 0;
 const activity_1 = require("./activity");
 const text_block_1 = require("./blocks/text-block");
-exports.ACTIVITY_TYPE_MULTIPLE_CHOICE = 'MULTIPLE_CHOICE';
 class MultipleChoiceActivity extends activity_1.Activity {
     constructor(data) {
-        super(exports.ACTIVITY_TYPE_MULTIPLE_CHOICE, data
-            ? Object.assign(Object.assign({}, data), { question: new text_block_1.TextBlock(data.question.text, data.question), options: data.options.map(o => new text_block_1.TextBlock(o.text, o)) }) : { question: new text_block_1.TextBlock(''), options: [], answer: [] });
+        super(activity_1.ActivityType.MULTIPLE_CHOICE, data
+            ? Object.assign(Object.assign({}, data), { question: new text_block_1.TextBlock(data.question.text, data.question), options: data.options.map((o) => new text_block_1.TextBlock(o.text, o)) }) : { question: new text_block_1.TextBlock(""), options: [], answer: [] });
     }
     setQuestion(question) {
         this.setData(Object.assign(Object.assign({}, this.getData()), { question }));

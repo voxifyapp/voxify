@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FormASentenceActivity = exports.ACTIVITY_TYPE_FORM_A_SENTENCE = void 0;
+exports.FormASentenceActivity = void 0;
 const activity_1 = require("./activity");
 const text_block_1 = require("./blocks/text-block");
-exports.ACTIVITY_TYPE_FORM_A_SENTENCE = 'FORM_A_SENTENCE';
 class FormASentenceActivity extends activity_1.Activity {
     constructor(data) {
-        super(exports.ACTIVITY_TYPE_FORM_A_SENTENCE, data ? Object.assign({}, data) : { prompt: new text_block_1.TextBlock(''), answer: [], words: [] });
+        super(activity_1.ActivityType.FORM_A_SENTENCE, data ? Object.assign({}, data) : { prompt: new text_block_1.TextBlock(""), answer: [], words: [] });
     }
     setPrompt(prompt) {
         this.setData(Object.assign(Object.assign({}, this.getData()), { prompt }));
@@ -33,7 +32,7 @@ class FormASentenceActivity extends activity_1.Activity {
         const answerBank = this.getAnswer();
         const userAnswer = answer.answer;
         if (answerBank.length !== userAnswer.length) {
-            return ['Incorrect answer'];
+            return ["Incorrect answer"];
         }
         for (let i = 0; i < answerBank.length; i++) {
             if (answerBank[i] !== userAnswer[i]) {

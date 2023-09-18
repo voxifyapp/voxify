@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FillInTheBlanksActivity = exports.ACTIVITY_TYPE_FILL_IN_THE_BLANKS = void 0;
+exports.FillInTheBlanksActivity = void 0;
 const activity_1 = require("./activity");
 const text_block_1 = require("./blocks/text-block");
-exports.ACTIVITY_TYPE_FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS';
 class FillInTheBlanksActivity extends activity_1.Activity {
     constructor(data) {
-        super(exports.ACTIVITY_TYPE_FILL_IN_THE_BLANKS, data
-            ? Object.assign(Object.assign({}, data), { question: new text_block_1.TextBlock(data.question.text, data.question), options: data.options.map(option => new text_block_1.TextBlock(option.text, option)) }) : { question: new text_block_1.TextBlock(''), options: [], answer: {} });
+        super(activity_1.ActivityType.FILL_IN_THE_BLANKS, data
+            ? Object.assign(Object.assign({}, data), { question: new text_block_1.TextBlock(data.question.text, data.question), options: data.options.map((option) => new text_block_1.TextBlock(option.text, option)) }) : { question: new text_block_1.TextBlock(""), options: [], answer: {} });
     }
     static blank(name) {
         return `$$${name}$$`;

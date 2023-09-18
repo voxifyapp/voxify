@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 export interface FormASentenceActivityData {
     prompt: TextBlock;
     answer: string[];
@@ -8,7 +8,6 @@ export interface FormASentenceActivityData {
 export interface FormASentenceActivityAnswer {
     answer: string[];
 }
-export declare const ACTIVITY_TYPE_FORM_A_SENTENCE = "FORM_A_SENTENCE";
 export declare class FormASentenceActivity extends Activity<FormASentenceActivityData, FormASentenceActivityAnswer> {
     constructor(data?: FormASentenceActivityData);
     setPrompt(prompt: TextBlock): void;

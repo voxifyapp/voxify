@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 export interface PronunciationActivityData {
     prompt: TextBlock;
 }

@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 export interface FillInTheBlanksActivityData {
     question: TextBlock;
     options: TextBlock[];
@@ -8,8 +8,7 @@ export interface FillInTheBlanksActivityData {
 /**
  * The answer is a map of blank name to the option id
  */
-export declare type FillInTheBlanksActivityAnswer = Record<string, string>;
-export declare const ACTIVITY_TYPE_FILL_IN_THE_BLANKS = "FILL_IN_THE_BLANKS";
+export type FillInTheBlanksActivityAnswer = Record<string, string>;
 export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksActivityData, FillInTheBlanksActivityAnswer> {
     constructor(data?: FillInTheBlanksActivityData);
     static BLANK_FORMAT: RegExp;
@@ -28,6 +27,6 @@ export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksAct
         type: string;
     };
 }
-export declare type FillInTheBlanksAnswerErrorsType = {
+export type FillInTheBlanksAnswerErrorsType = {
     wrongBlanks: string[];
 };

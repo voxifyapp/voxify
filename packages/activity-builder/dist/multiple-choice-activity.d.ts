@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 export interface MultipleChoiceActivityData {
     question: TextBlock;
     options: TextBlock[];
@@ -8,10 +8,9 @@ export interface MultipleChoiceActivityData {
      */
     answer: string[];
 }
-export declare type MultipleChoiceActivityAnswer = {
+export type MultipleChoiceActivityAnswer = {
     answer: string[];
 };
-export declare const ACTIVITY_TYPE_MULTIPLE_CHOICE = "MULTIPLE_CHOICE";
 export declare class MultipleChoiceActivity extends Activity<MultipleChoiceActivityData, MultipleChoiceActivityAnswer> {
     constructor(data?: MultipleChoiceActivityData);
     setQuestion(question: TextBlock): void;
