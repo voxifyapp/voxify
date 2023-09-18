@@ -1,8 +1,8 @@
-import React from 'react';
 import {
   FormASentenceActivity,
   FormASentenceActivityAnswer,
-} from '@voxify/common/activities/form-a-sentence-activity';
+} from '@packages/activity-builder';
+import React from 'react';
 import { useState } from 'react';
 import { Button, H3, XStack, YStack } from 'tamagui';
 

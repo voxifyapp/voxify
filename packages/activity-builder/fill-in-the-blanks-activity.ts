@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity, ActivityType } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 
 export interface FillInTheBlanksActivityData {
   question: TextBlock;
@@ -12,24 +12,22 @@ export interface FillInTheBlanksActivityData {
  */
 export type FillInTheBlanksActivityAnswer = Record<string, string>;
 
-export const ACTIVITY_TYPE_FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS';
-
 export class FillInTheBlanksActivity extends Activity<
   FillInTheBlanksActivityData,
   FillInTheBlanksActivityAnswer
 > {
   constructor(data?: FillInTheBlanksActivityData) {
     super(
-      ACTIVITY_TYPE_FILL_IN_THE_BLANKS,
+      ActivityType.FILL_IN_THE_BLANKS,
       data
         ? {
             ...data,
             question: new TextBlock(data.question.text, data.question),
             options: data.options.map(
-              option => new TextBlock(option.text, option),
+              (option) => new TextBlock(option.text, option)
             ),
           }
-        : { question: new TextBlock(''), options: [], answer: {} },
+        : { question: new TextBlock(""), options: [], answer: {} }
     );
   }
 
@@ -66,7 +64,7 @@ export class FillInTheBlanksActivity extends Activity<
   }
 
   checkAnswer(
-    answer: FillInTheBlanksActivityAnswer,
+    answer: FillInTheBlanksActivityAnswer
   ): FillInTheBlanksAnswerErrorsType {
     const answerBank = this.getAnswer();
     const errors = [];

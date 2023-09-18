@@ -24,6 +24,7 @@
     "typeorm:migrations:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
+    "@packages/activity-builder": "0.0.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "*",
