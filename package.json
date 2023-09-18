@@ -4,11 +4,13 @@
     "packages": [
       "app",
       "api",
+      "admin",
       "packages/*"
     ],
     "nohoist": [
       "app/**",
       "api/**",
+      "admin/**",
       "packages/**"
     ]
   }
