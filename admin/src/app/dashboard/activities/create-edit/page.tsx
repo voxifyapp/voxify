@@ -34,6 +34,7 @@ export default function CreateActivity() {
       clientFetchApiWithAuth<Activity>(`/admin/activities/${activityId}`),
     enabled: !!activityId,
     onSuccess: (activity: Activity) => {
+      // Updating existing activity, set the current data
       setLessonId(activity.lessonId || '');
       setOrder(String(activity.order));
       setActivityType(activity.type);

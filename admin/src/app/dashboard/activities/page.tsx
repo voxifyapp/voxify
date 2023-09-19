@@ -46,7 +46,7 @@ export default function Units() {
               <TableCell>Id</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Order</TableCell>
-              <TableCell>For Unit</TableCell>
+              <TableCell>For Lesson</TableCell>
               <TableCell>Created At</TableCell>
             </TableRow>
           </TableHead>
