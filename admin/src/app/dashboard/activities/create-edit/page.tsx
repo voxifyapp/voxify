@@ -1,8 +1,8 @@
 'use client';
 
-import ActivityEditor from '@/app/dashboard/activities/create-activity/components/ActivityEditor';
+import ActivityEditor from '@/app/dashboard/activities/create-edit/components/ActivityEditor';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
-import { Activity, ActivityType, Lesson } from '@/types/lms';
+import { Activity, ActivityType } from '@/types/lms';
 import {
   Alert,
   Box,
@@ -28,13 +28,12 @@ export default function CreateActivity() {
   );
   const [activityData, setActivityData] = useState<object | null>(null);
 
-  const {} = useQuery({
+  const { data } = useQuery({
     queryKey: ['activity', activityId],
     queryFn: () =>
       clientFetchApiWithAuth<Activity>(`/admin/activities/${activityId}`),
     enabled: !!activityId,
     onSuccess: (activity: Activity) => {
-      console.log(activity)
       setLessonId(activity.lessonId || '');
       setOrder(String(activity.order));
       setActivityType(activity.type);
@@ -98,6 +97,7 @@ export default function CreateActivity() {
         </Select>
 
         <ActivityEditor
+          initialData={data?.data}
           onActivityDataChange={(data: object) => setActivityData(data)}
           type={activityType}
         />

@@ -35,7 +35,7 @@ export default function Units() {
   return (
     <Box padding={2}>
       <TableContainer component={Paper}>
-        <Link href={{ pathname: '/dashboard/activities/create-activity' }}>
+        <Link href={{ pathname: '/dashboard/activities/create-edit' }}>
           <Button>Create Activity</Button>
         </Link>
         {isLoading && <CircularProgress />}
@@ -54,7 +54,17 @@ export default function Units() {
             {activities &&
               activities.map(activity => (
                 <TableRow hover key={activity.id}>
-                  <TableCell>{activity.id}</TableCell>
+                  <TableCell>
+                    <Link
+                      href={{
+                        pathname: '/dashboard/activities/create-edit',
+                        query: {
+                          activityId: activity.id,
+                        },
+                      }}>
+                      {activity.id}
+                    </Link>
+                  </TableCell>
                   <TableCell>{activity.type}</TableCell>
                   <TableCell>{activity.order}</TableCell>
                   <TableCell>{activity.lesson?.title}</TableCell>

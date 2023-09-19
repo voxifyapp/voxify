@@ -1,11 +1,13 @@
 import { Button, Stack, TextField } from '@mui/material';
-import { VideoActivity } from '@packages/activity-builder';
+import { VideoActivity, VideoActivityData } from '@packages/activity-builder';
 import { useEffect, useRef, useState } from 'react';
 
 export default function VideoActivityEditor({
   onActivityDataChange,
+  currentData,
 }: {
   onActivityDataChange: (data: object) => any;
+  currentData?: VideoActivityData;
 }) {
   const [videoFileName, setVideoFileName] = useState('');
   const [showSave, setShowSave] = useState(false);
@@ -17,6 +19,12 @@ export default function VideoActivityEditor({
     }
     firstTimeRef.current = false;
   }, [videoFileName]);
+
+  useEffect(() => {
+    if (currentData) {
+      setVideoFileName(currentData.videoFileName);
+    }
+  }, [currentData]);
 
   const build = () => {
     const videoActivity = new VideoActivity();
