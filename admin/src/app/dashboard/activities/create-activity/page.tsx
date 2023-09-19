@@ -38,6 +38,7 @@ export default function CreateActivity() {
           type: activityType,
           lessonId: lessonId || null,
           order,
+          data: activityData,
         }),
       }),
     {

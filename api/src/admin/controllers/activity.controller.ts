@@ -17,7 +17,7 @@ export class ActivityController {
 
   @Post()
   async create(
-    @Body() activity: Pick<Activity, 'type' | 'order' | 'lessonId'>,
+    @Body() activity: Pick<Activity, 'type' | 'order' | 'lessonId' | 'data'>,
   ) {
     return await this.activityService.createActivity(activity);
   }
