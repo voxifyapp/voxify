@@ -35,6 +35,9 @@ export class VideoActivity extends Activity<
   }
 
   build() {
+    if (this.getVideoFileName() === "")
+      throw new Error("Please provide a video file name");
+
     return this.getData();
   }
 }
