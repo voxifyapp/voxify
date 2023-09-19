@@ -1,7 +1,13 @@
 import { Activity, ActivityType } from "./activity";
 
 export interface VideoActivityData {
-  videoUrl: string;
+  /**
+   * File name of the video. We are using cloudfront to serve the videos
+   * We'll be saving the file name only here 'example.mp4'
+   * This gives us flexibility to create different versions of the video.
+   * Do not include the extension of the video
+   */
+  videoFileName: string;
 }
 
 export interface VideoActivityAnswer {
@@ -13,15 +19,15 @@ export class VideoActivity extends Activity<
   VideoActivityAnswer
 > {
   constructor(data?: VideoActivityData) {
-    super(ActivityType.VIDEO, data || { videoUrl: "" });
+    super(ActivityType.VIDEO, data || { videoFileName: "" });
   }
 
-  public setVideoUrl(url: string): void {
-    this.setData({ ...this.getData(), videoUrl: url });
+  public setVideoFileName(url: string): void {
+    this.setData({ ...this.getData(), videoFileName: url });
   }
 
-  public getVideoUrl(): string {
-    return this.getData().videoUrl;
+  public getVideoFileName(): string {
+    return this.getData().videoFileName;
   }
 
   checkAnswer() {
