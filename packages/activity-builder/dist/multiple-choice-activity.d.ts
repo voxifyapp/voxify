@@ -3,6 +3,8 @@ import { TextBlock } from "./blocks/text-block";
 export interface MultipleChoiceActivityData {
     question: TextBlock;
     options: TextBlock[];
+    /** Does the activity have more than 1 answer? */
+    isMultipleAnswer: boolean;
     /**
      * Id of the answer, multiple answers are allowed
      */
@@ -19,6 +21,7 @@ export declare class MultipleChoiceActivity extends Activity<MultipleChoiceActiv
     setOptions(options: TextBlock[]): void;
     getAnswer(): string[];
     getIsMultipleAnswer(): boolean;
+    setIsMultipleAnswer(isMultipleAnswer: boolean): void;
     setAnswer(answer: string[]): void;
     /**
      * Returns options that are incorrect, else returns nothing

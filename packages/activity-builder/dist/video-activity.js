@@ -16,6 +16,8 @@ class VideoActivity extends activity_1.Activity {
         return [];
     }
     build() {
+        if (this.getVideoFileName() === "")
+            throw new Error("Please provide a video file name");
         return this.getData();
     }
 }

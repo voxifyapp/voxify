@@ -1,8 +1,10 @@
+import MultipleChoiceActivityEditor from '@/app/dashboard/activities/create-edit/components/MultipleChoiceEditor';
 import PronunciationActivityEditor from '@/app/dashboard/activities/create-edit/components/PronunciationEditor';
 import VideoActivityEditor from '@/app/dashboard/activities/create-edit/components/VideoActivityEditor';
 import { ActivityType } from '@/types/lms';
 import { Box } from '@mui/material';
 import {
+  MultipleChoiceActivityData,
   PronunciationActivityData,
   VideoActivityData,
 } from '@packages/activity-builder';
@@ -29,6 +31,14 @@ export default function ActivityEditor({
       return (
         <PronunciationActivityEditor
           currentData={initialData as PronunciationActivityData | undefined}
+          onActivityDataChange={onActivityDataChange}
+        />
+      );
+    }
+    if (type === ActivityType.MULTIPLE_CHOICE) {
+      return (
+        <MultipleChoiceActivityEditor
+          currentData={initialData as MultipleChoiceActivityData | undefined}
           onActivityDataChange={onActivityDataChange}
         />
       );

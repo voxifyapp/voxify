@@ -19,6 +19,9 @@ class PronunciationActivity extends activity_1.Activity {
         return [];
     }
     build() {
+        if (this.getPrompt().text == "") {
+            throw new Error("Need to pass prompt");
+        }
         return this.getData();
     }
 }
