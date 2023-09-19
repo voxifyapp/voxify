@@ -30,4 +30,5 @@ export type Activity = {
   type: ActivityType;
   order: number;
   lessonId?: string;
+  data: object;
 } & BaseEntity;

@@ -12,11 +12,13 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export default function CreateActivity() {
+  const searchParams = useSearchParams();
+  const activityId = searchParams.get('activityId');
   const router = useRouter();
   const queryClient = useQueryClient();
   const [lessonId, setLessonId] = useState('');
@@ -25,6 +27,20 @@ export default function CreateActivity() {
     ActivityType.FILL_IN_THE_BLANKS,
   );
   const [activityData, setActivityData] = useState<object | null>(null);
+
+  const {} = useQuery({
+    queryKey: ['activity', activityId],
+    queryFn: () =>
+      clientFetchApiWithAuth<Activity>(`/admin/activities/${activityId}`),
+    enabled: !!activityId,
+    onSuccess: (activity: Activity) => {
+      console.log(activity)
+      setLessonId(activity.lessonId || '');
+      setOrder(String(activity.order));
+      setActivityType(activity.type);
+      setActivityData(activity.data);
+    },
+  });
 
   const {
     isLoading: loading,
@@ -74,7 +90,7 @@ export default function CreateActivity() {
         <Select
           value={activityType}
           onChange={e => setActivityType(e.target.value as ActivityType)}>
-          {Object.keys(ActivityType).map(key => (
+          {Object.values(ActivityType).map(key => (
             <MenuItem key={key} value={key}>
               {key}
             </MenuItem>

@@ -17,6 +17,10 @@ export class LessonService {
     });
   }
 
+  async getLessonById(lessonId: string) {
+    return await this.lessonRepository.findOneBy({ id: lessonId });
+  }
+
   async createLesson({
     title,
     order,

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
 import { LessonService } from 'src/admin/services/lesson.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
@@ -18,5 +26,10 @@ export class LessonController {
   @Post()
   async create(@Body() lesson: Pick<Lesson, 'title' | 'order' | 'unitId'>) {
     return await this.lessonService.createLesson(lesson);
+  }
+
+  @Get(':lessonId')
+  async getLessonById(@Param('lessonId') lessonId: string) {
+    return await this.lessonService.getLessonById(lessonId);
   }
 }

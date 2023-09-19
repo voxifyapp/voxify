@@ -18,6 +18,10 @@ export class ActivityService {
     });
   }
 
+  async getActivityById(activityId: string) {
+    return await this.activityRepository.findOneBy({ id: activityId });
+  }
+
   async createActivity({
     type,
     order,
