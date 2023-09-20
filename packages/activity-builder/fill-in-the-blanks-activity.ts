@@ -1,3 +1,4 @@
+import { countBy, every, values } from "lodash";
 import { Activity, ActivityType } from "./activity";
 import { TextBlock } from "./blocks/text-block";
 
@@ -11,7 +12,7 @@ export interface FillInTheBlanksActivityData {
 }
 
 /**
- * The answer is a map of blank name to the option id
+ * The answer is a map of blank_id => option eg: { $$blank1$$: "hello" }
  */
 export type FillInTheBlanksActivityAnswer = Record<string, string>;
 
@@ -77,7 +78,39 @@ export class FillInTheBlanksActivity extends Activity<
     return { wrongBlanks: errors };
   }
 
+  static getBlanksFromQuestion(question: string): string[] {
+    return question.match(/\$\$.*?\$\$/g) || [];
+  }
+
+  //TODO Write tests for this!
   build() {
+    const blanks = FillInTheBlanksActivity.getBlanksFromQuestion(
+      this.getQuestion().text
+    );
+    const answerBank = this.getAnswer();
+    const options = this.getOptions();
+    const answerOptions = values(answerBank);
+
+    // Check if all the blanks have an answer
+    if (!every(blanks, (blank) => answerBank[blank]))
+      throw new Error("Every blank needs to have an answer");
+
+    // Check if all the answer options have greater than or equal to the number of of options
+    const answerOptionsCount = countBy(answerOptions);
+    const optionsCount = countBy(options);
+
+    if (
+      !every(
+        answerOptionsCount,
+        (answerOptionCount, answerOption) =>
+          optionsCount[answerOption] >= answerOptionCount
+      )
+    ) {
+      throw new Error(
+        "The options should have all the options in the answer. Refresh the page and try again."
+      );
+    }
+
     return this.getData();
   }
 }

@@ -9,7 +9,7 @@ export interface FillInTheBlanksActivityData {
     answer: Record<string, string>;
 }
 /**
- * The answer is a map of blank name to the option id
+ * The answer is a map of blank_id => option eg: { $$blank1$$: "hello" }
  */
 export type FillInTheBlanksActivityAnswer = Record<string, string>;
 export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksActivityData, FillInTheBlanksActivityAnswer> {
@@ -26,6 +26,7 @@ export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksAct
     getAnswer(): Record<string, string>;
     setAnswer(answer: Record<string, string>): void;
     checkAnswer(answer: FillInTheBlanksActivityAnswer): FillInTheBlanksAnswerErrorsType;
+    static getBlanksFromQuestion(question: string): string[];
     build(): FillInTheBlanksActivityData & {
         type: string;
     };

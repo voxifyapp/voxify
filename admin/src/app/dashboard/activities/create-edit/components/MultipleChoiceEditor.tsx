@@ -83,7 +83,7 @@ export default function MultipleChoiceActivityEditor({
                 style={{ flex: 1 }}
                 onChange={e => {
                   const newOptions = [...options];
-                  options[index].text = e.target.value;
+                  newOptions[index].text = e.target.value;
                   setOptions(newOptions);
                 }}
                 label="Option"

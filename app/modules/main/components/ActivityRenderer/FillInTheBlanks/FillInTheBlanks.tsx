@@ -73,18 +73,16 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         </XStack>
         <XStack flexWrap="wrap" space="$3">
           {options
-            .filter(
-              option => !new Set(Object.values(userAnswer)).has(option.id),
-            )
-            .map(option => (
+            .filter(option => !new Set(Object.values(userAnswer)).has(option))
+            .map((option, index) => (
               <Button
                 disabled={!canAddWord}
-                key={option.id}
+                key={index}
                 onPress={() => {
-                  addWord(option.id);
+                  addWord(option);
                 }}
                 theme={'green'}>
-                {option.text}
+                {option}
               </Button>
             ))}
         </XStack>
@@ -110,15 +108,11 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 };
 
 const SegmentRenderer = ({ segment }: { segment: string }) => {
-  const { userAnswer, activity, removeWord, canRemoveWord } =
-    useFillInTheBlanksContext();
+  const { userAnswer, removeWord, canRemoveWord } = useFillInTheBlanksContext();
 
   if (segment.match(FillInTheBlanksActivity.BLANK_FORMAT)) {
     if (userAnswer[segment]) {
-      const optionIdForBlank = userAnswer[segment];
-      const answerForBlank = activity
-        .getOptions()
-        .find(option => option.id === optionIdForBlank)?.text;
+      const answerForBlank = userAnswer[segment];
       return (
         <Button
           disabled={!canRemoveWord}
