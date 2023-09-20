@@ -2,8 +2,11 @@ import { Activity, ActivityType } from "./activity";
 import { TextBlock } from "./blocks/text-block";
 
 export interface FillInTheBlanksActivityData {
+  /** The question will have blanks represented as $$blank_id$$ */
   question: TextBlock;
-  options: TextBlock[];
+  /** Options available for the blanks */
+  options: string[];
+  /** A mapping from $$blank_id$$ (see question) => option. eg: { $$blank1$$: "hello" } */
   answer: Record<string, string>;
 }
 
@@ -23,9 +26,6 @@ export class FillInTheBlanksActivity extends Activity<
         ? {
             ...data,
             question: new TextBlock(data.question.text, data.question),
-            options: data.options.map(
-              (option) => new TextBlock(option.text, option)
-            ),
           }
         : { question: new TextBlock(""), options: [], answer: {} }
     );
@@ -47,11 +47,11 @@ export class FillInTheBlanksActivity extends Activity<
     return this.getData().question;
   }
 
-  getOptions(): TextBlock[] {
+  getOptions() {
     return this.getData().options;
   }
 
-  setOptions(options: TextBlock[]): void {
+  setOptions(options: string[]): void {
     this.setData({ ...this.getData(), options });
   }
 

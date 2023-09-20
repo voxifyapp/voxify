@@ -6,7 +6,7 @@ const text_block_1 = require("./blocks/text-block");
 class FillInTheBlanksActivity extends activity_1.Activity {
     constructor(data) {
         super(activity_1.ActivityType.FILL_IN_THE_BLANKS, data
-            ? Object.assign(Object.assign({}, data), { question: new text_block_1.TextBlock(data.question.text, data.question), options: data.options.map((option) => new text_block_1.TextBlock(option.text, option)) }) : { question: new text_block_1.TextBlock(""), options: [], answer: {} });
+            ? Object.assign(Object.assign({}, data), { question: new text_block_1.TextBlock(data.question.text, data.question) }) : { question: new text_block_1.TextBlock(""), options: [], answer: {} });
     }
     static blank(name) {
         return `$$${name}$$`;

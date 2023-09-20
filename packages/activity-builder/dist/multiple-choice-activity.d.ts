@@ -10,7 +10,7 @@ export interface MultipleChoiceActivityData {
      */
     answer: string[];
 }
-export declare type MultipleChoiceActivityAnswer = {
+export type MultipleChoiceActivityAnswer = {
     answer: string[];
 };
 export declare class MultipleChoiceActivity extends Activity<MultipleChoiceActivityData, MultipleChoiceActivityAnswer> {

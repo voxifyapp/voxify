@@ -8,7 +8,7 @@ var ActivityType;
     ActivityType["MULTIPLE_CHOICE"] = "MULTIPLE_CHOICE";
     ActivityType["PRONUNCIATION"] = "PRONUNCIATION";
     ActivityType["FORM_A_SENTENCE"] = "FORM_A_SENTENCE";
-})(ActivityType = exports.ActivityType || (exports.ActivityType = {}));
+})(ActivityType || (exports.ActivityType = ActivityType = {}));
 class Activity {
     constructor(type, data) {
         this.type = type;

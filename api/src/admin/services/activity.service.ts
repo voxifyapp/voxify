@@ -14,7 +14,7 @@ export class ActivityService {
     return await this.activityRepository.find({
       where: { lessonId },
       relations: { lesson: true },
-      order: { order: 'ASC' },
+      order: lessonId ? { createdAt: 'DESC' } : { order: 'ASC' },
       withDeleted: true,
     });
   }
