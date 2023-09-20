@@ -38,24 +38,6 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     canAddWord,
   } = contextValue;
 
-  const syncUserAnswerIndexWithUserAnswer = (
-    userAnswerForSync: FillInTheBlanksActivityAnswer,
-  ) => {
-    const newUserAnswerIndexForSync: Record<string, number> = {};
-    const usedOptionsIndexes = new Set<number>();
-    each(userAnswerForSync, (selectedOptionForBlank, blank) => {
-      const optionIndexForBlank = options.findIndex(
-        (option, index) =>
-          !usedOptionsIndexes.has(index) && option === selectedOptionForBlank,
-      );
-      if (optionIndexForBlank !== -1) {
-        newUserAnswerIndexForSync[blank] = optionIndexForBlank;
-        usedOptionsIndexes.add(optionIndexForBlank);
-      }
-    });
-    setUserAnswerIndex(newUserAnswerIndexForSync);
-  };
-
   /**
    * We sync restore data here. Useful when the view is being recycled (for eg. in a virtualized list)
    * or we are trying to get data from the database.
@@ -149,15 +131,6 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           ?.can({ type: 'finish', userAnswer }) && (
           <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
         )}
-        <Button
-          onPress={() =>
-            syncUserAnswerIndexWithUserAnswer({
-              $$blank_76$$: 'my',
-              $$blank_66$$: 'my',
-            })
-          }>
-          Check Sync
-        </Button>
         {activityRendererMachineService
           .getSnapshot()
           ?.matches({ WORKING_STATE: 'RESULT' }) && (
