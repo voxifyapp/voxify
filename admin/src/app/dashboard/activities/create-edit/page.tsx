@@ -48,15 +48,18 @@ export default function CreateActivity() {
     mutate,
   } = useMutation(
     () =>
-      clientFetchApiWithAuth('/admin/activities/', {
-        method: 'POST',
-        body: JSON.stringify({
-          type: activityType,
-          lessonId: lessonId || null,
-          order,
-          data: activityData,
-        }),
-      }),
+      clientFetchApiWithAuth(
+        `/admin/activities/${activityId ? activityId : ''}`,
+        {
+          method: activityId ? 'PATCH' : 'POST',
+          body: JSON.stringify({
+            type: activityType,
+            lessonId: lessonId || null,
+            order,
+            data: activityData,
+          }),
+        },
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['activities']);

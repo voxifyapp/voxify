@@ -1,4 +1,4 @@
-import { Button, Checkbox, IconButton, Stack, TextField } from '@mui/material';
+import { Button, Checkbox, Stack, TextField } from '@mui/material';
 import {
   MultipleChoiceActivity,
   MultipleChoiceActivityData,
@@ -15,7 +15,7 @@ export default function MultipleChoiceActivityEditor({
 }) {
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState<TextBlock[]>([]);
-  const [isMultipleAnswer, setIsMultipleAnswer] = useState(false);
+  const [isMultipleAnswer, setIsMultipleAnswer] = useState(true);
   const [answerIds, setAnswerIds] = useState<string[]>([]);
 
   const [showSave, setShowSave] = useState(false);
@@ -30,20 +30,20 @@ export default function MultipleChoiceActivityEditor({
 
   useEffect(() => {
     if (currentData) {
+      const parsedActivity = new MultipleChoiceActivity(currentData);
       setQuestion(currentData.question.text);
+      setOptions(parsedActivity.getOptions());
+      setIsMultipleAnswer(currentData.isMultipleAnswer);
+      setAnswerIds(parsedActivity.getAnswer());
     }
   }, [currentData]);
-
-  useEffect(() => {
-    // Reset the answers if has multiple answers changes
-    setAnswerIds([]);
-  }, [isMultipleAnswer]);
 
   const build = () => {
     const activity = new MultipleChoiceActivity();
     activity.setQuestion(new TextBlock(question));
     activity.setOptions(options);
     activity.setAnswer(answerIds);
+    activity.setIsMultipleAnswer(isMultipleAnswer);
     try {
       const activityData = activity.build();
       onActivityDataChange(activityData);
@@ -67,8 +67,11 @@ export default function MultipleChoiceActivityEditor({
             <Checkbox
               size="small"
               title="is multiple answer"
-              value={isMultipleAnswer}
-              onChange={e => setIsMultipleAnswer(e.target.checked)}
+              checked={isMultipleAnswer}
+              onChange={e => {
+                setAnswerIds([]);
+                setIsMultipleAnswer(e.target.checked);
+              }}
             />
             <p>Has multiple answer?</p>
           </Stack>

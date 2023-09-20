@@ -14,6 +14,7 @@ export class ActivityService {
     return await this.activityRepository.find({
       where: { lessonId },
       relations: { lesson: true },
+      order: { order: 'ASC' },
       withDeleted: true,
     });
   }
@@ -36,15 +37,13 @@ export class ActivityService {
     });
   }
 
-  async updateActivity({
-    order,
-    lessonId,
-    data,
-  }: Pick<Activity, 'order' | 'lessonId' | 'data'>) {
+  async updateActivity(
+    activityId: string,
+    data: Pick<Activity, 'order' | 'lessonId' | 'data'>,
+  ): Promise<Activity> {
     return await this.activityRepository.save({
-      data,
-      order,
-      lessonId,
+      id: activityId,
+      ...data,
     });
   }
 }
