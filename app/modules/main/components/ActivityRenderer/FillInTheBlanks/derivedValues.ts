@@ -1,7 +1,7 @@
 import {
-  FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
-} from '@voxify/common/activities/fill-in-the-blanks-activity';
+  FillInTheBlanksActivity,
+} from '@packages/activity-builder';
 import { flattenDeep } from 'lodash';
 
 export const derivedValues = ({

@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity, ActivityType } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 
 export interface PronunciationActivityData {
   prompt: TextBlock;
@@ -7,15 +7,15 @@ export interface PronunciationActivityData {
 
 export interface PronunciationActivityAnswer {}
 
-export const ACTIVITY_TYPE_PRONUNCIATION = 'PRONUNCIATION';
+export const ACTIVITY_TYPE_PRONUNCIATION = "PRONUNCIATION";
 export class PronunciationActivity extends Activity<
   PronunciationActivityData,
   PronunciationActivityAnswer
 > {
   constructor(data?: PronunciationActivityData) {
     super(
-      ACTIVITY_TYPE_PRONUNCIATION,
-      data ? { ...data } : { prompt: new TextBlock('') },
+      ActivityType.PRONUNCIATION,
+      data ? { ...data } : { prompt: new TextBlock("") }
     );
   }
 

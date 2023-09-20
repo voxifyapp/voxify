@@ -1,7 +1,7 @@
 import {
   FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
-} from '@voxify/common/activities/fill-in-the-blanks-activity';
+} from '@packages/activity-builder';
 import { omit } from 'lodash';
 import React, { useState } from 'react';
 import { Button, H3, XStack, YStack } from 'tamagui';

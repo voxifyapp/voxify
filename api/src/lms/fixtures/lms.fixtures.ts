@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
+import { ActivityType } from '@packages/activity-builder';
 import { Factory } from 'fishery';
 import { omit } from 'lodash';
 import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { baseFactory } from 'src/common/fixtures/base.fixture';
-import { Activity, ActivityType } from 'src/lms/entities/activity.entity';
+import { Activity } from 'src/lms/entities/activity.entity';
 import { Course } from 'src/lms/entities/course.entity';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Unit } from 'src/lms/entities/unit.entity';

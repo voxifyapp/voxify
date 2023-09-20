@@ -2,7 +2,7 @@ import {
   FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
   FillInTheBlanksAnswerErrorsType,
-} from '@voxify/common/activities/fill-in-the-blanks-activity';
+} from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { derivedValues } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/derivedValues';
