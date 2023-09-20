@@ -1,4 +1,7 @@
-import { FillInTheBlanksActivity } from '@packages/activity-builder';
+import {
+  FillInTheBlanksActivity,
+  FillInTheBlanksActivityAnswer,
+} from '@packages/activity-builder';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 import {
@@ -7,6 +10,7 @@ import {
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
+import { each } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
 
@@ -27,19 +31,65 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     questionSegments,
     userAnswer,
     setUserAnswer,
+    userAnswerIndex,
+    setUserAnswerIndex,
     setAnswerErrors,
     addWord,
     canAddWord,
   } = contextValue;
 
+  const syncUserAnswerIndexWithUserAnswer = (
+    userAnswerForSync: FillInTheBlanksActivityAnswer,
+  ) => {
+    const newUserAnswerIndexForSync: Record<string, number> = {};
+    const usedOptionsIndexes = new Set<number>();
+    each(userAnswerForSync, (selectedOptionForBlank, blank) => {
+      const optionIndexForBlank = options.findIndex(
+        (option, index) =>
+          !usedOptionsIndexes.has(index) && option === selectedOptionForBlank,
+      );
+      if (optionIndexForBlank !== -1) {
+        newUserAnswerIndexForSync[blank] = optionIndexForBlank;
+        usedOptionsIndexes.add(optionIndexForBlank);
+      }
+    });
+    setUserAnswerIndex(newUserAnswerIndexForSync);
+  };
+
+  /**
+   * We sync restore data here. Useful when the view is being recycled (for eg. in a virtualized list)
+   * or we are trying to get data from the database.
+   */
+  // TODO This is a really ugly and looking for a better solution, but for the POC let's go!
   useEffect(() => {
+    const syncUserAnswerIndexWithUserAnswer = (
+      userAnswerForSync: FillInTheBlanksActivityAnswer,
+    ) => {
+      const newUserAnswerIndexForSync: Record<string, number> = {};
+      const usedOptionsIndexes = new Set<number>();
+      each(userAnswerForSync, (selectedOptionForBlank, blank) => {
+        const optionIndexForBlank = options.findIndex(
+          (option, index) =>
+            !usedOptionsIndexes.has(index) && option === selectedOptionForBlank,
+        );
+        newUserAnswerIndexForSync[blank] = optionIndexForBlank;
+      });
+      setUserAnswerIndex(newUserAnswerIndexForSync);
+    };
     return activityRendererMachineService.subscribe(state => {
       if (state.event.type === 'RESTORE_DATA') {
         setUserAnswer(state.context.userAnswer);
         setAnswerErrors(state.context.answerError);
+        syncUserAnswerIndexWithUserAnswer(state.context.userAnswer);
       }
     }).unsubscribe;
-  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
+  }, [
+    activityRendererMachineService,
+    options,
+    setAnswerErrors,
+    setUserAnswer,
+    setUserAnswerIndex,
+  ]);
 
   const onCheckAnswerClicked = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });
@@ -73,15 +123,22 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         </XStack>
         <XStack flexWrap="wrap" space="$3">
           {options
-            .filter(option => !new Set(Object.values(userAnswer)).has(option))
+            // .filter(option => !new Set(Object.values(userAnswer)).has(option))
             .map((option, index) => (
               <Button
-                disabled={!canAddWord}
+                disabled={
+                  !canAddWord ||
+                  new Set(Object.values(userAnswerIndex)).has(index)
+                }
                 key={index}
                 onPress={() => {
-                  addWord(option);
+                  addWord(option, index);
                 }}
-                theme={'green'}>
+                theme={
+                  new Set(Object.values(userAnswerIndex)).has(index)
+                    ? 'red'
+                    : 'green'
+                }>
                 {option}
               </Button>
             ))}
@@ -92,6 +149,15 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           ?.can({ type: 'finish', userAnswer }) && (
           <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
         )}
+        <Button
+          onPress={() =>
+            syncUserAnswerIndexWithUserAnswer({
+              $$blank_76$$: 'my',
+              $$blank_66$$: 'my',
+            })
+          }>
+          Check Sync
+        </Button>
         {activityRendererMachineService
           .getSnapshot()
           ?.matches({ WORKING_STATE: 'RESULT' }) && (

@@ -20,6 +20,11 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
   const [userAnswer, setUserAnswer] = useState<FillInTheBlanksActivityAnswer>(
     {},
   );
+
+  const [userAnswerIndex, setUserAnswerIndex] = useState<
+    Record<string, number>
+  >({});
+
   const [answerErrors, setAnswerErrors] =
     useState<FillInTheBlanksAnswerErrorsType | null>(null);
 
@@ -39,11 +44,20 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
     ...derived,
     setUserAnswer,
     userAnswer,
-    addWord: (optionId: string) => {
+    setUserAnswerIndex,
+    /** In order to support multiple same words in the example, we need to map the answers to the index
+  This will not be stored in the database and needs to be resynced */
+    userAnswerIndex,
+    addWord: (optionId: string, index: number) => {
       setUserAnswer(prev => ({ ...prev, [derived.nextUserBlank!]: optionId }));
+      setUserAnswerIndex(prev => ({
+        ...prev,
+        [derived.nextUserBlank!]: index,
+      }));
     },
     removeWord: (blankId: string) => {
       setUserAnswer(prev => omit(prev, blankId));
+      setUserAnswerIndex(prev => omit(prev, blankId));
     },
     setAnswerErrors,
     answerErrors,
