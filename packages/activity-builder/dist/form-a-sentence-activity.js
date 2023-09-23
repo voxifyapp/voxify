@@ -41,7 +41,9 @@ class FormASentenceActivity extends activity_1.Activity {
         }
         return [];
     }
+    // TODO Write tests for this function
     build() {
+        // The "answer" array should have all the items in the "words" array
         return this.getData();
     }
 }

@@ -23,9 +23,9 @@ export default function CreateActivity() {
   const queryClient = useQueryClient();
   const [lessonId, setLessonId] = useState(searchParams.get('lessonId') || '');
   const [order, setOrder] = useState('');
-  const [activityType, setActivityType] = useState<ActivityType>(
-    ActivityType.FILL_IN_THE_BLANKS,
-  );
+  const [activityType, setActivityType] = useState<
+    ActivityType | 'not_selected'
+  >('not_selected');
   const [activityData, setActivityData] = useState<object | null>(null);
 
   const { data } = useQuery({
@@ -98,13 +98,16 @@ export default function CreateActivity() {
               {key}
             </MenuItem>
           ))}
+          <MenuItem value={'not_selected'}>Not Selected</MenuItem>
         </Select>
 
-        <ActivityEditor
-          initialData={data?.data}
-          onActivityDataChange={(data: object) => setActivityData(data)}
-          type={activityType}
-        />
+        {activityType !== 'not_selected' && (
+          <ActivityEditor
+            initialData={data?.data}
+            onActivityDataChange={(data: object) => setActivityData(data)}
+            type={activityType}
+          />
+        )}
 
         <Button
           onClick={save}

@@ -55,7 +55,8 @@ class FillInTheBlanksActivity extends activity_1.Activity {
         // Check if all the blanks have an answer
         if (!(0, lodash_1.every)(blanks, (blank) => answerBank[blank]))
             throw new Error("Every blank needs to have an answer");
-        // Check if all the answer options have greater than or equal to the number of of options
+        // Check if all the answer options have greater than or equal to the number of options
+        // For eg: if there are 2 blanks in a sentence with the same answer "my", there should at least 2 options "my"
         const answerOptionsCount = (0, lodash_1.countBy)(answerOptions);
         const optionsCount = (0, lodash_1.countBy)(options);
         if (!(0, lodash_1.every)(answerOptionsCount, (answerOptionCount, answerOption) => optionsCount[answerOption] >= answerOptionCount)) {

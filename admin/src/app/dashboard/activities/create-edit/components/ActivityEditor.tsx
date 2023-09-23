@@ -48,6 +48,8 @@ export default function ActivityEditor({
       );
     }
     if (type === ActivityType.FILL_IN_THE_BLANKS) {
+      console.log(type);
+      console.log('HERERERERE!');
       return (
         <FillInTheBlanksActivityEditor
           currentData={initialData as FillInTheBlanksActivityData | undefined}

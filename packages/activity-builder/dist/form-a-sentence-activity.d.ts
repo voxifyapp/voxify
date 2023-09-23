@@ -2,7 +2,9 @@ import { Activity } from "./activity";
 import { TextBlock } from "./blocks/text-block";
 export interface FormASentenceActivityData {
     prompt: TextBlock;
+    /** The words in the correct order */
     answer: string[];
+    /** All possible words available for the user to select */
     words: string[];
 }
 export interface FormASentenceActivityAnswer {
