@@ -42,6 +42,7 @@ export default function FillInTheBlanksActivityEditor({
     try {
       const activityData = activity.build();
       onActivityDataChange(activityData);
+      alert("Changes have been saved")
     } catch (err) {
       alert((err as Error).message);
     }
@@ -117,7 +118,7 @@ export default function FillInTheBlanksActivityEditor({
           </Stack>
         ))}
       </Stack>
-      <div>{true && <Button onClick={() => build()}>Save</Button>}</div>
+      <div>{<Button onClick={() => build()}>Save</Button>}</div>
     </Stack>
   );
 }

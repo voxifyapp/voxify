@@ -35,7 +35,11 @@ export default function Units() {
   return (
     <Box padding={2}>
       <TableContainer component={Paper}>
-        <Link href={{ pathname: '/dashboard/activities/create-edit' }}>
+        <Link
+          href={{
+            pathname: '/dashboard/activities/create-edit',
+            query: { lessonId },
+          }}>
           <Button>Create Activity</Button>
         </Link>
         {isLoading && <CircularProgress />}

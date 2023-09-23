@@ -21,7 +21,7 @@ export default function CreateActivity() {
   const activityId = searchParams.get('activityId');
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [lessonId, setLessonId] = useState('');
+  const [lessonId, setLessonId] = useState(searchParams.get('lessonId') || '');
   const [order, setOrder] = useState('');
   const [activityType, setActivityType] = useState<ActivityType>(
     ActivityType.FILL_IN_THE_BLANKS,
