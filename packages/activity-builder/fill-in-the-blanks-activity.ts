@@ -95,7 +95,8 @@ export class FillInTheBlanksActivity extends Activity<
     if (!every(blanks, (blank) => answerBank[blank]))
       throw new Error("Every blank needs to have an answer");
 
-    // Check if all the answer options have greater than or equal to the number of of options
+    // Check if all the answer options have greater than or equal to the number of options
+    // For eg: if there are 2 blanks in a sentence with the same answer "my", there should at least 2 options "my"
     const answerOptionsCount = countBy(answerOptions);
     const optionsCount = countBy(options);
 

@@ -3,7 +3,9 @@ import { TextBlock } from "./blocks/text-block";
 
 export interface FormASentenceActivityData {
   prompt: TextBlock;
+  /** The words in the correct order */
   answer: string[];
+  /** All possible words available for the user to select */
   words: string[];
 }
 
@@ -66,6 +68,7 @@ export class FormASentenceActivity extends Activity<
   }
 
   build() {
+    // The "answer" array should have all the items in the "words" array
     return this.getData();
   }
 }
