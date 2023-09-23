@@ -56,7 +56,6 @@ export default function FormASentenceEditor({
     activity.setWords([...requiredOptions, ...otherOptions]);
     try {
       const activityData = activity.build();
-      console.log(activityData);
       onActivityDataChange(activityData);
     } catch (err) {
       alert((err as Error).message);

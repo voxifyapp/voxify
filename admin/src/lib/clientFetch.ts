@@ -30,7 +30,6 @@ export const clientFetchApiWithAuth = async <T>(
   const data = await result.json();
 
   if (result.status !== 200 && result.status !== 201) {
-    console.log(data?.message);
     throw new Error(data?.message as string);
   }
 

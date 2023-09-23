@@ -36,8 +36,6 @@ export default function FillInTheBlanksActivityEditor({
     const activity = new FillInTheBlanksActivity();
     activity.setQuestion(new TextBlock(question));
     activity.setOptions(options);
-    console.log(answer);
-    console.log(pick(answer, blanks));
     activity.setAnswer(pick(answer, blanks));
     try {
       const activityData = activity.build();
