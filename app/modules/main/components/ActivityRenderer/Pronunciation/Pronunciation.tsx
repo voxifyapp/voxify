@@ -81,7 +81,7 @@ export const Pronunciation = ({ activity }: Props) => {
 
     return () => {
       unsubscribe();
-      Voice.destroy;
+      Voice.destroy();
       Voice.removeAllListeners();
     };
   }, [onCheckAnswer, pronunciationMachineActor, setUserAnswer]);
@@ -97,6 +97,18 @@ export const Pronunciation = ({ activity }: Props) => {
     activity.getPrompt().text,
     userAnswer.recognizedWords,
   );
+
+  useEffect(() => {
+    return pronunciationMachineActor.subscribe(async e => {
+      if (e.event.type === 'RESTART' && e.changed) {
+        await Voice.destroy();
+        setUserAnswer({ recognizedWords: '' });
+        setAnswerErrors(null);
+        Voice.removeAllListeners();
+        pronunciationMachineActor.send('AFTER_RESTART');
+      }
+    }).unsubscribe;
+  });
 
   return (
     <YStack alignItems="center" p="$3" justifyContent="center" fullscreen>
@@ -118,7 +130,12 @@ export const Pronunciation = ({ activity }: Props) => {
           );
         })}
       </XStack>
-      <Button w="100%" onPress={() => {}} theme="green">
+      <Button
+        w="100%"
+        onPress={() => {
+          pronunciationMachineActor.send('RESTART');
+        }}
+        theme="green">
         Restart
       </Button>
     </YStack>
