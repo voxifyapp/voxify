@@ -18,6 +18,7 @@ type Props = {
   activity: ActivityEntity;
 };
 
+// TODO: Do we need this component and the child components????
 export const Activity = ({ activity }: Props) => {
   if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
     return (

@@ -3,7 +3,8 @@ export declare enum ActivityType {
     FILL_IN_THE_BLANKS = "FILL_IN_THE_BLANKS",
     MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
     PRONUNCIATION = "PRONUNCIATION",
-    FORM_A_SENTENCE = "FORM_A_SENTENCE"
+    FORM_A_SENTENCE = "FORM_A_SENTENCE",
+    TEXT = "TEXT"
 }
 export declare abstract class Activity<T, U> {
     private data;
