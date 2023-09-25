@@ -22,7 +22,7 @@ export const Pronunciation = ({ activity }: Props) => {
     setAnswerErrors,
     pronunciationMachineActor,
   } = contextValue;
-  const { machineService: activityRendererMachineService, restart } =
+  const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
   const onCheckAnswer = useCallback(
@@ -118,7 +118,7 @@ export const Pronunciation = ({ activity }: Props) => {
           );
         })}
       </XStack>
-      <Button w="100%" onPress={() => restart()} theme="green">
+      <Button w="100%" onPress={() => {}} theme="green">
         Restart
       </Button>
     </YStack>

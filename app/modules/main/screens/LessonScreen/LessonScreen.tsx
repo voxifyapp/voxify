@@ -27,7 +27,7 @@ export const LessonScreen = () => {
     const result = [];
     if (lessonActivities) {
       for (let i = 0; i < 10; i++) {
-        const a = lessonActivities![3];
+        const a = lessonActivities![1];
         result.push({
           ...a,
           id: '' + Math.floor(Math.random() * 1000000) + 1,

@@ -71,23 +71,7 @@ export const activityRendererMachine = createMachine(
               },
             },
           },
-          RESULT: {
-            on: {
-              RESTART: 'RESTARTING',
-            },
-          },
-          RESTARTING: {
-            always: [
-              {
-                target: 'WORKING',
-                cond: 'Focused',
-              },
-              {
-                target: 'NOT_STARTED',
-              },
-            ],
-            entry: 'restart',
-          },
+          RESULT: {},
         },
       },
       FOCUSED_STATE: {
@@ -126,8 +110,7 @@ export const activityRendererMachine = createMachine(
         | {
             type: 'RESTORE_DATA';
             restoreData: ActivityRendererMachineRestoreDataType;
-          }
-        | { type: 'RESTART' },
+          },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -151,7 +134,6 @@ export const activityRendererMachine = createMachine(
         answerError,
       })),
       restoreData: assign((_, { restoreData }) => ({ ...restoreData })),
-      restart: assign(initialState),
     },
     services: {},
     guards: {
