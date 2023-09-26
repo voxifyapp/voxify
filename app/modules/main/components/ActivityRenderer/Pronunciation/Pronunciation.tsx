@@ -22,7 +22,7 @@ export const Pronunciation = ({ activity }: Props) => {
     setAnswerErrors,
     pronunciationMachineActor,
   } = contextValue;
-  const { machineService: activityRendererMachineService } =
+  const { machineService: activityRendererMachineService, activityEntity } =
     useActivityRendererContext();
 
   const onCheckAnswer = useCallback(
@@ -50,6 +50,9 @@ export const Pronunciation = ({ activity }: Props) => {
       setAnswerErrors,
     ],
   );
+
+  if (activityEntity.id === '2')
+    console.log(activityEntity.id, pronunciationMachineActor.getSnapshot());
 
   useEffect(() => {
     const unsubscribe = pronunciationMachineActor.subscribe(async e => {
@@ -84,7 +87,12 @@ export const Pronunciation = ({ activity }: Props) => {
       Voice.destroy();
       Voice.removeAllListeners();
     };
-  }, [onCheckAnswer, pronunciationMachineActor, setUserAnswer]);
+  }, [
+    activityEntity.id,
+    onCheckAnswer,
+    pronunciationMachineActor,
+    setUserAnswer,
+  ]);
 
   useEffect(() => {
     pronunciationMachineActor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
