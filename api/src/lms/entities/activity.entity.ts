@@ -1,14 +1,7 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
-
-export enum ActivityType {
-  VIDEO = 'VIDEO',
-  FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS',
-  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-  PRONUNCIATION = 'PRONUNCIATION',
-  FORM_A_SENTENCE = 'FORM_A_SENTENCE',
-}
+import { ActivityType } from '@packages/activity-builder';
 
 @Entity()
 export class Activity extends BaseEntity {
@@ -18,6 +11,13 @@ export class Activity extends BaseEntity {
     enum: ActivityType,
   })
   type: ActivityType;
+
+  @Column({
+    comment: 'The heading of the activity',
+    type: 'text',
+    default: '',
+  })
+  heading: string;
 
   @Column({
     comment: 'The data related to the activity',

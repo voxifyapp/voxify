@@ -6,7 +6,6 @@ import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/componen
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
 import { slice } from 'lodash';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, View, ViewToken } from 'react-native';
 import { Spacer, YStack } from 'tamagui';
@@ -46,7 +45,7 @@ export const ActivityStepper = ({ activities }: Props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (nextActivityToCompleteIndex) {
+      if (nextActivityToCompleteIndex !== -1) {
         listRef.current?.scrollToIndex({
           animated: true,
           index: nextActivityToCompleteIndex,

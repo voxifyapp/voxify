@@ -1,21 +1,23 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+import { FillInTheBlanksActivity } from '@packages/activity-builder';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
-import React from 'react';
-import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
+import React, { useEffect, useMemo } from 'react';
+import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
 };
 
 export const FillInTheBlanks = ({ activity }: Props) => {
-  const contextValue = useCreateFillInTheBlanksContext({ activity });
+  const contextValue = useCreateFillInTheBlanksContext(
+    useMemo(() => ({ activity }), [activity]),
+  );
 
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
@@ -24,12 +26,22 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     options,
     questionSegments,
     userAnswer,
+    setUserAnswer,
     setAnswerErrors,
     addWord,
     canAddWord,
   } = contextValue;
 
-  const onCheckAnswer = () => {
+  useEffect(() => {
+    return activityRendererMachineService.subscribe(state => {
+      if (state.event.type === 'RESTORE_DATA') {
+        setUserAnswer(state.context.userAnswer);
+        setAnswerErrors(state.context.answerError);
+      }
+    }).unsubscribe;
+  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
+
+  const onCheckAnswerClicked = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });
     const answerErrors = activity.checkAnswer(userAnswer);
     setAnswerErrors(answerErrors);
@@ -47,6 +59,13 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
       <YStack padding="$3" fullscreen>
+        <H1>
+          {activityRendererMachineService.getSnapshot()!.context
+            .totalTimeSpentInMillis / 1000}
+        </H1>
+        <H5>
+          {JSON.stringify(activityRendererMachineService.getSnapshot().value)}
+        </H5>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
@@ -73,7 +92,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         {activityRendererMachineService
           .getSnapshot()
           ?.can({ type: 'finish', userAnswer }) && (
-          <Button onPress={onCheckAnswer}>Check Answer</Button>
+          <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
         )}
         {activityRendererMachineService
           .getSnapshot()

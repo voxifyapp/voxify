@@ -1,26 +1,30 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
-import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
-import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
-import { VideoActivity } from '@voxify/common/activities/video-activity';
 import {
   ActivityRendererContextProvider,
   ActivityRendererOnCompleteType,
   useActivityRendererContext,
   useCreateActivityRendererContext,
-} from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+} from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
-import { FormASentence } from '@voxify/modules/main/components/ActivityRenderer/FormASentence/FormASentence';
 import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
 } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { MultipleChoice } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/MultipleChoice';
+import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
+import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
-import { Video } from '@voxify/modules/main/components/ActivityRenderer/Video/Video';
+import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import { createActorContext } from '@xstate/react';
 import React, { useEffect } from 'react';
+import {
+  FillInTheBlanksActivity,
+  FormASentenceActivity,
+  MultipleChoiceActivity,
+  VideoActivity,
+  PronunciationActivity,
+  TextActivity,
+} from '@packages/activity-builder';
+import { Text } from '@voxify/modules/main/components/ActivityRenderer/Text/Text';
 
 type Props = {
   activityEntity: ActivityEntity;
@@ -90,6 +94,15 @@ const ActivitySelector = () => {
     return (
       <FillInTheBlanks
         activity={new FillInTheBlanksActivity(activity.data as any)}
+      />
+    );
+  }
+
+  if (activity.type === ActivityType.TEXT) {
+    return (
+      <Text
+        activity={new TextActivity(activity.data as any)}
+        heading={activity.heading}
       />
     );
   }

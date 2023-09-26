@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity, ActivityType } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 
 export interface FormASentenceActivityData {
   prompt: TextBlock;
@@ -11,15 +11,14 @@ export interface FormASentenceActivityAnswer {
   answer: string[];
 }
 
-export const ACTIVITY_TYPE_FORM_A_SENTENCE = 'FORM_A_SENTENCE';
 export class FormASentenceActivity extends Activity<
   FormASentenceActivityData,
   FormASentenceActivityAnswer
 > {
   constructor(data?: FormASentenceActivityData) {
     super(
-      ACTIVITY_TYPE_FORM_A_SENTENCE,
-      data ? { ...data } : { prompt: new TextBlock(''), answer: [], words: [] },
+      ActivityType.FORM_A_SENTENCE,
+      data ? { ...data } : { prompt: new TextBlock(""), answer: [], words: [] }
     );
   }
 
@@ -51,7 +50,7 @@ export class FormASentenceActivity extends Activity<
    * @returns the words that are incorrect, else returns nothing
    */
   checkAnswer(
-    answer: FormASentenceActivityAnswer,
+    answer: FormASentenceActivityAnswer
   ): FormASentenceAnswerErrorType {
     const answerBank = this.getAnswer();
     const userAnswer = answer.answer;
