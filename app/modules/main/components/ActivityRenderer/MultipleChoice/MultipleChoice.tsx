@@ -1,4 +1,4 @@
-import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
+import { MultipleChoiceActivity } from '@packages/activity-builder';
 import { useCreateMultipleChoiceContext } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/multipleChoice.context';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import React from 'react';

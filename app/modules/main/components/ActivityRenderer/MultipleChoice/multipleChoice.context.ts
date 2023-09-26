@@ -1,9 +1,8 @@
-import {} from '@voxify/common/activities/form-a-sentence-activity';
 import {
   MultipleChoiceActivity,
   MultipleChoiceActivityAnswer,
   MultipleChoiceAnswerErrorsType,
-} from '@voxify/common/activities/multiple-choice-activity';
+} from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
 
