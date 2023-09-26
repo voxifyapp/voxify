@@ -5,7 +5,6 @@ import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/com
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
-import { slice } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, View, ViewToken } from 'react-native';
 import { Spacer, YStack } from 'tamagui';

@@ -9,10 +9,7 @@ import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
 } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
-import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
-import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import { createActorContext } from '@xstate/react';
 import React, { useEffect } from 'react';
@@ -25,6 +22,9 @@ import {
   TextActivity,
 } from '@packages/activity-builder';
 import { Text } from '@voxify/modules/main/components/ActivityRenderer/Text/Text';
+import { MultipleChoice } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/MultipleChoice';
+import { Video } from '@voxify/modules/main/components/ActivityRenderer/Video/Video';
+import { FormASentence } from '@voxify/modules/main/components/ActivityRenderer/FormASentence/FormASentence';
 
 type Props = {
   activityEntity: ActivityEntity;

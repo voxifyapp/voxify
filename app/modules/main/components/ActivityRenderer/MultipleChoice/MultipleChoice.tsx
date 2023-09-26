@@ -1,66 +1,51 @@
-import { MultipleChoiceActivity } from '@packages/activity-builder';
-import { useCreateMultipleChoiceContext } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/multipleChoice.context';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
-import React from 'react';
-import { Button, H3, SelectIcon, Stack, XStack, YStack } from 'tamagui';
+import {
+  MultipleChoiceActivity,
+  MultipleChoiceActivityAnswer,
+} from '@packages/activity-builder';
+import React, { useState } from 'react';
+import { Button, H3, SelectIcon, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: MultipleChoiceActivity;
 };
 
 export const MultipleChoice = ({ activity }: Props) => {
-  const contextValue = useCreateMultipleChoiceContext({ activity });
-
-  const {
-    onOptionSelected,
-    userAnswer,
-    canFinish,
-    isShowResultState,
-    setAnswerErrors,
-    activityRendererMachineService,
-  } = contextValue;
-
-  const onCheckAnswer = () => {
-    activityRendererMachineService.send({ type: 'finish', userAnswer });
-    const answerErrors = activity.checkAnswer(userAnswer);
-    setAnswerErrors(answerErrors);
-    activityRendererMachineService.send({
-      type: 'set_result',
-      result:
-        answerErrors?.wrongOptions.length === 0
-          ? ActivityResponseResultType.SUCCESS
-          : ActivityResponseResultType.FAIL,
-      userAnswer,
-      answerError: answerErrors,
-    });
-  };
+  const [userAnswer, setUserAnswer] = useState<MultipleChoiceActivityAnswer>({
+    answer: [],
+  });
 
   return (
-    <YStack padding="$3" fullscreen>
+    <YStack>
       <H3>{activity.getQuestion().text}</H3>
-      <XStack
-        flexWrap="wrap"
-        space="$1.5"
-        justifyContent="center"
-        marginTop="$6">
+      <XStack flexWrap="wrap" space="$3" spaceDirection="both" marginTop="$6">
         {activity.getOptions().map(option => (
           <Button
             key={option.id}
             icon={
               userAnswer.answer.includes(option.id) ? <SelectIcon /> : undefined
             }
-            onPress={() => onOptionSelected(option.id)}
+            onPress={() => {
+              // set answer, if option.id already exists remove it. Or else add it
+              setUserAnswer(prev => {
+                if (!activity.getIsMultipleAnswer()) {
+                  return { answer: [option.id] };
+                }
+                const newAnswer = [...prev.answer];
+                if (newAnswer.includes(option.id)) {
+                  newAnswer.splice(newAnswer.indexOf(option.id), 1);
+                } else {
+                  newAnswer.push(option.id);
+                }
+                return {
+                  answer: newAnswer,
+                };
+              });
+            }}
             theme={'green'}>
             {option.text}
           </Button>
         ))}
       </XStack>
-      <Stack flex={1} />
-      {!isShowResultState && (
-        <Button disabled={!canFinish} onPress={onCheckAnswer}>
-          Check Answer
-        </Button>
-      )}
     </YStack>
   );
 };

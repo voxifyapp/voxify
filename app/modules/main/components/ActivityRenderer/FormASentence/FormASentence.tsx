@@ -1,81 +1,62 @@
-import { FormASentenceActivity } from '@packages/activity-builder';
-import { useCreateFormASentenceContext } from '@voxify/modules/main/components/ActivityRenderer/FormASentence/formASentence.context';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import {
+  FormASentenceActivity,
+  FormASentenceActivityAnswer,
+} from '@packages/activity-builder';
 import React from 'react';
-import { Button, H3, Stack, XStack, YStack } from 'tamagui';
+import { useState } from 'react';
+import { Button, H3, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FormASentenceActivity;
 };
 
 export const FormASentence = ({ activity }: Props) => {
-  const contextValue = useCreateFormASentenceContext({ activity });
-  const { machineService: activityRendererMachineService } =
-    useActivityRendererContext();
+  const [userAnswer, setUserAnswer] = useState<FormASentenceActivityAnswer>({
+    answer: [],
+  });
 
-  const {
-    userAnswer,
-    wordBank,
-    setAnswerErrors,
-    removeWord,
-    addWord,
-    isWorkingState,
-  } = contextValue;
-
-  const onCheckAnswer = () => {
-    activityRendererMachineService.send({ type: 'finish', userAnswer });
-    const answerErrors = activity.checkAnswer(userAnswer);
-    setAnswerErrors(answerErrors);
-    activityRendererMachineService.send({
-      type: 'set_result',
-      result: answerErrors?.correct
-        ? ActivityResponseResultType.SUCCESS
-        : ActivityResponseResultType.FAIL,
-      userAnswer,
-      answerError: answerErrors,
-    });
-  };
+  const words = activity.getWords();
+  const remainingWords = [...words];
+  userAnswer.answer.forEach(word => {
+    const index = remainingWords.indexOf(word);
+    if (index !== -1) {
+      remainingWords.splice(index, 1);
+    }
+  });
 
   return (
-    <YStack fullscreen padding="$3">
+    <YStack>
       <H3>{activity.getPrompt().text}</H3>
       <XStack flexWrap="wrap" marginTop="$6">
         {userAnswer.answer.map((word, index) => (
           <Button
             key={index}
-            disabled={!isWorkingState}
-            onPress={() => removeWord(index)}
+            onPress={() => {
+              setUserAnswer(prev => {
+                const newAnswer = [...prev.answer];
+                newAnswer.splice(index, 1);
+                return {
+                  answer: newAnswer,
+                };
+              });
+            }}
             theme={'green'}>
             {word}
           </Button>
         ))}
       </XStack>
       <XStack flexWrap="wrap" space="$3" marginTop="$6">
-        {wordBank.map((word, index) => (
+        {remainingWords.map((word, index) => (
           <Button
-            disabled={!isWorkingState}
             key={index}
-            onPress={() => addWord(word)}
+            onPress={() => {
+              setUserAnswer(prev => ({ answer: [...prev.answer, word] }));
+            }}
             theme={'green'}>
             {word}
           </Button>
         ))}
       </XStack>
-      <Stack flex={1} />
-      {!activityRendererMachineService
-        .getSnapshot()
-        ?.matches('WORKING_STATE.RESULT') && (
-        <Button
-          disabled={
-            !activityRendererMachineService
-              .getSnapshot()
-              .can({ type: 'finish', userAnswer })
-          }
-          onPress={onCheckAnswer}>
-          Check Answer
-        </Button>
-      )}
     </YStack>
   );
 };
