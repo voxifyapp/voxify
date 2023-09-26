@@ -2,7 +2,7 @@ import {
   FormASentenceActivity,
   FormASentenceActivityAnswer,
   FormASentenceAnswerErrorType,
-} from '@voxify/common/activities/form-a-sentence-activity';
+} from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
 type ContextData = {

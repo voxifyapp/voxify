@@ -32,13 +32,13 @@ describe('MultipleChoiceActivity', () => {
         const activity = new multiple_choice_activity_1.MultipleChoiceActivity();
         activity.setOptions([new text_block_1.TextBlock('Option 1'), new text_block_1.TextBlock('Option 2')]);
         activity.setAnswer([activity.getOptions()[0].id]);
-        expect(activity.checkAnswer({ answer: [activity.getOptions()[1].id] })).toEqual([activity.getOptions()[1].id]);
+        expect(activity.checkAnswer({ answer: [activity.getOptions()[1].id] })).toEqual({ wrongOptions: [activity.getOptions()[1].id] });
     });
     it('should return empty array if correct', () => {
         const activity = new multiple_choice_activity_1.MultipleChoiceActivity();
         activity.setOptions([new text_block_1.TextBlock('Option 1'), new text_block_1.TextBlock('Option 2')]);
         activity.setAnswer([activity.getOptions()[0].id]);
-        expect(activity.checkAnswer({ answer: [activity.getOptions()[0].id] })).toEqual([]);
+        expect(activity.checkAnswer({ answer: [activity.getOptions()[0].id] })).toEqual({ wrongOptions: [] });
     });
 });
 //# sourceMappingURL=mutliple-choice-activity.spec.js.map

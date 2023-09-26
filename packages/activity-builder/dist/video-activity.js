@@ -13,7 +13,7 @@ class VideoActivity extends activity_1.Activity {
         return this.getData().videoUrl;
     }
     checkAnswer() {
-        return [];
+        return {};
     }
     build() {
         return this.getData();

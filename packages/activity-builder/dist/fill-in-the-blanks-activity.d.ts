@@ -8,7 +8,7 @@ export interface FillInTheBlanksActivityData {
 /**
  * The answer is a map of blank name to the option id
  */
-export declare type FillInTheBlanksActivityAnswer = Record<string, string>;
+export type FillInTheBlanksActivityAnswer = Record<string, string>;
 export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksActivityData, FillInTheBlanksActivityAnswer> {
     constructor(data?: FillInTheBlanksActivityData);
     static BLANK_FORMAT: RegExp;
@@ -27,6 +27,6 @@ export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksAct
         type: string;
     };
 }
-export declare type FillInTheBlanksAnswerErrorsType = {
+export type FillInTheBlanksAnswerErrorsType = {
     wrongBlanks: string[];
 };

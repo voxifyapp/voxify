@@ -34,13 +34,13 @@ class MultipleChoiceActivity extends activity_1.Activity {
      */
     checkAnswer(answer) {
         const answerBank = this.getAnswer();
-        const errors = [];
+        const wrongOptions = [];
         for (const selectedOption of answer.answer) {
             if (answerBank.indexOf(selectedOption) === -1) {
-                errors.push(selectedOption);
+                wrongOptions.push(selectedOption);
             }
         }
-        return errors;
+        return { wrongOptions };
     }
     build() {
         return this.getData();

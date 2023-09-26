@@ -8,7 +8,7 @@ export interface MultipleChoiceActivityData {
      */
     answer: string[];
 }
-export declare type MultipleChoiceActivityAnswer = {
+export type MultipleChoiceActivityAnswer = {
     answer: string[];
 };
 export declare class MultipleChoiceActivity extends Activity<MultipleChoiceActivityData, MultipleChoiceActivityAnswer> {
@@ -23,8 +23,11 @@ export declare class MultipleChoiceActivity extends Activity<MultipleChoiceActiv
     /**
      * Returns options that are incorrect, else returns nothing
      */
-    checkAnswer(answer: MultipleChoiceActivityAnswer): string[];
+    checkAnswer(answer: MultipleChoiceActivityAnswer): MultipleChoiceAnswerErrorsType;
     build(): MultipleChoiceActivityData & {
         type: string;
     };
 }
+export type MultipleChoiceAnswerErrorsType = {
+    wrongOptions: string[];
+};
