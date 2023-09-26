@@ -21,7 +21,7 @@ import {
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import { createActorContext } from '@xstate/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 type Props = {
   activityEntity: ActivityEntity;
@@ -35,6 +35,7 @@ export const ActivityRendererMachineContext = createActorContext(
   activityRendererMachine,
 );
 
+// We are memoizing to not f with the virtualized list
 export const ActivityRenderer = React.memo(
   ({
     activityEntity,
@@ -98,39 +99,44 @@ const ActivitySelector = () => {
     }).unsubscribe;
   }, [machineService, onActivityResults]);
 
-  if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
-    return (
-      <FillInTheBlanks
-        activity={new FillInTheBlanksActivity(activity.data as any)}
-      />
-    );
-  }
+  //TODO Do this the right way later
+  const ActivityComponent = useMemo(() => {
+    if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
+      return (
+        <FillInTheBlanks
+          activity={new FillInTheBlanksActivity(activity.data as any)}
+        />
+      );
+    }
 
-  if (activity.type === ActivityType.FORM_A_SENTENCE) {
-    return (
-      <FormASentence
-        activity={new FormASentenceActivity(activity.data as any)}
-      />
-    );
-  }
+    if (activity.type === ActivityType.FORM_A_SENTENCE) {
+      return (
+        <FormASentence
+          activity={new FormASentenceActivity(activity.data as any)}
+        />
+      );
+    }
 
-  if (activity.type === ActivityType.MULTIPLE_CHOICE) {
-    return (
-      <MultipleChoice
-        activity={new MultipleChoiceActivity(activity.data as any)}
-      />
-    );
-  }
+    if (activity.type === ActivityType.MULTIPLE_CHOICE) {
+      return (
+        <MultipleChoice
+          activity={new MultipleChoiceActivity(activity.data as any)}
+        />
+      );
+    }
 
-  if (activity.type === ActivityType.VIDEO) {
-    return <Video activity={new VideoActivity(activity.data as any)} />;
-  }
+    if (activity.type === ActivityType.VIDEO) {
+      return <Video activity={new VideoActivity(activity.data as any)} />;
+    }
 
-  if (activity.type === ActivityType.PRONUNCIATION) {
-    return (
-      <Pronunciation
-        activity={new PronunciationActivity(activity.data as any)}
-      />
-    );
-  }
+    if (activity.type === ActivityType.PRONUNCIATION) {
+      return (
+        <Pronunciation
+          activity={new PronunciationActivity(activity.data as any)}
+        />
+      );
+    }
+  }, [activity.data, activity.type]);
+
+  return <>{ActivityComponent}</>;
 };

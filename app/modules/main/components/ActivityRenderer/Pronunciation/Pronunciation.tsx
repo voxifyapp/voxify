@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import Voice from '@react-native-voice/voice';
 import {
   PronunciationActivity,
@@ -51,11 +52,10 @@ export const Pronunciation = ({ activity }: Props) => {
     ],
   );
 
-  if (activityEntity.id === '2')
-    console.log(activityEntity.id, pronunciationMachineActor.getSnapshot());
-
+  // Subscribing to the pronunciation state machine
   useEffect(() => {
     const unsubscribe = pronunciationMachineActor.subscribe(async e => {
+      // If we are in the listening state, we need to start the voice recognition
       if (e.matches('LISTENING') && e.changed) {
         // Remove any existing listeners and attach listeners for the current activity
         await Voice.destroy();
@@ -80,6 +80,12 @@ export const Pronunciation = ({ activity }: Props) => {
 
         Voice.start('en-IN');
       }
+
+      // If we WERE in the listening state and moved away, lets stop the voice recognition
+      if (e.history?.matches('LISTENING') && e.changed) {
+        Voice.destroy();
+        Voice.removeAllListeners();
+      }
     }).unsubscribe;
 
     return () => {
@@ -96,7 +102,7 @@ export const Pronunciation = ({ activity }: Props) => {
 
   useEffect(() => {
     pronunciationMachineActor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
-  }, [isWorkingState, pronunciationMachineActor]);
+  }, [activityEntity.id, isWorkingState, pronunciationMachineActor]);
 
   const referenceStringArray = PronunciationActivity.convertStringToArray(
     activity.getPrompt().text,
