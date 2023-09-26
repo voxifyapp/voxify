@@ -1,9 +1,8 @@
-import {} from '@voxify/common/activities/form-a-sentence-activity';
 import {
   PronunciationActivity,
   PronunciationActivityAnswer,
   PronunciationAnswerErrorType,
-} from '@voxify/common/activities/pronunciation-activity';
+} from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
 import { pronunciationMachine } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.machine';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';

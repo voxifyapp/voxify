@@ -2,8 +2,8 @@ import {
   VideoActivity,
   VideoActivityAnswer,
   VideoActivityAnswerErrorsType,
-} from '@voxify/common/activities/video-activity';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+} from '@packages/activity-builder';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import React from 'react';

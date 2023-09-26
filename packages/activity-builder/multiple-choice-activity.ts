@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity, ActivityType } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 
 export interface MultipleChoiceActivityData {
   question: TextBlock;
@@ -12,22 +12,20 @@ export interface MultipleChoiceActivityData {
 
 export type MultipleChoiceActivityAnswer = { answer: string[] };
 
-export const ACTIVITY_TYPE_MULTIPLE_CHOICE = 'MULTIPLE_CHOICE';
-
 export class MultipleChoiceActivity extends Activity<
   MultipleChoiceActivityData,
   MultipleChoiceActivityAnswer
 > {
   constructor(data?: MultipleChoiceActivityData) {
     super(
-      ACTIVITY_TYPE_MULTIPLE_CHOICE,
+      ActivityType.MULTIPLE_CHOICE,
       data
         ? {
             ...data,
             question: new TextBlock(data.question.text, data.question),
-            options: data.options.map(o => new TextBlock(o.text, o)),
+            options: data.options.map((o) => new TextBlock(o.text, o)),
           }
-        : { question: new TextBlock(''), options: [], answer: [] },
+        : { question: new TextBlock(""), options: [], answer: [] }
     );
   }
 

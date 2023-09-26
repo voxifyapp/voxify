@@ -1,14 +1,3 @@
-import { FillInTheBlanksActivity } from '@voxify/common/activities/fill-in-the-blanks-activity';
-import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
-import { MultipleChoiceActivity } from '@voxify/common/activities/multiple-choice-activity';
-import { PronunciationActivity } from '@voxify/common/activities/pronunciation-activity';
-import { VideoActivity } from '@voxify/common/activities/video-activity';
-import {
-  ActivityRendererContextProvider,
-  ActivityRendererOnCompleteType,
-  useActivityRendererContext,
-  useCreateActivityRendererContext,
-} from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
 import { FillInTheBlanks } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/FillInTheBlanks';
 import { FormASentence } from '@voxify/modules/main/components/ActivityRenderer/FormASentence/FormASentence';
 import { MultipleChoice } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/MultipleChoice';
@@ -18,10 +7,25 @@ import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
 } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import { createActorContext } from '@xstate/react';
 import React, { useEffect, useMemo } from 'react';
+import {
+  FillInTheBlanksActivity,
+  FormASentenceActivity,
+  MultipleChoiceActivity,
+  VideoActivity,
+  PronunciationActivity,
+  TextActivity,
+} from '@packages/activity-builder';
+import { Text } from '@voxify/modules/main/components/ActivityRenderer/Text/Text';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
+import {
+  ActivityRendererOnCompleteType,
+  useCreateActivityRendererContext,
+  ActivityRendererContextProvider,
+  useActivityRendererContext,
+} from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 type Props = {
   activityEntity: ActivityEntity;
@@ -37,18 +41,11 @@ export const ActivityRendererMachineContext = createActorContext(
 
 // We are memoizing to not f with the virtualized list
 export const ActivityRenderer = React.memo(
-  ({
-    activityEntity,
-    onActivityResults,
-    restoreData,
-    isActive,
-    index,
-  }: Props) => {
+  ({ activityEntity, onActivityResults, restoreData, isActive }: Props) => {
     const contextValue = useCreateActivityRendererContext({
       onActivityResults,
       activityEntity,
       restoreData,
-      index,
     });
 
     const { machineService } = contextValue;
@@ -136,7 +133,16 @@ const ActivitySelector = () => {
         />
       );
     }
-  }, [activity.data, activity.type]);
+
+    if (activity.type === ActivityType.TEXT) {
+      return (
+        <Text
+          activity={new TextActivity(activity.data as any)}
+          heading={activity.heading}
+        />
+      );
+    }
+  }, [activity.data, activity.heading, activity.type]);
 
   return <>{ActivityComponent}</>;
 };

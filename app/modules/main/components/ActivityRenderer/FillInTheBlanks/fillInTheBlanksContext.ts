@@ -2,10 +2,10 @@ import {
   FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
   FillInTheBlanksAnswerErrorsType,
-} from '@voxify/common/activities/fill-in-the-blanks-activity';
+} from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { derivedValues } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/derivedValues';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
+import { derivedValues } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/derivedValues';
 import { omit } from 'lodash';
 
 type ContextData = {

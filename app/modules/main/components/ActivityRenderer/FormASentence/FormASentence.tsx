@@ -1,6 +1,6 @@
-import { FormASentenceActivity } from '@voxify/common/activities/form-a-sentence-activity';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+import { FormASentenceActivity } from '@packages/activity-builder';
 import { useCreateFormASentenceContext } from '@voxify/modules/main/components/ActivityRenderer/FormASentence/formASentence.context';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import React from 'react';
 import { Button, H3, Stack, XStack, YStack } from 'tamagui';

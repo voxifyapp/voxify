@@ -1,5 +1,5 @@
 import { authAxios } from '@voxify/axiosClient';
-import { ActivityResponseEntity } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseEntity } from '@voxify/types/lms-progress/activity-response';
 
 export type CreateActivityResponsePostData = Pick<
   ActivityResponseEntity,

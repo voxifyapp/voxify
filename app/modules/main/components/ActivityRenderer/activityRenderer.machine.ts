@@ -1,4 +1,4 @@
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import dayjs from 'dayjs';
 import { assign, createMachine } from 'xstate';
 
@@ -105,7 +105,6 @@ export const activityRendererMachine = createMachine(
             userAnswer: any;
             answerError: any | null;
           }
-        // | { type: 'RESET' }
         | { type: 'finish'; userAnswer: any }
         | {
             type: 'RESTORE_DATA';
@@ -136,10 +135,7 @@ export const activityRendererMachine = createMachine(
       restoreData: assign((_, { restoreData }) => ({ ...restoreData })),
     },
     services: {},
-    guards: {
-      Focused: (_, __, actor) =>
-        actor.state.matches({ FOCUSED_STATE: 'FOCUSED' }),
-    },
+    guards: {},
     delays: {},
   },
 );

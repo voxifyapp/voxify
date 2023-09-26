@@ -1,4 +1,4 @@
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/ActivityRendererContext';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { useEffect, useState } from 'react';
 
 /**
@@ -9,7 +9,7 @@ export const useGetActivityRendererHookExtras = <
   ActivityAnswerErrorType,
 >(
   initalAnswer: ActivityAnswerType,
-  options: { onDataRestored?: () => void } = {},
+  options: {} = {},
 ) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
@@ -25,7 +25,6 @@ export const useGetActivityRendererHookExtras = <
         console.log('Restore data');
         setUserAnswer(state.context.userAnswer);
         setAnswerErrors(state.context.answerError);
-        options.onDataRestored?.();
       }
     }).unsubscribe;
   }, [activityRendererMachineService, options, setAnswerErrors, setUserAnswer]);

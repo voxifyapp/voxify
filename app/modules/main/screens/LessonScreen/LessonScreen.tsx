@@ -23,19 +23,19 @@ export const LessonScreen = () => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
-  let tempActivities: ActivityEntity[] = useMemo(() => {
-    const result = [];
-    if (lessonActivities) {
-      for (let i = 0; i < 2; i++) {
-        const a = lessonActivities![1];
-        result.push({
-          ...a,
-          id: '' + (i + 1),
-        });
-      }
-    }
-    return result;
-  }, [lessonActivities]);
+  // let tempActivities: ActivityEntity[] = useMemo(() => {
+  //   const result = [];
+  //   if (lessonActivities) {
+  //     for (let i = 0; i < 2; i++) {
+  //       const a = lessonActivities![1];
+  //       result.push({
+  //         ...a,
+  //         id: '' + (i + 1),
+  //       });
+  //     }
+  //   }
+  //   return result;
+  // }, [lessonActivities]);
 
   if (isLessonLoading || isLessonActivitiesLoading) {
     return <H1>Loading...</H1>;
@@ -43,7 +43,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <ActivityStepper activities={tempActivities} />
+      <ActivityStepper activities={lessonActivities || []} />
     </View>
   );
 };

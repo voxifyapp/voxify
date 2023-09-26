@@ -8,6 +8,7 @@ export class Lesson extends BaseEntity {
   @Column({
     comment: 'The title of the lesson',
     type: 'text',
+    default: '',
   })
   title: string;
 

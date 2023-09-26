@@ -1,8 +1,17 @@
+export enum ActivityType {
+  VIDEO = "VIDEO",
+  FILL_IN_THE_BLANKS = "FILL_IN_THE_BLANKS",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  PRONUNCIATION = "PRONUNCIATION",
+  FORM_A_SENTENCE = "FORM_A_SENTENCE",
+  TEXT = "TEXT",
+}
+
 export abstract class Activity<T, U> {
   private data: T;
-  private type: string;
+  private type: ActivityType;
 
-  constructor(type: string, data: T) {
+  constructor(type: ActivityType, data: T) {
     this.type = type;
     this.data = data;
   }

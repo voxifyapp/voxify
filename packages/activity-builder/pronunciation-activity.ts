@@ -1,5 +1,5 @@
-import { Activity } from './activity';
-import { TextBlock } from './blocks/text-block';
+import { Activity, ActivityType } from "./activity";
+import { TextBlock } from "./blocks/text-block";
 
 export interface PronunciationActivityData {
   prompt: TextBlock;
@@ -13,15 +13,14 @@ export interface PronunciationActivityAnswer {
   recognizedWords: string;
 }
 
-export const ACTIVITY_TYPE_PRONUNCIATION = 'PRONUNCIATION';
 export class PronunciationActivity extends Activity<
   PronunciationActivityData,
   PronunciationActivityAnswer
 > {
   constructor(data?: PronunciationActivityData) {
     super(
-      ACTIVITY_TYPE_PRONUNCIATION,
-      data ? { ...data } : { prompt: new TextBlock('') },
+      ActivityType.PRONUNCIATION,
+      data ? { ...data } : { prompt: new TextBlock("") }
     );
   }
 
@@ -53,13 +52,13 @@ export class PronunciationActivity extends Activity<
    */
   static matchReferenceStringWithInput(
     reference: string,
-    input: string,
+    input: string
   ): (string | null)[] {
     const referenceArray = this.convertStringToSanitizedWordArray(reference);
     const inputArray = this.convertStringToSanitizedWordArray(input);
 
     let referenceIntersectionWords = new Array(referenceArray.length).fill(
-      false,
+      false
     );
     let lastMatchedInputWordIndex = 0;
 
@@ -79,13 +78,13 @@ export class PronunciationActivity extends Activity<
   }
 
   static convertStringToSanitizedWordArray = (value: string) => {
-    return this.convertStringToArray(value).map(word =>
-      this.sanitizeWord(word),
+    return this.convertStringToArray(value).map((word) =>
+      this.sanitizeWord(word)
     );
   };
 
   static sanitizeWord(word: string) {
-    return word.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    return word.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, "");
   }
 
   static convertStringToArray(input: string) {
@@ -93,15 +92,15 @@ export class PronunciationActivity extends Activity<
   }
 
   checkAnswer(
-    answer: PronunciationActivityAnswer,
+    answer: PronunciationActivityAnswer
   ): PronunciationAnswerErrorType {
     //If more than half the words are not detected, let's return wrong
     const matchArray = PronunciationActivity.matchReferenceStringWithInput(
       this.getPrompt().text,
-      answer.recognizedWords,
+      answer.recognizedWords
     );
 
-    const numberOfWordsNotMatched = matchArray.filter(a => a === null).length;
+    const numberOfWordsNotMatched = matchArray.filter((a) => a === null).length;
     if (numberOfWordsNotMatched > matchArray.length / 2) {
       return {
         correct: false,
