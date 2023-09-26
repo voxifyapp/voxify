@@ -11,13 +11,17 @@ describe("VideoActivity", () => {
     const activity = new VideoActivity({
       videoFileName: "https://www.youtube.com/watch?v=1",
     });
-    expect(activity.getVideoFileName()).toEqual("https://www.youtube.com/watch?v=1");
+    expect(activity.getVideoFileName()).toEqual(
+      "https://www.youtube.com/watch?v=1"
+    );
   });
 
   it("set video url", () => {
     const activity = new VideoActivity();
     activity.setVideoFileName("https://www.youtube.com/watch?v=1");
-    expect(activity.getVideoFileName()).toEqual("https://www.youtube.com/watch?v=1");
+    expect(activity.getVideoFileName()).toEqual(
+      "https://www.youtube.com/watch?v=1"
+    );
   });
 
   it("get data should return VIDEO type", () => {

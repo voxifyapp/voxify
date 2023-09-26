@@ -84,10 +84,10 @@ describe('FormASentenceActivity', () => {
         'dog.',
       ],
     };
-    expect(activity.checkAnswer(answer)).toEqual([]);
+    expect(activity.checkAnswer(answer)).toEqual({ correct: true });
   });
 
-  it('should check answer and return incorrect word if incorrect', () => {
+  it('should check answer and return {correct: false} if incorrect', () => {
     const answer = {
       answer: [
         'The',
@@ -101,13 +101,13 @@ describe('FormASentenceActivity', () => {
         'cat.',
       ],
     };
-    expect(activity.checkAnswer(answer)).toEqual(['cat.']);
+    expect(activity.checkAnswer(answer)).toEqual({ correct: false });
   });
 
-  it('should check answer and return "Incorrect answer" if length is different', () => {
+  it('should check answer and return correct false if length is different', () => {
     const answer = {
       answer: ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy'],
     };
-    expect(activity.checkAnswer(answer)).toEqual(['Incorrect answer']);
+    expect(activity.checkAnswer(answer)).toEqual({ correct: false });
   });
 });

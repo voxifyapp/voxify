@@ -40,7 +40,7 @@ describe('MultipleChoiceActivity', () => {
 
     expect(
       activity.checkAnswer({ answer: [activity.getOptions()[1].id] }),
-    ).toEqual([activity.getOptions()[1].id]);
+    ).toEqual({ wrongOptions: [activity.getOptions()[1].id] });
   });
 
   it('should return empty array if correct', () => {
@@ -50,6 +50,6 @@ describe('MultipleChoiceActivity', () => {
 
     expect(
       activity.checkAnswer({ answer: [activity.getOptions()[0].id] }),
-    ).toEqual([]);
+    ).toEqual({ wrongOptions: [] });
   });
 });

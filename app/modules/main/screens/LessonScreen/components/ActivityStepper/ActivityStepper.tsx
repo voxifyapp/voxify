@@ -37,15 +37,15 @@ export const ActivityStepper = ({ activities }: Props) => {
     activity => !completedActivities[activity.id],
   );
 
-  renderedActivities = slice(
-    renderedActivities,
-    0,
-    nextActivityToCompleteIndex + 1,
-  );
+  // renderedActivities = slice(
+  //   renderedActivities,
+  //   0,
+  //   nextActivityToCompleteIndex + 1,
+  // );
 
   useEffect(() => {
     setTimeout(() => {
-      if (nextActivityToCompleteIndex) {
+      if (nextActivityToCompleteIndex !== -1) {
         listRef.current?.scrollToIndex({
           animated: true,
           index: nextActivityToCompleteIndex,

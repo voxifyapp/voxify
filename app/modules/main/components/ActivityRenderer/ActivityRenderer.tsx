@@ -22,7 +22,9 @@ import {
   MultipleChoiceActivity,
   VideoActivity,
   PronunciationActivity,
+  TextActivity,
 } from '@packages/activity-builder';
+import { Text } from '@voxify/modules/main/components/ActivityRenderer/Text/Text';
 
 type Props = {
   activityEntity: ActivityEntity;
@@ -92,6 +94,15 @@ const ActivitySelector = () => {
     return (
       <FillInTheBlanks
         activity={new FillInTheBlanksActivity(activity.data as any)}
+      />
+    );
+  }
+
+  if (activity.type === ActivityType.TEXT) {
+    return (
+      <Text
+        activity={new TextActivity(activity.data as any)}
+        heading={activity.heading}
       />
     );
   }

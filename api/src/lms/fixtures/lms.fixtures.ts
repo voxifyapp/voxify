@@ -94,6 +94,7 @@ export const activityFactory = Factory.define<Activity>(
       order: sequence,
       lesson: undefined,
       lessonId: undefined,
+      heading: 'Fill in the blanks',
       data: {},
       type: ActivityType.FILL_IN_THE_BLANKS,
     };

@@ -13,6 +13,13 @@ export class Activity extends BaseEntity {
   type: ActivityType;
 
   @Column({
+    comment: 'The heading of the activity',
+    type: 'text',
+    default: '',
+  })
+  heading: string;
+
+  @Column({
     comment: 'The data related to the activity',
     type: 'jsonb',
     default: {},

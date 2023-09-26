@@ -4,8 +4,8 @@ import {
   FillInTheBlanksAnswerErrorsType,
 } from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { derivedValues } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/derivedValues';
+import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
 import { omit } from 'lodash';
 import { useState } from 'react';
 
@@ -14,30 +14,22 @@ type ContextData = {
 };
 
 export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
-  const { machineService: activityRendererMachineService } =
-    useActivityRendererContext();
-
-  const [userAnswer, setUserAnswer] = useState<FillInTheBlanksActivityAnswer>(
-    {},
-  );
+  const {
+    userAnswer,
+    setUserAnswer,
+    answerErrors,
+    setAnswerErrors,
+    isWorkingStateAnd,
+  } = useGetActivityRendererHookExtras<
+    FillInTheBlanksActivityAnswer,
+    FillInTheBlanksAnswerErrorsType
+  >({});
 
   const [userAnswerIndex, setUserAnswerIndex] = useState<
     Record<string, number>
   >({});
 
-  const [answerErrors, setAnswerErrors] =
-    useState<FillInTheBlanksAnswerErrorsType | null>(null);
-
   const derived = derivedValues({ userAnswer, activity });
-
-  const isWorkingState = (condition: boolean) => {
-    return (
-      condition &&
-      activityRendererMachineService
-        .getSnapshot()
-        .matches('WORKING_STATE.WORKING')
-    );
-  };
 
   return {
     activity,
@@ -61,8 +53,8 @@ export function useCreateFillInTheBlanksContext({ activity }: ContextData) {
     },
     setAnswerErrors,
     answerErrors,
-    canAddWord: isWorkingState(!!derived.nextUserBlank),
-    canRemoveWord: isWorkingState(Object.keys(userAnswer).length > 0),
+    canAddWord: isWorkingStateAnd(!!derived.nextUserBlank),
+    canRemoveWord: isWorkingStateAnd(Object.keys(userAnswer).length > 0),
   };
 }
 

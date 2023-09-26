@@ -7,9 +7,9 @@ import {
 } from '@packages/activity-builder';
 import { FillInTheBlanks } from '@voxify/modules/main/screens/LessonScreen/components/FillInTheBlanks';
 import { FormASentence } from '@voxify/modules/main/screens/LessonScreen/components/FormASentence';
-import { MultipleChoice } from '@voxify/modules/main/screens/LessonScreen/components/MultipleChoice';
+import { MultipleChoice } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/screens/LessonScreen/components/Pronunciation/Pronunciation';
-import { Video } from '@voxify/modules/main/screens/LessonScreen/components/Video';
+import { Video } from '@voxify/modules/main/components/ActivityRenderer/Video/Video';
 import { ActivityEntity, ActivityType } from '@voxify/types/lms/lms';
 import React from 'react';
 import { H1 } from 'tamagui';
@@ -18,6 +18,7 @@ type Props = {
   activity: ActivityEntity;
 };
 
+// TODO: Do we need this component and the child components????
 export const Activity = ({ activity }: Props) => {
   if (activity.type === ActivityType.FILL_IN_THE_BLANKS) {
     return (
