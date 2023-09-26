@@ -32,14 +32,14 @@ class FormASentenceActivity extends activity_1.Activity {
         const answerBank = this.getAnswer();
         const userAnswer = answer.answer;
         if (answerBank.length !== userAnswer.length) {
-            return ["Incorrect answer"];
+            return { correct: false };
         }
         for (let i = 0; i < answerBank.length; i++) {
             if (answerBank[i] !== userAnswer[i]) {
-                return [userAnswer[i]];
+                return { correct: false };
             }
         }
-        return [];
+        return { correct: true };
     }
     build() {
         return this.getData();

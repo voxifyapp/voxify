@@ -19,8 +19,11 @@ export declare class FormASentenceActivity extends Activity<FormASentenceActivit
     /**
      * @returns the words that are incorrect, else returns nothing
      */
-    checkAnswer(answer: FormASentenceActivityAnswer): string[];
+    checkAnswer(answer: FormASentenceActivityAnswer): FormASentenceAnswerErrorType;
     build(): FormASentenceActivityData & {
         type: string;
     };
 }
+export type FormASentenceAnswerErrorType = {
+    correct: boolean;
+};

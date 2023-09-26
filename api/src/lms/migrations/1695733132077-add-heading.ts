@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateActivity1695693732887 implements MigrationInterface {
-  name = 'CreateActivity1695693732887';
+export class AddHeading1695733132077 implements MigrationInterface {
+  name = 'AddHeading1695733132077';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "activity" ADD "heading" text NOT NULL`,
+      `ALTER TABLE "activity" ADD "heading" text NOT NULL DEFAULT ''`,
     );
     await queryRunner.query(
       `COMMENT ON COLUMN "activity"."heading" IS 'The heading of the activity'`,

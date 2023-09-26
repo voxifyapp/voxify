@@ -15,6 +15,7 @@ export class Activity extends BaseEntity {
   @Column({
     comment: 'The heading of the activity',
     type: 'text',
+    default: '',
   })
   heading: string;
 

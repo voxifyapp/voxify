@@ -45,7 +45,7 @@ export const ActivityStepper = ({ activities }: Props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (nextActivityToCompleteIndex) {
+      if (nextActivityToCompleteIndex !== -1) {
         listRef.current?.scrollToIndex({
           animated: true,
           index: nextActivityToCompleteIndex,

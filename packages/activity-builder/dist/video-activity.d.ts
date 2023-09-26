@@ -3,14 +3,15 @@ export interface VideoActivityData {
     videoUrl: string;
 }
 export interface VideoActivityAnswer {
-    completionTime?: number;
+    completionPercent?: number;
 }
 export declare class VideoActivity extends Activity<VideoActivityData, VideoActivityAnswer> {
     constructor(data?: VideoActivityData);
     setVideoUrl(url: string): void;
     getVideoUrl(): string;
-    checkAnswer(): never[];
+    checkAnswer(): VideoActivityAnswerErrorsType;
     build(): VideoActivityData & {
         type: string;
     };
 }
+export type VideoActivityAnswerErrorsType = {};

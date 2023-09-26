@@ -49,23 +49,29 @@ export class FormASentenceActivity extends Activity<
   /**
    * @returns the words that are incorrect, else returns nothing
    */
-  checkAnswer(answer: FormASentenceActivityAnswer) {
+  checkAnswer(
+    answer: FormASentenceActivityAnswer
+  ): FormASentenceAnswerErrorType {
     const answerBank = this.getAnswer();
     const userAnswer = answer.answer;
 
     if (answerBank.length !== userAnswer.length) {
-      return ["Incorrect answer"];
+      return { correct: false };
     }
 
     for (let i = 0; i < answerBank.length; i++) {
       if (answerBank[i] !== userAnswer[i]) {
-        return [userAnswer[i]];
+        return { correct: false };
       }
     }
-    return [];
+    return { correct: true };
   }
 
   build() {
     return this.getData();
   }
 }
+
+export type FormASentenceAnswerErrorType = {
+  correct: boolean;
+};
