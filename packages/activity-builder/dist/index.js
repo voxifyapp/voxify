@@ -20,4 +20,5 @@ __exportStar(require("./form-a-sentence-activity"), exports);
 __exportStar(require("./multiple-choice-activity"), exports);
 __exportStar(require("./pronunciation-activity"), exports);
 __exportStar(require("./video-activity"), exports);
+__exportStar(require("./text-activity"), exports);
 //# sourceMappingURL=index.js.map

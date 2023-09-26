@@ -4,3 +4,4 @@ export * from "./form-a-sentence-activity";
 export * from "./multiple-choice-activity";
 export * from "./pronunciation-activity";
 export * from "./video-activity";
+export * from "./text-activity";
