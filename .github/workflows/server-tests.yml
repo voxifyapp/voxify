@@ -26,7 +26,7 @@ jobs:
 
       - name: Install deps
         working-directory: ./api
-        run: yarn install
+        run: yarn install --focus
 
       - name: Run unit tests
         working-directory: ./api
