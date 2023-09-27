@@ -8,7 +8,7 @@ import {
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import React, { useEffect, useMemo } from 'react';
-import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
+import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
