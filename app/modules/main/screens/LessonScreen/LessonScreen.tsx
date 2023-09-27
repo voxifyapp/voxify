@@ -26,11 +26,11 @@ export const LessonScreen = () => {
   let tempActivities: ActivityEntity[] = useMemo(() => {
     const result = [];
     if (lessonActivities) {
-      for (let i = 0; i < 10; i++) {
-        const a = lessonActivities![4];
+      for (let i = 0; i < 2; i++) {
+        const a = lessonActivities![1];
         result.push({
           ...a,
-          id: '' + Math.floor(Math.random() * 1000000) + 1,
+          id: '' + (i + 1),
         });
       }
     }
@@ -43,7 +43,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <ActivityStepper activities={tempActivities} />
+      <ActivityStepper activities={tempActivities || []} />
     </View>
   );
 };

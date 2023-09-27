@@ -11,23 +11,27 @@ type Props = {
   activity: ActivityEntity;
   restoreData?: ActivityRendererMachineRestoreDataType;
   isActive: boolean;
+  index?: number;
 };
 
 export const ActivityStep = React.memo(
-  ({ activity, restoreData, isActive }: Props) => {
+  ({ activity, restoreData, isActive, index }: Props) => {
     const { mutate } = useActivityResponse({ activityEntity: activity });
 
     const setCompletedActivities = useSetAtom(completedActivitiesAtom);
 
     const onActivityResultsCallback: ActivityRendererOnCompleteType =
       useCallback(
-        data => {
+        async data => {
           setCompletedActivities(prev => ({
             ...prev,
             [activity.id]: data,
           }));
           mutate({
-            responseData: data.userAnswer,
+            responseData: {
+              userAnswer: data.userAnswer,
+              answerError: data.answerError,
+            },
             timeTaken: data.timeTakenToCompleteInSeconds,
             result: data.result,
           });
@@ -37,6 +41,7 @@ export const ActivityStep = React.memo(
 
     return (
       <ActivityRenderer
+        index={index}
         isActive={isActive}
         restoreData={restoreData}
         activityEntity={activity}

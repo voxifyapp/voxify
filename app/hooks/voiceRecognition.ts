@@ -1,11 +1,17 @@
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
 import { useEffect, useState } from 'react';
 
-export const useVoiceRecognition = (
-  {}: { recordAudio?: boolean } = { recordAudio: false },
-) => {
+export const useVoiceRecognition = ({
+  onResults,
+  onSpeechRealtimeRecognition,
+  isActive,
+}: {
+  onResults: (recognizedWords: string) => void;
+  onSpeechRealtimeRecognition: (recognizedWords: string) => void;
+  /** This determines whether the voice recognition listeners are set up */
+  isActive: boolean;
+}) => {
   const [started, setStarted] = useState(false);
-  const [recognized, setRecognized] = useState<string>('');
 
   const onSpeechStart = () => {
     setStarted(true);
@@ -16,32 +22,36 @@ export const useVoiceRecognition = (
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
-    e.value?.length && setRecognized(e.value[0]);
+    e.value?.length && onResults(e.value[0]);
+    Voice.destroy().then(Voice.removeAllListeners);
   };
 
   const onSpeechPartialResults = (e: SpeechResultsEvent) => {
-    e.value?.length && setRecognized(e.value[0]);
+    e.value?.length && onSpeechRealtimeRecognition(e.value[0]);
   };
 
   const onSpeechError = () => {
     setStarted(false);
+    Voice.destroy().then(Voice.removeAllListeners);
   };
 
   useEffect(() => {
-    Voice.onSpeechStart = onSpeechStart;
-    Voice.onSpeechEnd = onSpeechEnd;
-    Voice.onSpeechResults = onSpeechResults;
-    Voice.onSpeechPartialResults = onSpeechPartialResults;
-    Voice.onSpeechError = onSpeechError;
+    if (isActive) {
+      Voice.onSpeechStart = onSpeechStart;
+      Voice.onSpeechEnd = onSpeechEnd;
+      Voice.onSpeechResults = onSpeechResults;
+      Voice.onSpeechPartialResults = onSpeechPartialResults;
+      Voice.onSpeechError = onSpeechError;
+    }
 
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive]);
 
   return {
     started,
-    recognized,
     Voice,
   };
 };

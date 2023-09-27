@@ -5,7 +5,6 @@ import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/com
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
-import { slice } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, View, ViewToken } from 'react-native';
 import { Spacer, YStack } from 'tamagui';
@@ -37,11 +36,13 @@ export const ActivityStepper = ({ activities }: Props) => {
     activity => !completedActivities[activity.id],
   );
 
-  renderedActivities = slice(
-    renderedActivities,
-    0,
-    nextActivityToCompleteIndex + 1,
-  );
+  // renderedActivities = slice(
+  //   renderedActivities,
+  //   0,
+  //   nextActivityToCompleteIndex === -1
+  //     ? renderedActivities.length
+  //     : nextActivityToCompleteIndex + 1,
+  // );
 
   useEffect(() => {
     setTimeout(() => {
@@ -105,6 +106,7 @@ export const ActivityStepper = ({ activities }: Props) => {
                   : undefined,
             }}>
             <ActivityStep
+              index={index}
               restoreData={completedActivities[activity.id]}
               activity={activity}
               isActive={index === currentActiveIndex}
