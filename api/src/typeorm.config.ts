@@ -23,14 +23,14 @@ export const datasourceConfig: PostgresConnectionOptions = {
   url: process.env.POSTGRES_URL,
   entities: [
     Profile,
-    // Course,
-    // Unit,
-    // Lesson,
-    // Activity,
-    // ActivityResponse,
-    // LessonResponse,
-    // UnitResponse,
-    // AdminProfile,
+    Course,
+    Unit,
+    Lesson,
+    Activity,
+    ActivityResponse,
+    LessonResponse,
+    UnitResponse,
+    AdminProfile,
   ],
 };
 

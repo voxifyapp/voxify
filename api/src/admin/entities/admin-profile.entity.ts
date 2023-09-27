@@ -1,12 +1,6 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Entity, Column } from 'typeorm';
 
-export enum ProficiencyLevel {
-  BEGINNER = 'Beginner',
-  MEDIUM = 'Medium',
-  ADVANCED = 'Advanced',
-}
-
 @Entity()
 export class AdminProfile extends BaseEntity {
   @Column({
