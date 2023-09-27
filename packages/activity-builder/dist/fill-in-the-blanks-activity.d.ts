@@ -1,12 +1,15 @@
 import { Activity } from "./activity";
 import { TextBlock } from "./blocks/text-block";
 export interface FillInTheBlanksActivityData {
+    /** The question will have blanks represented as $$blank_id$$ */
     question: TextBlock;
-    options: TextBlock[];
+    /** Options available for the blanks */
+    options: string[];
+    /** A mapping from $$blank_id$$ (see question) => option. eg: { $$blank1$$: "hello" } */
     answer: Record<string, string>;
 }
 /**
- * The answer is a map of blank name to the option id
+ * The answer is a map of blank_id => option eg: { $$blank1$$: "hello" }
  */
 export type FillInTheBlanksActivityAnswer = Record<string, string>;
 export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksActivityData, FillInTheBlanksActivityAnswer> {
@@ -18,11 +21,12 @@ export declare class FillInTheBlanksActivity extends Activity<FillInTheBlanksAct
      */
     setQuestion(question: TextBlock): void;
     getQuestion(): TextBlock;
-    getOptions(): TextBlock[];
-    setOptions(options: TextBlock[]): void;
+    getOptions(): string[];
+    setOptions(options: string[]): void;
     getAnswer(): Record<string, string>;
     setAnswer(answer: Record<string, string>): void;
     checkAnswer(answer: FillInTheBlanksActivityAnswer): FillInTheBlanksAnswerErrorsType;
+    static getBlanksFromQuestion(question: string): string[];
     build(): FillInTheBlanksActivityData & {
         type: string;
     };

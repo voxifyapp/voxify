@@ -65,7 +65,7 @@ describe('/lms', () => {
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(
-          `/lms/courses/${units[0].course.id}/units`,
+          `/lms/courses/${units[0].courseId}/units`,
         ),
         { uid: profile.userId },
       );

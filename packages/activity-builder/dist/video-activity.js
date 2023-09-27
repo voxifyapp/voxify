@@ -4,18 +4,20 @@ exports.VideoActivity = void 0;
 const activity_1 = require("./activity");
 class VideoActivity extends activity_1.Activity {
     constructor(data) {
-        super(activity_1.ActivityType.VIDEO, data || { videoUrl: "" });
+        super(activity_1.ActivityType.VIDEO, data || { videoFileName: "" });
     }
-    setVideoUrl(url) {
-        this.setData(Object.assign(Object.assign({}, this.getData()), { videoUrl: url }));
+    setVideoFileName(url) {
+        this.setData(Object.assign(Object.assign({}, this.getData()), { videoFileName: url }));
     }
-    getVideoUrl() {
-        return this.getData().videoUrl;
+    getVideoFileName() {
+        return this.getData().videoFileName;
     }
     checkAnswer() {
-        return {};
+        return [];
     }
     build() {
+        if (this.getVideoFileName() === "")
+            throw new Error("Please provide a video file name");
         return this.getData();
     }
 }

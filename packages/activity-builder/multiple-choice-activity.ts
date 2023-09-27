@@ -1,9 +1,12 @@
+import { every, includes } from "lodash";
 import { Activity, ActivityType } from "./activity";
 import { TextBlock } from "./blocks/text-block";
 
 export interface MultipleChoiceActivityData {
   question: TextBlock;
   options: TextBlock[];
+  /** Does the activity have more than 1 answer? */
+  isMultipleAnswer: boolean;
   /**
    * Id of the answer, multiple answers are allowed
    */
@@ -25,7 +28,12 @@ export class MultipleChoiceActivity extends Activity<
             question: new TextBlock(data.question.text, data.question),
             options: data.options.map((o) => new TextBlock(o.text, o)),
           }
-        : { question: new TextBlock(""), options: [], answer: [] }
+        : {
+            question: new TextBlock(""),
+            options: [],
+            answer: [],
+            isMultipleAnswer: false,
+          }
     );
   }
 
@@ -50,7 +58,11 @@ export class MultipleChoiceActivity extends Activity<
   }
 
   getIsMultipleAnswer() {
-    return this.getAnswer().length > 1;
+    return this.getData().isMultipleAnswer;
+  }
+
+  setIsMultipleAnswer(isMultipleAnswer: boolean) {
+    this.setData({ ...this.getData(), isMultipleAnswer });
   }
 
   setAnswer(answer: string[]): void {
@@ -61,7 +73,7 @@ export class MultipleChoiceActivity extends Activity<
    * Returns options that are incorrect, else returns nothing
    */
   checkAnswer(
-    answer: MultipleChoiceActivityAnswer,
+    answer: MultipleChoiceActivityAnswer
   ): MultipleChoiceAnswerErrorsType {
     const answerBank = this.getAnswer();
     const wrongOptions = [];
@@ -75,6 +87,21 @@ export class MultipleChoiceActivity extends Activity<
   }
 
   build() {
+    //TODO Add unit tests
+    if (
+      !every(this.getAnswer(), (answer) =>
+        includes(
+          this.getOptions().map((option) => option.id),
+          answer
+        )
+      )
+    )
+      throw new Error("Answers ids need to be subset of options");
+
+    if (this.getAnswer().length === 0) {
+      throw new Error("At least one answer is required");
+    }
+
     return this.getData();
   }
 }

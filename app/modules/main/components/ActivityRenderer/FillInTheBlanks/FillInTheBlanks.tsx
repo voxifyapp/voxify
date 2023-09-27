@@ -1,4 +1,7 @@
-import { FillInTheBlanksActivity } from '@packages/activity-builder';
+import {
+  FillInTheBlanksActivity,
+  FillInTheBlanksActivityAnswer,
+} from '@packages/activity-builder';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 import {
@@ -7,6 +10,7 @@ import {
   useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
+import { each } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
@@ -27,19 +31,47 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     questionSegments,
     userAnswer,
     setUserAnswer,
+    userAnswerIndex,
+    setUserAnswerIndex,
     setAnswerErrors,
     addWord,
     canAddWord,
   } = contextValue;
 
+  /**
+   * We sync restore data here. Useful when the view is being recycled (for eg. in a virtualized list)
+   * or we are trying to get data from the database.
+   */
+  // TODO This is a really ugly and looking for a better solution, but for the POC let's go!
   useEffect(() => {
+    const syncUserAnswerIndexWithUserAnswer = (
+      userAnswerForSync: FillInTheBlanksActivityAnswer,
+    ) => {
+      const newUserAnswerIndexForSync: Record<string, number> = {};
+      const usedOptionsIndexes = new Set<number>();
+      each(userAnswerForSync, (selectedOptionForBlank, blank) => {
+        const optionIndexForBlank = options.findIndex(
+          (option, index) =>
+            !usedOptionsIndexes.has(index) && option === selectedOptionForBlank,
+        );
+        newUserAnswerIndexForSync[blank] = optionIndexForBlank;
+      });
+      setUserAnswerIndex(newUserAnswerIndexForSync);
+    };
     return activityRendererMachineService.subscribe(state => {
       if (state.event.type === 'RESTORE_DATA') {
         setUserAnswer(state.context.userAnswer);
         setAnswerErrors(state.context.answerError);
+        syncUserAnswerIndexWithUserAnswer(state.context.userAnswer);
       }
     }).unsubscribe;
-  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
+  }, [
+    activityRendererMachineService,
+    options,
+    setAnswerErrors,
+    setUserAnswer,
+    setUserAnswerIndex,
+  ]);
 
   const onCheckAnswerClicked = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer });
@@ -66,18 +98,23 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         </XStack>
         <XStack flexWrap="wrap" space="$3">
           {options
-            .filter(
-              option => !new Set(Object.values(userAnswer)).has(option.id),
-            )
-            .map(option => (
+            // .filter(option => !new Set(Object.values(userAnswer)).has(option))
+            .map((option, index) => (
               <Button
-                disabled={!canAddWord}
-                key={option.id}
+                disabled={
+                  !canAddWord ||
+                  new Set(Object.values(userAnswerIndex)).has(index)
+                }
+                key={index}
                 onPress={() => {
-                  addWord(option.id);
+                  addWord(option, index);
                 }}
-                theme={'green'}>
-                {option.text}
+                theme={
+                  new Set(Object.values(userAnswerIndex)).has(index)
+                    ? 'red'
+                    : 'green'
+                }>
+                {option}
               </Button>
             ))}
         </XStack>
@@ -103,15 +140,11 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 };
 
 const SegmentRenderer = ({ segment }: { segment: string }) => {
-  const { userAnswer, activity, removeWord, canRemoveWord } =
-    useFillInTheBlanksContext();
+  const { userAnswer, removeWord, canRemoveWord } = useFillInTheBlanksContext();
 
   if (segment.match(FillInTheBlanksActivity.BLANK_FORMAT)) {
     if (userAnswer[segment]) {
-      const optionIdForBlank = userAnswer[segment];
-      const answerForBlank = activity
-        .getOptions()
-        .find(option => option.id === optionIdForBlank)?.text;
+      const answerForBlank = userAnswer[segment];
       return (
         <Button
           disabled={!canRemoveWord}

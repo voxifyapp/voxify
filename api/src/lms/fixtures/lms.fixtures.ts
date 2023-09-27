@@ -32,18 +32,12 @@ export const courseFactory = Factory.define<Course>(({ params, onCreate }) => {
 
 export const unitFactory = Factory.define<Unit>(
   ({ params, sequence, onCreate }) => {
-    onCreate(async (unit) => {
-      const unitRepo = await getRepository(Unit);
-      return unitRepo.save(
-        {
-          ...omit(unit, ['lessons']),
-          course:
-            unit.course === undefined
-              ? await courseFactory.create()
-              : unit.course,
-        },
-        { reload: true },
-      );
+    listenOnCreateForFixture({
+      onCreate,
+      relationships: {
+        courseId: courseFactory,
+      },
+      Schema: Unit,
     });
 
     return {
@@ -51,6 +45,7 @@ export const unitFactory = Factory.define<Unit>(
       title: faker.lorem.sentence(5),
       order: sequence,
       course: undefined,
+      courseId: undefined,
       lessons: [],
     };
   },
@@ -77,6 +72,7 @@ export const lessonFactory = Factory.define<Lesson>(
       title: faker.lorem.sentence(5),
       order: sequence,
       unit: undefined,
+      unitId: undefined,
       activities: [],
     };
   },

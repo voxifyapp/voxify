@@ -1,4 +1,5 @@
 import { configureEnv } from 'common/configure-env';
+import { AdminProfile } from 'src/admin/entities/admin-profile.entity';
 import { Profile } from 'src/auth/entities/profile.entity';
 import { ActivityResponse } from 'src/lms-progress/entities/activity-response.entity';
 import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
@@ -29,6 +30,7 @@ export const datasourceConfig: PostgresConnectionOptions = {
     ActivityResponse,
     LessonResponse,
     UnitResponse,
+    AdminProfile,
   ],
 };
 

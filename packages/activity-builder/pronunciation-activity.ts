@@ -115,6 +115,9 @@ export class PronunciationActivity extends Activity<
   }
 
   build() {
+    if (this.getPrompt().text == "") {
+      throw new Error("Need to pass prompt");
+    }
     return this.getData();
   }
 }

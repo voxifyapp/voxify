@@ -1,14 +1,18 @@
+import { countBy, every, values } from "lodash";
 import { Activity, ActivityType } from "./activity";
 import { TextBlock } from "./blocks/text-block";
 
 export interface FillInTheBlanksActivityData {
+  /** The question will have blanks represented as $$blank_id$$ */
   question: TextBlock;
-  options: TextBlock[];
+  /** Options available for the blanks */
+  options: string[];
+  /** A mapping from $$blank_id$$ (see question) => option. eg: { $$blank1$$: "hello" } */
   answer: Record<string, string>;
 }
 
 /**
- * The answer is a map of blank name to the option id
+ * The answer is a map of blank_id => option eg: { $$blank1$$: "hello" }
  */
 export type FillInTheBlanksActivityAnswer = Record<string, string>;
 
@@ -23,9 +27,6 @@ export class FillInTheBlanksActivity extends Activity<
         ? {
             ...data,
             question: new TextBlock(data.question.text, data.question),
-            options: data.options.map(
-              (option) => new TextBlock(option.text, option)
-            ),
           }
         : { question: new TextBlock(""), options: [], answer: {} }
     );
@@ -47,11 +48,11 @@ export class FillInTheBlanksActivity extends Activity<
     return this.getData().question;
   }
 
-  getOptions(): TextBlock[] {
+  getOptions() {
     return this.getData().options;
   }
 
-  setOptions(options: TextBlock[]): void {
+  setOptions(options: string[]): void {
     this.setData({ ...this.getData(), options });
   }
 
@@ -77,7 +78,40 @@ export class FillInTheBlanksActivity extends Activity<
     return { wrongBlanks: errors };
   }
 
+  static getBlanksFromQuestion(question: string): string[] {
+    return question.match(/\$\$.*?\$\$/g) || [];
+  }
+
+  //TODO Write tests for this!
   build() {
+    const blanks = FillInTheBlanksActivity.getBlanksFromQuestion(
+      this.getQuestion().text
+    );
+    const answerBank = this.getAnswer();
+    const options = this.getOptions();
+    const answerOptions = values(answerBank);
+
+    // Check if all the blanks have an answer
+    if (!every(blanks, (blank) => answerBank[blank]))
+      throw new Error("Every blank needs to have an answer");
+
+    // Check if all the answer options have greater than or equal to the number of options
+    // For eg: if there are 2 blanks in a sentence with the same answer "my", there should at least 2 options "my"
+    const answerOptionsCount = countBy(answerOptions);
+    const optionsCount = countBy(options);
+
+    if (
+      !every(
+        answerOptionsCount,
+        (answerOptionCount, answerOption) =>
+          optionsCount[answerOption] >= answerOptionCount
+      )
+    ) {
+      throw new Error(
+        "The options should have all the options in the answer. Refresh the page and try again."
+      );
+    }
+
     return this.getData();
   }
 }

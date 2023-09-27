@@ -5,8 +5,7 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
-import { ActivityEntity } from '@voxify/types/lms/lms';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
 
@@ -23,19 +22,19 @@ export const LessonScreen = () => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
-  let tempActivities: ActivityEntity[] = useMemo(() => {
-    const result = [];
-    if (lessonActivities) {
-      for (let i = 0; i < 2; i++) {
-        const a = lessonActivities![1];
-        result.push({
-          ...a,
-          id: '' + (i + 1),
-        });
-      }
-    }
-    return result;
-  }, [lessonActivities]);
+  // let tempActivities: ActivityEntity[] = useMemo(() => {
+  //   const result = [];
+  //   if (lessonActivities) {
+  //     for (let i = 0; i < 100; i++) {
+  //       const a = lessonActivities![4];
+  //       result.push({
+  //         ...a,
+  //         id: '' + Math.floor(Math.random() * 1000000) + 1,
+  //       });
+  //     }
+  //   }
+  //   return result;
+  // }, [lessonActivities]);
 
   if (isLessonLoading || isLessonActivitiesLoading) {
     return <H1>Loading...</H1>;
@@ -43,7 +42,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <ActivityStepper activities={tempActivities || []} />
+      {lessonActivities && <ActivityStepper activities={lessonActivities} />}
     </View>
   );
 };

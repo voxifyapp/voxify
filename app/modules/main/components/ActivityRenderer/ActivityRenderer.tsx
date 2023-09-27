@@ -3,6 +3,7 @@ import { FormASentence } from '@voxify/modules/main/components/ActivityRenderer/
 import { MultipleChoice } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/MultipleChoice';
 import { Pronunciation } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/Pronunciation';
 import { Video } from '@voxify/modules/main/components/ActivityRenderer/Video/Video';
+import { Text } from '@voxify/modules/main/components/ActivityRenderer/Text/Text';
 import {
   ActivityRendererMachineRestoreDataType,
   activityRendererMachine,
@@ -18,7 +19,6 @@ import {
   PronunciationActivity,
   TextActivity,
 } from '@packages/activity-builder';
-import { Text } from '@voxify/modules/main/components/ActivityRenderer/Text/Text';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import {
   ActivityRendererOnCompleteType,

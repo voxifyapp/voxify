@@ -22,6 +22,9 @@ export class Unit extends BaseEntity {
   })
   course: Course;
 
+  @Column({ nullable: true })
+  courseId: string;
+
   @OneToMany(() => Lesson, (lesson) => lesson.unit)
   lessons: Lesson[];
 }
