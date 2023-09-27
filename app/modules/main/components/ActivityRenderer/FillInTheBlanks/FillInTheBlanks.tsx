@@ -12,7 +12,7 @@ import {
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { each } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
-import { Button, H1, H3, H5, Stack, XStack, YStack } from 'tamagui';
+import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
@@ -91,13 +91,6 @@ export const FillInTheBlanks = ({ activity }: Props) => {
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
       <YStack padding="$3" fullscreen>
-        <H1>
-          {activityRendererMachineService.getSnapshot()!.context
-            .totalTimeSpentInMillis / 1000}
-        </H1>
-        <H5>
-          {JSON.stringify(activityRendererMachineService.getSnapshot().value)}
-        </H5>
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
