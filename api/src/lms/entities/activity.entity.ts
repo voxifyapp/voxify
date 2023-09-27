@@ -36,6 +36,7 @@ export class Activity extends BaseEntity {
     nullable: true,
   })
   lesson: Lesson;
+
   @Column({ nullable: true })
   lessonId: string;
 }
