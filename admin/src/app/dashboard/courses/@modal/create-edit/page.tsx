@@ -2,7 +2,7 @@
 
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import Modal from '@/lib/components/Modal';
-import { Course } from '@/types/lms';
+import { Activity, Course } from '@/types/lms';
 import { ProficiencyLevel } from '@/types/profile';
 import {
   Button,
@@ -12,17 +12,32 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export default function CreateCourseModal() {
+  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const router = useRouter();
+
+  const courseId = searchParams.get('courseId');
+
   const [title, setTitle] = useState('');
   const [proficiencyLevel, setProficiencyLevel] = useState<ProficiencyLevel>(
     ProficiencyLevel.BEGINNER,
   );
+
+  const { data } = useQuery({
+    queryKey: ['activity', courseId],
+    queryFn: () => clientFetchApiWithAuth<Course>(`/admin/courses/${courseId}`),
+    enabled: !!courseId,
+    onSuccess: course => {
+      // Updating existing
+      setTitle(course.title);
+      setProficiencyLevel(course.proficiencyLevel);
+    },
+  });
 
   const { isLoading: loading, ...addCourseMutation } = useMutation(
     ({ title, proficiencyLevel }: Pick<Course, 'title' | 'proficiencyLevel'>) =>
@@ -65,7 +80,7 @@ export default function CreateCourseModal() {
               addCourseMutation.mutate({ title, proficiencyLevel })
             }
             disabled={loading}>
-            Create course
+            {courseId ? 'Edit' : 'Create'} course
           </Button>
           {loading && <CircularProgress />}
         </Stack>

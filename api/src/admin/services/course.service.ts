@@ -11,6 +11,10 @@ export class CourseService {
     return await this.courseRepository.find();
   }
 
+  async getCourseById(courseId: string) {
+    return await this.courseRepository.findOneBy({ id: courseId });
+  }
+
   async createCourse({
     title,
     proficiencyLevel,
