@@ -10,15 +10,6 @@ export default function VideoActivityEditor({
   currentData?: VideoActivityData;
 }) {
   const [videoFileName, setVideoFileName] = useState('');
-  const [showSave, setShowSave] = useState(false);
-  const firstTimeRef = useRef(true);
-
-  useEffect(() => {
-    if (!firstTimeRef.current) {
-      setShowSave(true);
-    }
-    firstTimeRef.current = false;
-  }, [videoFileName]);
 
   useEffect(() => {
     if (currentData) {
@@ -32,7 +23,7 @@ export default function VideoActivityEditor({
     try {
       const activityData = videoActivity.build();
       onActivityDataChange(activityData);
-      setShowSave(false);
+      alert('Saved!');
     } catch (err) {
       alert((err as Error).message);
     }
@@ -46,7 +37,7 @@ export default function VideoActivityEditor({
         helperText="(Do not include the extension)"
         label="Video File Name"
       />
-      <div>{showSave && <Button onClick={() => build()}>Save</Button>}</div>
+      <div>{<Button onClick={() => build()}>Save</Button>}</div>
     </Stack>
   );
 }
