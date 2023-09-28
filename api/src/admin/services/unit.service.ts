@@ -15,6 +15,7 @@ export class UnitService {
         courseId,
       },
       relations: { course: true },
+      order: courseId ? { order: 'ASC' } : { createdAt: 'DESC' },
       withDeleted: true,
     });
   }
