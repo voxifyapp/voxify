@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -31,5 +32,13 @@ export class UnitController {
   @Get(':unitId')
   async getById(@Param('unitId') unitId: string) {
     return await this.unitService.getUnitById(unitId);
+  }
+
+  @Patch(':unitId')
+  async update(
+    @Param('unitId') unitId: string,
+    @Body() unit: Pick<Unit, 'title' | 'courseId' | 'order'>,
+  ) {
+    return await this.unitService.updateUnit(unitId, unit);
   }
 }

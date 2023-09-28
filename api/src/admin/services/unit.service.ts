@@ -34,4 +34,14 @@ export class UnitService {
       courseId,
     });
   }
+
+  async updateUnit(
+    activityId: string,
+    data: Pick<Unit, 'title' | 'courseId' | 'order'>,
+  ): Promise<Unit> {
+    return await this.unitRepository.save({
+      id: activityId,
+      ...data,
+    });
+  }
 }
