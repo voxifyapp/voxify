@@ -19,6 +19,10 @@ export class UnitService {
     });
   }
 
+  async getUnitById(unitId: string) {
+    return await this.unitRepository.findOneBy({ id: unitId });
+  }
+
   async createUnit({
     title,
     order,

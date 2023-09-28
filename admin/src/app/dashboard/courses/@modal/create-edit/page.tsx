@@ -2,7 +2,7 @@
 
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import Modal from '@/lib/components/Modal';
-import { Activity, Course } from '@/types/lms';
+import { Course } from '@/types/lms';
 import { ProficiencyLevel } from '@/types/profile';
 import {
   Button,
@@ -29,7 +29,7 @@ export default function CreateCourseModal() {
   );
 
   const { data } = useQuery({
-    queryKey: ['activity', courseId],
+    queryKey: ['course', courseId],
     queryFn: () => clientFetchApiWithAuth<Course>(`/admin/courses/${courseId}`),
     enabled: !!courseId,
     onSuccess: course => {

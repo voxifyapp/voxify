@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
 import { UnitService } from 'src/admin/services/unit.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
@@ -18,5 +26,10 @@ export class UnitController {
   @Post()
   async create(@Body() unit: Pick<Unit, 'title' | 'order' | 'courseId'>) {
     return await this.unitService.createUnit(unit);
+  }
+
+  @Get(':unitId')
+  async getById(@Param('unitId') unitId: string) {
+    return await this.unitService.getUnitById(unitId);
   }
 }
