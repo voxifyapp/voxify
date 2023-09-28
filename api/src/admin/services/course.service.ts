@@ -24,4 +24,14 @@ export class CourseService {
       proficiencyLevel,
     });
   }
+
+  async updateCourse(
+    courseId: string,
+    data: Pick<Course, 'title' | 'proficiencyLevel'>,
+  ): Promise<Course> {
+    return await this.courseRepository.save({
+      id: courseId,
+      ...data,
+    });
+  }
 }

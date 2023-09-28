@@ -21,7 +21,7 @@ export default function CreateCourseModal() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const courseId = searchParams.get('courseId');
+  const courseId = searchParams.get('courseId') || '';
 
   const [title, setTitle] = useState('');
   const [proficiencyLevel, setProficiencyLevel] = useState<ProficiencyLevel>(
@@ -41,8 +41,8 @@ export default function CreateCourseModal() {
 
   const { isLoading: loading, ...addCourseMutation } = useMutation(
     ({ title, proficiencyLevel }: Pick<Course, 'title' | 'proficiencyLevel'>) =>
-      clientFetchApiWithAuth('/admin/courses/', {
-        method: 'POST',
+      clientFetchApiWithAuth(`/admin/courses/${courseId}`, {
+        method: courseId ? 'PATCH' : 'POST',
         body: JSON.stringify({
           title,
           proficiencyLevel,
