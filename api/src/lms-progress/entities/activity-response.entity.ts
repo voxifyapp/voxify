@@ -33,6 +33,7 @@ export class ActivityResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   profile: Profile;
+
   @Column()
   profileId: string;
 
@@ -40,6 +41,7 @@ export class ActivityResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   activity: Activity;
+
   @Column()
   activityId: string;
 }

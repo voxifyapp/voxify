@@ -22,6 +22,7 @@ export class LessonResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   profile: Profile;
+
   @Column()
   profileId: string;
 }
