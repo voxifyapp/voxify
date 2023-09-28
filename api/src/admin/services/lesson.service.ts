@@ -32,4 +32,14 @@ export class LessonService {
       unitId,
     });
   }
+
+  async updateLesson(
+    lessonId: string,
+    data: Pick<Lesson, 'title' | 'order' | 'unitId'>,
+  ): Promise<Lesson> {
+    return await this.lessonRepository.save({
+      id: lessonId,
+      ...data,
+    });
+  }
 }

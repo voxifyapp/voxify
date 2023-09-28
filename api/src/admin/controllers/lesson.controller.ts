@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -31,5 +32,13 @@ export class LessonController {
   @Get(':lessonId')
   async getLessonById(@Param('lessonId') lessonId: string) {
     return await this.lessonService.getLessonById(lessonId);
+  }
+
+  @Patch(':lessonId')
+  async update(
+    @Param('lessonId') lessonId: string,
+    @Body() lesson: Pick<Lesson, 'title' | 'unitId' | 'order'>,
+  ) {
+    return await this.lessonService.updateLesson(lessonId, lesson);
   }
 }
