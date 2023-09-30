@@ -1,5 +1,6 @@
 'use client';
 
+import { usePublishMutation } from '@/app/dashboard/activities/mutations/update-activity.mutation';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Activity, Lesson } from '@/types/lms';
 import {
@@ -7,6 +8,7 @@ import {
   Button,
   CircularProgress,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -19,6 +21,8 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from 'react-query';
 
+type ActivityWithLesson = Activity & { lesson?: Lesson };
+
 export default function Units() {
   const searchParams = useSearchParams();
   const lessonId = searchParams.get('lessonId');
@@ -26,10 +30,9 @@ export default function Units() {
   const { data: activities, isLoading } = useQuery({
     queryKey: ['activities'],
     queryFn: async () =>
-      await clientFetchApiWithAuth<(Activity & { lesson?: Lesson })[]>(
-        '/admin/activities',
-        { query: { ...(lessonId ? { lessonId } : {}) } },
-      ),
+      await clientFetchApiWithAuth<ActivityWithLesson[]>('/admin/activities', {
+        query: { ...(lessonId ? { lessonId } : {}) },
+      }),
   });
 
   return (
@@ -52,30 +55,13 @@ export default function Units() {
               <TableCell>Order</TableCell>
               <TableCell>For Lesson</TableCell>
               <TableCell>Created At</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {activities &&
               activities.map(activity => (
-                <TableRow hover key={activity.id}>
-                  <TableCell>
-                    <Link
-                      href={{
-                        pathname: '/dashboard/activities/create-edit',
-                        query: {
-                          activityId: activity.id,
-                        },
-                      }}>
-                      {activity.id}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{activity.type}</TableCell>
-                  <TableCell>{activity.order}</TableCell>
-                  <TableCell>{activity.lesson?.title}</TableCell>
-                  <TableCell>
-                    {dayjs(activity.createdAt).format('DD MMM YYYY')}
-                  </TableCell>
-                </TableRow>
+                <ActivityRow key={activity.id} activity={activity} />
               ))}
           </TableBody>
         </Table>
@@ -83,3 +69,44 @@ export default function Units() {
     </Box>
   );
 }
+
+const ActivityRow = ({ activity }: { activity: ActivityWithLesson }) => {
+  const publishMutation = usePublishMutation({
+    type: 'activities',
+    invalidations: ['activities'],
+  });
+
+  return (
+    <TableRow hover>
+      <TableCell>
+        <Link
+          href={{
+            pathname: '/dashboard/activities/create-edit',
+            query: {
+              activityId: activity.id,
+            },
+          }}>
+          {activity.id}
+        </Link>
+      </TableCell>
+      <TableCell>{activity.type}</TableCell>
+      <TableCell>{activity.order}</TableCell>
+      <TableCell>{activity.lesson?.title}</TableCell>
+      <TableCell>{dayjs(activity.createdAt).format('DD MMM YYYY')}</TableCell>
+      <TableCell>
+        <Stack direction="row">
+          <Button
+            disabled={publishMutation.isLoading}
+            onClick={() =>
+              publishMutation.mutate({
+                id: activity.id,
+                published: !activity.published,
+              })
+            }>
+            {activity.published ? 'Unpublish' : 'Publish'}
+          </Button>
+        </Stack>
+      </TableCell>
+    </TableRow>
+  );
+};

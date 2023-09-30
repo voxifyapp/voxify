@@ -23,7 +23,7 @@ export default function RootLayout({
       setUser(firebaseUser);
     });
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [router]);
   return (
     <html lang="en">
       <body>{user && children}</body>

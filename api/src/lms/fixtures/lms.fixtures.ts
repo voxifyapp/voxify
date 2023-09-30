@@ -47,6 +47,7 @@ export const unitFactory = Factory.define<Unit>(
       course: undefined,
       courseId: undefined,
       lessons: [],
+      published: false,
     };
   },
 );
@@ -74,6 +75,7 @@ export const lessonFactory = Factory.define<Lesson>(
       unit: undefined,
       unitId: undefined,
       activities: [],
+      published: false,
     };
   },
 );
@@ -97,6 +99,7 @@ export const activityFactory = Factory.define<Activity>(
       heading: 'Fill in the blanks',
       data: {},
       type: ActivityType.FILL_IN_THE_BLANKS,
+      published: false,
     };
   },
 );

@@ -1,5 +1,6 @@
 import { BaseEntity } from '@/types/base';
 import { ProficiencyLevel } from '@/types/profile';
+import { ActivityType } from '@packages/activity-builder';
 
 export type Course = {
   title: string;
@@ -18,17 +19,10 @@ export type Lesson = {
   unitId?: string;
 } & BaseEntity;
 
-export enum ActivityType {
-  VIDEO = 'VIDEO',
-  FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS',
-  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-  PRONUNCIATION = 'PRONUNCIATION',
-  FORM_A_SENTENCE = 'FORM_A_SENTENCE',
-}
-
 export type Activity = {
   type: ActivityType;
   order: number;
   lessonId?: string;
   data: object;
+  published: boolean;
 } & BaseEntity;
