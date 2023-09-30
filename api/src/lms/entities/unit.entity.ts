@@ -27,4 +27,7 @@ export class Unit extends BaseEntity {
 
   @OneToMany(() => Lesson, (lesson) => lesson.unit)
   lessons: Lesson[];
+
+  @Column({ default: false, comment: 'Is this visible to users' })
+  published: boolean;
 }
