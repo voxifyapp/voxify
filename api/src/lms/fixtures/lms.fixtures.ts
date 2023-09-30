@@ -54,18 +54,12 @@ export const unitFactory = Factory.define<Unit>(
 
 export const lessonFactory = Factory.define<Lesson>(
   ({ params, sequence, onCreate }) => {
-    onCreate(async (lesson) => {
-      const unitRepo = await getRepository(Lesson);
-      return unitRepo.save(
-        {
-          ...omit(lesson, ['activities']),
-          unit:
-            lesson.unit === undefined
-              ? await unitFactory.create()
-              : lesson.unit,
-        },
-        { reload: true },
-      );
+    listenOnCreateForFixture({
+      onCreate,
+      relationships: {
+        unitId: unitFactory,
+      },
+      Schema: Lesson,
     });
 
     return {

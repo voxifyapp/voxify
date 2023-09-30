@@ -9,7 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
-import { LessonService } from 'src/admin/services/lesson.service';
+import {
+  LessonService,
+  UpdatableLessonFields,
+} from 'src/admin/services/lesson.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
 import { Lesson } from 'src/lms/entities/Lesson.entity';
 
@@ -37,7 +40,7 @@ export class LessonController {
   @Patch(':lessonId')
   async update(
     @Param('lessonId') lessonId: string,
-    @Body() lesson: Pick<Lesson, 'title' | 'unitId' | 'order'>,
+    @Body() lesson: UpdatableLessonFields,
   ) {
     return await this.lessonService.updateLesson(lessonId, lesson);
   }

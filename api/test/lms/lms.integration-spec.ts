@@ -59,9 +59,21 @@ describe('/lms', () => {
   });
 
   describe('/course/:courseId/units (GET)', () => {
-    it('returns a list of units for a course', async () => {
+    it('returns a list of units for a course along with published lessons for each course', async () => {
       const profile = await profileFactory.create();
-      const units = await unitFactory.createList(2);
+      const units = await unitFactory.createList(1);
+
+      // Add published lessons to a unit
+      const publishedLesson = await lessonFactory.create({
+        unitId: units[0].id,
+        published: true,
+      });
+
+      // Add unpublished lessons to a unit
+      await lessonFactory.create({
+        unitId: units[0].id,
+        published: false,
+      });
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(
@@ -71,6 +83,12 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(units.length);
+      expect(
+        res.body.find((unit) => unit.id === units[0].id).lessons[0].id,
+      ).toEqual(publishedLesson.id);
+      expect(
+        res.body.find((unit) => unit.id === units[0].id).lessons.length,
+      ).toEqual(1);
     });
   });
 
