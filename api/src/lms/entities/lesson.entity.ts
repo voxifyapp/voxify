@@ -28,4 +28,7 @@ export class Lesson extends BaseEntity {
 
   @Column({ nullable: true })
   unitId: string;
+
+  @Column({ default: false, comment: 'Is this visible to users' })
+  published: boolean;
 }
