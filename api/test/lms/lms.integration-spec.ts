@@ -91,7 +91,9 @@ describe('/lms', () => {
   describe('/lesson/:lessonId/activities (GET)', () => {
     it('returns a list of activities for a lesson', async () => {
       const profile = await profileFactory.create();
-      const activities = await activityFactory.createList(2);
+      const activities = await activityFactory.createList(2, {
+        published: true,
+      });
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(
@@ -101,6 +103,22 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(activities.length);
+    });
+
+    it('returns only published activities', async () => {
+      const profile = await profileFactory.create();
+      const activities = await activityFactory.createList(2, {
+        published: false,
+      });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          `/lms/lesson/${activities[0].lessonId}/activities`,
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.length).toEqual(0);
     });
   });
 
