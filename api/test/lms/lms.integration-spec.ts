@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import exp from 'constants';
 import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { Course } from 'src/lms/entities/course.entity';
@@ -59,9 +60,15 @@ describe('/lms', () => {
   });
 
   describe('/course/:courseId/units (GET)', () => {
-    it('returns a list of units for a course along with published lessons for each course', async () => {
+    it('returns a list of published units for a course along with published lessons for each course', async () => {
       const profile = await profileFactory.create();
-      const units = await unitFactory.createList(1);
+      const units = await unitFactory.createList(1, { published: true });
+
+      // Create unpublished units, should not return
+      await unitFactory.createList(1, {
+        courseId: units[0].courseId,
+        published: false,
+      });
 
       // Add published lessons to a unit
       const publishedLesson = await lessonFactory.create({
@@ -83,6 +90,7 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(units.length);
+      expect(res.body[0].id).toEqual(units[0].id);
       expect(
         res.body.find((unit) => unit.id === units[0].id).lessons[0].id,
       ).toEqual(publishedLesson.id);

@@ -20,7 +20,7 @@ export class UnitRepository extends Repository<Unit> {
 
   async listUnitsWithAssociatedLessonForCourse(courseId: string) {
     const unitsWithLessons = await this.find({
-      where: { course: { id: courseId } },
+      where: { courseId, published: true },
       relations: { lessons: true },
     });
 

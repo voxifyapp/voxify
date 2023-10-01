@@ -9,7 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
-import { UnitService } from 'src/admin/services/unit.service';
+import {
+  UnitService,
+  UpdatableUnitFields,
+} from 'src/admin/services/unit.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
 import { Unit } from 'src/lms/entities/unit.entity';
 
@@ -37,7 +40,7 @@ export class UnitController {
   @Patch(':unitId')
   async update(
     @Param('unitId') unitId: string,
-    @Body() unit: Pick<Unit, 'title' | 'courseId' | 'order'>,
+    @Body() unit: UpdatableUnitFields,
   ) {
     return await this.unitService.updateUnit(unitId, unit);
   }
