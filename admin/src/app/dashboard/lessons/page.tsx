@@ -1,5 +1,6 @@
 'use client';
 
+import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Lesson, Unit } from '@/types/lms';
 import {
@@ -7,6 +8,7 @@ import {
   Button,
   CircularProgress,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -76,13 +78,21 @@ export default function Units() {
                     {dayjs(lesson.createdAt).format('DD MMM YYYY')}
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href={{
-                        pathname: '/dashboard/lessons/create-edit',
-                        query: { lessonId: lesson.id },
-                      }}>
-                      <Button>Edit</Button>
-                    </Link>
+                    <Stack direction="row">
+                      <Link
+                        href={{
+                          pathname: '/dashboard/lessons/create-edit',
+                          query: { lessonId: lesson.id },
+                        }}>
+                        <Button>Edit</Button>
+                      </Link>
+                      <PublishButton
+                        isPublished={lesson.published}
+                        invalidations={['lessons']}
+                        type="lessons"
+                        entityId={lesson.id}
+                      />
+                    </Stack>
                   </TableCell>
                 </TableRow>
               ))}

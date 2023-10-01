@@ -1,6 +1,6 @@
 'use client';
 
-import { usePublishMutation } from '@/app/dashboard/activities/mutations/update-activity.mutation';
+import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Activity, Lesson } from '@/types/lms';
 import {
@@ -71,11 +71,6 @@ export default function Units() {
 }
 
 const ActivityRow = ({ activity }: { activity: ActivityWithLesson }) => {
-  const publishMutation = usePublishMutation({
-    type: 'activities',
-    invalidations: ['activities'],
-  });
-
   return (
     <TableRow hover>
       <TableCell>
@@ -95,16 +90,12 @@ const ActivityRow = ({ activity }: { activity: ActivityWithLesson }) => {
       <TableCell>{dayjs(activity.createdAt).format('DD MMM YYYY')}</TableCell>
       <TableCell>
         <Stack direction="row">
-          <Button
-            disabled={publishMutation.isLoading}
-            onClick={() =>
-              publishMutation.mutate({
-                id: activity.id,
-                published: !activity.published,
-              })
-            }>
-            {activity.published ? 'Unpublish' : 'Publish'}
-          </Button>
+          <PublishButton
+            isPublished={activity.published}
+            invalidations={['activities']}
+            type="activities"
+            entityId={activity.id}
+          />
         </Stack>
       </TableCell>
     </TableRow>

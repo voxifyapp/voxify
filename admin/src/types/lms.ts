@@ -17,6 +17,7 @@ export type Lesson = {
   title: string;
   order: number;
   unitId?: string;
+  published: boolean;
 } & BaseEntity;
 
 export type Activity = {
