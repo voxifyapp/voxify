@@ -19,6 +19,7 @@ export class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     const decodedUser: DecodedIdToken = request['decodedFirebaseUser'];
+    console.log('In here', decodedUser);
 
     // Get profile for the user
     const profile = await this.adminProfileService.findProfileForUser(
