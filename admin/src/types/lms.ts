@@ -24,6 +24,7 @@ export enum ActivityType {
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
   PRONUNCIATION = 'PRONUNCIATION',
   FORM_A_SENTENCE = 'FORM_A_SENTENCE',
+  TEXT = 'TEXT',
 }
 
 export type Activity = {
