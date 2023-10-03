@@ -1,7 +1,6 @@
 'use client';
 
 import { auth } from '@/lib/firebase';
-import { getFirebaseTokenForRequest } from '@/lib/firebaseAdmin';
 import { redirect } from 'next/navigation';
 
 /**
