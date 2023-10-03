@@ -35,5 +35,9 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.198"
+  },
+  "browser": {
+    "crypto": false,
+    "stream": false
   }
 }
