@@ -10,7 +10,7 @@ const usePublishMutation = ({
   invalidations = [],
 }: {
   /** The entity that we want to make publishable */
-  type: 'activities' | 'lessons';
+  type: 'activities' | 'lessons' | 'units';
   invalidations: string[];
 }) => {
   const queryClient = useQueryClient();
@@ -38,7 +38,7 @@ export default function PublishButton({
   isPublished,
 }: {
   /** The entity that we want to make publishable */
-  type: 'activities' | 'lessons';
+  type: 'activities' | 'lessons' | 'units';
   invalidations: string[];
 
   /** The lesson, unit, activity id */

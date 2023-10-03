@@ -11,6 +11,7 @@ export type Unit = {
   title: string;
   order: number;
   courseId: string;
+  published: boolean;
 } & BaseEntity;
 
 export type Lesson = {

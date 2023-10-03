@@ -1,5 +1,6 @@
 'use client';
 
+import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Course, Unit } from '@/types/lms';
 import {
@@ -82,6 +83,12 @@ export default function Units() {
                       }}>
                       <Button>Edit</Button>
                     </Link>
+                    <PublishButton
+                      isPublished={unit.published}
+                      type="units"
+                      entityId={unit.id}
+                      invalidations={['units']}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
