@@ -18,7 +18,7 @@ export default function RootLayout({
       }
     });
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [router]);
   return (
     <html lang="en">
       <body>{children}</body>
