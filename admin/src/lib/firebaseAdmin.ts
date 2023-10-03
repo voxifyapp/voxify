@@ -1,6 +1,4 @@
 import * as admin from 'firebase-admin';
-import { getToken } from 'next-auth/jwt';
-import { headers, cookies } from 'next/headers';
 
 const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY!;
 const firebaseProjectId = process.env.FIREBASE_PROJECT_ID;
@@ -17,13 +15,3 @@ if (admin.apps.length === 0) {
 }
 
 export default admin;
-
-export const getFirebaseTokenForRequest = async (): Promise<
-  string | undefined
-> => {
-  const token = await getToken({
-    req: { headers: headers(), cookies: cookies() } as any,
-  });
-
-  return token?.firebaseIdToken as string | undefined;
-};

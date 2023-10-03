@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Activity } from 'src/lms/entities/Activity.entity';
+import { Activity } from 'src/lms/entities/activity.entity';
 import { Repository } from 'typeorm';
 
 export type UpdatableActivityFields = Partial<

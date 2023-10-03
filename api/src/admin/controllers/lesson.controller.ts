@@ -14,7 +14,7 @@ import {
   UpdatableLessonFields,
 } from 'src/admin/services/lesson.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
-import { Lesson } from 'src/lms/entities/Lesson.entity';
+import { Lesson } from 'src/lms/entities/lesson.entity';
 
 @Controller('admin/lessons/')
 @DoesNotRequireProfile()

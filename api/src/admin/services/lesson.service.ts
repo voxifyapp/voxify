@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Lesson } from 'src/lms/entities/Lesson.entity';
+import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Repository } from 'typeorm';
 
 export type UpdatableLessonFields = Partial<

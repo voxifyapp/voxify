@@ -36,7 +36,7 @@ export default function LoginForm() {
           onChange={e => setPassword(e.target.value)}
         />
         <Button onClick={onLogin} variant="contained">
-          Test
+          Login
         </Button>
       </Stack>
     </Box>

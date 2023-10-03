@@ -2,6 +2,7 @@ import FillInTheBlanksActivityEditor from '@/app/dashboard/activities/create-edi
 import FormASentenceEditor from '@/app/dashboard/activities/create-edit/components/FormASentenceEditor';
 import MultipleChoiceActivityEditor from '@/app/dashboard/activities/create-edit/components/MultipleChoiceEditor';
 import PronunciationActivityEditor from '@/app/dashboard/activities/create-edit/components/PronunciationEditor';
+import TextEditor from '@/app/dashboard/activities/create-edit/components/TextEditor';
 import VideoActivityEditor from '@/app/dashboard/activities/create-edit/components/VideoActivityEditor';
 import { Box } from '@mui/material';
 import {
@@ -10,6 +11,7 @@ import {
   FormASentenceActivityData,
   MultipleChoiceActivityData,
   PronunciationActivityData,
+  TextActivityData,
   VideoActivityData,
 } from '@packages/activity-builder';
 
@@ -43,6 +45,15 @@ export default function ActivityEditor({
       return (
         <MultipleChoiceActivityEditor
           currentData={initialData as MultipleChoiceActivityData | undefined}
+          onActivityDataChange={onActivityDataChange}
+        />
+      );
+    }
+
+    if (type === ActivityType.TEXT) {
+      return (
+        <TextEditor
+          currentData={initialData as TextActivityData | undefined}
           onActivityDataChange={onActivityDataChange}
         />
       );
