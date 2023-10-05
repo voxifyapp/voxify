@@ -34,11 +34,11 @@ export const Text = ({ activity, heading }: Props) => {
       <H5>
         {JSON.stringify(activityRendererMachineService.getSnapshot().value)}
       </H5>
-      <H3>{heading}</H3>
+      {heading && <H3>{heading}</H3>}
       <Card size="$5" width={250} height={300}>
         <Card.Header padded>
-          <H3>{activity.getTitle()}</H3>
-          <H5>{activity.getDescription()}</H5>
+          <H3>{activity.getTitle().text}</H3>
+          <H5>{activity.getDescription().text}</H5>
         </Card.Header>
       </Card>
       <Stack flex={1} />
