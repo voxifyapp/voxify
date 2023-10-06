@@ -19,10 +19,17 @@ export class UnitRepository extends Repository<Unit> {
   }
 
   async listUnitsWithAssociatedLessonForCourse(courseId: string) {
-    return await this.find({
-      where: { course: { id: courseId } },
+    const unitsWithLessons = await this.find({
+      where: { courseId, published: true },
       relations: { lessons: true },
     });
+
+    const unitsWithOnlyPublishedLessons = unitsWithLessons.map((unit) => ({
+      ...unit,
+      lessons: unit.lessons.filter((lesson) => lesson.published),
+    }));
+
+    return unitsWithOnlyPublishedLessons;
   }
 }
 
@@ -41,7 +48,7 @@ export class ActivityRepository extends Repository<Activity> {
 
   async listActivitiesForLesson(lessonId: string) {
     return await this.find({
-      where: { lesson: { id: lessonId } },
+      where: { lesson: { id: lessonId }, published: true },
     });
   }
 }

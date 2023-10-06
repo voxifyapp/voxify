@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Unit } from 'src/lms/entities/unit.entity';
 import { Repository } from 'typeorm';
 
+export type UpdatableUnitFields = Partial<
+  Pick<Unit, 'title' | 'courseId' | 'order' | 'published'>
+>;
 @Injectable()
 export class UnitService {
   constructor(
@@ -15,8 +18,13 @@ export class UnitService {
         courseId,
       },
       relations: { course: true },
+      order: courseId ? { order: 'ASC' } : { createdAt: 'DESC' },
       withDeleted: true,
     });
+  }
+
+  async getUnitById(unitId: string) {
+    return await this.unitRepository.findOneBy({ id: unitId });
   }
 
   async createUnit({
@@ -28,6 +36,16 @@ export class UnitService {
       title,
       order,
       courseId,
+    });
+  }
+
+  async updateUnit(
+    activityId: string,
+    data: UpdatableUnitFields,
+  ): Promise<Unit> {
+    return await this.unitRepository.save({
+      id: activityId,
+      ...data,
     });
   }
 }

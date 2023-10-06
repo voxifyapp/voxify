@@ -4,7 +4,7 @@ import {
   MultipleChoiceActivityData,
 } from '@packages/activity-builder';
 import { TextBlock } from '@packages/activity-builder/dist/blocks/text-block';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function MultipleChoiceActivityEditor({
   onActivityDataChange,
@@ -17,16 +17,6 @@ export default function MultipleChoiceActivityEditor({
   const [options, setOptions] = useState<TextBlock[]>([]);
   const [isMultipleAnswer, setIsMultipleAnswer] = useState(true);
   const [answerIds, setAnswerIds] = useState<string[]>([]);
-
-  const [showSave, setShowSave] = useState(false);
-  const firstTimeRef = useRef(true);
-
-  useEffect(() => {
-    if (!firstTimeRef.current) {
-      setShowSave(true);
-    }
-    firstTimeRef.current = false;
-  }, [question, options]);
 
   useEffect(() => {
     if (currentData) {
@@ -47,7 +37,7 @@ export default function MultipleChoiceActivityEditor({
     try {
       const activityData = activity.build();
       onActivityDataChange(activityData);
-      setShowSave(false);
+      alert('Saved!');
     } catch (err) {
       alert((err as Error).message);
     }
@@ -116,7 +106,7 @@ export default function MultipleChoiceActivityEditor({
         </div>
       </Stack>
 
-      <div>{showSave && <Button onClick={() => build()}>Save</Button>}</div>
+      <div>{<Button onClick={() => build()}>Save</Button>}</div>
     </Stack>
   );
 }

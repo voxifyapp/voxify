@@ -40,7 +40,7 @@ export default function FillInTheBlanksActivityEditor({
     try {
       const activityData = activity.build();
       onActivityDataChange(activityData);
-      alert("Changes have been saved")
+      alert("Saved")
     } catch (err) {
       alert((err as Error).message);
     }

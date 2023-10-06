@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import exp from 'constants';
 import { ProficiencyLevel, Profile } from 'src/auth/entities/profile.entity';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { Course } from 'src/lms/entities/course.entity';
@@ -59,9 +60,27 @@ describe('/lms', () => {
   });
 
   describe('/course/:courseId/units (GET)', () => {
-    it('returns a list of units for a course', async () => {
+    it('returns a list of published units for a course along with published lessons for each course', async () => {
       const profile = await profileFactory.create();
-      const units = await unitFactory.createList(2);
+      const units = await unitFactory.createList(1, { published: true });
+
+      // Create unpublished units, should not return
+      await unitFactory.createList(1, {
+        courseId: units[0].courseId,
+        published: false,
+      });
+
+      // Add published lessons to a unit
+      const publishedLesson = await lessonFactory.create({
+        unitId: units[0].id,
+        published: true,
+      });
+
+      // Add unpublished lessons to a unit
+      await lessonFactory.create({
+        unitId: units[0].id,
+        published: false,
+      });
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(
@@ -71,6 +90,13 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(units.length);
+      expect(res.body[0].id).toEqual(units[0].id);
+      expect(
+        res.body.find((unit) => unit.id === units[0].id).lessons[0].id,
+      ).toEqual(publishedLesson.id);
+      expect(
+        res.body.find((unit) => unit.id === units[0].id).lessons.length,
+      ).toEqual(1);
     });
   });
 
@@ -91,7 +117,9 @@ describe('/lms', () => {
   describe('/lesson/:lessonId/activities (GET)', () => {
     it('returns a list of activities for a lesson', async () => {
       const profile = await profileFactory.create();
-      const activities = await activityFactory.createList(2);
+      const activities = await activityFactory.createList(2, {
+        published: true,
+      });
 
       const res = await loginAsFirebaseUser(
         request(global.app.getHttpServer()).get(
@@ -101,6 +129,22 @@ describe('/lms', () => {
       );
 
       expect(res.body.length).toEqual(activities.length);
+    });
+
+    it('returns only published activities', async () => {
+      const profile = await profileFactory.create();
+      const activities = await activityFactory.createList(2, {
+        published: false,
+      });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer()).get(
+          `/lms/lesson/${activities[0].lessonId}/activities`,
+        ),
+        { uid: profile.userId },
+      );
+
+      expect(res.body.length).toEqual(0);
     });
   });
 

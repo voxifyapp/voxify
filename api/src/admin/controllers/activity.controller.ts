@@ -9,7 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
-import { ActivityService } from 'src/admin/services/activity.service';
+import {
+  ActivityService,
+  UpdatableActivityFields,
+} from 'src/admin/services/activity.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
 import { Activity } from 'src/lms/entities/activity.entity';
 
@@ -39,7 +42,8 @@ export class ActivityController {
   @Patch(':activityId')
   async update(
     @Param('activityId') activityId: string,
-    @Body() activity: Pick<Activity, 'order' | 'lessonId' | 'data'>,
+    @Body()
+    activity: UpdatableActivityFields,
   ) {
     return await this.activityService.updateActivity(activityId, activity);
   }

@@ -47,24 +47,19 @@ export const unitFactory = Factory.define<Unit>(
       course: undefined,
       courseId: undefined,
       lessons: [],
+      published: false,
     };
   },
 );
 
 export const lessonFactory = Factory.define<Lesson>(
   ({ params, sequence, onCreate }) => {
-    onCreate(async (lesson) => {
-      const unitRepo = await getRepository(Lesson);
-      return unitRepo.save(
-        {
-          ...omit(lesson, ['activities']),
-          unit:
-            lesson.unit === undefined
-              ? await unitFactory.create()
-              : lesson.unit,
-        },
-        { reload: true },
-      );
+    listenOnCreateForFixture({
+      onCreate,
+      relationships: {
+        unitId: unitFactory,
+      },
+      Schema: Lesson,
     });
 
     return {
@@ -74,6 +69,7 @@ export const lessonFactory = Factory.define<Lesson>(
       unit: undefined,
       unitId: undefined,
       activities: [],
+      published: false,
     };
   },
 );
@@ -97,6 +93,7 @@ export const activityFactory = Factory.define<Activity>(
       heading: 'Fill in the blanks',
       data: {},
       type: ActivityType.FILL_IN_THE_BLANKS,
+      published: false,
     };
   },
 );

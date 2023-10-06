@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Repository } from 'typeorm';
 
+export type UpdatableLessonFields = Partial<
+  Pick<Lesson, 'title' | 'order' | 'unitId' | 'published'>
+>;
 @Injectable()
 export class LessonService {
   constructor(
@@ -30,6 +33,16 @@ export class LessonService {
       title,
       order,
       unitId,
+    });
+  }
+
+  async updateLesson(
+    lessonId: string,
+    data: UpdatableLessonFields,
+  ): Promise<Lesson> {
+    return await this.lessonRepository.save({
+      id: lessonId,
+      ...data,
     });
   }
 }

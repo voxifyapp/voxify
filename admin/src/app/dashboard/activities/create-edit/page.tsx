@@ -2,7 +2,7 @@
 
 import ActivityEditor from '@/app/dashboard/activities/create-edit/components/ActivityEditor';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
-import { Activity, ActivityType } from '@/types/lms';
+import { Activity } from '@/types/lms';
 import {
   Alert,
   Box,
@@ -12,6 +12,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
+import { ActivityType } from '@packages/activity-builder';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';

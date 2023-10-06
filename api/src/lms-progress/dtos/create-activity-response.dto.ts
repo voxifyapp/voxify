@@ -8,6 +8,7 @@ export class CreateActivityResponseDto {
   @IsEnum(ActivityResponseResultType)
   result: ActivityResponseResultType;
 
+  // TODO Create proper validations, maybe with zod.
   @IsObject()
   responseData: object;
 
