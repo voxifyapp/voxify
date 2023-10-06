@@ -5,22 +5,31 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
-import React from 'react';
+import React, { useState } from 'react';
+import { TextInput } from 'react-native';
 import { useQuery } from 'react-query';
-import { H1, View } from 'tamagui';
+import { Button, H1, Text, View, XStack } from 'tamagui';
 
 export const LessonScreen = () => {
-  const lessonId = 'fdfb262e-cf99-4c31-84ed-574bb3f53241';
+  const [lessonIdValue, setLessonIdValue] = useState(
+    'b0248d2a-8b54-4b61-ae28-58eb1891c79d',
+  );
+  const [lessonId, setLessonId] = useState(
+    'b0248d2a-8b54-4b61-ae28-58eb1891c79d',
+  );
   const { isLoading: isLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
   });
 
-  const { data: lessonActivities, isLoading: isLessonActivitiesLoading } =
-    useQuery({
-      queryFn: getLessonActivities.bind(null, lessonId),
-      queryKey: [GET_LESSON_ACTIVITIES, lessonId],
-    });
+  const {
+    data: lessonActivities,
+    isLoading: isLessonActivitiesLoading,
+    error,
+  } = useQuery({
+    queryFn: getLessonActivities.bind(null, lessonId),
+    queryKey: [GET_LESSON_ACTIVITIES, lessonId],
+  });
 
   if (isLessonLoading || isLessonActivitiesLoading) {
     return <H1>Loading...</H1>;
@@ -28,6 +37,14 @@ export const LessonScreen = () => {
 
   return (
     <View>
+      <XStack style={{ backgroundColor: 'red' }}>
+        <TextInput
+          style={{ flex: 1 }}
+          value={lessonIdValue}
+          onChangeText={e => setLessonIdValue(e)}
+        />
+        <Button onPress={() => setLessonId(lessonIdValue)}>Load</Button>
+      </XStack>
       {lessonActivities && <ActivityStepper activities={lessonActivities} />}
     </View>
   );
