@@ -6,6 +6,13 @@ export type LessonEntity = BaseEntity & {
   title: string;
 };
 
+export type UnitEntity = BaseEntity & {
+  courseId: string;
+  order: number;
+  title: string;
+  lessons: LessonEntity[];
+};
+
 export enum ActivityType {
   VIDEO = 'VIDEO',
   FILL_IN_THE_BLANKS = 'FILL_IN_THE_BLANKS',

@@ -27,13 +27,6 @@ export const Text = ({ activity, heading }: Props) => {
 
   return (
     <YStack padding="$3" fullscreen>
-      <H1>
-        {activityRendererMachineService.getSnapshot()!.context
-          .totalTimeSpentInMillis / 1000}
-      </H1>
-      <H5>
-        {JSON.stringify(activityRendererMachineService.getSnapshot().value)}
-      </H5>
       {heading && <H3>{heading}</H3>}
       <Card size="$5" width={250} height={300}>
         <Card.Header padded>
@@ -45,7 +38,7 @@ export const Text = ({ activity, heading }: Props) => {
       {activityRendererMachineService
         .getSnapshot()
         ?.can({ type: 'finish', userAnswer: {} }) && (
-        <Button onPress={onDoneClicked}>Check Answer</Button>
+        <Button onPress={onDoneClicked}>Done</Button>
       )}
     </YStack>
   );

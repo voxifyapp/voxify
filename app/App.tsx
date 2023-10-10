@@ -41,12 +41,12 @@ export const Routes = () => {
             <AuthStack.Screen name="Profile Setup" component={ProfileSetup} />
           ) : (
             <>
+              <AuthStack.Screen name="Home" component={HomeScreen} />
               <AuthStack.Screen
                 name="Lesson"
                 component={LessonScreen}
-                options={{ headerShown: false }}
+                options={({ route }) => ({ title: route.params.title })}
               />
-              <AuthStack.Screen name="Home" component={HomeScreen} />
             </>
           )}
         </AppStack.Navigator>
