@@ -68,7 +68,7 @@ function App(): JSX.Element {
     <TamaguiProvider config={tamaguiConfig}>
       <QueryClientProvider client={queryClient}>
         <AppContextProvider>
-          <Theme name="light">
+          <Theme name="base">
             <Routes />
           </Theme>
         </AppContextProvider>

@@ -1,11 +1,15 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Screen } from '@voxify/design_system/Screen';
 import React from 'react';
-import { Button, Stack, YStack } from 'tamagui';
+import { Button, H1, Stack } from 'tamagui';
 
 export const LoginScreen = () => {
   return (
-    <YStack fullscreen>
+    <Screen>
+      <H1 fontWeight="bold" textAlign="center">
+        Learn how to speak better
+      </H1>
       <Stack flex={1} />
       <Button
         onPress={async () => {
@@ -26,10 +30,9 @@ export const LoginScreen = () => {
           } catch (err) {
             console.error(err);
           }
-        }}
-        theme="green">
+        }}>
         Login with Google
       </Button>
-    </YStack>
+    </Screen>
   );
 };
