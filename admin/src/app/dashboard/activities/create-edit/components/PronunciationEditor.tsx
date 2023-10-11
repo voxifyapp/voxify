@@ -15,16 +15,6 @@ export default function PronunciationActivityEditor({
 }) {
   const [prompt, setPrompt] = useState('');
 
-  const [showSave, setShowSave] = useState(false);
-  const firstTimeRef = useRef(true);
-
-  useEffect(() => {
-    if (!firstTimeRef.current) {
-      setShowSave(true);
-    }
-    firstTimeRef.current = false;
-  }, [prompt]);
-
   useEffect(() => {
     if (currentData) {
       setPrompt(currentData.prompt.text);
@@ -37,7 +27,7 @@ export default function PronunciationActivityEditor({
     try {
       const activityData = activity.build();
       onActivityDataChange(activityData);
-      setShowSave(false);
+      alert('Saved!');
     } catch (err) {
       alert((err as Error).message);
     }
@@ -50,7 +40,7 @@ export default function PronunciationActivityEditor({
         onChange={e => setPrompt(e.target.value)}
         label="What to say"
       />
-      <div>{showSave && <Button onClick={() => build()}>Save</Button>}</div>
+      <div>{<Button onClick={() => build()}>Save</Button>}</div>
     </Stack>
   );
 }

@@ -4,8 +4,8 @@ import {
   FormASentenceActivityData,
 } from '@packages/activity-builder';
 import { TextBlock } from '@packages/activity-builder/dist/blocks/text-block';
-import { flattenDeep, merge, shuffle } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { flattenDeep, merge } from 'lodash';
+import { useEffect, useState } from 'react';
 
 export default function FormASentenceEditor({
   onActivityDataChange,
@@ -57,6 +57,7 @@ export default function FormASentenceEditor({
     try {
       const activityData = activity.build();
       onActivityDataChange(activityData);
+      alert('Saved');
     } catch (err) {
       alert((err as Error).message);
     }

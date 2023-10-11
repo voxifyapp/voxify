@@ -11,6 +11,10 @@ export class CourseService {
     return await this.courseRepository.find();
   }
 
+  async getCourseById(courseId: string) {
+    return await this.courseRepository.findOneBy({ id: courseId });
+  }
+
   async createCourse({
     title,
     proficiencyLevel,
@@ -18,6 +22,16 @@ export class CourseService {
     return await this.courseRepository.save({
       title,
       proficiencyLevel,
+    });
+  }
+
+  async updateCourse(
+    courseId: string,
+    data: Pick<Course, 'title' | 'proficiencyLevel'>,
+  ): Promise<Course> {
+    return await this.courseRepository.save({
+      id: courseId,
+      ...data,
     });
   }
 }

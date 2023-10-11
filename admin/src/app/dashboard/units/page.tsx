@@ -1,6 +1,6 @@
 'use client';
 
-import CreateUnitModal from '@/app/dashboard/units/CreateUnitModal';
+import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Course, Unit } from '@/types/lms';
 import {
@@ -18,14 +18,11 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 export default function Units() {
   const searchParams = useSearchParams();
   const courseId = searchParams.get('courseId');
-
-  const [modalOpen, setModalOpen] = useState(false);
   const { data: units, isLoading } = useQuery({
     queryKey: ['units'],
     queryFn: async () =>
@@ -37,15 +34,16 @@ export default function Units() {
 
   return (
     <Box padding={2}>
-      <CreateUnitModal
-        defaultCourseId={courseId}
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
       <TableContainer component={Paper}>
         {isLoading && <CircularProgress />}
         {courseId && <h3>For Course: {courseId}</h3>}
-        <Button onClick={() => setModalOpen(true)}>Create Unit</Button>
+        <Link
+          href={{
+            pathname: '/dashboard/units/create-edit',
+            query: { courseId },
+          }}>
+          <Button>Create Unit</Button>
+        </Link>
 
         <Table>
           <TableHead>
@@ -55,6 +53,7 @@ export default function Units() {
               <TableCell>Order</TableCell>
               <TableCell>For Course</TableCell>
               <TableCell>Created At</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -75,6 +74,21 @@ export default function Units() {
                   <TableCell>{unit.course.title}</TableCell>
                   <TableCell>
                     {dayjs(unit.createdAt).format('DD MMM YYYY')}
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      href={{
+                        pathname: '/dashboard/units/create-edit',
+                        query: { unitId: unit.id },
+                      }}>
+                      <Button>Edit</Button>
+                    </Link>
+                    <PublishButton
+                      isPublished={unit.published}
+                      type="units"
+                      entityId={unit.id}
+                      invalidations={['units']}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

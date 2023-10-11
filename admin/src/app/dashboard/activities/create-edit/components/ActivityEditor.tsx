@@ -4,9 +4,9 @@ import MultipleChoiceActivityEditor from '@/app/dashboard/activities/create-edit
 import PronunciationActivityEditor from '@/app/dashboard/activities/create-edit/components/PronunciationEditor';
 import TextEditor from '@/app/dashboard/activities/create-edit/components/TextEditor';
 import VideoActivityEditor from '@/app/dashboard/activities/create-edit/components/VideoActivityEditor';
-import { ActivityType } from '@/types/lms';
 import { Box } from '@mui/material';
 import {
+  ActivityType,
   FillInTheBlanksActivityData,
   FormASentenceActivityData,
   MultipleChoiceActivityData,

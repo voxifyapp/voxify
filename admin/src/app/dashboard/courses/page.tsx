@@ -39,6 +39,7 @@ export default function Courses() {
             <TableCell>Title</TableCell>
             <TableCell>Proficiency Level</TableCell>
             <TableCell>Created At</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,6 +59,15 @@ export default function Courses() {
                 <TableCell>{course.proficiencyLevel}</TableCell>
                 <TableCell>
                   {dayjs(course.createdAt).format('DD MMM YYYY')}
+                </TableCell>
+                <TableCell>
+                  <Link
+                    href={{
+                      pathname: '/dashboard/courses/create-edit',
+                      query: { courseId: course.id },
+                    }}>
+                    <Button>Edit</Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

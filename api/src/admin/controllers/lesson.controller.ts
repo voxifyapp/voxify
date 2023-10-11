@@ -3,12 +3,16 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/admin/admin.guard';
-import { LessonService } from 'src/admin/services/lesson.service';
+import {
+  LessonService,
+  UpdatableLessonFields,
+} from 'src/admin/services/lesson.service';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 
@@ -31,5 +35,13 @@ export class LessonController {
   @Get(':lessonId')
   async getLessonById(@Param('lessonId') lessonId: string) {
     return await this.lessonService.getLessonById(lessonId);
+  }
+
+  @Patch(':lessonId')
+  async update(
+    @Param('lessonId') lessonId: string,
+    @Body() lesson: UpdatableLessonFields,
+  ) {
+    return await this.lessonService.updateLesson(lessonId, lesson);
   }
 }

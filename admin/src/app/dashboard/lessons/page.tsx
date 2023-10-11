@@ -1,6 +1,6 @@
 'use client';
 
-import CrateLessonModal from '@/app/dashboard/lessons/CreateLessonModal';
+import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Lesson, Unit } from '@/types/lms';
 import {
@@ -8,6 +8,7 @@ import {
   Button,
   CircularProgress,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -18,14 +19,12 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 export default function Units() {
   const searchParams = useSearchParams();
   const unitId = searchParams.get('unitId');
 
-  const [modalOpen, setModalOpen] = useState(false);
   const { data: lessons, isLoading } = useQuery({
     queryKey: ['lessons'],
     queryFn: async () =>
@@ -37,15 +36,16 @@ export default function Units() {
 
   return (
     <Box padding={2}>
-      <CrateLessonModal
-        defaultUnitId={unitId}
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
       <TableContainer component={Paper}>
         {isLoading && <CircularProgress />}
         {unitId && <h3>For Unit: {unitId}</h3>}
-        <Button onClick={() => setModalOpen(true)}>Create Lesson</Button>
+        <Link
+          href={{
+            pathname: '/dashboard/lessons/create-edit',
+            query: { unitId },
+          }}>
+          <Button>Create Lesson</Button>
+        </Link>
 
         <Table>
           <TableHead>
@@ -55,6 +55,7 @@ export default function Units() {
               <TableCell>Order</TableCell>
               <TableCell>For Unit</TableCell>
               <TableCell>Created At</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -75,6 +76,23 @@ export default function Units() {
                   <TableCell>{lesson.unit?.title}</TableCell>
                   <TableCell>
                     {dayjs(lesson.createdAt).format('DD MMM YYYY')}
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row">
+                      <Link
+                        href={{
+                          pathname: '/dashboard/lessons/create-edit',
+                          query: { lessonId: lesson.id },
+                        }}>
+                        <Button>Edit</Button>
+                      </Link>
+                      <PublishButton
+                        isPublished={lesson.published}
+                        invalidations={['lessons']}
+                        type="lessons"
+                        entityId={lesson.id}
+                      />
+                    </Stack>
                   </TableCell>
                 </TableRow>
               ))}
