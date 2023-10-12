@@ -5,6 +5,10 @@ import React, { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Spacer, YStack, H1, Card, Text, Paragraph } from 'tamagui';
 import { Circle } from '@tamagui/lucide-icons';
+import {
+  GET_COURSE_FOR_PROFILE,
+  getCourseForProfile,
+} from '@voxify/api/auth/profile';
 
 type Props = {
   navigation: {
@@ -17,15 +21,22 @@ export const HomeScreen = ({ navigation }: Props) => {
     navigation.navigate('Lesson', { lessonId, title });
   };
 
-  const courseId = 'f1655c51-5986-4196-b5a1-c56fc3aa179a';
+  const { data: courseData, isLoading: isCourseLoading } = useQuery({
+    queryFn: getCourseForProfile,
+    queryKey: [GET_COURSE_FOR_PROFILE],
+  });
+
+  const courseId = courseData && courseData.id;
+
   const { data: units, isLoading: isUnitsLoading } = useQuery({
     queryFn: getUnits.bind(null, courseId),
     queryKey: [GET_UNITS, courseId],
+    enabled: !!courseId,
   });
 
   const listRef = useRef<FlatList<UnitEntity>>(null);
 
-  if (isUnitsLoading) {
+  if (isCourseLoading || isUnitsLoading) {
     return <H1>Loading...</H1>;
   }
 
@@ -33,10 +44,8 @@ export const HomeScreen = ({ navigation }: Props) => {
     <YStack fullscreen theme="green" backgroundColor={'$blue2Dark'}>
       <FlatList
         contentContainerStyle={{ marginTop: 20 }}
-        decelerationRate={0.8}
         ref={listRef}
         data={units}
-        disableIntervalMomentum
         ItemSeparatorComponent={() => <Spacer size={20} />}
         keyExtractor={(unit, index) => unit.id || `${index}`}
         renderItem={({ item: unit, index }) => (
