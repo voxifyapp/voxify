@@ -4,6 +4,7 @@ import { YStack, YStackProps, styled } from 'tamagui';
 export const ScreenYStack = styled(YStack, {
   name: 'ScreenYStack',
   backgroundColor: '$background',
+  padding: '$screenPadding',
 });
 
 /**

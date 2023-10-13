@@ -1,14 +1,15 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Screen } from '@voxify/design_system/Screen';
+import { Screen } from '@voxify/design_system/layout';
+import { H1 } from '@voxify/design_system/typography';
 import React from 'react';
-import { Button, H1, Stack } from 'tamagui';
+import { Button, Stack } from 'tamagui';
 
 export const LoginScreen = () => {
   return (
     <Screen>
       <H1 fontWeight="bold" textAlign="center">
-        Learn how to speak better
+        Learn how to speak better by talking!
       </H1>
       <Stack flex={1} />
       <Button

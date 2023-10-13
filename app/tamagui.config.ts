@@ -11,11 +11,16 @@ const green = '#009E5A';
 // Background colors
 const bgYellow = '#FEFAF1';
 
+// Text colors
+const primaryTextColor = '#09234C'; // Used in place of black. Really dark
+
 const appConfig = createTamagui({
   ...config,
   themes: {
     base: {
       background: bgYellow,
+      screenPadding: config.tokens.space[4],
+      primaryTextColor,
     },
     base_H1: {
       textColor: green,
