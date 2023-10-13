@@ -8,8 +8,8 @@ import { Button, Stack } from 'tamagui';
 export const LoginScreen = () => {
   return (
     <Screen>
-      <H1 fontWeight="bold" textAlign="center">
-        Learn how to speak better by talking!
+      <H1 maxWidth="$size.24" fontWeight="bold" textAlign="center">
+        Learn how to speak better
       </H1>
       <Stack flex={1} />
       <Button

@@ -16,14 +16,23 @@ const primaryTextColor = '#09234C'; // Used in place of black. Really dark
 
 const appConfig = createTamagui({
   ...config,
+  tokens: {
+    ...config.tokens,
+    color: {
+      blue,
+      yellow,
+      orange,
+      pink,
+      green,
+    },
+  },
   themes: {
     base: {
       background: bgYellow,
       screenPadding: config.tokens.space[4],
+
+      // Typography
       primaryTextColor,
-    },
-    base_H1: {
-      textColor: green,
     },
     base_Button: config.themes.light_blue_Button,
   },

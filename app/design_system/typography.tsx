@@ -1,6 +1,12 @@
-import { H1 as TH1, styled } from 'tamagui';
+import React from 'react';
 
-export const H1 = styled(TH1, {
-  name: 'H1',
+import { SizableTextProps, styled, SizableText as TSizableText } from 'tamagui';
+
+export const SizableText = styled(TSizableText, {
+  name: 'SizableText',
   color: '$primaryTextColor',
 });
+
+export const H1 = (props: SizableTextProps) => (
+  <SizableText size="$10" {...props} />
+);
