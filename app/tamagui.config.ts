@@ -2,58 +2,60 @@ import { config } from '@tamagui/config';
 import { createTamagui } from 'tamagui';
 
 // Defining the main colors
-const blue = '#1b69e4';
-const yellow = '#FDDC38';
-const orange = '#FA4D1D';
-const pink = '#FBC3D4';
-const green = '#009E5A';
+const blue5 = '#1b69e4';
+const yellow5 = '#FDDC38';
+const orange5 = '#FA4D1D';
+const pink5 = '#FBC3D4';
+const green5 = '#009E5A';
+
+// Defining the color gradients for the colors 0 being the lightest and 10 being the darkest
+const blue10 = '#09234C';
 
 // Background colors
 const bgYellow = '#FEFAF1';
 
 // Text colors
-const primaryTextColor = '#09234C'; // Used in place of black. Really dark
+const primaryTextColor = blue10; // Used in place of black. Really dark
 
 const appConfig = createTamagui({
   ...config,
   tokens: {
     ...config.tokens,
     color: {
-      blue,
-      yellow,
-      orange,
-      pink,
-      green,
+      blue: blue5,
+      yellow: yellow5,
+      orange: orange5,
+      pink: pink5,
+      green: green5,
+    },
+    size: {
+      ...config.tokens.size,
+    },
+    space: {
+      ...config.tokens.space,
+    },
+    radius: {
+      ...config.tokens.radius,
     },
   },
   themes: {
     base: {
+      // Screen properties
       background: bgYellow,
       screenPadding: config.tokens.space[4],
+
+      // Primary color
+      color: blue5,
 
       // Typography
       primaryTextColor,
     },
-    base_Button: config.themes.light_blue_Button,
+    base_Button: {
+      background: blue5,
+      color: '#ffffff',
+    },
   },
 });
-
-// Setup color palette
-// Example:
-// const dark_blue = [
-//   'hsl(212, 35.0%, 9.2%)', // background
-//   'hsl(216, 50.0%, 11.8%)',
-//   'hsl(214, 59.4%, 15.3%)',
-//   'hsl(214, 65.8%, 17.9%)',
-//   'hsl(213, 71.2%, 20.2%)',
-//   'hsl(212, 77.4%, 23.1%)',
-//   'hsl(211, 85.1%, 27.4%)',
-//   'hsl(211, 89.7%, 34.1%)',
-//   'hsl(206, 100%, 50.0%)',
-//   'hsl(209, 100%, 60.6%)',
-//   'hsl(210, 100%, 66.1%)',
-//   'hsl(206, 98.0%, 95.8%)', // foreground
-// ]
 
 export type AppConfig = typeof appConfig;
 declare module 'tamagui' {
