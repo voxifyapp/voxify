@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppStackParamList } from '@voxify/App';
 import {
   GET_LESSON,
   GET_LESSON_ACTIVITIES,
@@ -5,31 +7,26 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
+import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import React, { useState } from 'react';
-import { TextInput } from 'react-native';
 import { useQuery } from 'react-query';
-import { Button, H1, Text, View, XStack } from 'tamagui';
+import { H1, View } from 'tamagui';
 
-export const LessonScreen = () => {
-  const [lessonIdValue, setLessonIdValue] = useState(
-    'b0248d2a-8b54-4b61-ae28-58eb1891c79d',
-  );
-  const [lessonId, setLessonId] = useState(
-    'b0248d2a-8b54-4b61-ae28-58eb1891c79d',
-  );
+type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
+export const LessonScreen = ({ route }: Props) => {
+  const params = route.params;
+
+  const [lessonId, setLessonId] = useState(params.lessonId);
   const { isLoading: isLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
   });
 
-  const {
-    data: lessonActivities,
-    isLoading: isLessonActivitiesLoading,
-    error,
-  } = useQuery({
-    queryFn: getLessonActivities.bind(null, lessonId),
-    queryKey: [GET_LESSON_ACTIVITIES, lessonId],
-  });
+  const { data: lessonActivities, isLoading: isLessonActivitiesLoading } =
+    useQuery({
+      queryFn: () => getLessonActivities(lessonId),
+      queryKey: [GET_LESSON_ACTIVITIES, lessonId],
+    });
 
   if (isLessonLoading || isLessonActivitiesLoading) {
     return <H1>Loading...</H1>;
@@ -37,14 +34,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
-      <XStack style={{ backgroundColor: 'red' }}>
-        <TextInput
-          style={{ flex: 1 }}
-          value={lessonIdValue}
-          onChangeText={e => setLessonIdValue(e)}
-        />
-        <Button onPress={() => setLessonId(lessonIdValue)}>Load</Button>
-      </XStack>
+      <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
       {lessonActivities && <ActivityStepper activities={lessonActivities} />}
     </View>
   );
