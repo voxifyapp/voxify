@@ -42,11 +42,15 @@ export const Routes = () => {
           ) : (
             <>
               <AuthStack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+              />
+              <AuthStack.Screen
                 name="Lesson"
                 component={LessonScreen}
                 options={{ headerShown: false }}
               />
-              <AuthStack.Screen name="Home" component={HomeScreen} />
             </>
           )}
         </AppStack.Navigator>
