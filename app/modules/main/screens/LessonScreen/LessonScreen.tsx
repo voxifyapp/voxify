@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppStackParamList } from '@voxify/App';
 import {
   GET_LESSON,
   GET_LESSON_ACTIVITIES,
@@ -5,12 +7,16 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
-import React from 'react';
+import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
 
-export const LessonScreen = () => {
-  const lessonId = 'fdfb262e-cf99-4c31-84ed-574bb3f53241';
+type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
+export const LessonScreen = ({ route }: Props) => {
+  const params = route.params;
+
+  const [lessonId, setLessonId] = useState(params.lessonId);
   const { isLoading: isLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
@@ -18,23 +24,9 @@ export const LessonScreen = () => {
 
   const { data: lessonActivities, isLoading: isLessonActivitiesLoading } =
     useQuery({
-      queryFn: getLessonActivities.bind(null, lessonId),
+      queryFn: () => getLessonActivities(lessonId),
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
-
-  // let tempActivities: ActivityEntity[] = useMemo(() => {
-  //   const result = [];
-  //   if (lessonActivities) {
-  //     for (let i = 0; i < 100; i++) {
-  //       const a = lessonActivities![4];
-  //       result.push({
-  //         ...a,
-  //         id: '' + Math.floor(Math.random() * 1000000) + 1,
-  //       });
-  //     }
-  //   }
-  //   return result;
-  // }, [lessonActivities]);
 
   if (isLessonLoading || isLessonActivitiesLoading) {
     return <H1>Loading...</H1>;
@@ -42,6 +34,7 @@ export const LessonScreen = () => {
 
   return (
     <View>
+      <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
       {lessonActivities && <ActivityStepper activities={lessonActivities} />}
     </View>
   );

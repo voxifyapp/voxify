@@ -47,7 +47,7 @@ export default function CrateLessonModal() {
         method: lessonId ? 'PATCH' : 'POST',
         body: JSON.stringify({
           title,
-          unitId,
+          unitId: unitId || undefined,
           order,
         }),
       }),
