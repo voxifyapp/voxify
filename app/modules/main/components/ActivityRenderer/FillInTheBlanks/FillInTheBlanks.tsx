@@ -108,12 +108,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
                 key={index}
                 onPress={() => {
                   addWord(option, index);
-                }}
-                theme={
-                  new Set(Object.values(userAnswerIndex)).has(index)
-                    ? 'red'
-                    : 'green'
-                }>
+                }}>
                 {option}
               </Button>
             ))}
@@ -150,8 +145,7 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
           disabled={!canRemoveWord}
           onPress={() => {
             removeWord(segment);
-          }}
-          theme="green">
+          }}>
           {answerForBlank}
         </Button>
       );

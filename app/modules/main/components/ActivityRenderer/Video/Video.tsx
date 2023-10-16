@@ -9,6 +9,11 @@ type Props = {
   activity: VideoActivity;
 };
 
+/**
+ * TODO: Allow for play/pause/restart
+ * TODO: Create a activity response on completion, handle edge cases
+ * TODO: Allow seeking
+ */
 export const Video = ({ activity }: Props) => {
   const [playbackProgress, setPlaybackProgress] = useState<null | number>(null);
 
