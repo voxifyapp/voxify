@@ -1,30 +1,45 @@
 import { VideoActivity } from '@packages/activity-builder';
 import { Constants } from '@voxify/appConstants';
-import React from 'react';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import RNVideo from 'react-native-video';
-import { YStack } from 'tamagui';
+import { Progress, ZStack } from 'tamagui';
 
 type Props = {
   activity: VideoActivity;
 };
 
 export const Video = ({ activity }: Props) => {
+  const [playbackProgress, setPlaybackProgress] = useState<null | number>(null);
+
   return (
-    <YStack>
+    <ZStack fullscreen>
       <RNVideo
         resizeMode="cover"
-        paused={true}
-        onBandwidthUpdate={data => console.log(data)}
-        onBuffer={data => console.log(data)}
         reportBandwidth={true}
-        onPlaybackStalled={() => console.log('Stalled')}
+        onProgress={({ currentTime, seekableDuration }) => {
+          setPlaybackProgress((currentTime / seekableDuration) * 100);
+        }}
         source={{ uri: getVideoUrlFromFileName(activity.getVideoFileName()) }}
-        style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+        style={styles.videoContainer}
       />
-    </YStack>
+      {playbackProgress !== null && (
+        <Progress size="$1" position="absolute" value={playbackProgress}>
+          <Progress.Indicator animation="bouncy" />
+        </Progress>
+      )}
+    </ZStack>
   );
 };
 
 export const getVideoUrlFromFileName = (fileName: string): string => {
   return `${Constants.ACTIVITY_VIDEO_URL}/${fileName}.mp4`;
 };
+
+const styles = StyleSheet.create({
+  videoContainer: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'black',
+  },
+});

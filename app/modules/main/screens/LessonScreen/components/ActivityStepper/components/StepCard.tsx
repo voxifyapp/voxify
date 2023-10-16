@@ -6,4 +6,5 @@ export const StepCard = styled(YStack, {
   borderRadius: '$6',
   backgroundColor: 'white',
   elevation: 1,
+  overflow: 'hidden',
 });

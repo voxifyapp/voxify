@@ -78,40 +78,38 @@ export const ActivityStepper = ({ activities }: Props) => {
   ]);
 
   return (
-    <YStack>
-      <FlatList
-        decelerationRate={0.8}
-        getItemLayout={getItemLayout}
-        ref={listRef}
-        data={renderedActivities}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        disableIntervalMomentum
-        snapToOffsets={renderedActivities.map((_, index) => {
-          return getItemLayout(_, index).offset;
-        })}
-        ItemSeparatorComponent={() => <Spacer size={20} />}
-        keyExtractor={(activity, index) => activity.id || `${index}`}
-        renderItem={({ item: activity, index }) => (
-          <YStack alignItems="center">
-            <StepCard
-              width={width}
-              height={height}
-              mb={
-                index === renderedActivities.length - 1
-                  ? firstAndLastElementMargin
-                  : undefined
-              }
-              mt={index === 0 ? firstAndLastElementMargin : undefined}>
-              <ActivityStep
-                index={index}
-                restoreData={completedActivities[activity.id]}
-                activity={activity}
-                isActive={index === currentActiveIndex}
-              />
-            </StepCard>
-          </YStack>
-        )}
-      />
-    </YStack>
+    <FlatList
+      decelerationRate={0.8}
+      getItemLayout={getItemLayout}
+      ref={listRef}
+      data={renderedActivities}
+      viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+      disableIntervalMomentum
+      snapToOffsets={renderedActivities.map((_, index) => {
+        return getItemLayout(_, index).offset;
+      })}
+      ItemSeparatorComponent={() => <Spacer size={20} />}
+      keyExtractor={(activity, index) => activity.id || `${index}`}
+      renderItem={({ item: activity, index }) => (
+        <YStack alignItems="center">
+          <StepCard
+            width={width}
+            height={height}
+            mb={
+              index === renderedActivities.length - 1
+                ? firstAndLastElementMargin
+                : undefined
+            }
+            mt={index === 0 ? firstAndLastElementMargin : undefined}>
+            <ActivityStep
+              index={index}
+              restoreData={completedActivities[activity.id]}
+              activity={activity}
+              isActive={index === currentActiveIndex}
+            />
+          </StepCard>
+        </YStack>
+      )}
+    />
   );
 };
