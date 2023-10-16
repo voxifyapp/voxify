@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { UnitEntity } from '@voxify/types/lms/lms';
 import React, { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Spacer, YStack, H1, Card, Text, Paragraph } from 'tamagui';
+import { Spacer, YStack, H1, Card, Text, Paragraph, Button } from 'tamagui';
 import { Circle } from '@tamagui/lucide-icons';
 import {
   GET_COURSE_FOR_PROFILE,
@@ -42,6 +42,9 @@ export const HomeScreen = ({ navigation }: Props) => {
 
   return (
     <YStack fullscreen theme="green" backgroundColor={'$blue2Dark'}>
+      <Button onPress={() => navigation.navigate('Lesson', { lessonId: '' })}>
+        Navigate to Lesson
+      </Button>
       <FlatList
         contentContainerStyle={{ marginTop: 20 }}
         ref={listRef}
