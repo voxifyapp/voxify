@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Param, Req } from '@nestjs/common';
 import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import { LmsService } from 'src/lms/services/lms.service';
 
@@ -19,29 +19,31 @@ export class LmsController {
   }
 
   @Get('courses/:courseId')
-  async getCourseById(courseId: string) {
+  async getCourseById(@Param('courseId') courseId: string) {
     return await this.lmsService.getCourseById(courseId);
   }
 
   @Get('courses/:courseId/units')
-  async getUnitsWithAssociatedLessonsForCourse(courseId: string) {
+  async getUnitsWithAssociatedLessonsForCourse(
+    @Param('courseId') courseId: string,
+  ) {
     return await this.lmsService.getUnitsWithAssociatedLessonsForCourse(
       courseId,
     );
   }
 
   @Get('lesson/:lessonId')
-  async getLessonById(lessonId: string) {
+  async getLessonById(@Param('lessonId') lessonId: string) {
     return await this.lmsService.getLessonById(lessonId);
   }
 
   @Get('lesson/:lessonId/activities')
-  async getActivitiesForLesson(lessonId: string) {
+  async getActivitiesForLesson(@Param('lessonId') lessonId: string) {
     return await this.lmsService.getActivitiesForLesson(lessonId);
   }
 
   @Get('activities/:activityId')
-  async getActivityById(activityId: string) {
+  async getActivityById(@Param('activityId') activityId: string) {
     return await this.lmsService.getActivityById(activityId);
   }
 }

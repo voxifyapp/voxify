@@ -20,8 +20,13 @@ GoogleSignin.configure({
   webClientId: Config.FIREBASE_WEBCLIENT_ID,
 });
 
+export type AppStackParamList = {
+  Home: undefined;
+  Lesson: { lessonId: string };
+};
+
 const AuthStack = createNativeStackNavigator();
-const AppStack = createNativeStackNavigator();
+const AppStack = createNativeStackNavigator<AppStackParamList>();
 const queryClient = new QueryClient();
 
 export const Routes = () => {
@@ -42,11 +47,15 @@ export const Routes = () => {
           ) : (
             <>
               <AuthStack.Screen
-                name="Lesson"
-                component={LessonScreen}
+                name="Home"
+                component={HomeScreen}
                 options={{ headerShown: false }}
               />
-              <AuthStack.Screen name="Home" component={HomeScreen} />
+              <AuthStack.Screen
+                name="Lesson"
+                component={LessonScreen as any}
+                options={{ headerShown: false }}
+              />
             </>
           )}
         </AppStack.Navigator>

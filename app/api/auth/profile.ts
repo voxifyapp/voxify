@@ -25,3 +25,8 @@ export const startFreeTrail = async (
     })
   ).data;
 };
+
+export const GET_COURSE_FOR_PROFILE = 'GET_COURSE_FOR_PROFILE';
+export const getCourseForProfile = async (): Promise<any> => {
+  return (await authAxios.get('lms/courses/current-course-for-profile')).data;
+};
