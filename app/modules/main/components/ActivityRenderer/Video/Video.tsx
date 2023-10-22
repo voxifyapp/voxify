@@ -1,19 +1,24 @@
 import { VideoActivity } from '@packages/activity-builder';
-import { PauseCircle, PlayCircle, RotateCcw } from '@tamagui/lucide-icons';
+import {
+  FastForward,
+  PauseCircle,
+  PlayCircle,
+  Rewind,
+  RotateCcw,
+} from '@tamagui/lucide-icons';
 import { Constants } from '@voxify/appConstants';
 import { YStack } from '@voxify/design_system/layout';
 import { useCreateVideoContext } from '@voxify/modules/main/components/ActivityRenderer/Video/video.context';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import RNVideo, { OnProgressData } from 'react-native-video';
-import { ButtonIcon, Progress, ZStack } from 'tamagui';
+import { ButtonIcon, Progress, XStack, ZStack } from 'tamagui';
 
 type Props = {
   activity: VideoActivity;
 };
 
 /**
- * TODO: Allow for play/pause/restart
  * TODO: Create a activity response on completion, handle edge cases
  * TODO: Optimize scrolling
  * TODO: Allow seeking
@@ -43,6 +48,7 @@ export const Video = ({ activity }: Props) => {
   useEffect(() => {
     if (isVideoComplete) {
       dispatch({ type: ActionTypes.PAUSE_VIDEO });
+      setShowControls(true);
     }
   }, [isVideoComplete]);
 
@@ -92,23 +98,40 @@ export const Video = ({ activity }: Props) => {
                 </ButtonIcon>
               </Pressable>
             ) : (
-              <Pressable
-                onPress={() =>
-                  dispatch({
-                    type:
-                      state.videoStatus === 'paused'
-                        ? ActionTypes.PLAY_VIDEO
-                        : ActionTypes.PAUSE_VIDEO,
-                  })
-                }>
-                <ButtonIcon scaleIcon={6}>
-                  {state.videoStatus === 'paused' ? (
-                    <PlayCircle color="$inverseTextColor" />
-                  ) : (
-                    <PauseCircle color="$inverseTextColor" />
-                  )}
-                </ButtonIcon>
-              </Pressable>
+              <XStack alignItems="center">
+                <Pressable
+                  onPress={() =>
+                    videoRef.current?.seek(
+                      Math.min((state.videoProgress?.currentTime || 0) - 5, 0),
+                    )
+                  }>
+                  <ButtonIcon scaleIcon={4}>
+                    <Rewind color="$inverseTextColor" />
+                  </ButtonIcon>
+                </Pressable>
+                <Pressable
+                  onPress={() =>
+                    dispatch({
+                      type:
+                        state.videoStatus === 'paused'
+                          ? ActionTypes.PLAY_VIDEO
+                          : ActionTypes.PAUSE_VIDEO,
+                    })
+                  }>
+                  <ButtonIcon scaleIcon={6}>
+                    {state.videoStatus === 'paused' ? (
+                      <PlayCircle color="$inverseTextColor" />
+                    ) : (
+                      <PauseCircle color="$inverseTextColor" />
+                    )}
+                  </ButtonIcon>
+                </Pressable>
+                <Pressable>
+                  <ButtonIcon scaleIcon={4}>
+                    <FastForward color="$inverseTextColor" />
+                  </ButtonIcon>
+                </Pressable>
+              </XStack>
             )}
           </YStack>
         </ZStack>
