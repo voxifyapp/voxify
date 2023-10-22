@@ -13,7 +13,7 @@ import { Spacer, YStack } from 'tamagui';
 export const activityAspectRatio = 9 / 15;
 export const { width: screenWidth, height: screenHeight } =
   Dimensions.get('window');
-export const width = screenWidth / 1.1;
+export const width = screenWidth / 1.2;
 export const height = width / activityAspectRatio;
 
 export const firstAndLastElementMargin = (screenHeight - height) / 2;
