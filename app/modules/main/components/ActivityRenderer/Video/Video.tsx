@@ -9,45 +9,46 @@ import {
 import { Constants } from '@voxify/appConstants';
 import { YStack } from '@voxify/design_system/layout';
 import { useCreateVideoContext } from '@voxify/modules/main/components/ActivityRenderer/Video/video.context';
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import { Video as ExpoVideo, ResizeMode } from 'expo-av';
+import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import RNVideo, { OnProgressData } from 'react-native-video';
 import { ButtonIcon, Progress, XStack, ZStack } from 'tamagui';
 
 type Props = {
   activity: VideoActivity;
 };
 
+const SKIP_IN_MILLIS = 10 * 1000;
 /**
  * TODO: Create a activity response on completion, handle edge cases
  * TODO: Optimize scrolling
- * TODO: Allow seeking
  * A good place to implement XState
  */
 export const Video = ({ activity }: Props) => {
-  const videoRef = useRef<RNVideo>(null);
+  const videoRef = useRef<ExpoVideo>(null);
+  const [videoProgress, setVideoProgress] = useState<null | {
+    currentPosition: number;
+    videoLength: number;
+  }>(null);
+  const [videoStatus, setVideoStatus] = useState<
+    'playing' | 'paused' | 'finished' | 'buffering' | null
+  >(null);
   const [showControls, setShowControls] = useState(false);
 
-  const [state, dispatch] = useReducer(videoReducer, {
-    videoStatus: 'paused',
-  } as State);
-
-  const playbackProgressPercentage = state.videoProgress
-    ? (state.videoProgress.currentTime / state.videoProgress.seekableDuration) *
-      100
+  const playbackProgressPercentage = videoProgress
+    ? (videoProgress.currentPosition / videoProgress.videoLength) * 100
     : null;
   const { isWorkingState } = useCreateVideoContext({ activity });
 
   useEffect(() => {
-    dispatch({
-      type: isWorkingState ? ActionTypes.PLAY_VIDEO : ActionTypes.PAUSE_VIDEO,
-    });
+    isWorkingState
+      ? videoRef.current?.playAsync()
+      : videoRef.current?.pauseAsync();
   }, [isWorkingState]);
 
   const isVideoComplete = (playbackProgressPercentage || 0) > 99.5;
   useEffect(() => {
     if (isVideoComplete) {
-      dispatch({ type: ActionTypes.PAUSE_VIDEO });
       setShowControls(true);
     }
   }, [isVideoComplete]);
@@ -56,17 +57,27 @@ export const Video = ({ activity }: Props) => {
     <ZStack fullscreen>
       {isWorkingState ? (
         <YStack fullscreen onPress={() => setShowControls(true)}>
-          <RNVideo
+          <ExpoVideo
             ref={videoRef}
-            resizeMode="cover"
-            reportBandwidth={true}
-            repeat={false}
-            paused={state.videoStatus === 'paused'}
-            onProgress={_videoProgress => {
-              dispatch({
-                type: ActionTypes.UPDATE_PROGRESS,
-                progress: _videoProgress,
-              });
+            resizeMode={ResizeMode.COVER}
+            progressUpdateIntervalMillis={500}
+            onPlaybackStatusUpdate={playbackStatus => {
+              if (playbackStatus.isLoaded) {
+                setVideoProgress({
+                  currentPosition: playbackStatus.positionMillis,
+                  // TODO: Need to check when this is undefined
+                  videoLength: playbackStatus.durationMillis!,
+                });
+                if (playbackStatus.isBuffering) {
+                  return setVideoStatus('buffering');
+                }
+
+                if (playbackStatus.isPlaying) {
+                  return setVideoStatus('playing');
+                } else {
+                  return setVideoStatus('paused');
+                }
+              }
             }}
             source={{
               uri: getVideoUrlFromFileName(activity.getVideoFileName()),
@@ -90,47 +101,61 @@ export const Video = ({ activity }: Props) => {
             {isVideoComplete ? (
               <Pressable
                 onPress={() => {
-                  dispatch({ type: ActionTypes.RESTART_VIDEO });
-                  videoRef.current?.seek(0);
+                  setShowControls(false);
+                  videoRef.current?.replayAsync();
                 }}>
                 <ButtonIcon scaleIcon={6}>
                   <RotateCcw color="$inverseTextColor" />
                 </ButtonIcon>
               </Pressable>
             ) : (
-              <XStack alignItems="center">
+              <XStack
+                width="100%"
+                justifyContent="space-evenly"
+                alignItems="center">
                 <Pressable
-                  onPress={() =>
-                    videoRef.current?.seek(
-                      Math.min((state.videoProgress?.currentTime || 0) - 5, 0),
-                    )
-                  }>
+                  onPress={() => {
+                    videoRef.current?.setStatusAsync({
+                      positionMillis: Math.max(
+                        (videoProgress?.currentPosition || 0) - SKIP_IN_MILLIS,
+                        0,
+                      ),
+                    });
+                  }}>
                   <ButtonIcon scaleIcon={4}>
                     <Rewind color="$inverseTextColor" />
                   </ButtonIcon>
                 </Pressable>
                 <Pressable
-                  onPress={() =>
-                    dispatch({
-                      type:
-                        state.videoStatus === 'paused'
-                          ? ActionTypes.PLAY_VIDEO
-                          : ActionTypes.PAUSE_VIDEO,
-                    })
-                  }>
+                  onPress={() => {
+                    videoStatus === 'playing'
+                      ? videoRef.current?.pauseAsync()
+                      : videoRef.current?.playAsync();
+                  }}>
                   <ButtonIcon scaleIcon={6}>
-                    {state.videoStatus === 'paused' ? (
+                    {videoStatus === 'paused' ? (
                       <PlayCircle color="$inverseTextColor" />
                     ) : (
                       <PauseCircle color="$inverseTextColor" />
                     )}
                   </ButtonIcon>
                 </Pressable>
-                <Pressable>
-                  <ButtonIcon scaleIcon={4}>
-                    <FastForward color="$inverseTextColor" />
-                  </ButtonIcon>
-                </Pressable>
+                {videoProgress?.videoLength && (
+                  <Pressable
+                    onPress={() => {
+                      videoRef.current?.setStatusAsync({
+                        positionMillis: Math.min(
+                          (videoProgress?.currentPosition || 0) +
+                            SKIP_IN_MILLIS,
+                          videoProgress?.videoLength,
+                        ),
+                      });
+                    }}>
+                    <ButtonIcon scaleIcon={4}>
+                      <FastForward color="$inverseTextColor" />
+                    </ButtonIcon>
+                  </Pressable>
+                )}
               </XStack>
             )}
           </YStack>
@@ -147,42 +172,6 @@ export const Video = ({ activity }: Props) => {
       )}
     </ZStack>
   );
-};
-
-type State = {
-  videoStatus: 'playing' | 'paused';
-  videoProgress: OnProgressData | null;
-};
-
-enum ActionTypes {
-  PLAY_VIDEO,
-  PAUSE_VIDEO,
-  UPDATE_PROGRESS,
-  RESTART_VIDEO,
-}
-
-type Actions =
-  | {
-      type:
-        | ActionTypes.PLAY_VIDEO
-        | ActionTypes.PAUSE_VIDEO
-        | ActionTypes.RESTART_VIDEO;
-    }
-  | { type: ActionTypes.UPDATE_PROGRESS; progress: OnProgressData };
-
-const videoReducer = (state: State, action: Actions): State => {
-  switch (action.type) {
-    case ActionTypes.PLAY_VIDEO:
-      return { ...state, videoStatus: 'playing' };
-    case ActionTypes.PAUSE_VIDEO:
-      return { ...state, videoStatus: 'paused' };
-    case ActionTypes.RESTART_VIDEO:
-      return { ...state, videoStatus: 'playing', videoProgress: null };
-    case ActionTypes.UPDATE_PROGRESS:
-      return { ...state, videoProgress: action.progress };
-  }
-
-  return state;
 };
 
 export const getVideoUrlFromFileName = (fileName: string): string => {
