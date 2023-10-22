@@ -12,7 +12,7 @@ import { useCreateVideoContext } from '@voxify/modules/main/components/ActivityR
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { Video as ExpoVideo, ResizeMode } from 'expo-av';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { ButtonIcon, Progress, XStack, ZStack } from 'tamagui';
 
@@ -27,20 +27,16 @@ export const Video = ({ activity }: Props) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
-  const [videoProgress, setVideoProgress] = useState<null | {
-    currentPosition: number;
-    videoLength?: number;
-  }>(null);
-  const [videoStatus, setVideoStatus] = useState<
-    'playing' | 'paused' | 'finished' | 'buffering' | null
-  >(null);
-  const [showControls, setShowControls] = useState(false);
-
-  const playbackProgressPercentage = getVideoProgressPercentage(
-    videoProgress?.currentPosition,
-    videoProgress?.videoLength,
-  );
-  const { isWorkingState } = useCreateVideoContext({ activity });
+  const {
+    isWorkingState,
+    playbackProgressPercentage,
+    setShowControls,
+    showControls,
+    setVideoProgress,
+    videoStatus,
+    setVideoStatus,
+    videoProgress,
+  } = useCreateVideoContext({ activity });
 
   useEffect(() => {
     isWorkingState
@@ -53,7 +49,7 @@ export const Video = ({ activity }: Props) => {
     if (isVideoComplete) {
       setShowControls(true);
     }
-  }, [activityRendererMachineService, isVideoComplete]);
+  }, [activityRendererMachineService, isVideoComplete, setShowControls]);
 
   const markAsFinished = async () => {
     const _videoStatus = await videoRef.current?.getStatusAsync();
@@ -154,7 +150,7 @@ export const Video = ({ activity }: Props) => {
                       ),
                     });
                   }}>
-                  <ButtonIcon scaleIcon={4}>
+                  <ButtonIcon scaleIcon={3}>
                     <Rewind color="$inverseTextColor" />
                   </ButtonIcon>
                 </Pressable>
@@ -183,7 +179,7 @@ export const Video = ({ activity }: Props) => {
                         ),
                       });
                     }}>
-                    <ButtonIcon scaleIcon={4}>
+                    <ButtonIcon scaleIcon={3}>
                       <FastForward color="$inverseTextColor" />
                     </ButtonIcon>
                   </Pressable>
@@ -206,7 +202,7 @@ export const Video = ({ activity }: Props) => {
   );
 };
 
-const getVideoProgressPercentage = (
+export const getVideoProgressPercentage = (
   currentPosition?: number,
   videoLength?: number,
 ) => {
