@@ -1,4 +1,4 @@
-import { VideoActivity } from '@packages/activity-builder';
+import { VideoActivity, VideoActivityAnswer } from '@packages/activity-builder';
 import {
   FastForward,
   PauseCircle,
@@ -9,6 +9,8 @@ import {
 import { Constants } from '@voxify/appConstants';
 import { YStack } from '@voxify/design_system/layout';
 import { useCreateVideoContext } from '@voxify/modules/main/components/ActivityRenderer/Video/video.context';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { Video as ExpoVideo, ResizeMode } from 'expo-av';
 import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
@@ -19,25 +21,25 @@ type Props = {
 };
 
 const SKIP_IN_MILLIS = 10 * 1000;
-/**
- * TODO: Create a activity response on completion, handle edge cases
- * TODO: Optimize scrolling
- * A good place to implement XState
- */
+
 export const Video = ({ activity }: Props) => {
   const videoRef = useRef<ExpoVideo>(null);
+  const { machineService: activityRendererMachineService } =
+    useActivityRendererContext();
+
   const [videoProgress, setVideoProgress] = useState<null | {
     currentPosition: number;
-    videoLength: number;
+    videoLength?: number;
   }>(null);
   const [videoStatus, setVideoStatus] = useState<
     'playing' | 'paused' | 'finished' | 'buffering' | null
   >(null);
   const [showControls, setShowControls] = useState(false);
 
-  const playbackProgressPercentage = videoProgress
-    ? (videoProgress.currentPosition / videoProgress.videoLength) * 100
-    : null;
+  const playbackProgressPercentage = getVideoProgressPercentage(
+    videoProgress?.currentPosition,
+    videoProgress?.videoLength,
+  );
   const { isWorkingState } = useCreateVideoContext({ activity });
 
   useEffect(() => {
@@ -51,7 +53,33 @@ export const Video = ({ activity }: Props) => {
     if (isVideoComplete) {
       setShowControls(true);
     }
-  }, [isVideoComplete]);
+  }, [activityRendererMachineService, isVideoComplete]);
+
+  const markAsFinished = async () => {
+    const _videoStatus = await videoRef.current?.getStatusAsync();
+    const progress = _videoStatus?.isLoaded
+      ? getVideoProgressPercentage(
+          _videoStatus.positionMillis,
+          _videoStatus.durationMillis,
+        )
+      : null;
+
+    activityRendererMachineService.send({
+      type: 'finish',
+      userAnswer: {
+        completionTime: progress,
+      } as VideoActivityAnswer,
+    });
+
+    activityRendererMachineService.send({
+      type: 'set_result',
+      result: ActivityResponseResultType.SUCCESS,
+      userAnswer: {
+        completionTime: progress,
+      } as VideoActivityAnswer,
+      answerError: null,
+    });
+  };
 
   return (
     <ZStack fullscreen>
@@ -68,6 +96,10 @@ export const Video = ({ activity }: Props) => {
                   // TODO: Need to check when this is undefined
                   videoLength: playbackStatus.durationMillis!,
                 });
+                if (playbackStatus.didJustFinish) {
+                  markAsFinished();
+                }
+
                 if (playbackStatus.isBuffering) {
                   return setVideoStatus('buffering');
                 }
@@ -147,7 +179,7 @@ export const Video = ({ activity }: Props) => {
                         positionMillis: Math.min(
                           (videoProgress?.currentPosition || 0) +
                             SKIP_IN_MILLIS,
-                          videoProgress?.videoLength,
+                          videoProgress?.videoLength || 0,
                         ),
                       });
                     }}>
@@ -172,6 +204,16 @@ export const Video = ({ activity }: Props) => {
       )}
     </ZStack>
   );
+};
+
+const getVideoProgressPercentage = (
+  currentPosition?: number,
+  videoLength?: number,
+) => {
+  if (currentPosition === undefined || videoLength === undefined) {
+    return null;
+  } // Video length may be undefined
+  return (currentPosition / videoLength) * 100;
 };
 
 export const getVideoUrlFromFileName = (fileName: string): string => {

@@ -83,7 +83,8 @@ const ActivitySelector = () => {
     return machineService.subscribe(state => {
       if (
         state.matches('WORKING_STATE.RESULT') &&
-        state.event.type === 'set_result'
+        state.event.type === 'set_result' &&
+        state.changed
       ) {
         onActivityResults({
           result: state.context.result as ActivityResponseResultType,

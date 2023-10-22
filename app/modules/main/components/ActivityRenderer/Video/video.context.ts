@@ -1,16 +1,12 @@
 import { VideoActivity, VideoActivityAnswer } from '@packages/activity-builder';
 import { createCtx } from '@voxify/common/utils/contextUtils';
-import { pronunciationMachine } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.machine';
 import { useGetActivityRendererHookExtras } from '@voxify/modules/main/components/ActivityRenderer/common/useGetActivityRendererHookExtras';
-import { useMachine } from '@xstate/react';
 
 type ContextData = {
   activity: VideoActivity;
 };
 
 export function useCreateVideoContext({ activity }: ContextData) {
-  const [_, __, pronunciationMachineActor] = useMachine(pronunciationMachine);
-
   const {
     userAnswer,
     answerErrors,
@@ -28,14 +24,9 @@ export function useCreateVideoContext({ activity }: ContextData) {
     setAnswerErrors,
     setUserAnswer,
     answerErrors,
-    pronunciationMachineActor,
     isShowResultState,
     isWorkingState: isWorkingStateAnd(true),
   };
 }
 
-export const [
-  usePronunciationContext,
-  PronunciationContextProvider,
-  PronunciationContextConsumer,
-] = createCtx<ReturnType<typeof useCreateVideoContext>>();
+export const [] = createCtx<ReturnType<typeof useCreateVideoContext>>();
