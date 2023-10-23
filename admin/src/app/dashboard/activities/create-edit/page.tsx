@@ -31,7 +31,7 @@ export default function CreateActivity() {
   const [activityData, setActivityData] = useState<object | null>(null);
 
   const { data: activityEntity, isLoading } = useQuery({
-    queryKey: ['activity', activityId],
+    queryKey: ['activities', activityId],
     queryFn: () =>
       clientFetchApiWithAuth<Activity>(`/admin/activities/${activityId}`),
     enabled: !!activityId,
