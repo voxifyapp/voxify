@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { ActivityType } from '@packages/activity-builder';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export default function CreateActivity() {
@@ -22,6 +22,7 @@ export default function CreateActivity() {
   const activityId = searchParams.get('activityId');
   const router = useRouter();
   const queryClient = useQueryClient();
+
   const [lessonId, setLessonId] = useState(searchParams.get('lessonId') || '');
   const [order, setOrder] = useState('');
   const [activityType, setActivityType] = useState<
@@ -29,19 +30,23 @@ export default function CreateActivity() {
   >('not_selected');
   const [activityData, setActivityData] = useState<object | null>(null);
 
-  const { data } = useQuery({
+  const { data: activityEntity, isLoading } = useQuery({
     queryKey: ['activity', activityId],
     queryFn: () =>
       clientFetchApiWithAuth<Activity>(`/admin/activities/${activityId}`),
     enabled: !!activityId,
-    onSuccess: (activity: Activity) => {
-      // Updating existing activity, set the current data
-      setLessonId(activity.lessonId || '');
-      setOrder(String(activity.order));
-      setActivityType(activity.type);
-      setActivityData(activity.data);
-    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
+
+  useEffect(() => {
+    if (activityEntity) {
+      setLessonId(activityEntity.lessonId || '');
+      setOrder(String(activityEntity.order));
+      setActivityType(activityEntity.type);
+      setActivityData(activityEntity.data);
+    }
+  }, [activityEntity]);
 
   const {
     isLoading: loading,
@@ -72,6 +77,8 @@ export default function CreateActivity() {
   const save = async () => {
     await mutate();
   };
+
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <Box display="flex" flexDirection="row" justifyContent="center">
@@ -104,7 +111,7 @@ export default function CreateActivity() {
 
         {activityType !== 'not_selected' && (
           <ActivityEditor
-            initialData={data?.data}
+            initialData={activityEntity?.data}
             onActivityDataChange={(data: object) => setActivityData(data)}
             type={activityType}
           />
