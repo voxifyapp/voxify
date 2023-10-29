@@ -39,7 +39,6 @@ export const HomeScreen = ({ navigation }: Props) => {
   if (isCourseLoading || isUnitsLoading) {
     return <H1>Loading...</H1>;
   }
-  console.log(units);
 
   return (
     <YStack fullscreen theme="green" backgroundColor={'$blue2Dark'}>
