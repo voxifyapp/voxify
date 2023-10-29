@@ -20891,6 +20891,7 @@
         "screenPadding": 18,
         "color": "#1b69e4",
         "primaryTextColor": "#09234C",
+        "highlightTextColor": "#1b69e4",
         "backgroundPress": "#FA4D1D",
         "inverseTextColor": "#ffffff",
         "id": "base"

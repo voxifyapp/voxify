@@ -20,6 +20,14 @@ export const H1 = (props: SizableTextProps) => (
   />
 );
 
+export const H2 = (props: SizableTextProps) => (
+  <SizableText
+    size="$9"
+    lineHeight={getTokens().space[9].val + getTokens().space['$-2'].val}
+    {...props}
+  />
+);
+
 export const Paragraph = (props: SizableTextProps) => (
   <SizableText size="$6" lineHeight={getTokens().space[5].val} {...props} />
 );

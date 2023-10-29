@@ -2,6 +2,7 @@ import {
   FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
 } from '@packages/activity-builder';
+import { H1, H2 } from '@voxify/design_system/typography';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 
 import {
@@ -12,7 +13,7 @@ import {
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { each } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
-import { Button, H1, H3, Stack, XStack, YStack } from 'tamagui';
+import { Button, Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
@@ -141,17 +142,19 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
     if (userAnswer[segment]) {
       const answerForBlank = userAnswer[segment];
       return (
-        <Button
+        <H2
+          textDecorationLine="underline"
+          color="$highlightTextColor"
           disabled={!canRemoveWord}
           onPress={() => {
             removeWord(segment);
           }}>
           {answerForBlank}
-        </Button>
+        </H2>
       );
     }
-    return <H3>____</H3>;
+    return <H2>____</H2>;
   }
 
-  return <H3>{segment} </H3>;
+  return <H2>{segment} </H2>;
 };

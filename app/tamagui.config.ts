@@ -50,6 +50,7 @@ const appConfig = createTamagui({
 
       // Typography
       primaryTextColor,
+      highlightTextColor: blue5,
       backgroundPress: orange5,
       inverseTextColor: white,
     },
