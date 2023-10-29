@@ -7,8 +7,13 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
+import { useLessonResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useLessonResponse';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
-import React, { useState } from 'react';
+import {
+  LessonResponseEntity,
+  LessonResponseStatus,
+} from '@voxify/types/lms-progress/lesson-response';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
 
@@ -17,6 +22,7 @@ export const LessonScreen = ({ route }: Props) => {
   const params = route.params;
 
   const [lessonId, setLessonId] = useState(params.lessonId);
+  const [lessonResponseId, setLessonResponseId] = useState('');
   const { isLoading: isLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
@@ -28,14 +34,40 @@ export const LessonScreen = ({ route }: Props) => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
-  if (isLessonLoading || isLessonActivitiesLoading) {
+  const { mutate, isLoading: isCreateLessonResponseLoading } =
+    useLessonResponse();
+
+  useEffect(() => {
+    mutate(
+      {
+        status: LessonResponseStatus.STARTED,
+        lessonId,
+      },
+      {
+        onSuccess: (data: LessonResponseEntity) => {
+          setLessonResponseId(data.id);
+        },
+      },
+    );
+  }, [lessonId, setLessonResponseId]);
+
+  if (
+    isLessonLoading ||
+    isLessonActivitiesLoading ||
+    isCreateLessonResponseLoading
+  ) {
     return <H1>Loading...</H1>;
   }
 
   return (
     <View>
       <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
-      {lessonActivities && <ActivityStepper activities={lessonActivities} />}
+      {lessonActivities && lessonResponseId && (
+        <ActivityStepper
+          lessonResponseId={lessonResponseId}
+          activities={lessonActivities}
+        />
+      )}
     </View>
   );
 };

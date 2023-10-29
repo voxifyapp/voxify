@@ -45,7 +45,6 @@ export const ActivityRenderer = React.memo(
     const contextValue = useCreateActivityRendererContext({
       onActivityResults,
       activityEntity,
-      restoreData,
     });
 
     const { machineService } = contextValue;
