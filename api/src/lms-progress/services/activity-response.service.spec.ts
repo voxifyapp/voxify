@@ -34,6 +34,7 @@ describe('ActivityResponseService', () => {
       const profileId = '123';
       const data: CreateActivityResponseDto = {
         activityId: '456',
+        lessonResponseId: 'xyz',
         responseData: {},
         timeTaken: 10,
         result: ActivityResponseResultType.SUCCESS,
@@ -48,6 +49,7 @@ describe('ActivityResponseService', () => {
       expect(repository.save).toHaveBeenCalledWith(
         {
           activityId: data.activityId,
+          lessonResponseId: data.lessonResponseId,
           profileId: profileId,
           responseData: data.responseData,
           timeTaken: data.timeTaken,
@@ -67,6 +69,7 @@ describe('ActivityResponseService', () => {
       const profileId = '123';
       const data: CreateActivityResponseDto = {
         activityId: '456',
+        lessonResponseId: 'xyz',
         responseData: {},
         timeTaken: 10,
         result: ActivityResponseResultType.SUCCESS,
