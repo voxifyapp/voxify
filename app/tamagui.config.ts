@@ -7,6 +7,7 @@ const yellow5 = '#FDDC38';
 const orange5 = '#FA4D1D';
 const pink5 = '#FBC3D4';
 const green5 = '#009E5A';
+const white = '#ffffff';
 
 // Defining the color gradients for the colors 0 being the lightest and 10 being the darkest
 const blue10 = '#09234C';
@@ -49,10 +50,18 @@ const appConfig = createTamagui({
 
       // Typography
       primaryTextColor,
+      backgroundPress: orange5,
+      inverseTextColor: white,
     },
     base_Button: {
       background: blue5,
-      color: '#ffffff',
+      color: white,
+    },
+    base_Progress: {
+      background: '#666666',
+    },
+    base_ProgressIndicator: {
+      background: '#eeeeee',
     },
   },
 });

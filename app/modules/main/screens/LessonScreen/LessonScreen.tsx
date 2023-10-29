@@ -6,11 +6,12 @@ import {
   getLesson,
   getLessonActivities,
 } from '@voxify/api/lms/lms';
+import { Screen } from '@voxify/design_system/layout';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { H1, View } from 'tamagui';
+import { H1 } from 'tamagui';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
 export const LessonScreen = ({ route }: Props) => {
@@ -33,9 +34,9 @@ export const LessonScreen = ({ route }: Props) => {
   }
 
   return (
-    <View>
+    <Screen noPadding>
       <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
       {lessonActivities && <ActivityStepper activities={lessonActivities} />}
-    </View>
+    </Screen>
   );
 };
