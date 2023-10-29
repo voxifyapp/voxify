@@ -3,18 +3,20 @@
 //TODO Remove lint ignores above
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
+import { StepCard } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/StepCard';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, View, ViewToken } from 'react-native';
+import { Dimensions, FlatList, ViewToken } from 'react-native';
 import { Spacer, YStack } from 'tamagui';
 
-const activityAspectRatio = 9 / 15;
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-const width = screenWidth / 1.1;
-const height = width / activityAspectRatio;
+export const activityAspectRatio = 9 / 15;
+export const { width: screenWidth, height: screenHeight } =
+  Dimensions.get('window');
+export const width = screenWidth / 1.2;
+export const height = width / activityAspectRatio;
 
-const firstAndLastElementMargin = (screenHeight - height) / 2;
+export const firstAndLastElementMargin = (screenHeight - height) / 2;
 
 type Props = {
   activities: ActivityEntity[];
@@ -77,35 +79,29 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   ]);
 
   return (
-    <YStack theme="green" backgroundColor={'$blue2Dark'}>
-      <FlatList
-        decelerationRate={0.8}
-        getItemLayout={getItemLayout}
-        ref={listRef}
-        data={renderedActivities}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        contentContainerStyle={{
-          alignItems: 'center',
-        }}
-        disableIntervalMomentum
-        snapToOffsets={renderedActivities.map((_, index) => {
-          return getItemLayout(_, index).offset;
-        })}
-        ItemSeparatorComponent={() => <Spacer size={20} />}
-        keyExtractor={(activity, index) => activity.id || `${index}`}
-        renderItem={({ item: activity, index }) => (
-          <View
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 10,
-              width,
-              height,
-              marginTop: index === 0 ? firstAndLastElementMargin : undefined,
-              marginBottom:
-                index === renderedActivities.length - 1
-                  ? firstAndLastElementMargin
-                  : undefined,
-            }}>
+    <FlatList
+      decelerationRate={0.8}
+      getItemLayout={getItemLayout}
+      ref={listRef}
+      data={renderedActivities}
+      viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+      disableIntervalMomentum
+      snapToOffsets={renderedActivities.map((_, index) => {
+        return getItemLayout(_, index).offset;
+      })}
+      ItemSeparatorComponent={() => <Spacer size={20} />}
+      keyExtractor={(activity, index) => activity.id || `${index}`}
+      renderItem={({ item: activity, index }) => (
+        <YStack alignItems="center">
+          <StepCard
+            width={width}
+            height={height}
+            mb={
+              index === renderedActivities.length - 1
+                ? firstAndLastElementMargin
+                : undefined
+            }
+            mt={index === 0 ? firstAndLastElementMargin : undefined}>
             <ActivityStep
               index={index}
               restoreData={completedActivities[activity.id]}
@@ -113,9 +109,9 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
               isActive={index === currentActiveIndex}
               lessonResponseId={lessonResponseId}
             />
-          </View>
-        )}
-      />
-    </YStack>
+          </StepCard>
+        </YStack>
+      )}
+    />
   );
 };

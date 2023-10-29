@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export default function CreateUnitModal() {
@@ -25,16 +25,21 @@ export default function CreateUnitModal() {
   const [courseId, setCourseId] = useState(forCourseId);
   const [order, setOrder] = useState('');
 
-  useQuery({
+  const { data: unitEntity } = useQuery({
     queryKey: ['units', unitId],
     queryFn: () => clientFetchApiWithAuth<Unit>(`/admin/units/${unitId}`),
     enabled: !!unitId,
-    onSuccess: unit => {
-      setCourseId(unit.courseId || '');
-      setOrder(String(unit.order));
-      setTitle(unit.title);
-    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
+
+  useEffect(() => {
+    if (unitEntity) {
+      setCourseId(unitEntity.courseId || '');
+      setOrder(String(unitEntity.order));
+      setTitle(unitEntity.title);
+    }
+  }, [unitEntity]);
 
   const {
     isLoading: loading,

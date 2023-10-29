@@ -25,16 +25,21 @@ export default function CrateLessonModal() {
   const [unitId, setUnitId] = useState(forUnitId);
   const [order, setOrder] = useState('');
 
-  useQuery({
+  const { data: lessonEntity } = useQuery({
     queryKey: ['lessons', lessonId],
     queryFn: () => clientFetchApiWithAuth<Lesson>(`/admin/lessons/${lessonId}`),
     enabled: !!lessonId,
-    onSuccess: lesson => {
-      setTitle(lesson.title);
-      setOrder(lesson.order + '');
-      setUnitId(lesson.unitId || '');
-    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
+
+  useEffect(() => {
+    if (lessonEntity) {
+      setTitle(lessonEntity.title);
+      setOrder(lessonEntity.order + '');
+      setUnitId(lessonEntity.unitId || '');
+    }
+  }, [lessonEntity]);
 
   const {
     isLoading: loading,

@@ -2,10 +2,10 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "app",
+      "packages/*",
       "api",
       "admin",
-      "packages/*"
+      "app"
     ],
     "nohoist": [
       "app/**",
