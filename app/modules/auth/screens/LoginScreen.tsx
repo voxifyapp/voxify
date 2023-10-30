@@ -1,13 +1,23 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Button } from '@voxify/design_system/button';
+import { Screen } from '@voxify/design_system/layout';
+import { H1, Paragraph } from '@voxify/design_system/typography';
 import React from 'react';
-import { Button, Stack, YStack } from 'tamagui';
+import { Spacer } from 'tamagui';
 
 export const LoginScreen = () => {
   return (
-    <YStack fullscreen>
-      <Stack flex={1} />
+    <Screen justifyContent="center" alignItems="center">
+      <H1 maxWidth="$size.24" fontWeight="bold" textAlign="center">
+        Learn how to speak better
+      </H1>
+      <Paragraph mt="$space.3" textAlign="center">
+        Master Everyday English with Practical Scenarios
+      </Paragraph>
+      <Spacer height="$4" />
       <Button
+        alignSelf="stretch"
         onPress={async () => {
           // Check if your device supports Google Play
           await GoogleSignin.hasPlayServices({
@@ -26,10 +36,10 @@ export const LoginScreen = () => {
           } catch (err) {
             console.error(err);
           }
-        }}
-        theme="green">
-        Login with Google
+        }}>
+        Get started
       </Button>
-    </YStack>
+      <Spacer height="$1" />
+    </Screen>
   );
 };
