@@ -46,12 +46,12 @@ export const Routes = () => {
             <AuthStack.Screen name="Profile Setup" component={ProfileSetup} />
           ) : (
             <>
-              <AuthStack.Screen
+              <AppStack.Screen
                 name="Home"
                 component={HomeScreen}
                 options={{ headerShown: false }}
               />
-              <AuthStack.Screen
+              <AppStack.Screen
                 name="Lesson"
                 component={LessonScreen as any}
                 options={{ headerShown: false }}

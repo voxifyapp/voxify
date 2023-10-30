@@ -7,7 +7,7 @@ import {
   getLessonActivities,
 } from '@voxify/api/lms/lms';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
-import { useLessonResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useLessonResponse';
+import { useCreateLessonResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import {
   LessonResponseEntity,
@@ -18,7 +18,7 @@ import { useQuery } from 'react-query';
 import { H1, View } from 'tamagui';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
-export const LessonScreen = ({ route }: Props) => {
+export const LessonScreen = React.memo(({ route }: Props) => {
   const params = route.params;
 
   const [lessonId, setLessonId] = useState(params.lessonId);
@@ -35,7 +35,7 @@ export const LessonScreen = ({ route }: Props) => {
     });
 
   const { mutate, isLoading: isCreateLessonResponseLoading } =
-    useLessonResponse();
+    useCreateLessonResponse();
 
   useEffect(() => {
     mutate(
@@ -49,7 +49,7 @@ export const LessonScreen = ({ route }: Props) => {
         },
       },
     );
-  }, [lessonId, setLessonResponseId]);
+  }, [lessonId, setLessonResponseId, mutate]);
 
   if (
     isLessonLoading ||
@@ -70,4 +70,4 @@ export const LessonScreen = ({ route }: Props) => {
       )}
     </View>
   );
-};
+});

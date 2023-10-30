@@ -24,7 +24,7 @@ export function useCreatePronunciationContext({ activity }: ContextData) {
   } = useGetActivityRendererHookExtras<
     PronunciationActivityAnswer,
     PronunciationAnswerErrorType
-  >({ recognizedWords: '' }, {});
+  >({ recognizedWords: '' });
 
   return {
     activity,
