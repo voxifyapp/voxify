@@ -53,7 +53,7 @@ export default function Units() {
               pathname: '/dashboard/activities/create-edit',
               query: { lessonId },
             }}>
-            <Button>Create Activity</Button>
+            <Button variant="contained">Create Activity</Button>
           </Link>
           <Box flex={1} />
           <FormControlLabel
