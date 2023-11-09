@@ -1,5 +1,6 @@
 'use client';
 
+import { useUpdateOrderMutation } from '@/app/dashboard/activities/mutations';
 import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Activity, Lesson } from '@/types/lms';
@@ -19,14 +20,19 @@ import {
   TableRow,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import { chunk, sortBy } from 'lodash';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 type ActivityWithLesson = Activity & { lesson?: Lesson };
 
 export default function Units() {
+  const { mutateAsync, isLoading: updatingRestoreOrder } =
+    useUpdateOrderMutation();
+  const queryClient = useQueryClient();
+
   const [hideUnpublishedContent, setHideUnpublishedContent] = useState(true);
 
   const searchParams = useSearchParams();
@@ -40,9 +46,31 @@ export default function Units() {
       }),
   });
 
-  const filteredActivities = activities?.filter(activity =>
-    hideUnpublishedContent ? activity.published === true : true,
+  const filteredActivities = sortBy(
+    activities?.filter(activity =>
+      hideUnpublishedContent ? activity.published === true : true,
+    ),
+    activity => activity.order,
   );
+
+  const restoreOrder = async () => {
+    // Batch it
+    const BATCH_SIZE = 10;
+    const chunks = chunk(filteredActivities, BATCH_SIZE);
+
+    for (let [chunkIndex, chunk] of chunks.entries()) {
+      await Promise.all(
+        chunk.map((activity, activityIndex) =>
+          mutateAsync({
+            activityId: activity.id,
+            order: (chunkIndex * BATCH_SIZE + activityIndex) * 10,
+          }),
+        ),
+      );
+    }
+
+    await queryClient.invalidateQueries(['activities']);
+  };
 
   return (
     <Box padding={2}>
@@ -55,6 +83,17 @@ export default function Units() {
             }}>
             <Button variant="contained">Create Activity</Button>
           </Link>
+
+          {lessonId && (
+            <Button
+              disabled={updatingRestoreOrder}
+              onClick={restoreOrder}
+              sx={{ ml: 2 }}
+              variant="contained">
+              {updatingRestoreOrder ? 'Loading...' : 'Restore Order'}
+            </Button>
+          )}
+
           <Box flex={1} />
           <FormControlLabel
             control={
