@@ -2,8 +2,11 @@ import {
   FillInTheBlanksActivity,
   FillInTheBlanksActivityAnswer,
 } from '@packages/activity-builder';
-import { H1, H2 } from '@voxify/design_system/typography';
+import { Button } from '@voxify/design_system/button';
+import { H1, H3 } from '@voxify/design_system/typography';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
+import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
+import { FillInTheBlanksButton } from '@voxify/modules/main/components/ActivityRenderer/common/FillInTheBlanksButton';
 
 import {
   FillInTheBlanksContextProvider,
@@ -13,7 +16,7 @@ import {
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { each } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
-import { Button, Stack, XStack, YStack } from 'tamagui';
+import { Stack, XStack } from 'tamagui';
 
 type Props = {
   activity: FillInTheBlanksActivity;
@@ -91,34 +94,34 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <YStack padding="$3" fullscreen>
+      <ActivityCardContainer alignItems="center">
         <XStack flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
           ))}
         </XStack>
-        <XStack flexWrap="wrap" space="$3">
+        <XStack flexWrap="wrap" space="$3" mt="$4">
           {options
             // .filter(option => !new Set(Object.values(userAnswer)).has(option))
             .map((option, index) => (
-              <Button
-                disabled={
-                  !canAddWord ||
-                  new Set(Object.values(userAnswerIndex)).has(index)
-                }
+              <FillInTheBlanksButton
+                disabled={!canAddWord}
+                wordUsed={new Set(Object.values(userAnswerIndex)).has(index)}
                 key={index}
                 onPress={() => {
                   addWord(option, index);
                 }}>
                 {option}
-              </Button>
+              </FillInTheBlanksButton>
             ))}
         </XStack>
         <Stack flex={1} />
         {activityRendererMachineService
           .getSnapshot()
           ?.can({ type: 'finish', userAnswer }) && (
-          <Button onPress={onCheckAnswerClicked}>Check Answer</Button>
+          <Button fullWidth onPress={onCheckAnswerClicked}>
+            Check Answer
+          </Button>
         )}
         {activityRendererMachineService
           .getSnapshot()
@@ -130,7 +133,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
               ActivityResponseResultType.FAIL && <H1>Wrong</H1>}
           </>
         )}
-      </YStack>
+      </ActivityCardContainer>
     </FillInTheBlanksContextProvider>
   );
 };
@@ -142,7 +145,7 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
     if (userAnswer[segment]) {
       const answerForBlank = userAnswer[segment];
       return (
-        <H2
+        <H3
           textDecorationLine="underline"
           color="$highlightTextColor"
           disabled={!canRemoveWord}
@@ -150,11 +153,11 @@ const SegmentRenderer = ({ segment }: { segment: string }) => {
             removeWord(segment);
           }}>
           {answerForBlank}
-        </H2>
+        </H3>
       );
     }
-    return <H2>____</H2>;
+    return <H3>____</H3>;
   }
 
-  return <H2>{segment} </H2>;
+  return <H3>{segment} </H3>;
 };

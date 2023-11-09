@@ -5,6 +5,18 @@ export const Button = styled(TButton, {
   fontWeight: 'bold',
   fontSize: '$6',
   height: '$size.5',
-  adjustsFontSizeToFit: true,
   borderRadius: '$radius.6',
+  variants: {
+    fullWidth: {
+      true: { width: '100%' },
+    },
+    disabled: {
+      true: {
+        backgroundColor: '$disabledButtonBackground',
+        pressStyle: {
+          backgroundColor: '$disabledButtonBackground',
+        },
+      },
+    },
+  },
 });
