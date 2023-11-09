@@ -1,12 +1,15 @@
 'use client';
 
+import { useUpdateOrderMutation } from '@/app/dashboard/activities/mutations';
 import PublishButton from '@/app/dashboard/components/PublishButton';
 import { clientFetchApiWithAuth } from '@/lib/clientFetch';
 import { Activity, Lesson } from '@/types/lms';
 import {
   Box,
   Button,
+  Checkbox,
   CircularProgress,
+  FormControlLabel,
   Paper,
   Stack,
   Table,
@@ -17,13 +20,21 @@ import {
   TableRow,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import { chunk, sortBy } from 'lodash';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 
 type ActivityWithLesson = Activity & { lesson?: Lesson };
 
 export default function Units() {
+  const { mutateAsync, isLoading: updatingRestoreOrder } =
+    useUpdateOrderMutation();
+  const queryClient = useQueryClient();
+
+  const [hideUnpublishedContent, setHideUnpublishedContent] = useState(true);
+
   const searchParams = useSearchParams();
   const lessonId = searchParams.get('lessonId');
 
@@ -35,16 +46,65 @@ export default function Units() {
       }),
   });
 
+  const filteredActivities = sortBy(
+    activities?.filter(activity =>
+      hideUnpublishedContent ? activity.published === true : true,
+    ),
+    activity => activity.order,
+  );
+
+  const restoreOrder = async () => {
+    // Batch it
+    const BATCH_SIZE = 10;
+    const chunks = chunk(filteredActivities, BATCH_SIZE);
+
+    for (let [chunkIndex, chunk] of chunks.entries()) {
+      await Promise.all(
+        chunk.map((activity, activityIndex) =>
+          mutateAsync({
+            activityId: activity.id,
+            order: (chunkIndex * BATCH_SIZE + activityIndex) * 10,
+          }),
+        ),
+      );
+    }
+
+    await queryClient.invalidateQueries(['activities']);
+  };
+
   return (
     <Box padding={2}>
       <TableContainer component={Paper}>
-        <Link
-          href={{
-            pathname: '/dashboard/activities/create-edit',
-            query: { lessonId },
-          }}>
-          <Button>Create Activity</Button>
-        </Link>
+        <Box padding={2} display="flex" flexDirection="row">
+          <Link
+            href={{
+              pathname: '/dashboard/activities/create-edit',
+              query: { lessonId },
+            }}>
+            <Button variant="contained">Create Activity</Button>
+          </Link>
+
+          {lessonId && (
+            <Button
+              disabled={updatingRestoreOrder}
+              onClick={restoreOrder}
+              sx={{ ml: 2 }}
+              variant="contained">
+              {updatingRestoreOrder ? 'Loading...' : 'Restore Order'}
+            </Button>
+          )}
+
+          <Box flex={1} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hideUnpublishedContent}
+                onChange={e => setHideUnpublishedContent(e.target.checked)}
+              />
+            }
+            label="Hide unpublished content"
+          />
+        </Box>
         {isLoading && <CircularProgress />}
         {lessonId && <h3>For Lesson: {lessonId}</h3>}
         <Table>
@@ -59,8 +119,8 @@ export default function Units() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {activities &&
-              activities.map(activity => (
+            {filteredActivities &&
+              filteredActivities.map(activity => (
                 <ActivityRow key={activity.id} activity={activity} />
               ))}
           </TableBody>

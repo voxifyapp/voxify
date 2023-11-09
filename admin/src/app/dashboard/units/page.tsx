@@ -6,7 +6,9 @@ import { Course, Unit } from '@/types/lms';
 import {
   Box,
   Button,
+  Checkbox,
   CircularProgress,
+  FormControlLabel,
   Paper,
   Table,
   TableBody,
@@ -18,11 +20,15 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 export default function Units() {
+  const [hideUnpublishedContent, setHideUnpublishedContent] = useState(true);
+
   const searchParams = useSearchParams();
   const courseId = searchParams.get('courseId');
+
   const { data: units, isLoading } = useQuery({
     queryKey: ['units'],
     queryFn: async () =>
@@ -32,18 +38,34 @@ export default function Units() {
       ),
   });
 
+  const filteredUnits = units?.filter(unit =>
+    hideUnpublishedContent ? unit.published === true : true,
+  );
+
   return (
     <Box padding={2}>
       <TableContainer component={Paper}>
         {isLoading && <CircularProgress />}
         {courseId && <h3>For Course: {courseId}</h3>}
-        <Link
-          href={{
-            pathname: '/dashboard/units/create-edit',
-            query: { courseId },
-          }}>
-          <Button>Create Unit</Button>
-        </Link>
+        <Box padding={2} display="flex" flexDirection="row">
+          <Link
+            href={{
+              pathname: '/dashboard/units/create-edit',
+              query: { courseId },
+            }}>
+            <Button variant="contained">Create Unit</Button>
+          </Link>
+          <Box flex={1} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hideUnpublishedContent}
+                onChange={e => setHideUnpublishedContent(e.target.checked)}
+              />
+            }
+            label="Hide unpublished content"
+          />
+        </Box>
 
         <Table>
           <TableHead>
@@ -57,8 +79,8 @@ export default function Units() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {units &&
-              units.map(unit => (
+            {filteredUnits &&
+              filteredUnits.map(unit => (
                 <TableRow hover key={unit.id}>
                   <TableCell>
                     <Link
