@@ -6,7 +6,9 @@ import { Lesson, Unit } from '@/types/lms';
 import {
   Box,
   Button,
+  Checkbox,
   CircularProgress,
+  FormControlLabel,
   Paper,
   Stack,
   Table,
@@ -19,9 +21,12 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 export default function Units() {
+  const [hideUnpublishedContent, setHideUnpublishedContent] = useState(true);
+
   const searchParams = useSearchParams();
   const unitId = searchParams.get('unitId');
 
@@ -34,18 +39,34 @@ export default function Units() {
       ),
   });
 
+  const filteredLessons = lessons?.filter(lesson =>
+    hideUnpublishedContent ? lesson.published === true : true,
+  );
+
   return (
     <Box padding={2}>
       <TableContainer component={Paper}>
         {isLoading && <CircularProgress />}
         {unitId && <h3>For Unit: {unitId}</h3>}
-        <Link
-          href={{
-            pathname: '/dashboard/lessons/create-edit',
-            query: { unitId },
-          }}>
-          <Button>Create Lesson</Button>
-        </Link>
+        <Box padding={2} display="flex" flexDirection="row">
+          <Link
+            href={{
+              pathname: '/dashboard/lessons/create-edit',
+              query: { unitId },
+            }}>
+            <Button variant="contained">Create Lesson</Button>
+          </Link>
+          <Box flex={1} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hideUnpublishedContent}
+                onChange={e => setHideUnpublishedContent(e.target.checked)}
+              />
+            }
+            label="Hide unpublished content"
+          />
+        </Box>
 
         <Table>
           <TableHead>
@@ -59,8 +80,8 @@ export default function Units() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {lessons &&
-              lessons.map(lesson => (
+            {filteredLessons &&
+              filteredLessons.map(lesson => (
                 <TableRow hover key={lesson.id}>
                   <TableCell>
                     <Link
