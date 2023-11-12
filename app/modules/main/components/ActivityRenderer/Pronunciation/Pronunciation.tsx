@@ -145,6 +145,13 @@ export const Pronunciation = ({ activity }: Props) => {
             const hasMatched = matchResults[index];
             return (
               <PronunciationText
+                term={
+                  index === referenceStringArray.length - 1
+                    ? 'lastTerm'
+                    : index === 0
+                    ? 'firstTerm'
+                    : undefined
+                }
                 hasMatched={!!hasMatched}
                 fontWeight="bold"
                 key={index}>

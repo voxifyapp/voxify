@@ -1,9 +1,12 @@
-import { H1 } from '@voxify/design_system/typography';
+import { SizableText } from '@voxify/design_system/typography';
 import { H5, styled } from 'tamagui';
 
-export const PronunciationText = styled(H1, {
+export const PronunciationText = styled(SizableText, {
   color: '$primaryTextColor',
-  padding: '$1.5',
+  padding: '$1',
+  paddingRight: '$1.5',
+  fontSize: 42,
+  lineHeight: 48,
   paddingBottom: '0',
   textAlign: 'center',
   variants: {
@@ -13,6 +16,12 @@ export const PronunciationText = styled(H1, {
         color: 'white',
       },
     },
+    term: {
+      firstTerm: {
+        paddingLeft: '$3',
+      },
+      lastTerm: { paddingRight: '$3' },
+    },
   },
 });
 
@@ -20,6 +29,7 @@ export const PronunciationStatusTablet = styled(H5, {
   color: 'white',
   p: '$2',
   paddingVertical: '$2',
+  backgroundColor: 'gray',
   paddingHorizontal: '$4',
   borderRadius: '$10',
   textAlign: 'center',
