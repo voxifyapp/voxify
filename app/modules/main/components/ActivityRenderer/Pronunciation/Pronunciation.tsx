@@ -6,9 +6,15 @@ import {
 import Voice from '@react-native-voice/voice';
 import { Undo2 } from '@tamagui/lucide-icons';
 import { Button } from '@voxify/design_system/button';
-import { H4 } from '@voxify/design_system/typography';
-import { PronunciationText } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/components/PronunciationText';
-import { useCreatePronunciationContext } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
+import {
+  PronunciationStatusTablet,
+  PronunciationText,
+} from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/components/PronunciationText';
+import {
+  PronunciationContextProvider,
+  useCreatePronunciationContext,
+  usePronunciationContext,
+} from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
@@ -28,6 +34,7 @@ export const Pronunciation = ({ activity }: Props) => {
     setAnswerErrors,
     pronunciationMachineActor,
   } = contextValue;
+
   const { machineService: activityRendererMachineService, activityEntity } =
     useActivityRendererContext();
 
@@ -130,41 +137,54 @@ export const Pronunciation = ({ activity }: Props) => {
   });
 
   return (
-    <ActivityCardContainer space="$4" alignItems="center">
-      {pronunciationMachineActor.getSnapshot().value === 'LISTENING' ? (
-        <H4
-          color="white"
-          backgroundColor="$color.blue"
-          p="$2"
-          paddingVertical="$2"
-          paddingHorizontal="$4"
-          borderRadius="$10"
-          textAlign="center">
-          LISTENING
-        </H4>
-      ) : null}
-
-      <XStack flex={1} flexWrap="wrap" justifyContent="center">
-        {referenceStringArray.map((word, index) => {
-          const hasMatched = matchResults[index];
-          return (
-            <PronunciationText
-              hasMatched={!!hasMatched}
-              fontWeight="bold"
-              key={index}>
-              {word}
-            </PronunciationText>
-          );
-        })}
-      </XStack>
-      <Button
-        onPress={() => {
-          pronunciationMachineActor.send('RESTART');
-        }}
-        size="$7"
-        circular>
-        <Undo2 scale={1} strokeWidth={3} />
-      </Button>
-    </ActivityCardContainer>
+    <PronunciationContextProvider value={contextValue}>
+      <ActivityCardContainer space="$4" alignItems="center">
+        <StatusTablet />
+        <XStack flex={1} flexWrap="wrap" justifyContent="center">
+          {referenceStringArray.map((word, index) => {
+            const hasMatched = matchResults[index];
+            return (
+              <PronunciationText
+                hasMatched={!!hasMatched}
+                fontWeight="bold"
+                key={index}>
+                {word}
+              </PronunciationText>
+            );
+          })}
+        </XStack>
+        <Button
+          onPress={() => {
+            pronunciationMachineActor.send('RESTART');
+          }}
+          size="$7"
+          circular>
+          <Undo2 scale={1} strokeWidth={3} />
+        </Button>
+      </ActivityCardContainer>
+    </PronunciationContextProvider>
   );
+};
+
+const StatusTablet = () => {
+  const { pronunciationMachineActor, answerErrors } = usePronunciationContext();
+
+  if (pronunciationMachineActor.getSnapshot().matches('LISTENING')) {
+    return (
+      <PronunciationStatusTablet status="listening">
+        LISTENING
+      </PronunciationStatusTablet>
+    );
+  }
+
+  if (answerErrors) {
+    return (
+      <PronunciationStatusTablet
+        status={answerErrors.correct ? 'success' : 'error'}>
+        {answerErrors.correct ? 'COMPLETE' : 'TRY AGAIN'}
+      </PronunciationStatusTablet>
+    );
+  }
+
+  return null;
 };

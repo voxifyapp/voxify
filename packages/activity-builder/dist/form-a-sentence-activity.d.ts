@@ -26,6 +26,6 @@ export declare class FormASentenceActivity extends Activity<FormASentenceActivit
         type: string;
     };
 }
-export type FormASentenceAnswerErrorType = {
+export declare type FormASentenceAnswerErrorType = {
     correct: boolean;
 };

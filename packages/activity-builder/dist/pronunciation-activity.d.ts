@@ -18,7 +18,7 @@ export declare class PronunciationActivity extends Activity<PronunciationActivit
      * Takes in a reference string and an input string, and returns an array the same size of the reference string, with the words that were matched in the input string.
      * Each element in returned array is either a string or null. based on whether it was matched or not
      */
-    static matchReferenceStringWithInput(reference: string, input: string): (string | null)[];
+    static matchReferenceStringWithInput(reference: string, input: string): (true | false)[];
     static convertStringToSanitizedWordArray: (value: string) => string[];
     static sanitizeWord(word: string): string;
     static convertStringToArray(input: string): string[];
@@ -27,7 +27,7 @@ export declare class PronunciationActivity extends Activity<PronunciationActivit
         type: string;
     };
 }
-export type PronunciationAnswerErrorType = {
+export declare type PronunciationAnswerErrorType = {
     correct: boolean;
     recognizedPercent: number;
 };

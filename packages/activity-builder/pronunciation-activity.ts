@@ -13,6 +13,7 @@ export interface PronunciationActivityAnswer {
   recognizedWords: string;
 }
 
+const MATCHED_WORDS_PERCENTAGE_TO_BE_CORRECT = 40;
 export class PronunciationActivity extends Activity<
   PronunciationActivityData,
   PronunciationActivityAnswer
@@ -41,7 +42,7 @@ export class PronunciationActivity extends Activity<
   // "hey are you doing"
 
   // 3. the skipped word might occur before, and should not be picked up
-  // "you are doing" => [null, null, null, null, "you", "doing"]
+  // "you are doing" => [false, false, false, false, true, true]
 
   //4. Users may say the same word multiple times, if it is not picked up
   // "hey hoe hoe hee how are you doing"
@@ -53,13 +54,13 @@ export class PronunciationActivity extends Activity<
   static matchReferenceStringWithInput(
     reference: string,
     input: string
-  ): (string | null)[] {
+  ): (true | false)[] {
     const referenceArray = this.convertStringToSanitizedWordArray(reference);
     const inputArray = this.convertStringToSanitizedWordArray(input);
 
-    let referenceIntersectionWords = new Array(referenceArray.length).fill(
-      false
-    );
+    let referenceIntersectionWords: (true | false)[] = new Array(
+      referenceArray.length
+    ).fill(false);
     let lastMatchedInputWordIndex = 0;
 
     for (let i = 0; i < inputArray.length; i++) {
@@ -100,17 +101,20 @@ export class PronunciationActivity extends Activity<
       answer.recognizedWords
     );
 
-    const numberOfWordsNotMatched = matchArray.filter((a) => a === null).length;
-    if (numberOfWordsNotMatched > matchArray.length / 2) {
+    const numberOfWordsNotMatched = matchArray.filter((a) => !a).length;
+    const recognizedPercent =
+      (numberOfWordsNotMatched / matchArray.length) * 100;
+
+    if (recognizedPercent > MATCHED_WORDS_PERCENTAGE_TO_BE_CORRECT) {
       return {
         correct: false,
-        recognizedPercent: (numberOfWordsNotMatched / matchArray.length) * 100,
+        recognizedPercent,
       };
     }
 
     return {
       correct: true,
-      recognizedPercent: (numberOfWordsNotMatched / matchArray.length) * 100,
+      recognizedPercent,
     };
   }
 
