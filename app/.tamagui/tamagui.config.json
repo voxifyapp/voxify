@@ -20899,7 +20899,14 @@
       "base_Button": {
         "background": "#1b69e4",
         "color": "#ffffff",
+        "backgroundPress": "#09234C",
+        "disabledButtonBackground": "#cccccc",
         "id": "base_Button"
+      },
+      "base_FillInTheBlanksButton": {
+        "background": "#ffffff",
+        "disabledButtonBackground": "#ffffff",
+        "id": "base_FillInTheBlanksButton"
       },
       "base_Progress": {
         "background": "#666666",

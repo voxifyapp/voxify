@@ -4,11 +4,16 @@ import {
   PronunciationActivityAnswer,
 } from '@packages/activity-builder';
 import Voice from '@react-native-voice/voice';
+import { Undo2 } from '@tamagui/lucide-icons';
+import { Button } from '@voxify/design_system/button';
+import { H4 } from '@voxify/design_system/typography';
+import { PronunciationText } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/components/PronunciationText';
 import { useCreatePronunciationContext } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
+import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
 import React, { useCallback, useEffect } from 'react';
-import { Button, H1, H3, XStack, YStack } from 'tamagui';
+import { XStack } from 'tamagui';
 
 type Props = {
   activity: PronunciationActivity;
@@ -125,33 +130,41 @@ export const Pronunciation = ({ activity }: Props) => {
   });
 
   return (
-    <YStack alignItems="center" p="$3" justifyContent="center" fullscreen>
-      <H3>{pronunciationMachineActor.getSnapshot().value}</H3>
+    <ActivityCardContainer space="$4" alignItems="center">
+      {pronunciationMachineActor.getSnapshot().value === 'LISTENING' ? (
+        <H4
+          color="white"
+          backgroundColor="$color.blue"
+          p="$2"
+          paddingVertical="$2"
+          paddingHorizontal="$4"
+          borderRadius="$10"
+          textAlign="center">
+          LISTENING
+        </H4>
+      ) : null}
+
       <XStack flex={1} flexWrap="wrap" justifyContent="center">
         {referenceStringArray.map((word, index) => {
           const hasMatched = matchResults[index];
           return (
-            <H1
+            <PronunciationText
+              hasMatched={!!hasMatched}
               fontWeight="bold"
-              color={hasMatched ? 'white' : 'black'}
-              padding="$1.5"
-              paddingBottom="0"
-              textAlign="center"
-              backgroundColor={hasMatched ? 'green' : undefined}
               key={index}>
               {word}
-            </H1>
+            </PronunciationText>
           );
         })}
       </XStack>
       <Button
-        w="100%"
         onPress={() => {
           pronunciationMachineActor.send('RESTART');
         }}
-        theme="green">
-        Restart
+        size="$7"
+        circular>
+        <Undo2 scale={1} strokeWidth={3} />
       </Button>
-    </YStack>
+    </ActivityCardContainer>
   );
 };
