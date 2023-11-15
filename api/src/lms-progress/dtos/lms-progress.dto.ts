@@ -9,6 +9,14 @@ export class CreateLessonResponseDto {
   status: LessonResponseStatus;
 }
 
+export class UpdateLessonResponseDto {
+  @IsUUID()
+  lessonResponseId: string;
+
+  @IsEnum(LessonResponseStatus)
+  status: LessonResponseStatus;
+}
+
 export class CreateUnitResponseDto {
   @IsUUID()
   unitId: string;

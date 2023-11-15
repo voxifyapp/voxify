@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Request } from 'express';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { ProfileService } from 'src/auth/services/profile.service';
 import { DOES_NOT_REQUIRE_PROFILE_KEY } from 'src/common/decorators/auth';

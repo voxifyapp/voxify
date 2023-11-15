@@ -5,6 +5,7 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Post,
+  Put,
   Query,
   Req,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import {
   CreateLessonResponseDto,
   CreateUnitResponseDto,
+  UpdateLessonResponseDto,
 } from 'src/lms-progress/dtos/lms-progress.dto';
 import { LmsProgressService } from 'src/lms-progress/services/lms-progress.service';
 
@@ -32,6 +34,19 @@ export class LessonResponseController {
     return unitResponse;
   }
 
+  @Put()
+  @HttpCode(200)
+  async update(
+    @Req() req: AuthenticatedRequestWithProfile,
+    @Body() data: UpdateLessonResponseDto,
+  ) {
+    const unitResponse = await this.lmsProgressService.updateLessonResponse(
+      req.currentProfile.id,
+      data,
+    );
+    return unitResponse;
+  }
+
   @Get()
   async findAll(
     @Req() req: AuthenticatedRequestWithProfile,
@@ -40,6 +55,17 @@ export class LessonResponseController {
     return this.lmsProgressService.getLessonResponses(req.currentProfile.id, {
       forLessonId,
     });
+  }
+
+  @Get('/get-lessons')
+  async getLessonResponsesWithLessonsForProfile(
+    @Req() req: AuthenticatedRequestWithProfile,
+    @Query('courseId', ParseUUIDPipe) courseId?: string,
+  ) {
+    return this.lmsProgressService.getLessonResponsesWithLessonsForProfile(
+      req.currentProfile.id,
+      courseId,
+    );
   }
 }
 
