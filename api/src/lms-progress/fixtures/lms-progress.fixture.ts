@@ -6,7 +6,10 @@ import {
   ActivityResponse,
   ActivityResponseResultType,
 } from 'src/lms-progress/entities/activity-response.entity';
-import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
+import {
+  LessonResponse,
+  LessonResponseStatus,
+} from 'src/lms-progress/entities/lesson-response.entity';
 import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
 import {
   activityFactory,
@@ -31,6 +34,8 @@ export const activityResponseFactory = Factory.define<ActivityResponse>(
       activity: undefined,
       activityId: undefined,
       profileId: undefined,
+      lessonResponseId: undefined,
+      lessonResponse: undefined,
       result: ActivityResponseResultType.SUCCESS,
       responseData: {},
       timeTaken: faker.number.float({ max: 100, min: 0 }),
@@ -56,6 +61,8 @@ export const lessonResponseFactory = Factory.define<LessonResponse>(
       lesson: undefined,
       profileId: undefined,
       profile: undefined,
+      activityResponses: undefined,
+      status: LessonResponseStatus.STARTED,
     };
   },
 );

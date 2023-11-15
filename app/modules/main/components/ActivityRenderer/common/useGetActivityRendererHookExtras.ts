@@ -9,7 +9,6 @@ export const useGetActivityRendererHookExtras = <
   ActivityAnswerErrorType,
 >(
   initalAnswer: ActivityAnswerType,
-  options: {} = {},
 ) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
@@ -26,7 +25,7 @@ export const useGetActivityRendererHookExtras = <
         setAnswerErrors(state.context.answerError);
       }
     }).unsubscribe;
-  }, [activityRendererMachineService, options, setAnswerErrors, setUserAnswer]);
+  }, [activityRendererMachineService, setAnswerErrors, setUserAnswer]);
 
   const isWorkingStateAnd = (condition: boolean) => {
     return (

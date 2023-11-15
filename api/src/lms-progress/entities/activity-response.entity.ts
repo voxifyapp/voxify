@@ -1,5 +1,6 @@
 import { Profile } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
+import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import { Activity } from 'src/lms/entities/activity.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
 
@@ -34,8 +35,16 @@ export class ActivityResponse extends BaseEntity {
   })
   profile: Profile;
 
+  @ManyToOne(() => LessonResponse, {
+    onDelete: 'CASCADE',
+  })
+  lessonResponse: LessonResponse;
+
   @Column()
   profileId: string;
+
+  @Column()
+  lessonResponseId: string;
 
   @ManyToOne(() => Activity, {
     onDelete: 'CASCADE',

@@ -5,6 +5,9 @@ export class CreateActivityResponseDto {
   @IsUUID()
   activityId: string;
 
+  @IsUUID()
+  lessonResponseId: string;
+
   @IsEnum(ActivityResponseResultType)
   result: ActivityResponseResultType;
 

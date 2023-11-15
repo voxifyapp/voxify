@@ -6,7 +6,7 @@ import {
 import Voice from '@react-native-voice/voice';
 import { useCreatePronunciationContext } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import React, { useCallback, useEffect } from 'react';
 import { Button, H1, H3, XStack, YStack } from 'tamagui';
 
