@@ -20,13 +20,14 @@ const firstAndLastElementMargin = (screenHeight - height) / 2;
 
 type Props = {
   activities: ActivityEntity[];
+  lessonResponseId: string;
 };
 
 export const completedActivitiesAtom = atom<
   Record<string, ActivityRendererMachineRestoreDataType>
 >({});
 
-export const ActivityStepper = ({ activities }: Props) => {
+export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const [isLessonComplete, setIsLessonComplete] = useState(false);
   const listRef = useRef<FlatList<ActivityEntity>>(null);
@@ -125,6 +126,7 @@ export const ActivityStepper = ({ activities }: Props) => {
               restoreData={completedActivities[activity.id]}
               activity={activity}
               isActive={index === currentActiveIndex}
+              lessonResponseId={lessonResponseId}
             />
           </View>
         )}

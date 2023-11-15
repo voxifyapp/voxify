@@ -28,7 +28,7 @@ export class LmsProgressService {
     const lesson = await findOneOr404(this.lessonRepo, data.lessonId);
 
     const lessonResponse = await this.lessonResponseRepo.save(
-      { lessonId: lesson.id, profileId },
+      { lessonId: lesson.id, profileId, status: data.status },
       { reload: true },
     );
 

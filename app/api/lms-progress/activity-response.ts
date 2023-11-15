@@ -3,7 +3,7 @@ import { ActivityResponseEntity } from '@voxify/types/lms-progress/activity-resp
 
 export type CreateActivityResponsePostData = Pick<
   ActivityResponseEntity,
-  'result' | 'timeTaken' | 'responseData' | 'activityId'
+  'result' | 'timeTaken' | 'responseData' | 'activityId' | 'lessonResponseId'
 >;
 export const createActivityResponse = async (
   data: CreateActivityResponsePostData,
