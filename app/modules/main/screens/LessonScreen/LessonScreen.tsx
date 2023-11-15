@@ -29,7 +29,34 @@ export const LessonScreen = ({ route }: Props) => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
+<<<<<<< Updated upstream
   if (isLessonLoading || isLessonActivitiesLoading) {
+=======
+  const {
+    mutate: createLessonResponseMutate,
+    isLoading: isCreateLessonResponseLoading,
+  } = useCreateLessonResponse();
+
+  useEffect(() => {
+    createLessonResponseMutate(
+      {
+        status: LessonResponseStatus.STARTED,
+        lessonId,
+      },
+      {
+        onSuccess: (data: LessonResponseEntity) => {
+          setLessonResponseId(data.id);
+        },
+      },
+    );
+  }, [lessonId, setLessonResponseId, createLessonResponseMutate]);
+
+  if (
+    isLessonLoading ||
+    isLessonActivitiesLoading ||
+    isCreateLessonResponseLoading
+  ) {
+>>>>>>> Stashed changes
     return <H1>Loading...</H1>;
   }
 

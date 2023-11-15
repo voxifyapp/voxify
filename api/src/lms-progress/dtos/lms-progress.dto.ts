@@ -5,6 +5,14 @@ export class CreateLessonResponseDto {
   lessonId: string;
 }
 
+export class UpdateLessonResponseDto {
+  @IsUUID()
+  lessonResponseId: string;
+
+  @IsEnum(LessonResponseStatus)
+  status: LessonResponseStatus;
+}
+
 export class CreateUnitResponseDto {
   @IsUUID()
   unitId: string;

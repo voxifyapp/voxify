@@ -29,6 +29,9 @@ export class ProfileGuard implements CanActivate {
     );
 
     const decodedUser: DecodedIdToken = request['decodedFirebaseUser'];
+    if (doesNotRequireProfile) {
+      return true;
+    }
 
     // Get profile for the user
     const profile = await this.profileService.findProfileForUser(
