@@ -61,7 +61,7 @@ export const lessonResponseFactory = Factory.define<LessonResponse>(
       lesson: undefined,
       profileId: undefined,
       profile: undefined,
-      activityResponse: undefined,
+      activityResponses: undefined,
       status: LessonResponseStatus.STARTED,
     };
   },

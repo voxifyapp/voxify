@@ -37,7 +37,7 @@ export class LessonResponse extends BaseEntity {
     () => ActivityResponse,
     (activityResponse) => activityResponse.lessonResponse,
   )
-  activityResponse: ActivityResponse[];
+  activityResponses: ActivityResponse[];
 
   @Column({
     comment: 'State of the lesson for the user',
