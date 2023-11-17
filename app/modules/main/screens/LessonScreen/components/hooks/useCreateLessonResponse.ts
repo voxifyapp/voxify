@@ -5,11 +5,7 @@ import {
 import { useMutation } from 'react-query';
 
 export const useCreateLessonResponse = () => {
-  const mutation = useMutation((data: CreateLessonResponsePostData) => {
+  return useMutation((data: CreateLessonResponsePostData) => {
     return createLessonResponse({ ...data });
   });
-
-  return {
-    ...mutation,
-  };
 };
