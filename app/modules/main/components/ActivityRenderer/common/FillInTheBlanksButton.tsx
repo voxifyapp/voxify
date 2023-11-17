@@ -12,7 +12,6 @@ export const FillInTheBlanksButton = styled(Button, {
   variants: {
     disabled: {
       true: {
-        // backgroundColor: '$disabledButtonBackground',
         pressStyle: {
           backgroundColor: '$disabledButtonBackground',
         },

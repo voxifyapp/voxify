@@ -31,7 +31,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     useActivityRendererContext();
 
   const {
-    options,
+    options: fillInTheBlankOptions,
     questionSegments,
     userAnswer,
     setUserAnswer,
@@ -54,7 +54,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
       const newUserAnswerIndexForSync: Record<string, number> = {};
       const usedOptionsIndexes = new Set<number>();
       each(userAnswerForSync, (selectedOptionForBlank, blank) => {
-        const optionIndexForBlank = options.findIndex(
+        const optionIndexForBlank = fillInTheBlankOptions.findIndex(
           (option, index) =>
             !usedOptionsIndexes.has(index) && option === selectedOptionForBlank,
         );
@@ -71,7 +71,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     }).unsubscribe;
   }, [
     activityRendererMachineService,
-    options,
+    fillInTheBlankOptions,
     setAnswerErrors,
     setUserAnswer,
     setUserAnswerIndex,
@@ -101,19 +101,19 @@ export const FillInTheBlanks = ({ activity }: Props) => {
           ))}
         </XStack>
         <XStack flexWrap="wrap" space="$3" mt="$4">
-          {options
-            // .filter(option => !new Set(Object.values(userAnswer)).has(option))
-            .map((option, index) => (
-              <FillInTheBlanksButton
-                disabled={!canAddWord}
-                wordUsed={new Set(Object.values(userAnswerIndex)).has(index)}
-                key={index}
-                onPress={() => {
-                  addWord(option, index);
-                }}>
-                {option}
-              </FillInTheBlanksButton>
-            ))}
+          {fillInTheBlankOptions.map((blankOption, blankOptionIndex) => (
+            <FillInTheBlanksButton
+              disabled={!canAddWord}
+              wordUsed={new Set(Object.values(userAnswerIndex)).has(
+                blankOptionIndex,
+              )}
+              key={blankOptionIndex}
+              onPress={() => {
+                addWord(blankOption, blankOptionIndex);
+              }}>
+              {blankOption}
+            </FillInTheBlanksButton>
+          ))}
         </XStack>
         <Stack flex={1} />
         {activityRendererMachineService
