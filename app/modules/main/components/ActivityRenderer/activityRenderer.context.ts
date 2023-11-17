@@ -26,10 +26,13 @@ export function useCreateActivityRendererContext({
 }: ContextData) {
   const [_, __, machineService] = useMachine(activityRendererMachine);
 
+  const activityResponseResult = machineService.getSnapshot()?.context.result;
+
   return {
     onActivityResults,
     activityEntity,
     machineService,
+    activityResponseResult,
   };
 }
 

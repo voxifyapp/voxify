@@ -3,10 +3,11 @@ import {
   FillInTheBlanksActivityAnswer,
 } from '@packages/activity-builder';
 import { Button } from '@voxify/design_system/button';
-import { H1, H3 } from '@voxify/design_system/typography';
+import { H3 } from '@voxify/design_system/typography';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
 import { FillInTheBlanksButton } from '@voxify/modules/main/components/ActivityRenderer/common/FillInTheBlanksButton';
+import { ResultView } from '@voxify/modules/main/components/ActivityRenderer/common/ResultView';
 
 import {
   FillInTheBlanksContextProvider,
@@ -125,14 +126,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
         )}
         {activityRendererMachineService
           .getSnapshot()
-          ?.matches({ WORKING_STATE: 'RESULT' }) && (
-          <>
-            {activityRendererMachineService.getSnapshot()?.context.result ===
-              ActivityResponseResultType.SUCCESS && <H1>Correct</H1>}
-            {activityRendererMachineService.getSnapshot()?.context.result ===
-              ActivityResponseResultType.FAIL && <H1>Wrong</H1>}
-          </>
-        )}
+          ?.matches({ WORKING_STATE: 'RESULT' }) && <ResultView />}
       </ActivityCardContainer>
     </FillInTheBlanksContextProvider>
   );

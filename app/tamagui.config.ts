@@ -4,9 +4,17 @@ import { createTamagui } from 'tamagui';
 // Defining the main colors
 const blue5 = '#1b69e4';
 const yellow5 = '#FDDC38';
-const orange5 = '#FA4D1D';
+const shadesOfOrange = {
+  orange1: '#FDE5DF',
+  orange5: '#FA4D1D',
+};
 const pink5 = '#FBC3D4';
-const green5 = '#009E5A';
+const shadesOfGreen = {
+  green1: '#C9F2E0',
+  green5: '#009E5A',
+  green10: '#004024',
+  green8: '#006137',
+};
 const white = '#ffffff';
 
 // Defining the color gradients for the colors 0 being the lightest and 10 being the darkest
@@ -25,9 +33,10 @@ const appConfig = createTamagui({
     color: {
       blue: blue5,
       yellow: yellow5,
-      orange: orange5,
       pink: pink5,
-      green: green5,
+      blue10,
+      ...shadesOfGreen,
+      ...shadesOfOrange,
     },
     size: {
       ...config.tokens.size,
@@ -51,7 +60,7 @@ const appConfig = createTamagui({
       // Typography
       primaryTextColor,
       highlightTextColor: blue5,
-      backgroundPress: orange5,
+      backgroundPress: shadesOfOrange.orange5,
       inverseTextColor: white,
     },
     base_Button: {
