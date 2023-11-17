@@ -12,10 +12,11 @@ type Props = {
   restoreData?: ActivityRendererMachineRestoreDataType;
   isActive: boolean;
   index?: number;
+  lessonResponseId: string;
 };
 
 export const ActivityStep = React.memo(
-  ({ activity, restoreData, isActive, index }: Props) => {
+  ({ activity, restoreData, isActive, index, lessonResponseId }: Props) => {
     const { mutate } = useActivityResponse({ activityEntity: activity });
 
     const setCompletedActivities = useSetAtom(completedActivitiesAtom);
@@ -34,9 +35,10 @@ export const ActivityStep = React.memo(
             },
             timeTaken: data.timeTakenToCompleteInSeconds,
             result: data.result,
+            lessonResponseId,
           });
         },
-        [activity.id, mutate, setCompletedActivities],
+        [activity.id, lessonResponseId, mutate, setCompletedActivities],
       );
 
     return (

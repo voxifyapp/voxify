@@ -17,8 +17,8 @@ type Props = {
 };
 
 export const HomeScreen = ({ navigation }: Props) => {
-  const onPress = (lessonId: string, title: string) => {
-    navigation.navigate('Lesson', { lessonId, title });
+  const onPress = (lessonId: string) => {
+    navigation.navigate('Lesson', { lessonId });
   };
 
   const { data: courseData, isLoading: isCourseLoading } = useQuery({
@@ -60,7 +60,7 @@ export const HomeScreen = ({ navigation }: Props) => {
                 {unit.lessons.map(lesson => (
                   <View key={lesson.id} style={styles.lessonContainer}>
                     <Circle size="$1" style={styles.circle} />
-                    <Text onPress={() => onPress(lesson.id, lesson.title)}>
+                    <Text onPress={() => onPress(lesson.id)}>
                       {lesson.title}
                     </Text>
                   </View>
