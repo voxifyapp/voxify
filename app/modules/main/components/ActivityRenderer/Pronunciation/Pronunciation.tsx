@@ -17,7 +17,7 @@ import {
 } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
-import { ActivityResponseResultType } from '@voxify/types/lms-progress/acitivity-response';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import React, { useCallback, useEffect } from 'react';
 import { XStack } from 'tamagui';
 

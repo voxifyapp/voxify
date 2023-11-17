@@ -21,6 +21,7 @@ export class ActivityResponseService {
       {
         activityId: activity.id,
         profileId: profileId,
+        lessonResponseId: data.lessonResponseId,
         responseData: data.responseData,
         timeTaken: data.timeTaken,
         result: data.result,

@@ -11,5 +11,6 @@ export interface ActivityResponseEntity extends BaseEntity {
   timeTaken: number;
   responseData: object;
   profileId: string;
+  lessonResponseId: string;
   activityId: string;
 }

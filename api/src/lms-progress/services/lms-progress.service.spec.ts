@@ -16,6 +16,7 @@ import {
   UnitRepository,
 } from 'src/lms/repositories/lms.repository';
 import { LmsProgressService } from './lms-progress.service';
+import { LessonResponseStatus } from 'src/lms-progress/entities/lesson-response.entity';
 
 describe('LmsProgressService', () => {
   let service: LmsProgressService;
@@ -52,7 +53,7 @@ describe('LmsProgressService', () => {
     it('should create a lesson response', async () => {
       const lessonId = '123';
       const profileId = '456';
-      const data = { lessonId };
+      const data = { lessonId, status: LessonResponseStatus.STARTED };
 
       const lesson = lessonFactory.build({ id: lessonId });
       jest.spyOn(findOr404, 'findOneOr404').mockResolvedValue(lesson);
@@ -75,7 +76,7 @@ describe('LmsProgressService', () => {
     it('should throw an error if the lesson does not exist', async () => {
       const lessonId = '123';
       const profileId = '456';
-      const data = { lessonId };
+      const data = { lessonId, status: LessonResponseStatus.STARTED };
 
       jest
         .spyOn(findOr404, 'findOneOr404')
