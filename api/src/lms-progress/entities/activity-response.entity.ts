@@ -2,7 +2,7 @@ import { Profile } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import { Activity } from 'src/lms/entities/activity.entity';
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 export enum ActivityResponseResultType {
   SUCCESS = 'SUCCESS',
@@ -34,15 +34,13 @@ export class ActivityResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   profile: Profile;
+  @Column()
+  profileId: string;
 
   @ManyToOne(() => LessonResponse, {
     onDelete: 'CASCADE',
   })
   lessonResponse: LessonResponse;
-
-  @Column()
-  profileId: string;
-
   @Column()
   lessonResponseId: string;
 
@@ -50,7 +48,6 @@ export class ActivityResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   activity: Activity;
-
   @Column()
   activityId: string;
 }
