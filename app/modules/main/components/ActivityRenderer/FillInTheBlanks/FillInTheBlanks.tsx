@@ -3,16 +3,15 @@ import {
   FillInTheBlanksActivityAnswer,
 } from '@packages/activity-builder';
 import { Button } from '@voxify/design_system/button';
-import { H3 } from '@voxify/design_system/typography';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
 import { FillInTheBlanksButton } from '@voxify/modules/main/components/ActivityRenderer/common/FillInTheBlanksButton';
 import { ResultView } from '@voxify/modules/main/components/ActivityRenderer/common/ResultView';
+import { SegmentRenderer } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/components/SegmentRenderer';
 
 import {
   FillInTheBlanksContextProvider,
   useCreateFillInTheBlanksContext,
-  useFillInTheBlanksContext,
 } from '@voxify/modules/main/components/ActivityRenderer/FillInTheBlanks/fillInTheBlanksContext';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { each } from 'lodash';
@@ -28,7 +27,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     useMemo(() => ({ activity }), [activity]),
   );
 
-  const { machineService: activityRendererMachineService } =
+  const { machineService: activityRendererMachineService, isShowingResults } =
     useActivityRendererContext();
 
   const {
@@ -95,8 +94,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
 
   return (
     <FillInTheBlanksContextProvider value={contextValue}>
-      <ActivityCardContainer alignItems="center">
-        <XStack flexWrap="wrap">
+      <ActivityCardContainer fullscreen={false} flex={1} alignItems="center">
+        <XStack space="$1.5" flexWrap="wrap">
           {questionSegments.map((segment, index) => (
             <SegmentRenderer key={index} segment={segment} />
           ))}
@@ -124,34 +123,8 @@ export const FillInTheBlanks = ({ activity }: Props) => {
             Check Answer
           </Button>
         )}
-        {activityRendererMachineService
-          .getSnapshot()
-          ?.matches({ WORKING_STATE: 'RESULT' }) && <ResultView />}
       </ActivityCardContainer>
+      {isShowingResults && <ResultView />}
     </FillInTheBlanksContextProvider>
   );
-};
-
-const SegmentRenderer = ({ segment }: { segment: string }) => {
-  const { userAnswer, removeWord, canRemoveWord } = useFillInTheBlanksContext();
-
-  if (segment.match(FillInTheBlanksActivity.BLANK_FORMAT)) {
-    if (userAnswer[segment]) {
-      const answerForBlank = userAnswer[segment];
-      return (
-        <H3
-          textDecorationLine="underline"
-          color="$highlightTextColor"
-          disabled={!canRemoveWord}
-          onPress={() => {
-            removeWord(segment);
-          }}>
-          {answerForBlank}
-        </H3>
-      );
-    }
-    return <H3>____</H3>;
-  }
-
-  return <H3>{segment} </H3>;
 };

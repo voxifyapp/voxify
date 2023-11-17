@@ -13,7 +13,7 @@ export const PronunciationText = styled(SizableText, {
   variants: {
     hasMatched: {
       true: {
-        backgroundColor: '$color.green',
+        backgroundColor: '$color.green5',
         color: 'white',
       },
     },

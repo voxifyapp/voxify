@@ -140,7 +140,6 @@ export const Pronunciation = ({ activity }: Props) => {
   return (
     <PronunciationContextProvider value={contextValue}>
       <ActivityCardContainer space="$4" alignItems="center">
-        <StatusTablet />
         <XStack flex={1} flexWrap="wrap" justifyContent="center">
           {referenceStringAsArray.map((referenceWord, referenceWordIndex) => {
             const hasReferenceWordBeenRecognized =
@@ -161,6 +160,7 @@ export const Pronunciation = ({ activity }: Props) => {
             );
           })}
         </XStack>
+        <StatusTablet />
         <Button
           onPress={() => {
             pronunciationMachineActor.send('RESTART');
