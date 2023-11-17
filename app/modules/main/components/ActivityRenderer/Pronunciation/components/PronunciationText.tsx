@@ -5,9 +5,10 @@ export const PronunciationText = styled(SizableText, {
   color: '$primaryTextColor',
   padding: '$1',
   paddingRight: '$1.5',
-  fontSize: 42,
-  lineHeight: 48,
+  fontSize: 38,
+  lineHeight: 44,
   paddingBottom: '0',
+  fontWeight: 'bold',
   textAlign: 'center',
   variants: {
     hasMatched: {

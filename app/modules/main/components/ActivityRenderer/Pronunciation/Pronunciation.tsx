@@ -116,13 +116,14 @@ export const Pronunciation = ({ activity }: Props) => {
     pronunciationMachineActor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
   }, [activityEntity.id, isWorkingState, pronunciationMachineActor]);
 
-  const referenceStringArray = PronunciationActivity.convertStringToArray(
+  const referenceStringAsArray = PronunciationActivity.convertStringToArray(
     activity.getPrompt().text,
   );
-  const matchResults = PronunciationActivity.matchReferenceStringWithInput(
-    activity.getPrompt().text,
-    userAnswer.recognizedWords,
-  );
+  const speechMatchResults =
+    PronunciationActivity.matchReferenceStringWithInput(
+      activity.getPrompt().text,
+      userAnswer.recognizedWords,
+    );
 
   useEffect(() => {
     return pronunciationMachineActor.subscribe(async e => {
@@ -141,21 +142,21 @@ export const Pronunciation = ({ activity }: Props) => {
       <ActivityCardContainer space="$4" alignItems="center">
         <StatusTablet />
         <XStack flex={1} flexWrap="wrap" justifyContent="center">
-          {referenceStringArray.map((word, index) => {
-            const hasMatched = matchResults[index];
+          {referenceStringAsArray.map((referenceWord, referenceWordIndex) => {
+            const hasReferenceWordBeenRecognized =
+              speechMatchResults[referenceWordIndex];
             return (
               <PronunciationText
                 term={
-                  index === referenceStringArray.length - 1
+                  referenceWordIndex === referenceStringAsArray.length - 1
                     ? 'lastTerm'
-                    : index === 0
+                    : referenceWordIndex === 0
                     ? 'firstTerm'
                     : undefined
                 }
-                hasMatched={!!hasMatched}
-                fontWeight="bold"
-                key={index}>
-                {word}
+                hasMatched={!!hasReferenceWordBeenRecognized}
+                key={referenceWordIndex}>
+                {referenceWord}
               </PronunciationText>
             );
           })}

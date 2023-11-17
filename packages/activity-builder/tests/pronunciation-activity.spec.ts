@@ -29,13 +29,13 @@ describe("PronunciationActivity", () => {
     const activity = new PronunciationActivity();
     activity.setPrompt(new TextBlock("The sentence to pronounce"));
     const answerError = activity.checkAnswer({
-      recognizedWords: "The sentence to",
+      recognizedWords: "The sentence to pronounce",
     });
     expect(answerError.correct).toEqual(true);
 
     expect(
       activity.checkAnswer({
-        recognizedWords: "The sentence",
+        recognizedWords: "sentence",
       }).correct
     ).toBe(false);
   });
