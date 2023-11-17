@@ -16,6 +16,7 @@ export class LessonService {
     return await this.lessonRepository.find({
       where: { unitId },
       relations: { unit: true },
+      order: unitId ? { order: 'ASC' } : { createdAt: 'DESC' },
       withDeleted: true,
     });
   }
