@@ -27,6 +27,10 @@ export class ProfileGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
+    if (doesNotRequireProfile) {
+      return true;
+    }
+
     const decodedUser: DecodedIdToken = request['decodedFirebaseUser'];
 
     // Get profile for the user

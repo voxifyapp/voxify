@@ -1,9 +1,11 @@
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react-native/no-inline-styles */
+
 //TODO Remove lint ignores above
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { StepCard } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/StepCard';
+import { useUpdateLessonResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
+import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
 import React, { useEffect, useRef, useState } from 'react';
@@ -29,6 +31,7 @@ export const completedActivitiesAtom = atom<
 
 export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
+  const [isLessonComplete, setIsLessonComplete] = useState(false);
   const listRef = useRef<FlatList<ActivityEntity>>(null);
 
   let renderedActivities = activities;
@@ -47,6 +50,8 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   //     : nextActivityToCompleteIndex + 1,
   // );
 
+  const { mutate: updateLessonResponseMutate } = useUpdateLessonResponse();
+
   useEffect(() => {
     setTimeout(() => {
       if (nextActivityToCompleteIndex !== -1) {
@@ -57,6 +62,17 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
       }
     }, 1000);
   }, [nextActivityToCompleteIndex]);
+
+  if (
+    Object.keys(completedActivities).length === renderedActivities.length &&
+    !isLessonComplete
+  ) {
+    updateLessonResponseMutate({
+      status: LessonResponseStatus.COMPLETED,
+      lessonResponseId,
+    });
+    setIsLessonComplete(true);
+  }
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,

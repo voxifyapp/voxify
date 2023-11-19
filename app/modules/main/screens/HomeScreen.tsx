@@ -3,12 +3,16 @@ import { useQuery } from 'react-query';
 import { UnitEntity } from '@voxify/types/lms/lms';
 import React, { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Spacer, YStack, H1, Card, Text, Paragraph, Button } from 'tamagui';
+import { Spacer, YStack, H1, Card, Text, Paragraph } from 'tamagui';
 import { Circle } from '@tamagui/lucide-icons';
 import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
+import {
+  GET_LESSON_RESPONSES_WITH_LESSON_AND_UNIT,
+  getLessonResponsesWithLessonAndUnit,
+} from '@voxify/api/lms-progress/lesson-response';
 
 type Props = {
   navigation: {
@@ -34,17 +38,24 @@ export const HomeScreen = ({ navigation }: Props) => {
     enabled: !!courseId,
   });
 
+  const { data: lessonResponse, isLoading: isLessonResponseLoading } = useQuery(
+    {
+      queryFn: getLessonResponsesWithLessonAndUnit.bind(null, courseId),
+      queryKey: [GET_LESSON_RESPONSES_WITH_LESSON_AND_UNIT, courseId],
+      enabled: !!courseId,
+    },
+  );
+
   const listRef = useRef<FlatList<UnitEntity>>(null);
 
-  if (isCourseLoading || isUnitsLoading) {
-    return <H1>Loading...</H1>;
+  if (isCourseLoading || isUnitsLoading || isLessonResponseLoading) {
+    return <H1>Loading..</H1>;
   }
+
+  console.log(JSON.stringify(lessonResponse));
 
   return (
     <YStack fullscreen theme="green" backgroundColor={'$blue2Dark'}>
-      <Button onPress={() => navigation.navigate('Lesson', { lessonId: '' })}>
-        Navigate to Lesson
-      </Button>
       <FlatList
         contentContainerStyle={{ marginTop: 20 }}
         ref={listRef}

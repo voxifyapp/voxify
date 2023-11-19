@@ -9,6 +9,7 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
+import { DoesNotRequireProfile, Public } from 'src/common/decorators/auth';
 import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import {
   CreateLessonResponseDto,
@@ -57,12 +58,12 @@ export class LessonResponseController {
     });
   }
 
-  @Get('/get-lessons')
+  @Get('/get-unit-lessons')
   async getLessonResponsesWithLessonsForProfile(
     @Req() req: AuthenticatedRequestWithProfile,
-    @Query('courseId', ParseUUIDPipe) courseId?: string,
+    @Query('courseId', ParseUUIDPipe) courseId: string,
   ) {
-    return this.lmsProgressService.getLessonResponsesWithLessonsForProfile(
+    return this.lmsProgressService.getUnitsAndLessonsWithStatusForProfile(
       req.currentProfile.id,
       courseId,
     );
@@ -91,6 +92,7 @@ export class UnitResponseController {
     @Req() req: AuthenticatedRequestWithProfile,
     @Query('forUnitId', ParseUUIDPipe) forUnitId?: string,
   ) {
+    console.log('In here');
     return this.lmsProgressService.getUnitResponses(req.currentProfile.id, {
       forUnitId,
     });
