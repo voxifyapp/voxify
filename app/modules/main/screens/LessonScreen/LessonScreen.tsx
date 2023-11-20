@@ -19,7 +19,7 @@ import { useQuery } from 'react-query';
 import { H1 } from 'tamagui';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
-export const LessonScreen = React.memo(({ route }: Props) => {
+export const LessonScreen = ({ route }: Props) => {
   const params = route.params;
 
   const [lessonId, setLessonId] = useState(params.lessonId);
@@ -71,4 +71,4 @@ export const LessonScreen = React.memo(({ route }: Props) => {
       )}
     </Screen>
   );
-});
+};

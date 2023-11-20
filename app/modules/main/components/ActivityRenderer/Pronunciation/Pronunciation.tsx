@@ -4,11 +4,22 @@ import {
   PronunciationActivityAnswer,
 } from '@packages/activity-builder';
 import Voice from '@react-native-voice/voice';
-import { useCreatePronunciationContext } from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
+import { Undo2 } from '@tamagui/lucide-icons';
+import { Button } from '@voxify/design_system/button';
+import {
+  PronunciationStatusTablet,
+  PronunciationText,
+} from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/components/PronunciationText';
+import {
+  PronunciationContextProvider,
+  useCreatePronunciationContext,
+  usePronunciationContext,
+} from '@voxify/modules/main/components/ActivityRenderer/Pronunciation/pronunciation.context';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
+import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import React, { useCallback, useEffect } from 'react';
-import { Button, H1, H3, XStack, YStack } from 'tamagui';
+import { XStack } from 'tamagui';
 
 type Props = {
   activity: PronunciationActivity;
@@ -23,6 +34,7 @@ export const Pronunciation = ({ activity }: Props) => {
     setAnswerErrors,
     pronunciationMachineActor,
   } = contextValue;
+
   const { machineService: activityRendererMachineService, activityEntity } =
     useActivityRendererContext();
 
@@ -104,13 +116,14 @@ export const Pronunciation = ({ activity }: Props) => {
     pronunciationMachineActor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
   }, [activityEntity.id, isWorkingState, pronunciationMachineActor]);
 
-  const referenceStringArray = PronunciationActivity.convertStringToArray(
+  const referenceStringAsArray = PronunciationActivity.convertStringToArray(
     activity.getPrompt().text,
   );
-  const matchResults = PronunciationActivity.matchReferenceStringWithInput(
-    activity.getPrompt().text,
-    userAnswer.recognizedWords,
-  );
+  const speechMatchResults =
+    PronunciationActivity.matchReferenceStringWithInput(
+      activity.getPrompt().text,
+      userAnswer.recognizedWords,
+    );
 
   useEffect(() => {
     return pronunciationMachineActor.subscribe(async e => {
@@ -125,33 +138,61 @@ export const Pronunciation = ({ activity }: Props) => {
   });
 
   return (
-    <YStack alignItems="center" p="$3" justifyContent="center" fullscreen>
-      <H3>{pronunciationMachineActor.getSnapshot().value}</H3>
-      <XStack flex={1} flexWrap="wrap" justifyContent="center">
-        {referenceStringArray.map((word, index) => {
-          const hasMatched = matchResults[index];
-          return (
-            <H1
-              fontWeight="bold"
-              color={hasMatched ? 'white' : 'black'}
-              padding="$1.5"
-              paddingBottom="0"
-              textAlign="center"
-              backgroundColor={hasMatched ? 'green' : undefined}
-              key={index}>
-              {word}
-            </H1>
-          );
-        })}
-      </XStack>
-      <Button
-        w="100%"
-        onPress={() => {
-          pronunciationMachineActor.send('RESTART');
-        }}
-        theme="green">
-        Restart
-      </Button>
-    </YStack>
+    <PronunciationContextProvider value={contextValue}>
+      <ActivityCardContainer space="$4" alignItems="center">
+        <XStack flex={1} flexWrap="wrap" justifyContent="center">
+          {referenceStringAsArray.map((referenceWord, referenceWordIndex) => {
+            const hasReferenceWordBeenRecognized =
+              speechMatchResults[referenceWordIndex];
+            return (
+              <PronunciationText
+                term={
+                  referenceWordIndex === referenceStringAsArray.length - 1
+                    ? 'lastTerm'
+                    : referenceWordIndex === 0
+                    ? 'firstTerm'
+                    : undefined
+                }
+                hasMatched={!!hasReferenceWordBeenRecognized}
+                key={referenceWordIndex}>
+                {referenceWord}
+              </PronunciationText>
+            );
+          })}
+        </XStack>
+        <StatusTablet />
+        <Button
+          onPress={() => {
+            pronunciationMachineActor.send('RESTART');
+          }}
+          size="$7"
+          circular>
+          <Undo2 scale={1} strokeWidth={3} />
+        </Button>
+      </ActivityCardContainer>
+    </PronunciationContextProvider>
   );
+};
+
+const StatusTablet = () => {
+  const { pronunciationMachineActor, answerErrors } = usePronunciationContext();
+
+  if (pronunciationMachineActor.getSnapshot().matches('LISTENING')) {
+    return (
+      <PronunciationStatusTablet status="listening">
+        LISTENING
+      </PronunciationStatusTablet>
+    );
+  }
+
+  if (answerErrors) {
+    return (
+      <PronunciationStatusTablet
+        status={answerErrors.correct ? 'success' : 'error'}>
+        {answerErrors.correct ? 'COMPLETE' : 'TRY AGAIN'}
+      </PronunciationStatusTablet>
+    );
+  }
+
+  return null;
 };
