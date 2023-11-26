@@ -42,7 +42,7 @@ export const ChoiceButton = ({ children, checked, ...props }: Props) => {
   return (
     <StyledChoiceButton
       checked={checked}
-      scaleIcon={1.7}
+      scaleIcon={1.5}
       icon={
         checked ? (
           <CheckCircle2

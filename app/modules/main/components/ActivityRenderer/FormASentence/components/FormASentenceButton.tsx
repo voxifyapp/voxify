@@ -1,4 +1,5 @@
-import { Button, styled } from 'tamagui';
+import { Button } from '@voxify/design_system/button';
+import { styled } from 'tamagui';
 
 export const FormASentenceButton = styled(Button, {
   name: 'FillInTheBlanksButton',
@@ -6,25 +7,20 @@ export const FormASentenceButton = styled(Button, {
   fontSize: '$4',
   borderRadius: '$radius.4',
   elevation: '$0.25',
-  pressStyle: {
-    backgroundColor: '#eeeeee',
-  },
   variants: {
     disabled: {
       true: {
+        backgroundColor: '$color.gray5',
         pressStyle: {
-          backgroundColor: '$disabledButtonBackground',
+          backgroundColor: '$color.gray5',
         },
       },
     },
     wordUsed: {
       true: {
-        backgroundColor: '#eeeeee',
-        color: '#eeeeee',
+        backgroundColor: '$color.gray1',
+        color: '$color.gray1',
         elevation: '$0',
-        pressStyle: {
-          backgroundColor: '#eeeeee',
-        },
       },
     },
   },

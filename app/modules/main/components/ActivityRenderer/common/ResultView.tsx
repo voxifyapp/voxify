@@ -29,9 +29,11 @@ export const ResultView = ({ correctAnswerView }: Props) => {
       <ResultContainer backgroundColor="$color.orange1">
         <XStack alignItems="center" space="$2">
           <XCircle color="$color.orange5" />
-          <H4 color="$color.orange5">That's incorrect!</H4>
+          <YStack>
+            <H4 color="$color.orange5">That's incorrect!</H4>
+            {correctAnswerView}
+          </YStack>
         </XStack>
-        {correctAnswerView}
       </ResultContainer>
     );
   }
