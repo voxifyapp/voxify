@@ -22,6 +22,6 @@ export class UnitResponse extends BaseEntity {
   })
   profile: Profile;
   @Column()
-  @Index('unit-profile-id-index', { synchronize: false })
+  @Index()
   profileId: string;
 }

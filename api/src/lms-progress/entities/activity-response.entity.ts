@@ -35,7 +35,7 @@ export class ActivityResponse extends BaseEntity {
   })
   profile: Profile;
   @Column()
-  @Index('activity-profile-id-index', { synchronize: false })
+  @Index()
   profileId: string;
 
   @ManyToOne(() => LessonResponse, {
