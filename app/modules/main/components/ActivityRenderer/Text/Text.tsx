@@ -17,8 +17,6 @@ export const Text = ({ activity }: Props) => {
   const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
-  console.log(activity);
-
   const onDoneClicked = () => {
     activityRendererMachineService.send({ type: 'finish', userAnswer: {} });
     const answerErrors = activity.checkAnswer();
