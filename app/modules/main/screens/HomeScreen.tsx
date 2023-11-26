@@ -34,17 +34,23 @@ export const HomeScreen = ({ navigation }: Props) => {
     enabled: !!courseId,
   });
 
+  const { data: lessonResponse, isLoading: isLessonResponseLoading } = useQuery(
+    {
+      queryFn: getLessonResponsesWithLessonAndUnit.bind(null, courseId),
+      queryKey: [GET_LESSON_RESPONSES_WITH_LESSON_AND_UNIT, courseId],
+      enabled: !!courseId,
+    },
+  );
+
   const listRef = useRef<FlatList<UnitEntity>>(null);
 
-  if (isCourseLoading || isUnitsLoading) {
-    return <H1>Loading...</H1>;
+  if (isCourseLoading || isUnitsLoading || isLessonResponseLoading) {
+    return <H1>Loading..</H1>;
   }
 
+  console.log(JSON.stringify(lessonResponse));
   return (
     <YStack fullscreen theme="green" backgroundColor={'$blue2Dark'}>
-      <Button onPress={() => navigation.navigate('Lesson', { lessonId: '' })}>
-        Navigate to Lesson
-      </Button>
       <FlatList
         contentContainerStyle={{ marginTop: 20 }}
         ref={listRef}
