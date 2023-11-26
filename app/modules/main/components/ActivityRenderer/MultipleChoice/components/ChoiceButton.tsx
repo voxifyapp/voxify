@@ -15,6 +15,21 @@ const StyledChoiceButton = styled(Button, {
         borderColor: '$color.blue',
       },
     },
+    disabled: {
+      true: {
+        backgroundColor: undefined,
+        pressStyle: {
+          backgroundColor: undefined,
+        },
+      },
+    },
+    result: {
+      correct: {
+        borderColor: '$color.green5',
+        color: '$color.green5',
+      },
+      incorrect: { borderColor: '$color.orange5', color: '$color.orange5' },
+    },
   },
 });
 
@@ -29,10 +44,12 @@ export const ChoiceButton = ({ children, checked, ...props }: Props) => {
       checked={checked}
       scaleIcon={1.7}
       icon={
-        <CheckCircle2
-          scale={1}
-          color={checked ? '$color.blue' : '$color.gray7'}
-        />
+        checked ? (
+          <CheckCircle2
+            scale={1}
+            //   color={checked ? '$color.blue' : '$color.gray7'}
+          />
+        ) : undefined
       }
       {...props}>
       {children}
