@@ -30,7 +30,7 @@ export class LessonResponse extends BaseEntity {
   })
   profile: Profile;
   @Column()
-  @Index('lesson-profile-id-index')
+  @Index()
   profileId: string;
 
   @OneToMany(
