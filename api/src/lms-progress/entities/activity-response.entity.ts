@@ -2,7 +2,7 @@ import { Profile } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import { Activity } from 'src/lms/entities/activity.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 export enum ActivityResponseResultType {
   SUCCESS = 'SUCCESS',
@@ -35,6 +35,7 @@ export class ActivityResponse extends BaseEntity {
   })
   profile: Profile;
   @Column()
+  @Index('activity-profile-id-index', { synchronize: false })
   profileId: string;
 
   @ManyToOne(() => LessonResponse, {
