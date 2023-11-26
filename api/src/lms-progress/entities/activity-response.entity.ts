@@ -51,7 +51,6 @@ export class ActivityResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   activity: Activity;
-
   @Column()
   activityId: string;
 }

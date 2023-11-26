@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PronunciationActivity = void 0;
 const activity_1 = require("./activity");
 const text_block_1 = require("./blocks/text-block");
+const MATCHED_WORDS_PERCENTAGE_TO_BE_CORRECT = 40;
 class PronunciationActivity extends activity_1.Activity {
     constructor(data) {
         super(activity_1.ActivityType.PRONUNCIATION, data ? Object.assign({}, data) : { prompt: new text_block_1.TextBlock("") });
@@ -20,7 +21,7 @@ class PronunciationActivity extends activity_1.Activity {
     // 2. A user might say the sentence, and some words might not be picked up
     // "hey are you doing"
     // 3. the skipped word might occur before, and should not be picked up
-    // "you are doing" => [null, null, null, null, "you", "doing"]
+    // "you are doing" => [false, false, false, false, true, true]
     //4. Users may say the same word multiple times, if it is not picked up
     // "hey hoe hoe hee how are you doing"
     /**
@@ -52,17 +53,18 @@ class PronunciationActivity extends activity_1.Activity {
     }
     checkAnswer(answer) {
         //If more than half the words are not detected, let's return wrong
-        const matchArray = _a.matchReferenceStringWithInput(this.getPrompt().text, answer.recognizedWords);
-        const numberOfWordsNotMatched = matchArray.filter((a) => a === null).length;
-        if (numberOfWordsNotMatched > matchArray.length / 2) {
+        const matchArray = PronunciationActivity.matchReferenceStringWithInput(this.getPrompt().text, answer.recognizedWords);
+        const numberOfWordsMatched = matchArray.filter((a) => !!a).length;
+        const recognizedPercent = (numberOfWordsMatched / matchArray.length) * 100;
+        if (recognizedPercent >= MATCHED_WORDS_PERCENTAGE_TO_BE_CORRECT) {
             return {
-                correct: false,
-                recognizedPercent: (numberOfWordsNotMatched / matchArray.length) * 100,
+                correct: true,
+                recognizedPercent,
             };
         }
         return {
-            correct: true,
-            recognizedPercent: (numberOfWordsNotMatched / matchArray.length) * 100,
+            correct: false,
+            recognizedPercent,
         };
     }
     build() {

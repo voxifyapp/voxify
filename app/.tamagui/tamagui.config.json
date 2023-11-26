@@ -20891,6 +20891,7 @@
         "screenPadding": 18,
         "color": "#1b69e4",
         "primaryTextColor": "#09234C",
+        "highlightTextColor": "#1b69e4",
         "backgroundPress": "#FA4D1D",
         "inverseTextColor": "#ffffff",
         "id": "base"
@@ -20898,7 +20899,14 @@
       "base_Button": {
         "background": "#1b69e4",
         "color": "#ffffff",
+        "backgroundPress": "#09234C",
+        "disabledButtonBackground": "#cccccc",
         "id": "base_Button"
+      },
+      "base_FillInTheBlanksButton": {
+        "background": "#ffffff",
+        "disabledButtonBackground": "#ffffff",
+        "id": "base_FillInTheBlanksButton"
       },
       "base_Progress": {
         "background": "#666666",
@@ -21009,25 +21017,60 @@
           "val": "#FDDC38",
           "variable": ""
         },
-        "orange": {
-          "isVar": true,
-          "key": "$orange",
-          "name": "color-3",
-          "val": "#FA4D1D",
-          "variable": ""
-        },
         "pink": {
           "isVar": true,
           "key": "$pink",
-          "name": "color-4",
+          "name": "color-3",
           "val": "#FBC3D4",
           "variable": ""
         },
-        "green": {
+        "blue10": {
           "isVar": true,
-          "key": "$green",
+          "key": "$blue10",
+          "name": "color-4",
+          "val": "#09234C",
+          "variable": ""
+        },
+        "green1": {
+          "isVar": true,
+          "key": "$green1",
           "name": "color-5",
+          "val": "#C9F2E0",
+          "variable": ""
+        },
+        "green5": {
+          "isVar": true,
+          "key": "$green5",
+          "name": "color-6",
           "val": "#009E5A",
+          "variable": ""
+        },
+        "green10": {
+          "isVar": true,
+          "key": "$green10",
+          "name": "color-7",
+          "val": "#004024",
+          "variable": ""
+        },
+        "green8": {
+          "isVar": true,
+          "key": "$green8",
+          "name": "color-8",
+          "val": "#006137",
+          "variable": ""
+        },
+        "orange1": {
+          "isVar": true,
+          "key": "$orange1",
+          "name": "color-9",
+          "val": "#FDE5DF",
+          "variable": ""
+        },
+        "orange5": {
+          "isVar": true,
+          "key": "$orange5",
+          "name": "color-10",
+          "val": "#FA4D1D",
           "variable": ""
         }
       },
@@ -21915,25 +21958,60 @@
         "val": "#FDDC38",
         "variable": ""
       },
-      "$color.orange": {
-        "isVar": true,
-        "key": "$orange",
-        "name": "color-3",
-        "val": "#FA4D1D",
-        "variable": ""
-      },
       "$color.pink": {
         "isVar": true,
         "key": "$pink",
-        "name": "color-4",
+        "name": "color-3",
         "val": "#FBC3D4",
         "variable": ""
       },
-      "$color.green": {
+      "$color.blue10": {
         "isVar": true,
-        "key": "$green",
+        "key": "$blue10",
+        "name": "color-4",
+        "val": "#09234C",
+        "variable": ""
+      },
+      "$color.green1": {
+        "isVar": true,
+        "key": "$green1",
         "name": "color-5",
+        "val": "#C9F2E0",
+        "variable": ""
+      },
+      "$color.green5": {
+        "isVar": true,
+        "key": "$green5",
+        "name": "color-6",
         "val": "#009E5A",
+        "variable": ""
+      },
+      "$color.green10": {
+        "isVar": true,
+        "key": "$green10",
+        "name": "color-7",
+        "val": "#004024",
+        "variable": ""
+      },
+      "$color.green8": {
+        "isVar": true,
+        "key": "$green8",
+        "name": "color-8",
+        "val": "#006137",
+        "variable": ""
+      },
+      "$color.orange1": {
+        "isVar": true,
+        "key": "$orange1",
+        "name": "color-9",
+        "val": "#FDE5DF",
+        "variable": ""
+      },
+      "$color.orange5": {
+        "isVar": true,
+        "key": "$orange5",
+        "name": "color-10",
+        "val": "#FA4D1D",
         "variable": ""
       },
       "$radius.0": {
