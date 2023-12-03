@@ -2,10 +2,9 @@
 
 //TODO Remove lint ignores above
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
+import { lessonCompletionInfoAtom } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { StepCard } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/StepCard';
-import { useUpdateLessonResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
-import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { atom, useAtomValue } from 'jotai';
 import React, { useEffect, useRef, useState } from 'react';
@@ -23,20 +22,27 @@ export const firstAndLastElementMargin = (screenHeight - height) / 2;
 type Props = {
   activities: ActivityEntity[];
   lessonResponseId: string;
+  onLessonComplete: () => void;
+  lessonId: string;
 };
 
 export const completedActivitiesAtom = atom<
   Record<string, ActivityRendererMachineRestoreDataType>
 >({});
 
-export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
+export const ActivityStepper = ({
+  activities,
+  lessonResponseId,
+  lessonId,
+  onLessonComplete,
+}: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-  const [isLessonComplete, setIsLessonComplete] = useState(false);
   const listRef = useRef<FlatList<ActivityEntity>>(null);
 
   let renderedActivities = activities;
 
   const completedActivities = useAtomValue(completedActivitiesAtom);
+  const lessonCompletionInfo = useAtomValue(lessonCompletionInfoAtom);
 
   const nextActivityToCompleteIndex = renderedActivities.findIndex(
     activity => !completedActivities[activity.id],
@@ -50,8 +56,6 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   //     : nextActivityToCompleteIndex + 1,
   // );
 
-  const { mutate: updateLessonResponseMutate } = useUpdateLessonResponse();
-
   useEffect(() => {
     setTimeout(() => {
       if (nextActivityToCompleteIndex !== -1) {
@@ -63,16 +67,24 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
     }, 1000);
   }, [nextActivityToCompleteIndex]);
 
-  if (
-    Object.keys(completedActivities).length === renderedActivities.length &&
-    !isLessonComplete
-  ) {
-    updateLessonResponseMutate({
-      status: LessonResponseStatus.COMPLETED,
-      lessonResponseId,
-    });
-    setIsLessonComplete(true);
-  }
+  useEffect(() => {
+    let completedActivitiesCount = 0;
+    renderedActivities.forEach(
+      activity =>
+        completedActivities[activity.id] && ++completedActivitiesCount,
+    );
+
+    completedActivitiesCount === renderedActivities.length &&
+      !lessonCompletionInfo.get(lessonId)?.isCompleted &&
+      onLessonComplete();
+  }, [
+    completedActivities,
+    lessonCompletionInfo,
+    lessonId,
+    lessonResponseId,
+    onLessonComplete,
+    renderedActivities,
+  ]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,

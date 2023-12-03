@@ -9,6 +9,7 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
+import { IsUUID } from 'class-validator';
 import { AuthenticatedRequestWithProfile } from 'src/common/request';
 import {
   CreateLessonResponseDto,
@@ -89,7 +90,8 @@ export class UnitResponseController {
   @Get()
   async findAll(
     @Req() req: AuthenticatedRequestWithProfile,
-    @Query('forUnitId', ParseUUIDPipe) forUnitId?: string,
+    @Query('forUnitId', new ParseUUIDPipe({ optional: true }))
+    forUnitId?: string,
   ) {
     return this.lmsProgressService.getUnitResponses(req.currentProfile.id, {
       forUnitId,
