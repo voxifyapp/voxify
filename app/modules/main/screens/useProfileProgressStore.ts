@@ -1,7 +1,5 @@
-import {
-  LessonResponseStatus,
-  ProfileProgress,
-} from '@voxify/types/lms-progress/lesson-response';
+import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
+import { ProfileProgress } from '@voxify/types/lms-progress/profile-progress';
 import { create } from 'zustand';
 
 export type ProgressState = {
@@ -41,8 +39,8 @@ export const useProfileProgressStore = create<ProgressState & ProgressActions>(
           ...state.profileProgress,
         };
         updatedProfileProgress[unitId].map(lesson => {
-          if (lesson.lesson_id === lessonId) {
-            lesson.lesson_status = LessonResponseStatus.COMPLETED;
+          if (lesson.id === lessonId) {
+            lesson.lessonCompletionStatus = LessonResponseStatus.COMPLETED;
           }
           return lesson;
         });

@@ -66,13 +66,13 @@ export class LmsProgressService {
     profileId: string,
     courseId: string,
   ) {
-    const data =
-      await this.lessonResponseRepo.getUnitsAndLessonsWithStatusForProfile(
+    const unitLesonResponseWithCompletion =
+      await this.unitResponseRepo.getUnitsWithLessonCompletionStatus(
         profileId,
         courseId,
       );
 
-    return this.parse(data);
+    return { result: unitLesonResponseWithCompletion };
   }
 
   async getLessonResponses(
@@ -97,48 +97,5 @@ export class LmsProgressService {
     );
 
     return unitResponses;
-  }
-
-  // Method to parse data containing lesson, unit and lessonResponse data fetched from DB
-  // into an ordered list of units with lesson info and status for profile
-  private parse(data: LessonUnitWithStatus[]) {
-    const unitLesonResponseWithCompletion = [];
-    let lessonsForUnit: Array<
-      Pick<LessonUnitWithStatus, 'lesson_id' | 'lesson_title' | 'lesson_order'>
-    > = [];
-    let unitUnderProcessing: string = data[0].unit_id;
-    let lessonsSeenForUnit = new Set();
-
-    data.forEach((lessonUnitResponse) => {
-      const unitId = lessonUnitResponse.unit_id;
-
-      if (unitId !== unitUnderProcessing) {
-        const obj = {};
-        obj[unitUnderProcessing] = lessonsForUnit;
-
-        unitLesonResponseWithCompletion.push(obj);
-        unitUnderProcessing = unitId;
-        lessonsForUnit = [];
-        lessonsSeenForUnit = new Set();
-      }
-
-      if (lessonsSeenForUnit.has(lessonUnitResponse.lesson_id)) {
-        return;
-      }
-
-      const lessonData = {
-        lesson_title: lessonUnitResponse.lesson_title,
-        lesson_order: lessonUnitResponse.lesson_order,
-        lesson_id: lessonUnitResponse.lesson_id,
-        lesson_status: lessonUnitResponse.status,
-      };
-
-      lessonsForUnit.push(lessonData);
-      lessonsSeenForUnit.add(lessonUnitResponse.lesson_id);
-    });
-    const obj = {};
-    obj[unitUnderProcessing] = lessonsForUnit;
-    unitLesonResponseWithCompletion.push(obj);
-    return { result: unitLesonResponseWithCompletion };
   }
 }

@@ -3,6 +3,7 @@ import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity
 import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
 import { LessonUnitWithStatus } from 'src/lms-progress/types/lesson-unit-with-status';
 import { Lesson } from 'src/lms/entities/lesson.entity';
+import { Unit } from 'src/lms/entities/unit.entity';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
@@ -29,41 +30,6 @@ export class LessonResponseRepository extends Repository<LessonResponse> {
       where: { profileId, lessonId: filter.forLessonId },
     });
   }
-
-  async getUnitsAndLessonsWithStatusForProfile(
-    profileId: string,
-    courseId: string,
-  ): Promise<LessonUnitWithStatus[]> {
-    const combineLessonUnitAndLessonResponseQuery = this.dataSource
-      .getRepository(Lesson)
-      .createQueryBuilder('lesson')
-      .select(LessonResponseRepository.fieldsToSelect)
-      .innerJoin(
-        'lesson.unit',
-        'unit',
-        'unit.courseId = :courseId AND lesson.published = true AND unit.published = true',
-        {
-          courseId,
-        },
-      )
-      .leftJoin(
-        (subQuery) => {
-          return subQuery
-            .select()
-            .from(LessonResponse, 'lr')
-            .where('lr.profileId = :profileId', { profileId })
-            .orderBy('lr.createdAt', 'DESC');
-        },
-        'lessonResponse',
-        '"lessonResponse"."lessonId" = lesson.id',
-      )
-      // sort first by unit order
-      .orderBy('unit.order')
-      // and then sort by lesson order within that unit
-      .addOrderBy('lesson.order');
-
-    return combineLessonUnitAndLessonResponseQuery.getRawMany();
-  }
 }
 
 @Injectable()
@@ -76,5 +42,41 @@ export class UnitResponseRepository extends Repository<UnitResponse> {
     return await this.find({
       where: { profileId, unitId: filter.forUnitId },
     });
+  }
+
+  async getUnitsWithLessonCompletionStatus(
+    profileId: string,
+    courseId: string,
+  ): Promise<LessonUnitWithStatus[]> {
+    const query = this.dataSource
+      .getRepository(Unit)
+      .createQueryBuilder('u')
+      .select('u.*')
+      .addSelect(
+        'jsonb_agg("lessonsWithCompletionStatus")',
+        'lessonsWithStatus',
+      )
+      .leftJoin(
+        (subQuery) => {
+          return subQuery
+            .select('l.*')
+            .addSelect('lr.status', 'lessonCompletionStatus')
+            .from(Lesson, 'l') // Replace 'Lesson' with your lesson entity class
+            .leftJoin(
+              'lesson_response',
+              'lr',
+              'lr."lessonId" = l.id AND lr.status = :status AND lr.profileId = :profileId',
+              { status: 'COMPLETED', profileId },
+            )
+            .distinctOn(['l.id']);
+        },
+        'lessonsWithCompletionStatus',
+        '"lessonsWithCompletionStatus"."unitId" = u.id',
+      )
+      .where('u.courseId = :courseId', { courseId })
+      .groupBy('u.id')
+      .orderBy('u.order');
+
+    return query.getRawMany();
   }
 }

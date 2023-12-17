@@ -13,6 +13,7 @@ import {
   useUpdateLessonResponse,
 } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
 import { useCreateUnitResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useUnitResponse';
+import { useUnitSyncCompletion } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useUnitSyncCompletion';
 import {
   ProgressActions,
   ProgressState,
@@ -42,13 +43,14 @@ export const LessonScreen = ({ route }: Props) => {
 
   const [lessonId, setLessonId] = useState(params.lessonId);
   const [unitId] = useState(params.unitId);
+  useUnitSyncCompletion({ unitId });
 
-  const [profileProgress, completedUnits, markUnitCompleted] =
-    useProfileProgressStore((state: ProgressState & ProgressActions) => [
-      state.profileProgress,
-      state.completedUnits,
-      state.markUnitCompleted,
-    ]);
+  // const [profileProgress, completedUnits, markUnitCompleted] =
+  //   useProfileProgressStore((state: ProgressState & ProgressActions) => [
+  //     state.profileProgress,
+  //     state.completedUnits,
+  //     state.markUnitCompleted,
+  //   ]);
 
   const lessonCompletionInfo = useAtomValue(lessonCompletionInfoAtom);
   const setLessonCompletionInfo = useSetAtom(lessonCompletionInfoAtom);
@@ -71,7 +73,7 @@ export const LessonScreen = ({ route }: Props) => {
     unitId,
   );
 
-  const { mutate: createUnitResponseMutate } = useCreateUnitResponse();
+  // const { mutate: createUnitResponseMutate } = useCreateUnitResponse();
 
   useEffect(() => {
     !lessonCompletionInfo.has(lessonId) &&
@@ -93,24 +95,25 @@ export const LessonScreen = ({ route }: Props) => {
       );
   }, [lessonId, mutate, lessonCompletionInfo, setLessonCompletionInfo]);
 
-  useEffect(() => {
-    if (
-      !completedUnits.has(unitId) &&
-      profileProgress[unitId].filter(
-        lesson => lesson.lesson_status !== LessonResponseStatus.COMPLETED,
-      ).length === 0
-    ) {
-      markUnitCompleted(unitId);
-      createUnitResponseMutate({ unitId });
-    }
-  }, [
-    completedUnits,
-    createUnitResponseMutate,
-    lessonId,
-    markUnitCompleted,
-    profileProgress,
-    unitId,
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     !completedUnits.has(unitId) &&
+  //     profileProgress[unitId].filter(
+  //       lesson =>
+  //         lesson.lessonCompletionStatus !== LessonResponseStatus.COMPLETED,
+  //     ).length === 0
+  //   ) {
+  //     markUnitCompleted(unitId);
+  //     createUnitResponseMutate({ unitId });
+  //   }
+  // }, [
+  //   completedUnits,
+  //   createUnitResponseMutate,
+  //   lessonId,
+  //   markUnitCompleted,
+  //   profileProgress,
+  //   unitId,
+  // ]);
 
   const handleLessonComplete = useCallback(() => {
     updateLessonResponseMutate({
