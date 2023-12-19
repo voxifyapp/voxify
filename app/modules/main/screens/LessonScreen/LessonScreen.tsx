@@ -12,13 +12,7 @@ import {
   useCreateLessonResponse,
   useUpdateLessonResponse,
 } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
-import { useCreateUnitResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useUnitResponse';
 import { useUnitSyncCompletion } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useUnitSyncCompletion';
-import {
-  ProgressActions,
-  ProgressState,
-  useProfileProgressStore,
-} from '@voxify/modules/main/screens/useProfileProgressStore';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
