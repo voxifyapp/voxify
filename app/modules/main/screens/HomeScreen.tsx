@@ -21,7 +21,11 @@ import {
   GET_UNIT_RESPONSE,
   getUnitResponse,
 } from '@voxify/api/lms-progress/unit-response';
-import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
+import {
+  ProfileProgress,
+  ProfileProgressByUnit,
+  ProfileProgressResult,
+} from '@voxify/types/lms-progress/profile-progress';
 
 type Props = {
   navigation: {
@@ -53,6 +57,13 @@ export const HomeScreen = ({ navigation }: Props) => {
       queryFn: getUnitsWithLessonCompletion.bind(null, courseId),
       queryKey: [GET_UNITS_WITH_LESSON_COMPLETION, courseId],
       enabled: !!courseId,
+      onSuccess: (data: ProfileProgressResult) => {
+        const unitData: ProfileProgress = {};
+        data.result.map(profileCompletion => {
+          unitData[profileCompletion.id] = profileCompletion.lessonsWithStatus;
+        });
+        setProfileProgress(unitData);
+      },
     },
   );
 
@@ -60,15 +71,6 @@ export const HomeScreen = ({ navigation }: Props) => {
     queryFn: getUnitResponse,
     queryKey: [GET_UNIT_RESPONSE],
   });
-
-  useEffect(() => {
-    const unitData: any = {};
-    lessonResponse &&
-      lessonResponse.result.map(profileCompletion => {
-        unitData[profileCompletion.id] = profileCompletion.lessonsWithStatus;
-      });
-    setProfileProgress(unitData);
-  }, [lessonResponse, setProfileProgress]);
 
   useEffect(() => {
     !!unitResponses &&
