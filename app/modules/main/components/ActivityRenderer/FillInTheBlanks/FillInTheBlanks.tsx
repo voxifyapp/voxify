@@ -64,6 +64,7 @@ export const FillInTheBlanks = ({ activity }: Props) => {
     };
     return activityRendererMachineService.subscribe(state => {
       if (state.event.type === 'RESTORE_DATA') {
+        state.event.restoreData;
         setUserAnswer(state.context.userAnswer);
         setAnswerErrors(state.context.answerError);
         syncUserAnswerIndexWithUserAnswer(state.context.userAnswer);

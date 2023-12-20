@@ -12,7 +12,7 @@ export type ActivityRendererOnCompleteType = (data: {
   userAnswer: any;
   result: ActivityResponseResultType;
   answerError: any;
-}) => any;
+}) => void;
 
 type ContextData = {
   onActivityResults: ActivityRendererOnCompleteType;

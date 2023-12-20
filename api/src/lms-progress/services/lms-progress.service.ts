@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { findOneOr404 } from 'src/common/utils/find-or-404';
 import {
   CreateLessonResponseDto,
   CreateUnitResponseDto,
+  UpdateLessonResponseDto,
 } from 'src/lms-progress/dtos/lms-progress.dto';
+import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
 import {
   LessonResponseRepository,
   UnitResponseRepository,
 } from 'src/lms-progress/repositories/lms-progress.repository';
+import { LessonUnitWithStatus } from 'src/lms-progress/types/lesson-unit-with-status';
 import {
   LessonRepository,
   UnitRepository,
@@ -33,6 +36,21 @@ export class LmsProgressService {
     return lessonResponse;
   }
 
+  async updateLessonResponse(profileId: string, data: UpdateLessonResponseDto) {
+    const existingLessonResponse = <LessonResponse>(
+      await findOneOr404(this.lessonResponseRepo, data.lessonResponseId)
+    );
+    if (existingLessonResponse.profileId !== profileId) {
+      throw new UnauthorizedException();
+    }
+    const lessonResponse = await this.lessonResponseRepo.update(
+      existingLessonResponse.id,
+      { status: data.status },
+    );
+
+    return lessonResponse;
+  }
+
   async createUnitResponse(profileId: string, data: CreateUnitResponseDto) {
     const unit = await findOneOr404(this.unitRepo, data.unitId);
 
@@ -42,6 +60,19 @@ export class LmsProgressService {
     );
 
     return lessonResponse;
+  }
+
+  async getUnitsAndLessonsWithStatusForProfile(
+    profileId: string,
+    courseId: string,
+  ) {
+    const unitLesonResponseWithCompletion =
+      await this.unitResponseRepo.getUnitsWithLessonCompletionStatus(
+        profileId,
+        courseId,
+      );
+
+    return { result: unitLesonResponseWithCompletion };
   }
 
   async getLessonResponses(

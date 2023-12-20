@@ -22,7 +22,7 @@ GoogleSignin.configure({
 
 export type AppStackParamList = {
   Home: undefined;
-  Lesson: { lessonId: string };
+  Lesson: { lessonId: string; unitId: string };
 };
 
 const AuthStack = createNativeStackNavigator();
@@ -53,7 +53,7 @@ export const Routes = () => {
               />
               <AppStack.Screen
                 name="Lesson"
-                component={LessonScreen as any}
+                component={LessonScreen}
                 options={{ headerShown: false }}
               />
             </>

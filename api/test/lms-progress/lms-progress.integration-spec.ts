@@ -3,6 +3,7 @@ import {
   CreateLessonResponseDto,
   CreateUnitResponseDto,
 } from 'src/lms-progress/dtos/lms-progress.dto';
+import { LessonResponseStatus } from 'src/lms-progress/entities/lesson-response.entity';
 import {
   lessonResponseFactory,
   unitResponseFactory,
@@ -19,6 +20,7 @@ describe('/lms-progress', () => {
 
       const data: CreateLessonResponseDto = {
         lessonId: lesson.id,
+        status: LessonResponseStatus.STARTED,
       };
 
       const res = await loginAsFirebaseUser(

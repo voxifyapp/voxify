@@ -2,7 +2,7 @@ import { Profile } from 'src/auth/entities/profile.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { ActivityResponse } from 'src/lms-progress/entities/activity-response.entity';
 import { Lesson } from 'src/lms/entities/lesson.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 
 export enum LessonResponseStatus {
   STARTED = 'STARTED',
@@ -29,8 +29,8 @@ export class LessonResponse extends BaseEntity {
     onDelete: 'CASCADE',
   })
   profile: Profile;
-
   @Column()
+  @Index()
   profileId: string;
 
   @OneToMany(

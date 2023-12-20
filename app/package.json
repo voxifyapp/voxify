@@ -42,7 +42,8 @@
     "react-query": "^3.39.3",
     "tamagui": "1.76.0",
     "xstate": "^4.38.2",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
