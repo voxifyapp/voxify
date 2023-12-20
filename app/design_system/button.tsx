@@ -5,7 +5,7 @@ export const Button = styled(TButton, {
   fontWeight: 'bold',
   fontSize: '$4',
   height: '$size.5',
-  borderRadius: '$radius.6',
+  borderRadius: '$radius.4',
   variants: {
     fullWidth: {
       true: { width: '100%' },

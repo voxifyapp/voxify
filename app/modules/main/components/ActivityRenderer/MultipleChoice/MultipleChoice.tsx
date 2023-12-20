@@ -1,51 +1,104 @@
+import { MultipleChoiceActivity } from '@packages/activity-builder';
+import { TextBlock } from '@packages/activity-builder/dist/blocks/text-block';
+import { Button } from '@voxify/design_system/button';
+import { H3, Subtext } from '@voxify/design_system/typography';
+import { ChoiceButton } from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/components/ChoiceButton';
 import {
-  MultipleChoiceActivity,
-  MultipleChoiceActivityAnswer,
-} from '@packages/activity-builder';
-import React, { useState } from 'react';
-import { Button, H3, SelectIcon, XStack, YStack } from 'tamagui';
+  MultipleChoiceContextProvider,
+  useCreateMultipleChoiceContext,
+} from '@voxify/modules/main/components/ActivityRenderer/MultipleChoice/multipleChoice.context';
+import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
+import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
+import { ResultView } from '@voxify/modules/main/components/ActivityRenderer/common/ResultView';
+import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
+import React from 'react';
+import { Stack, XStack, YStack } from 'tamagui';
 
 type Props = {
   activity: MultipleChoiceActivity;
 };
 
 export const MultipleChoice = ({ activity }: Props) => {
-  const [userAnswer, setUserAnswer] = useState<MultipleChoiceActivityAnswer>({
-    answer: [],
+  const { machineService: activityRendererMachineService, isShowingResults } =
+    useActivityRendererContext();
+
+  const context = useCreateMultipleChoiceContext({
+    activity,
   });
 
+  const { userAnswer, onOptionSelected, setAnswerErrors } = context;
+
+  const activityAnswers = activity.getAnswer();
+
+  const onChoicePressed = (choice: TextBlock) => {
+    onOptionSelected(choice.id);
+  };
+
+  const onCheckAnswerPressed = () => {
+    activityRendererMachineService.send({ type: 'finish', userAnswer });
+    const _answerErrors = activity.checkAnswer(userAnswer);
+    setAnswerErrors(_answerErrors);
+    activityRendererMachineService.send({
+      type: 'set_result',
+      result:
+        _answerErrors?.wrongOptions.length === 0
+          ? ActivityResponseResultType.SUCCESS
+          : ActivityResponseResultType.FAIL,
+      userAnswer,
+      answerError: _answerErrors,
+    });
+  };
+
   return (
-    <YStack>
-      <H3>{activity.getQuestion().text}</H3>
-      <XStack flexWrap="wrap" space="$3" spaceDirection="both" marginTop="$6">
-        {activity.getOptions().map(option => (
-          <Button
-            key={option.id}
-            icon={
-              userAnswer.answer.includes(option.id) ? <SelectIcon /> : undefined
-            }
-            onPress={() => {
-              // set answer, if option.id already exists remove it. Or else add it
-              setUserAnswer(prev => {
-                if (!activity.getIsMultipleAnswer()) {
-                  return { answer: [option.id] };
-                }
-                const newAnswer = [...prev.answer];
-                if (newAnswer.includes(option.id)) {
-                  newAnswer.splice(newAnswer.indexOf(option.id), 1);
-                } else {
-                  newAnswer.push(option.id);
-                }
-                return {
-                  answer: newAnswer,
-                };
-              });
-            }}
-            theme={'green'}>
-            {option.text}
-          </Button>
-        ))}
-      </XStack>
-    </YStack>
+    <MultipleChoiceContextProvider value={context}>
+      <YStack fullscreen>
+        <ActivityCardContainer fullscreen={false} flex={1}>
+          <H3>{activity.getQuestion().text}</H3>
+          {activity.getIsMultipleAnswer() && (
+            <Subtext color="$color.gray5">
+              Multiple choice - select 1 or more
+            </Subtext>
+          )}
+          <XStack
+            justifyContent="center"
+            alignItems="center"
+            flexWrap="wrap"
+            marginTop="$4">
+            {activity.getOptions().map(choice => {
+              const isOptionChecked = !!userAnswer.answer.includes(choice.id);
+              const isCorrectAnswer = !!activityAnswers.includes(choice.id);
+
+              return (
+                <ChoiceButton
+                  key={choice.id}
+                  marginRight="$2"
+                  marginBottom="$2"
+                  disabled={isShowingResults}
+                  checked={isOptionChecked}
+                  result={
+                    isShowingResults
+                      ? isCorrectAnswer
+                        ? 'correct'
+                        : isOptionChecked
+                        ? 'incorrect'
+                        : undefined
+                      : undefined
+                  }
+                  onPress={() => onChoicePressed(choice)}>
+                  {choice.text}
+                </ChoiceButton>
+              );
+            })}
+          </XStack>
+          <Stack flex={1} />
+          {!isShowingResults && (
+            <Button fullWidth onPress={onCheckAnswerPressed}>
+              Check Answer
+            </Button>
+          )}
+        </ActivityCardContainer>
+        {isShowingResults && <ResultView />}
+      </YStack>
+    </MultipleChoiceContextProvider>
   );
 };

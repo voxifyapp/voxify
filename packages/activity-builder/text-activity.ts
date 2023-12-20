@@ -19,7 +19,7 @@ export class TextActivity extends Activity<
         ? {
             ...data,
             title: new TextBlock(data.title.text, data.title),
-            description: new TextBlock(data.title.text, data.title),
+            description: new TextBlock(data.description.text, data.description),
           }
         : { title: new TextBlock(""), description: new TextBlock("") }
     );

@@ -21072,6 +21072,34 @@
           "name": "color-10",
           "val": "#FA4D1D",
           "variable": ""
+        },
+        "gray1": {
+          "isVar": true,
+          "key": "$gray1",
+          "name": "color-11",
+          "val": "#eeeeee",
+          "variable": ""
+        },
+        "gray5": {
+          "isVar": true,
+          "key": "$gray5",
+          "name": "color-12",
+          "val": "#999999",
+          "variable": ""
+        },
+        "gray7": {
+          "isVar": true,
+          "key": "$gray7",
+          "name": "color-13",
+          "val": "#777777",
+          "variable": ""
+        },
+        "gray10": {
+          "isVar": true,
+          "key": "$gray10",
+          "name": "color-14",
+          "val": "#444444",
+          "variable": ""
         }
       },
       "radius": {
@@ -22012,6 +22040,34 @@
         "key": "$orange5",
         "name": "color-10",
         "val": "#FA4D1D",
+        "variable": ""
+      },
+      "$color.gray1": {
+        "isVar": true,
+        "key": "$gray1",
+        "name": "color-11",
+        "val": "#eeeeee",
+        "variable": ""
+      },
+      "$color.gray5": {
+        "isVar": true,
+        "key": "$gray5",
+        "name": "color-12",
+        "val": "#999999",
+        "variable": ""
+      },
+      "$color.gray7": {
+        "isVar": true,
+        "key": "$gray7",
+        "name": "color-13",
+        "val": "#777777",
+        "variable": ""
+      },
+      "$color.gray10": {
+        "isVar": true,
+        "key": "$gray10",
+        "name": "color-14",
+        "val": "#444444",
         "variable": ""
       },
       "$radius.0": {

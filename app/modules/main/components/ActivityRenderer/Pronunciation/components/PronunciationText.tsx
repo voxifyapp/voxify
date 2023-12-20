@@ -41,7 +41,7 @@ export const PronunciationStatusTablet = styled(H5, {
         backgroundColor: '$color.blue',
       },
       success: {
-        backgroundColor: '$color.green',
+        backgroundColor: '$color.green5',
       },
       error: {
         backgroundColor: '$color.orange',

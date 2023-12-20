@@ -15,6 +15,12 @@ const shadesOfGreen = {
   green10: '#004024',
   green8: '#006137',
 };
+const shaesOfGray = {
+  gray1: '#eeeeee',
+  gray5: '#999999',
+  gray7: '#777777',
+  gray10: '#444444',
+};
 const white = '#ffffff';
 
 // Defining the color gradients for the colors 0 being the lightest and 10 being the darkest
@@ -37,6 +43,7 @@ const appConfig = createTamagui({
       blue10,
       ...shadesOfGreen,
       ...shadesOfOrange,
+      ...shaesOfGray,
     },
     size: {
       ...config.tokens.size,
