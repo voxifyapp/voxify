@@ -19,6 +19,7 @@ describe('/lms-progress', () => {
         },
         timeTaken: 10,
         result: ActivityResponseResultType.SUCCESS,
+        lessonResponseId: '',
       };
 
       const res = await loginAsFirebaseUser(

@@ -24,8 +24,15 @@ jobs:
         with:
           node-version: 18
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+            
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Run linters on Server
-        run: cd api && yarn install --focus && npm run lint
+        run: cd api && npm run lint
 
       - name: Run linters on App
-        run: cd app && yarn install --focus && npm run lint
+        run: cd app && npm run lint
