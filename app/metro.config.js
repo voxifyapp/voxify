@@ -15,7 +15,7 @@ const config = {
    * All the deps are nohoisted
    * Because of this we need to watch folders that we want to use in the package
    */
-  watchFolders: [path.resolve(__dirname, '../packages/activity-builder')],
+  watchFolders: [path.resolve(__dirname, '../packages/activity-builder'), path.resolve(__dirname, '../packages/activity-builder/node_modules')],
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
