@@ -5,13 +5,15 @@
       "packages/*",
       "api",
       "admin",
-      "app"
+      "app",
+      "user-learning-app"
     ],
     "nohoist": [
       "app/**",
       "api/**",
       "admin/**",
-      "packages/**"
+      "packages/**",
+      "user-learning-app/**"
     ]
   }
 }
