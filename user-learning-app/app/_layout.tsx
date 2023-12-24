@@ -1,12 +1,11 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { FillInTheBlanksActivity } from "@packages/activity-builder";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 
@@ -52,10 +51,11 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Slot />
+      {/* <Stack>
+        
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
+      </Stack> */}
     </ThemeProvider>
   );
 }
