@@ -1,22 +1,23 @@
 import { Screen } from "design_system/layout";
-import { H1, Paragraph } from "design_system/typography";
+import { H1, Paragraph, SizableText } from "design_system/typography";
 import { Button } from "design_system/button";
-import { Spacer, View, YStack } from "tamagui";
+import { Spacer, View, XStack, YStack } from "tamagui";
+import { ArrowBigRight } from "@tamagui/lucide-icons";
 
 export default function SignIn() {
   return (
     <Screen>
-      <YStack flex={1} />
-      <YStack flex={1}>
-        <H1 maxWidth="$size.24" fontWeight="bold" textAlign="center">
+      <YStack flex={3} />
+      <YStack flex={2}>
+        <H1 maxWidth="$size.24" fontWeight="bold">
           Learn how to speak better
         </H1>
-        <Paragraph mt="$space.3" textAlign="center">
+        <Paragraph mt="$space.2">
           Master everyday English with real world scenarios
         </Paragraph>
-        <Spacer height="$4" />
+        <YStack flex={1} />
         <Button
-          alignSelf="stretch"
+          alignSelf="flex-end"
           onPress={async () => {
             // Check if your device supports Google Play
             // await GoogleSignin.hasPlayServices({
@@ -34,7 +35,13 @@ export default function SignIn() {
             // }
           }}
         >
-          Get started
+          <XStack space="$2" alignItems="center">
+            <SizableText fontWeight="bold" col="white">
+              Start learning now
+            </SizableText>
+
+            <ArrowBigRight scale={1.2} />
+          </XStack>
         </Button>
         <Spacer height="$1" />
       </YStack>
