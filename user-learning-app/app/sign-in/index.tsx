@@ -1,5 +1,5 @@
 import { Screen } from "design_system/layout";
-import { H1, Paragraph, SizableText } from "design_system/typography";
+import { H1, H2, Paragraph, SizableText } from "design_system/typography";
 import { Button } from "design_system/button";
 import { Spacer, View, XStack, YStack } from "tamagui";
 import { ArrowBigRight } from "@tamagui/lucide-icons";
@@ -7,15 +7,15 @@ import { ArrowBigRight } from "@tamagui/lucide-icons";
 export default function SignIn() {
   return (
     <Screen>
-      <YStack flex={3} />
-      <YStack flex={2}>
-        <H1 maxWidth="$size.24" fontWeight="bold">
+      <YStack flex={1} />
+      <YStack>
+        <H2 maxWidth="$size.24" fontWeight="bold">
           Learn how to speak better
-        </H1>
+        </H2>
         <Paragraph mt="$space.2">
           Master everyday English with real world scenarios
         </Paragraph>
-        <YStack flex={1} />
+        <Spacer size="$6" />
         <Button
           alignSelf="flex-end"
           onPress={async () => {
