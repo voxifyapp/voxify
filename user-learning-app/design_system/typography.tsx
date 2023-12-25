@@ -45,7 +45,7 @@ export const H4 = (props: SizableTextProps) => (
 );
 
 export const Paragraph = (props: SizableTextProps) => (
-  <SizableText size="$6" lineHeight={getTokens().space[5].val} {...props} />
+  <SizableText size="$5" lineHeight={getTokens().space[5].val} {...props} />
 );
 
 export const Subtext = (props: SizableTextProps) => (

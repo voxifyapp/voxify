@@ -3,9 +3,9 @@ import { ArrowBigRight } from "@tamagui/lucide-icons";
 import { Button } from "design_system/button";
 import { Screen } from "design_system/layout";
 import { H2, Paragraph, SizableText } from "design_system/typography";
-import { Spacer, XStack, YStack } from "tamagui";
 import LottieView from "lottie-react-native";
 import { useRef } from "react";
+import { Spacer, XStack, YStack } from "tamagui";
 
 export default function SignIn() {
   const animation = useRef(null);
@@ -24,7 +24,7 @@ export default function SignIn() {
         <H2 maxWidth="$size.24" fontWeight="bold">
           Learn how to speak better
         </H2>
-        <Paragraph mt="$space.2">
+        <Paragraph mt="$space.1">
           Master everyday English with real world scenarios
         </Paragraph>
         <Spacer size="$6" />

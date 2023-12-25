@@ -3,8 +3,8 @@ import {
   FETCH_OR_CREATE_PROFILE_QUERY,
   fetchOrCreateProfile,
 } from "@voxify/api/auth/profile";
-import { authAxios } from "@voxify/axiosClient";
-import { ProfileEntity } from "@voxify/types/auth/profile";
+import { authAxios } from "axiosClient";
+import { ProfileEntity } from "types/auth/profile";
 import React, {
   ReactNode,
   createContext,

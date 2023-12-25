@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   TamaguiProvider,
   Theme,
+  getThemes,
   getTokenValue,
   useConfiguration,
 } from "tamagui";
@@ -56,7 +57,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const backgroundColor = getTokenValue("$color.blue10");
+  const backgroundColor = getTokenValue("$color.blue");
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={backgroundColor} />
