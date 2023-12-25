@@ -13,6 +13,7 @@ import React, {
   useState,
 } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 
 export type AppContextType = {
   user: FirebaseAuthTypes.User | null;
@@ -40,6 +41,13 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     });
     return subscriber; // unsubscribe on unmount
   }, []);
+
+  /**
+   * If the user is logged in, redirect to the home page
+   */
+  useEffect(() => {
+    router.replace("/");
+  }, [user]);
 
   const { data: profileData, isLoading: profileDataLoading } = useQuery({
     queryKey: [FETCH_OR_CREATE_PROFILE_QUERY],
