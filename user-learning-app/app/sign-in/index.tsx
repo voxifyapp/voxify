@@ -4,12 +4,23 @@ import { Button } from "design_system/button";
 import { Screen } from "design_system/layout";
 import { H2, Paragraph, SizableText } from "design_system/typography";
 import { Spacer, XStack, YStack } from "tamagui";
+import LottieView from "lottie-react-native";
+import { useRef } from "react";
 
 export default function SignIn() {
+  const animation = useRef(null);
+
   return (
-    <Screen>
-      <YStack flex={1} />
-      <YStack>
+    <Screen noPadding>
+      <YStack flex={1}>
+        <LottieView
+          autoPlay
+          style={{ width: "100%", height: "100%" }}
+          ref={animation}
+          source={require("assets/lottie/communication.json")}
+        />
+      </YStack>
+      <YStack backgroundColor="white" p="$6" elevation="$6">
         <H2 maxWidth="$size.24" fontWeight="bold">
           Learn how to speak better
         </H2>

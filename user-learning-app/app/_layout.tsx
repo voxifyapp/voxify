@@ -3,8 +3,14 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
+import { StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TamaguiProvider, Theme } from "tamagui";
+import {
+  TamaguiProvider,
+  Theme,
+  getTokenValue,
+  useConfiguration,
+} from "tamagui";
 
 import tamaguiConfig from "tamagui.config";
 
@@ -50,8 +56,10 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const backgroundColor = getTokenValue("$color.blue10");
   return (
     <SafeAreaView>
+      <StatusBar backgroundColor={backgroundColor} />
       <TamaguiProvider config={tamaguiConfig}>
         <Theme name="base">
           <Slot />
