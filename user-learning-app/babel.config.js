@@ -21,6 +21,14 @@ module.exports = function (api) {
           include: ["TAMAGUI_TARGET"],
         },
       ],
+      // [
+      //   "module-resolver",
+      //   {
+      //     alias: {
+      //       $design_system: "./design_system",
+      //     },
+      //   },
+      // ],
     ],
   };
 };

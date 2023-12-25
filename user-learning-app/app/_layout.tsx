@@ -1,13 +1,12 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { StatusBar, useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { TamaguiProvider, Theme } from "tamagui";
+
+import tamaguiConfig from "tamagui.config";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,15 +46,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Slot />
-      {/* <Stack>
-        
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack> */}
-    </ThemeProvider>
+    <SafeAreaView>
+      <TamaguiProvider config={tamaguiConfig}>
+        <Theme name="base">
+          <Slot />
+        </Theme>
+      </TamaguiProvider>
+    </SafeAreaView>
   );
 }

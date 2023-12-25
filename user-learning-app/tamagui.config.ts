@@ -59,7 +59,6 @@ const appConfig = createTamagui({
     base: {
       // Screen properties
       background: bgYellow,
-      screenPadding: config.tokens.space[4],
 
       // Primary color
       color: blue5,
