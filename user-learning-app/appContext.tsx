@@ -42,7 +42,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const { data: profileData, isLoading: profileDataLoading } = useQuery({
-    queryKey: FETCH_OR_CREATE_PROFILE_QUERY,
+    queryKey: [FETCH_OR_CREATE_PROFILE_QUERY],
     queryFn: fetchOrCreateProfile,
     enabled: !!user,
   });

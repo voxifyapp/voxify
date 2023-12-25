@@ -1,5 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppContextProvider } from "appContext";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
@@ -8,9 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   TamaguiProvider,
   Theme,
-  getThemes,
-  getTokenValue,
-  useConfiguration,
+  getTokenValue
 } from "tamagui";
 
 import tamaguiConfig from "tamagui.config";
@@ -21,7 +21,7 @@ GoogleSignin.configure({
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 export const unstable_settings = {
@@ -56,16 +56,23 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+const queryClient = new QueryClient();
 function RootLayoutNav() {
   const backgroundColor = getTokenValue("$color.blue");
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={backgroundColor} />
-      <TamaguiProvider config={tamaguiConfig}>
-        <Theme name="base">
-          <Slot />
-        </Theme>
-      </TamaguiProvider>
+
+      <QueryClientProvider client={queryClient}>
+        <AppContextProvider>
+          <TamaguiProvider config={tamaguiConfig}>
+            <Theme name="base">
+              <Slot />
+            </Theme>
+          </TamaguiProvider>
+        </AppContextProvider>
+      </QueryClientProvider>
+
     </SafeAreaView>
   );
 }

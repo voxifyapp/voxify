@@ -1,3 +1,4 @@
+import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ArrowBigRight } from "@tamagui/lucide-icons";
 import { Button } from "design_system/button";
@@ -38,13 +39,14 @@ export default function SignIn() {
             // Get the users ID token
             const { idToken } = await GoogleSignin.signIn();
             // Create a Google credential with the token
-            // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-            // // Sign-in the user with the credential
-            // try {
-            //   await auth().signInWithCredential(googleCredential);
-            // } catch (err) {
-            //   console.error(err);
-            // }
+            const googleCredential =
+              auth.GoogleAuthProvider.credential(idToken);
+            // Sign-in the user with the credential
+            try {
+              await auth().signInWithCredential(googleCredential);
+            } catch (err) {
+              console.error(err);
+            }
           }}
         >
           <XStack space="$2" alignItems="center">
