@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>44840556270-9mf5o6vo0tiljdnqhraovedsnr7utq5c.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.44840556270-9mf5o6vo0tiljdnqhraovedsnr7utq5c</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>44840556270-65a4oc2rmo8biolaeeipi13j1n6suj2s.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAYJ3CRSKi3HbarmAwRey5N9ZfHpElZyOI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>44840556270</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.voxifyapp.userlearningapp</string>
+	<key>PROJECT_ID</key>
+	<string>voxify-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>voxify-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:44840556270:ios:5d673c7f8ededd862c85ff</string>
+</dict>
+</plist>

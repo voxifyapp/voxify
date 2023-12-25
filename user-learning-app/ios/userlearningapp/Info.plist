@@ -34,6 +34,12 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
+          <string>com.googleusercontent.apps.44840556270-9mf5o6vo0tiljdnqhraovedsnr7utq5c</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
           <string>exp+user-learning-app</string>
         </array>
       </dict>

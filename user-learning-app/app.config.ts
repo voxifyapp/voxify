@@ -15,6 +15,7 @@ module.exports = {
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.voxifyapp.userlearningapp",
+    googleServicesFile: "./config/development/GoogleService-Info.plist",
   },
   android: {
     adaptiveIcon: {
@@ -29,7 +30,19 @@ module.exports = {
     output: "static",
     favicon: "./assets/images/favicon.png",
   },
-  plugins: ["expo-router", ["@react-native-google-signin/google-signin"]],
+  plugins: [
+    "expo-router",
+    "@react-native-google-signin/google-signin",
+    "@react-native-firebase/app",
+    [
+      "expo-build-properties",
+      {
+        ios: {
+          useFrameworks: "static",
+        },
+      },
+    ],
+  ],
   experiments: {
     typedRoutes: true,
     tsconfigPaths: true,
