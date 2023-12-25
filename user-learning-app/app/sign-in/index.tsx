@@ -1,8 +1,9 @@
-import { Screen } from "design_system/layout";
-import { H1, H2, Paragraph, SizableText } from "design_system/typography";
-import { Button } from "design_system/button";
-import { Spacer, View, XStack, YStack } from "tamagui";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ArrowBigRight } from "@tamagui/lucide-icons";
+import { Button } from "design_system/button";
+import { Screen } from "design_system/layout";
+import { H2, Paragraph, SizableText } from "design_system/typography";
+import { Spacer, XStack, YStack } from "tamagui";
 
 export default function SignIn() {
   return (
@@ -20,12 +21,12 @@ export default function SignIn() {
           alignSelf="flex-end"
           onPress={async () => {
             // Check if your device supports Google Play
-            // await GoogleSignin.hasPlayServices({
-            //   showPlayServicesUpdateDialog: true,
-            // });
-            // // Get the users ID token
-            // const { idToken } = await GoogleSignin.signIn();
-            // // Create a Google credential with the token
+            await GoogleSignin.hasPlayServices({
+              showPlayServicesUpdateDialog: true,
+            });
+            // Get the users ID token
+            const { idToken } = await GoogleSignin.signIn();
+            // Create a Google credential with the token
             // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             // // Sign-in the user with the credential
             // try {

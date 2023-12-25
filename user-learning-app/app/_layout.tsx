@@ -1,12 +1,16 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
-import { StatusBar, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TamaguiProvider, Theme } from "tamagui";
 
 import tamaguiConfig from "tamagui.config";
+
+GoogleSignin.configure({
+  webClientId: process.env.EXPO_PUBLIC_FIREBASE_WEBCLIENT_ID,
+});
 
 export {
   // Catch any errors thrown by the Layout component.

@@ -3689,15 +3689,10 @@
   dependencies:
     plist "^3.0.5"
 
-"@react-native-google-signin/google-signin@^10.0.1":
+"@react-native-google-signin/google-signin@10.0.1", "@react-native-google-signin/google-signin@^10.0.1":
   version "10.0.1"
   resolved "https://registry.npmjs.org/@react-native-google-signin/google-signin/-/google-signin-10.0.1.tgz"
   integrity sha512-oZoU2lfKyn0s0GqqdFsi4v2FSENrxQYQU9DD/RSkxDdkIQ49Wwo6p5LKlgXY04GwZEVdYMuvZN3G89gQW0ig2g==
-
-"@react-native-google-signin/google-signin@^11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-11.0.0.tgz#b1732cf61758f8c6554adefd8cdc9a9f640df9b1"
-  integrity sha512-J8BFFGr5HcEWE2gRaVSJ0rQN8ztxYIr2wdWMG4PS1vhQZJqUzmRr6vpu12O1GppItq8ai7AA0rl/ja7hSytSXA==
 
 "@react-native-voice/voice@^3.2.4":
   version "3.2.4"

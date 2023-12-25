@@ -1,4 +1,4 @@
-package com.userlearningapp;
+package com.voxifyapp.userlearningapp;
 
 import android.app.Application;
 import android.content.res.Configuration;
