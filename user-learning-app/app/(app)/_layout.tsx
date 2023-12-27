@@ -3,7 +3,7 @@ import {
   ProfileCompletionStep,
   useGetCurrentProfileStep,
 } from "@voxify/hooks/profile";
-import { Redirect, Slot } from "expo-router";
+import { Redirect, Slot, Stack } from "expo-router";
 import { Text } from "react-native";
 
 export default function AppLayout() {
