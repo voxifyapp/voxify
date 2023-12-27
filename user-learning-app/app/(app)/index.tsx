@@ -8,9 +8,10 @@ import {
   GET_UNITS_WITH_LESSON_COMPLETION,
   getUnitsWithLessonCompletion,
 } from "@voxify/api/lms-progress/lesson-response";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Card, H1, Paragraph, Spacer, Text } from "tamagui";
+import Voice from "@react-native-voice/voice";
 
 import {
   GET_UNIT_RESPONSE,
@@ -23,6 +24,7 @@ import {
 // } from "@voxify/modules/main/screens/useProfileProgressStore";
 import { Screen } from "@voxify/design_system/layout";
 import { ProfileProgressByUnit } from "@voxify/types/lms-progress/profile-progress";
+import { Link, router } from "expo-router";
 
 type Props = {};
 
@@ -34,7 +36,8 @@ export default function Home({}: Props) {
   //     state.setCompletedUnits,
   //   ]);
 
-  const onPress = (lessonId: string, unitId: string) => {
+  const onPress = (lessonId: string) => {
+    router.replace(`/lesson/${lessonId}`);
     // navigation.navigate("Lesson", { lessonId, unitId });
   };
 
@@ -106,7 +109,9 @@ export default function Home({}: Props) {
     return unitLessons.map((lesson) => (
       <View key={lesson.id} style={styles.lessonContainer}>
         <Circle size="$1" style={styles.circle} />
-        <Text onPress={() => onPress(lesson.id, unitId)}>{lesson.title}</Text>
+        <Link href={`/lesson/${lesson.id}`} replace>
+          <Text>{lesson.title}</Text>
+        </Link>
       </View>
     ));
   };
