@@ -2,10 +2,12 @@ import {
   CreateUnitResponsePostData,
   createUnitResponse,
 } from '@voxify/api/lms-progress/unit-response';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 export const useCreateUnitResponse = () => {
-  return useMutation((data: CreateUnitResponsePostData) => {
-    return createUnitResponse({ ...data });
+  return useMutation({
+    mutationFn: (data: CreateUnitResponsePostData) => {
+      return createUnitResponse({ ...data });
+    },
   });
 };

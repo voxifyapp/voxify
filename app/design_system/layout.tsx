@@ -1,7 +1,11 @@
 import React from 'react';
-import { YStack as TYStack, styled } from 'tamagui';
+import { YStack as TYStack, XStack as TXStack, styled } from 'tamagui';
 
 export const YStack = styled(TYStack, {
+  name: 'YStack',
+});
+
+export const XStack = styled(TXStack, {
   name: 'YStack',
 });
 

@@ -1,5 +1,6 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppContextProvider, useAppContext } from '@voxify/context/AppContext';
 import {
@@ -13,7 +14,7 @@ import { LessonScreen } from '@voxify/modules/main/screens/LessonScreen/LessonSc
 import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
-import { QueryClient, QueryClientProvider } from 'react-query';
+
 import { TamaguiProvider, Text, Theme } from 'tamagui';
 
 GoogleSignin.configure({

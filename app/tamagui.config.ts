@@ -15,6 +15,10 @@ const shadesOfGreen = {
   green10: '#004024',
   green8: '#006137',
 };
+const shadesOfYellow = {
+  yellow1: 'FEFAF1',
+  yellow5,
+};
 const shaesOfGray = {
   gray1: '#eeeeee',
   gray5: '#999999',
@@ -37,6 +41,7 @@ const appConfig = createTamagui({
   tokens: {
     ...config.tokens,
     color: {
+      blue5,
       blue: blue5,
       yellow: yellow5,
       pink: pink5,
@@ -44,6 +49,7 @@ const appConfig = createTamagui({
       ...shadesOfGreen,
       ...shadesOfOrange,
       ...shaesOfGray,
+      ...shadesOfYellow,
     },
     size: {
       ...config.tokens.size,

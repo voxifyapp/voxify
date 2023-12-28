@@ -24,9 +24,12 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install deps
-        working-directory: ./api
-        run: yarn install --focus
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Run unit tests
         working-directory: ./api

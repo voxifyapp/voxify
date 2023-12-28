@@ -1,6 +1,678 @@
 {
   "components": [
     {
+      "moduleName": "@tamagui/core",
+      "nameToInfo": {
+        "Stack": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "defaultProps": {},
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInlineEnd": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "placeholderTextColor": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true
+            }
+          }
+        },
+        "Text": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "isText": true,
+            "defaultProps": {
+              "fontFamily": "unset",
+              "suppressHighlighting": true
+            },
+            "inlineWhenUnflattened": {},
+            "variants": {
+              "ellipsizeMode": {
+                "...": "Function"
+              },
+              "ellipse": {
+                "true": {
+                  "numberOfLines": 1,
+                  "lineBreakMode": "clip"
+                }
+              }
+            },
+            "deoptProps": {},
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInlineEnd": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "placeholderTextColor": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true,
+              "fontFamily": true,
+              "fontSize": true,
+              "fontStyle": true,
+              "letterSpacing": true,
+              "lineHeight": true,
+              "textTransform": true,
+              "textAlign": true,
+              "textDecorationLine": true,
+              "textDecorationStyle": true,
+              "textShadowOffset": true,
+              "textShadowRadius": true
+            }
+          }
+        },
+        "View": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "defaultProps": {},
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInlineEnd": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "placeholderTextColor": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true
+            }
+          }
+        },
+        "Spacer": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "memo": true,
+            "componentName": "Spacer",
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInlineEnd": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "placeholderTextColor": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true
+            },
+            "defaultProps": {
+              "tag": "span",
+              "size": true,
+              "pointerEvents": "none"
+            },
+            "variants": {
+              "size": {
+                "...": "Function"
+              },
+              "flex": {
+                "true": {
+                  "flexGrow": 1
+                }
+              },
+              "direction": {
+                "horizontal": {
+                  "height": 0,
+                  "minHeight": 0
+                },
+                "vertical": {
+                  "width": 0,
+                  "minWidth": 0
+                },
+                "both": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "moduleName": "tamagui",
       "nameToInfo": {
         "Anchor": {
@@ -8,9 +680,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$body",
               "tag": "a",
               "accessibilityRole": "link"
             },
@@ -206,7 +878,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "article",
               "flexDirection": "column"
             },
@@ -367,7 +1038,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "aside",
               "flexDirection": "column"
             },
@@ -529,6 +1199,7 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "unset",
               "suppressHighlighting": true,
               "opacity": 0,
               "lineHeight": 0,
@@ -721,7 +1392,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "tag": "fieldset"
             },
@@ -903,7 +1573,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "footer",
               "flexDirection": "column"
             },
@@ -1064,7 +1733,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "header",
               "accessibilityRole": "header",
               "flexDirection": "column"
@@ -1312,7 +1980,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "main",
               "flexDirection": "column"
             },
@@ -1473,7 +2140,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "nav",
               "flexDirection": "column"
             },
@@ -1634,7 +2300,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "section",
               "flexDirection": "column",
               "accessibilityRole": "summary"
@@ -1945,7 +2610,6 @@
               "shadowOpacity": true
             },
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "span",
               "size": true,
               "pointerEvents": "none"
@@ -1977,7 +2641,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column"
             },
             "validStyles": {
@@ -2152,9 +2815,7 @@
         "Stack": {
           "staticConfig": {
             "acceptsClassName": true,
-            "defaultProps": {
-              "alignItems": "stretch"
-            },
+            "defaultProps": {},
             "validStyles": {
               "enterStyle": true,
               "exitStyle": true,
@@ -2309,6 +2970,7 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "unset",
               "suppressHighlighting": true,
               "unstyled": false
             },
@@ -2590,9 +3252,7 @@
         "View": {
           "staticConfig": {
             "acceptsClassName": true,
-            "defaultProps": {
-              "display": "flex"
-            },
+            "defaultProps": {},
             "validStyles": {
               "enterStyle": true,
               "exitStyle": true,
@@ -2746,7 +3406,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -3033,7 +3692,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "position": "absolute",
               "fullscreen": true,
@@ -3213,7 +3871,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "position": "absolute",
               "fullscreen": true,
@@ -3391,8 +4048,8 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "center",
               "flexDirection": "column",
+              "alignItems": "center",
               "justifyContent": "center",
               "position": "relative",
               "overflow": "hidden"
@@ -3663,7 +4320,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false,
               "tag": "button",
@@ -3985,7 +4641,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false,
               "tag": "button",
@@ -4307,9 +4962,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
-              "unstyled": false,
-              "fontFamily": "$body"
+              "unstyled": false
             },
             "inlineWhenUnflattened": {},
             "variants": {
@@ -4511,7 +5166,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -4792,7 +5446,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -5070,7 +5723,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -5352,7 +6004,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -5633,7 +6284,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -5914,7 +6564,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false,
               "tag": "button"
@@ -6229,7 +6878,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false,
               "tag": "button"
@@ -6543,8 +7191,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "display": "flex",
-              "unstyled": false,
               "tag": "button"
             },
             "validStyles": {
@@ -6694,16 +7340,6 @@
               "scaleZ": true,
               "shadowOpacity": true
             },
-            "variants": {
-              "unstyled": {
-                "false": {
-                  "zIndex": 100
-                }
-              }
-            },
-            "defaultVariants": {
-              "unstyled": false
-            },
             "componentName": "DialogClose",
             "isReactNative": false,
             "isText": false,
@@ -6716,7 +7352,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "size": "$true",
               "unstyled": false,
@@ -7003,7 +7638,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -7290,7 +7924,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -7575,7 +8208,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -7760,9 +8392,7 @@
         "DialogTrigger": {
           "staticConfig": {
             "acceptsClassName": true,
-            "defaultProps": {
-              "display": "flex"
-            },
+            "defaultProps": {},
             "validStyles": {
               "enterStyle": true,
               "exitStyle": true,
@@ -7922,7 +8552,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "form"
             },
             "validStyles": {
@@ -8084,7 +8713,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "tag": "form"
             },
             "validStyles": {
@@ -8243,9 +8871,7 @@
         "FormTrigger": {
           "staticConfig": {
             "acceptsClassName": true,
-            "defaultProps": {
-              "display": "flex"
-            },
+            "defaultProps": {},
             "validStyles": {
               "enterStyle": true,
               "exitStyle": true,
@@ -8405,7 +9031,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -8698,9 +9323,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$body",
               "tag": "label"
             },
             "inlineWhenUnflattened": {},
@@ -8909,9 +9534,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$body",
               "tag": "label"
             },
             "inlineWhenUnflattened": {},
@@ -9117,7 +9742,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false,
               "tag": "li"
@@ -9419,7 +10043,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false,
               "tag": "li"
@@ -9720,9 +10343,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
-              "unstyled": false,
-              "fontFamily": "$body"
+              "unstyled": false
             },
             "inlineWhenUnflattened": {},
             "variants": {
@@ -9926,9 +10549,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
-              "unstyled": false,
-              "fontFamily": "$body"
+              "unstyled": false
             },
             "inlineWhenUnflattened": {},
             "variants": {
@@ -10128,9 +10751,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
-              "unstyled": false,
-              "fontFamily": "$body"
+              "unstyled": false
             },
             "inlineWhenUnflattened": {},
             "variants": {
@@ -10322,11 +10945,197 @@
             "isStyledHOC": false
           }
         },
+        "PopoverArrow": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "defaultProps": {
+              "flexDirection": "column",
+              "unstyled": false
+            },
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInlineEnd": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "placeholderTextColor": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true
+            },
+            "variants": {
+              "fullscreen": {
+                "true": {
+                  "position": "absolute",
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 0
+                }
+              },
+              "elevation": {
+                "...size": "Function",
+                ":number": "Function"
+              },
+              "unstyled": {
+                "false": {
+                  "borderColor": "$borderColor",
+                  "backgroundColor": "$background",
+                  "position": "relative"
+                }
+              }
+            },
+            "defaultVariants": {
+              "unstyled": false
+            },
+            "componentName": "PopperArrow",
+            "isReactNative": false,
+            "isText": false,
+            "isStyledHOC": false,
+            "neverFlatten": true,
+            "isHOC": true
+          }
+        },
         "PopoverContent": {
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -10608,7 +11417,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column"
             },
             "validStyles": {
@@ -10784,7 +11592,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -10972,7 +11779,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -11252,7 +12058,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -11533,7 +12338,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -11812,7 +12616,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -12090,7 +12893,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -12366,7 +13168,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column"
             },
             "validStyles": {
@@ -12666,7 +13467,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "width": "100%"
             },
@@ -12842,7 +13642,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "row",
               "aria-hidden": true,
               "children": "Component"
@@ -13020,7 +13819,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "borderColor": "$borderColor",
               "flexShrink": 0,
               "borderWidth": 0,
@@ -13201,7 +13999,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "borderColor": "$borderColor",
               "flexShrink": 0,
               "borderWidth": 0,
@@ -13382,8 +14179,8 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "center",
               "flexDirection": "column",
+              "alignItems": "center",
               "justifyContent": "center"
             },
             "validStyles": {
@@ -13652,8 +14449,8 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "center",
               "flexDirection": "column",
+              "alignItems": "center",
               "justifyContent": "center",
               "circular": true
             },
@@ -13923,7 +14720,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -14113,7 +14909,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "row",
               "unstyled": false
             },
@@ -14315,7 +15110,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -14603,7 +15397,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "row",
               "unstyled": false
             },
@@ -14805,7 +15598,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -15093,7 +15885,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "position": "relative"
             },
@@ -15269,296 +16060,10 @@
             "isStyledHOC": false
           }
         },
-        "SliderThumb": {
-          "staticConfig": {
-            "acceptsClassName": true,
-            "defaultProps": {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "unstyled": false
-            },
-            "validStyles": {
-              "enterStyle": true,
-              "exitStyle": true,
-              "hoverStyle": true,
-              "pressStyle": true,
-              "focusStyle": true,
-              "backfaceVisibility": true,
-              "borderBottomEndRadius": true,
-              "borderBottomStartRadius": true,
-              "borderBottomWidth": true,
-              "borderLeftWidth": true,
-              "borderRightWidth": true,
-              "borderStyle": true,
-              "borderTopEndRadius": true,
-              "borderTopStartRadius": true,
-              "borderTopWidth": true,
-              "borderWidth": true,
-              "transform": true,
-              "alignContent": true,
-              "alignItems": true,
-              "alignSelf": true,
-              "borderEndWidth": true,
-              "borderStartWidth": true,
-              "bottom": true,
-              "display": true,
-              "end": true,
-              "flexBasis": true,
-              "flexDirection": true,
-              "flexWrap": true,
-              "gap": true,
-              "columnGap": true,
-              "rowGap": true,
-              "justifyContent": true,
-              "left": true,
-              "margin": true,
-              "marginBlockEnd": true,
-              "marginBlockStart": true,
-              "marginInlineEnd": true,
-              "marginInline": true,
-              "marginInlineStart": true,
-              "marginBottom": true,
-              "marginEnd": true,
-              "marginHorizontal": true,
-              "marginLeft": true,
-              "marginRight": true,
-              "marginStart": true,
-              "marginTop": true,
-              "marginVertical": true,
-              "overflow": true,
-              "padding": true,
-              "paddingBottom": true,
-              "paddingInline": true,
-              "paddingBlock": true,
-              "paddingBlockStart": true,
-              "paddingInlineEnd": true,
-              "paddingInlineStart": true,
-              "paddingEnd": true,
-              "paddingHorizontal": true,
-              "paddingLeft": true,
-              "paddingRight": true,
-              "paddingStart": true,
-              "paddingTop": true,
-              "paddingVertical": true,
-              "position": true,
-              "right": true,
-              "start": true,
-              "top": true,
-              "direction": true,
-              "shadowOffset": true,
-              "shadowRadius": true,
-              "backgroundColor": true,
-              "borderColor": true,
-              "borderBlockStartColor": true,
-              "borderBlockEndColor": true,
-              "borderBlockColor": true,
-              "borderBottomColor": true,
-              "borderTopColor": true,
-              "borderLeftColor": true,
-              "borderRightColor": true,
-              "borderEndColor": true,
-              "borderStartColor": true,
-              "shadowColor": true,
-              "color": true,
-              "placeholderTextColor": true,
-              "textDecorationColor": true,
-              "textShadowColor": true,
-              "borderRadius": true,
-              "borderTopLeftRadius": true,
-              "borderTopRightRadius": true,
-              "borderBottomLeftRadius": true,
-              "borderBottomRightRadius": true,
-              "borderStartStartRadius": true,
-              "borderStartEndRadius": true,
-              "borderEndStartRadius": true,
-              "borderEndEndRadius": true,
-              "width": true,
-              "height": true,
-              "minWidth": true,
-              "minHeight": true,
-              "maxWidth": true,
-              "maxHeight": true,
-              "x": true,
-              "y": true,
-              "scale": true,
-              "perspective": true,
-              "scaleX": true,
-              "scaleY": true,
-              "skewX": true,
-              "skewY": true,
-              "matrix": true,
-              "rotate": true,
-              "rotateY": true,
-              "rotateX": true,
-              "rotateZ": true,
-              "WebkitLineClamp": true,
-              "animationIterationCount": true,
-              "aspectRatio": true,
-              "borderImageOutset": true,
-              "borderImageSlice": true,
-              "borderImageWidth": true,
-              "columnCount": true,
-              "flex": true,
-              "flexGrow": true,
-              "flexOrder": true,
-              "flexPositive": true,
-              "flexShrink": true,
-              "flexNegative": true,
-              "fontWeight": true,
-              "gridRow": true,
-              "gridRowEnd": true,
-              "gridRowGap": true,
-              "gridRowStart": true,
-              "gridColumn": true,
-              "gridColumnEnd": true,
-              "gridColumnGap": true,
-              "gridColumnStart": true,
-              "lineClamp": true,
-              "opacity": true,
-              "order": true,
-              "orphans": true,
-              "tabSize": true,
-              "widows": true,
-              "zIndex": true,
-              "zoom": true,
-              "scaleZ": true,
-              "shadowOpacity": true
-            },
-            "variants": {
-              "fullscreen": {
-                "true": {
-                  "position": "absolute",
-                  "top": 0,
-                  "left": 0,
-                  "right": 0,
-                  "bottom": 0
-                }
-              },
-              "elevation": {
-                "...size": "Function",
-                ":number": "Function"
-              },
-              "backgrounded": {
-                "true": {
-                  "backgroundColor": "$background"
-                }
-              },
-              "radiused": {
-                "true": "Function"
-              },
-              "hoverTheme": {
-                "true": {
-                  "hoverStyle": {
-                    "backgroundColor": "$backgroundHover",
-                    "borderColor": "$borderColorHover"
-                  }
-                },
-                "false": {}
-              },
-              "pressTheme": {
-                "true": {
-                  "cursor": "pointer",
-                  "pressStyle": {
-                    "backgroundColor": "$backgroundPress",
-                    "borderColor": "$borderColorPress"
-                  }
-                },
-                "false": {}
-              },
-              "focusTheme": {
-                "true": {
-                  "focusStyle": {
-                    "backgroundColor": "$backgroundFocus",
-                    "borderColor": "$borderColorFocus"
-                  }
-                },
-                "false": {}
-              },
-              "circular": {
-                "true": "Function"
-              },
-              "padded": {
-                "true": "Function"
-              },
-              "elevate": {
-                "true": "Function"
-              },
-              "bordered": "Function",
-              "transparent": {
-                "true": {
-                  "backgroundColor": "transparent"
-                }
-              },
-              "chromeless": {
-                "true": {
-                  "backgroundColor": "transparent",
-                  "borderColor": "transparent",
-                  "shadowColor": "transparent",
-                  "hoverStyle": {
-                    "borderColor": "transparent"
-                  }
-                },
-                "all": {
-                  "backgroundColor": "transparent",
-                  "borderColor": "transparent",
-                  "shadowColor": "transparent",
-                  "hoverStyle": {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "shadowColor": "transparent",
-                    "hoverStyle": {
-                      "borderColor": "transparent"
-                    }
-                  },
-                  "pressStyle": {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "shadowColor": "transparent",
-                    "hoverStyle": {
-                      "borderColor": "transparent"
-                    }
-                  },
-                  "focusStyle": {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "shadowColor": "transparent",
-                    "hoverStyle": {
-                      "borderColor": "transparent"
-                    }
-                  }
-                }
-              },
-              "size": {
-                "...size": "Function"
-              },
-              "unstyled": {
-                "false": {
-                  "position": "absolute",
-                  "bordered": 2,
-                  "borderWidth": 2,
-                  "backgrounded": true,
-                  "pressTheme": false,
-                  "focusTheme": false,
-                  "hoverTheme": false
-                }
-              }
-            },
-            "defaultVariants": {
-              "unstyled": false
-            },
-            "componentName": "SliderThumb",
-            "isReactNative": false,
-            "isText": false,
-            "isStyledHOC": false,
-            "neverFlatten": true,
-            "isHOC": true
-          }
-        },
         "SliderThumbFrame": {
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -15841,7 +16346,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "position": "absolute",
               "backgroundColor": "$background"
@@ -16023,7 +16527,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "position": "relative",
               "unstyled": false
@@ -16214,296 +16717,10 @@
             "isStyledHOC": false
           }
         },
-        "Thumb": {
-          "staticConfig": {
-            "acceptsClassName": true,
-            "defaultProps": {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "unstyled": false
-            },
-            "validStyles": {
-              "enterStyle": true,
-              "exitStyle": true,
-              "hoverStyle": true,
-              "pressStyle": true,
-              "focusStyle": true,
-              "backfaceVisibility": true,
-              "borderBottomEndRadius": true,
-              "borderBottomStartRadius": true,
-              "borderBottomWidth": true,
-              "borderLeftWidth": true,
-              "borderRightWidth": true,
-              "borderStyle": true,
-              "borderTopEndRadius": true,
-              "borderTopStartRadius": true,
-              "borderTopWidth": true,
-              "borderWidth": true,
-              "transform": true,
-              "alignContent": true,
-              "alignItems": true,
-              "alignSelf": true,
-              "borderEndWidth": true,
-              "borderStartWidth": true,
-              "bottom": true,
-              "display": true,
-              "end": true,
-              "flexBasis": true,
-              "flexDirection": true,
-              "flexWrap": true,
-              "gap": true,
-              "columnGap": true,
-              "rowGap": true,
-              "justifyContent": true,
-              "left": true,
-              "margin": true,
-              "marginBlockEnd": true,
-              "marginBlockStart": true,
-              "marginInlineEnd": true,
-              "marginInline": true,
-              "marginInlineStart": true,
-              "marginBottom": true,
-              "marginEnd": true,
-              "marginHorizontal": true,
-              "marginLeft": true,
-              "marginRight": true,
-              "marginStart": true,
-              "marginTop": true,
-              "marginVertical": true,
-              "overflow": true,
-              "padding": true,
-              "paddingBottom": true,
-              "paddingInline": true,
-              "paddingBlock": true,
-              "paddingBlockStart": true,
-              "paddingInlineEnd": true,
-              "paddingInlineStart": true,
-              "paddingEnd": true,
-              "paddingHorizontal": true,
-              "paddingLeft": true,
-              "paddingRight": true,
-              "paddingStart": true,
-              "paddingTop": true,
-              "paddingVertical": true,
-              "position": true,
-              "right": true,
-              "start": true,
-              "top": true,
-              "direction": true,
-              "shadowOffset": true,
-              "shadowRadius": true,
-              "backgroundColor": true,
-              "borderColor": true,
-              "borderBlockStartColor": true,
-              "borderBlockEndColor": true,
-              "borderBlockColor": true,
-              "borderBottomColor": true,
-              "borderTopColor": true,
-              "borderLeftColor": true,
-              "borderRightColor": true,
-              "borderEndColor": true,
-              "borderStartColor": true,
-              "shadowColor": true,
-              "color": true,
-              "placeholderTextColor": true,
-              "textDecorationColor": true,
-              "textShadowColor": true,
-              "borderRadius": true,
-              "borderTopLeftRadius": true,
-              "borderTopRightRadius": true,
-              "borderBottomLeftRadius": true,
-              "borderBottomRightRadius": true,
-              "borderStartStartRadius": true,
-              "borderStartEndRadius": true,
-              "borderEndStartRadius": true,
-              "borderEndEndRadius": true,
-              "width": true,
-              "height": true,
-              "minWidth": true,
-              "minHeight": true,
-              "maxWidth": true,
-              "maxHeight": true,
-              "x": true,
-              "y": true,
-              "scale": true,
-              "perspective": true,
-              "scaleX": true,
-              "scaleY": true,
-              "skewX": true,
-              "skewY": true,
-              "matrix": true,
-              "rotate": true,
-              "rotateY": true,
-              "rotateX": true,
-              "rotateZ": true,
-              "WebkitLineClamp": true,
-              "animationIterationCount": true,
-              "aspectRatio": true,
-              "borderImageOutset": true,
-              "borderImageSlice": true,
-              "borderImageWidth": true,
-              "columnCount": true,
-              "flex": true,
-              "flexGrow": true,
-              "flexOrder": true,
-              "flexPositive": true,
-              "flexShrink": true,
-              "flexNegative": true,
-              "fontWeight": true,
-              "gridRow": true,
-              "gridRowEnd": true,
-              "gridRowGap": true,
-              "gridRowStart": true,
-              "gridColumn": true,
-              "gridColumnEnd": true,
-              "gridColumnGap": true,
-              "gridColumnStart": true,
-              "lineClamp": true,
-              "opacity": true,
-              "order": true,
-              "orphans": true,
-              "tabSize": true,
-              "widows": true,
-              "zIndex": true,
-              "zoom": true,
-              "scaleZ": true,
-              "shadowOpacity": true
-            },
-            "variants": {
-              "fullscreen": {
-                "true": {
-                  "position": "absolute",
-                  "top": 0,
-                  "left": 0,
-                  "right": 0,
-                  "bottom": 0
-                }
-              },
-              "elevation": {
-                "...size": "Function",
-                ":number": "Function"
-              },
-              "backgrounded": {
-                "true": {
-                  "backgroundColor": "$background"
-                }
-              },
-              "radiused": {
-                "true": "Function"
-              },
-              "hoverTheme": {
-                "true": {
-                  "hoverStyle": {
-                    "backgroundColor": "$backgroundHover",
-                    "borderColor": "$borderColorHover"
-                  }
-                },
-                "false": {}
-              },
-              "pressTheme": {
-                "true": {
-                  "cursor": "pointer",
-                  "pressStyle": {
-                    "backgroundColor": "$backgroundPress",
-                    "borderColor": "$borderColorPress"
-                  }
-                },
-                "false": {}
-              },
-              "focusTheme": {
-                "true": {
-                  "focusStyle": {
-                    "backgroundColor": "$backgroundFocus",
-                    "borderColor": "$borderColorFocus"
-                  }
-                },
-                "false": {}
-              },
-              "circular": {
-                "true": "Function"
-              },
-              "padded": {
-                "true": "Function"
-              },
-              "elevate": {
-                "true": "Function"
-              },
-              "bordered": "Function",
-              "transparent": {
-                "true": {
-                  "backgroundColor": "transparent"
-                }
-              },
-              "chromeless": {
-                "true": {
-                  "backgroundColor": "transparent",
-                  "borderColor": "transparent",
-                  "shadowColor": "transparent",
-                  "hoverStyle": {
-                    "borderColor": "transparent"
-                  }
-                },
-                "all": {
-                  "backgroundColor": "transparent",
-                  "borderColor": "transparent",
-                  "shadowColor": "transparent",
-                  "hoverStyle": {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "shadowColor": "transparent",
-                    "hoverStyle": {
-                      "borderColor": "transparent"
-                    }
-                  },
-                  "pressStyle": {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "shadowColor": "transparent",
-                    "hoverStyle": {
-                      "borderColor": "transparent"
-                    }
-                  },
-                  "focusStyle": {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "shadowColor": "transparent",
-                    "hoverStyle": {
-                      "borderColor": "transparent"
-                    }
-                  }
-                }
-              },
-              "size": {
-                "...size": "Function"
-              },
-              "unstyled": {
-                "false": {
-                  "position": "absolute",
-                  "bordered": 2,
-                  "borderWidth": 2,
-                  "backgrounded": true,
-                  "pressTheme": false,
-                  "focusTheme": false,
-                  "hoverTheme": false
-                }
-              }
-            },
-            "defaultVariants": {
-              "unstyled": false
-            },
-            "componentName": "SliderThumb",
-            "isReactNative": false,
-            "isText": false,
-            "isStyledHOC": false,
-            "neverFlatten": true,
-            "isHOC": true
-          }
-        },
         "XStack": {
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "row"
             },
             "validStyles": {
@@ -16677,7 +16894,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column"
             },
             "validStyles": {
@@ -16851,7 +17067,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "position": "relative"
             },
@@ -17028,7 +17243,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "row"
             },
             "validStyles": {
@@ -17250,7 +17464,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column"
             },
             "validStyles": {
@@ -17514,7 +17727,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -17719,7 +17931,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -17923,7 +18134,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "column",
               "unstyled": false
             },
@@ -18207,7 +18417,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "flexDirection": "row"
             },
             "validStyles": {
@@ -18432,9 +18641,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
-              "unstyled": false,
-              "fontFamily": "$body"
+              "unstyled": false
             },
             "inlineWhenUnflattened": {},
             "variants": {
@@ -18630,9 +18839,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$body",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$body",
               "tag": "p",
               "userSelect": "auto",
               "color": "$color",
@@ -18829,9 +19038,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "h1",
               "userSelect": "auto",
               "color": "$color",
@@ -19030,9 +19239,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "h2",
               "userSelect": "auto",
               "color": "$color",
@@ -19231,9 +19440,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "h3",
               "userSelect": "auto",
               "color": "$color",
@@ -19432,9 +19641,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "h4",
               "userSelect": "auto",
               "color": "$color",
@@ -19633,9 +19842,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "h5",
               "userSelect": "auto",
               "color": "$color",
@@ -19834,9 +20043,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "h6",
               "userSelect": "auto",
               "color": "$color",
@@ -20035,9 +20244,9 @@
             "acceptsClassName": true,
             "isText": true,
             "defaultProps": {
+              "fontFamily": "$heading",
               "suppressHighlighting": true,
               "unstyled": false,
-              "fontFamily": "$heading",
               "tag": "span",
               "userSelect": "auto",
               "color": "$color",
@@ -20235,7 +20444,6 @@
           "staticConfig": {
             "acceptsClassName": true,
             "defaultProps": {
-              "alignItems": "stretch",
               "position": "absolute",
               "width": 1,
               "height": 1,
@@ -20800,7 +21008,6 @@
         }
       }
     },
-    "settings": {},
     "onlyAllowShorthands": false,
     "fontLanguages": [],
     "animations": {
@@ -20845,6 +21052,7 @@
       "useAnimatedNumberReaction": "Function",
       "useAnimatedNumberStyle": "Function",
       "usePresence": "Function",
+      "ResetPresence": "Function",
       "useAnimations": "Function"
     },
     "media": {
@@ -21003,102 +21211,123 @@
     },
     "tokens": {
       "color": {
+        "blue5": {
+          "isVar": true,
+          "key": "$blue5",
+          "name": "color-1",
+          "val": "#1b69e4",
+          "variable": ""
+        },
         "blue": {
           "isVar": true,
           "key": "$blue",
-          "name": "color-1",
+          "name": "color-2",
           "val": "#1b69e4",
           "variable": ""
         },
         "yellow": {
           "isVar": true,
           "key": "$yellow",
-          "name": "color-2",
+          "name": "color-3",
           "val": "#FDDC38",
           "variable": ""
         },
         "pink": {
           "isVar": true,
           "key": "$pink",
-          "name": "color-3",
+          "name": "color-4",
           "val": "#FBC3D4",
           "variable": ""
         },
         "blue10": {
           "isVar": true,
           "key": "$blue10",
-          "name": "color-4",
+          "name": "color-5",
           "val": "#09234C",
           "variable": ""
         },
         "green1": {
           "isVar": true,
           "key": "$green1",
-          "name": "color-5",
+          "name": "color-6",
           "val": "#C9F2E0",
           "variable": ""
         },
         "green5": {
           "isVar": true,
           "key": "$green5",
-          "name": "color-6",
+          "name": "color-7",
           "val": "#009E5A",
           "variable": ""
         },
         "green10": {
           "isVar": true,
           "key": "$green10",
-          "name": "color-7",
+          "name": "color-8",
           "val": "#004024",
           "variable": ""
         },
         "green8": {
           "isVar": true,
           "key": "$green8",
-          "name": "color-8",
+          "name": "color-9",
           "val": "#006137",
           "variable": ""
         },
         "orange1": {
           "isVar": true,
           "key": "$orange1",
-          "name": "color-9",
+          "name": "color-10",
           "val": "#FDE5DF",
           "variable": ""
         },
         "orange5": {
           "isVar": true,
           "key": "$orange5",
-          "name": "color-10",
+          "name": "color-11",
           "val": "#FA4D1D",
           "variable": ""
         },
         "gray1": {
           "isVar": true,
           "key": "$gray1",
-          "name": "color-11",
+          "name": "color-12",
           "val": "#eeeeee",
           "variable": ""
         },
         "gray5": {
           "isVar": true,
           "key": "$gray5",
-          "name": "color-12",
+          "name": "color-13",
           "val": "#999999",
           "variable": ""
         },
         "gray7": {
           "isVar": true,
           "key": "$gray7",
-          "name": "color-13",
+          "name": "color-14",
           "val": "#777777",
           "variable": ""
         },
         "gray10": {
           "isVar": true,
           "key": "$gray10",
-          "name": "color-14",
+          "name": "color-15",
           "val": "#444444",
+          "variable": ""
+        },
+        "yellow1": {
+          "isVar": true,
+          "key": "$yellow1",
+          "name": "color-16",
+          "val": "FEFAF1",
+          "variable": ""
+        },
+        "yellow5": {
+          "isVar": true,
+          "key": "$yellow5",
+          "name": "color-17",
+          "val": "#FDDC38",
           "variable": ""
         }
       },
@@ -21885,6 +22114,12 @@
       "xxs": false
     },
     "selectionStyles": "Function",
+    "unset": {
+      "fontFamily": "$body"
+    },
+    "settings": {
+      "webContainerType": "inline-size"
+    },
     "inverseShorthands": {
       "userSelect": "ussel",
       "cursor": "cur",
@@ -21972,102 +22207,123 @@
     "getNewCSS": "Function",
     "fontSizeTokens": {},
     "specificTokens": {
+      "$color.blue5": {
+        "isVar": true,
+        "key": "$blue5",
+        "name": "color-1",
+        "val": "#1b69e4",
+        "variable": ""
+      },
       "$color.blue": {
         "isVar": true,
         "key": "$blue",
-        "name": "color-1",
+        "name": "color-2",
         "val": "#1b69e4",
         "variable": ""
       },
       "$color.yellow": {
         "isVar": true,
         "key": "$yellow",
-        "name": "color-2",
+        "name": "color-3",
         "val": "#FDDC38",
         "variable": ""
       },
       "$color.pink": {
         "isVar": true,
         "key": "$pink",
-        "name": "color-3",
+        "name": "color-4",
         "val": "#FBC3D4",
         "variable": ""
       },
       "$color.blue10": {
         "isVar": true,
         "key": "$blue10",
-        "name": "color-4",
+        "name": "color-5",
         "val": "#09234C",
         "variable": ""
       },
       "$color.green1": {
         "isVar": true,
         "key": "$green1",
-        "name": "color-5",
+        "name": "color-6",
         "val": "#C9F2E0",
         "variable": ""
       },
       "$color.green5": {
         "isVar": true,
         "key": "$green5",
-        "name": "color-6",
+        "name": "color-7",
         "val": "#009E5A",
         "variable": ""
       },
       "$color.green10": {
         "isVar": true,
         "key": "$green10",
-        "name": "color-7",
+        "name": "color-8",
         "val": "#004024",
         "variable": ""
       },
       "$color.green8": {
         "isVar": true,
         "key": "$green8",
-        "name": "color-8",
+        "name": "color-9",
         "val": "#006137",
         "variable": ""
       },
       "$color.orange1": {
         "isVar": true,
         "key": "$orange1",
-        "name": "color-9",
+        "name": "color-10",
         "val": "#FDE5DF",
         "variable": ""
       },
       "$color.orange5": {
         "isVar": true,
         "key": "$orange5",
-        "name": "color-10",
+        "name": "color-11",
         "val": "#FA4D1D",
         "variable": ""
       },
       "$color.gray1": {
         "isVar": true,
         "key": "$gray1",
-        "name": "color-11",
+        "name": "color-12",
         "val": "#eeeeee",
         "variable": ""
       },
       "$color.gray5": {
         "isVar": true,
         "key": "$gray5",
-        "name": "color-12",
+        "name": "color-13",
         "val": "#999999",
         "variable": ""
       },
       "$color.gray7": {
         "isVar": true,
         "key": "$gray7",
-        "name": "color-13",
+        "name": "color-14",
         "val": "#777777",
         "variable": ""
       },
       "$color.gray10": {
         "isVar": true,
         "key": "$gray10",
-        "name": "color-14",
+        "name": "color-15",
         "val": "#444444",
+        "variable": ""
+      },
+      "$color.yellow1": {
+        "isVar": true,
+        "key": "$yellow1",
+        "name": "color-16",
+        "val": "FEFAF1",
+        "variable": ""
+      },
+      "$color.yellow5": {
+        "isVar": true,
+        "key": "$yellow5",
+        "name": "color-17",
+        "val": "#FDDC38",
         "variable": ""
       },
       "$radius.0": {
