@@ -4,7 +4,7 @@ import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Repository } from 'typeorm';
 
 export type UpdatableLessonFields = Partial<
-  Pick<Lesson, 'title' | 'order' | 'unitId' | 'published'>
+  Pick<Lesson, 'title' | 'order' | 'unitId' | 'published' | 'homeImageFileName'>
 >;
 @Injectable()
 export class LessonService {

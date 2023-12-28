@@ -24,6 +24,7 @@ export default function CrateLessonModal() {
   const [title, setTitle] = useState('');
   const [unitId, setUnitId] = useState(forUnitId);
   const [order, setOrder] = useState('');
+  const [homeImageFileName, setHomeImageFileName] = useState('');
 
   const { data: lessonEntity } = useQuery({
     queryKey: ['lessons', lessonId],
@@ -38,6 +39,7 @@ export default function CrateLessonModal() {
       setTitle(lessonEntity.title);
       setOrder(lessonEntity.order + '');
       setUnitId(lessonEntity.unitId || '');
+      setHomeImageFileName(lessonEntity.homeImageFileName || '');
     }
   }, [lessonEntity]);
 
@@ -47,13 +49,18 @@ export default function CrateLessonModal() {
     reset,
     ...addUnitMutation
   } = useMutation(
-    ({ title, unitId, order }: Pick<Lesson, 'title' | 'unitId' | 'order'>) =>
+    ({
+      title,
+      unitId,
+      order,
+    }: Pick<Lesson, 'title' | 'unitId' | 'order' | 'homeImageFileName'>) =>
       clientFetchApiWithAuth(`/admin/lessons/${lessonId}`, {
         method: lessonId ? 'PATCH' : 'POST',
         body: JSON.stringify({
           title,
           unitId: unitId || undefined,
           order,
+          homeImageFileName: homeImageFileName || null,
         }),
       }),
     {
@@ -88,6 +95,14 @@ export default function CrateLessonModal() {
         onChange={e => setOrder(e.target.value)}
       />
 
+      <TextField
+        fullWidth
+        label="Homepage image on the app"
+        helperText="this image is shown on the lesson in the home page of the app."
+        value={homeImageFileName}
+        onChange={e => setHomeImageFileName(e.target.value)}
+      />
+
       <Stack direction={'row'}>
         <Button
           onClick={() =>
@@ -95,6 +110,7 @@ export default function CrateLessonModal() {
               title,
               unitId,
               order: parseInt(order),
+              homeImageFileName,
             })
           }
           disabled={loading}>
