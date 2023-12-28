@@ -19,7 +19,7 @@ export const useUnitSyncCompletion = ({ unitId }: { unitId: string }) => {
   useEffect(() => {
     if (
       !completedUnits.has(unitId) &&
-      profileProgress[unitId].filter(
+      profileProgress[unitId]?.filter(
         lesson =>
           lesson.lessonCompletionStatus !== LessonResponseStatus.COMPLETED,
       ).length === 0

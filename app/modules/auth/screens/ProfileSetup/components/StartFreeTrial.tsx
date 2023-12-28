@@ -3,27 +3,27 @@ import {
   startFreeTrail,
 } from '@voxify/api/auth/profile';
 import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { Button, View, YStack } from 'tamagui';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {} from 'tamagui';
+import { YStack } from '@voxify/design_system/layout';
+import { Button } from '@voxify/design_system/button';
 
 export const StartFreeTrial = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(
-    (daysToAdd: number) => {
+  const { mutate } = useMutation({
+    mutationFn: (daysToAdd: number) => {
       return startFreeTrail(daysToAdd);
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [FETCH_OR_CREATE_PROFILE_QUERY],
-        });
-      },
-      onError(err) {
-        console.log(err);
-      },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [FETCH_OR_CREATE_PROFILE_QUERY],
+      });
     },
-  );
+    onError(err) {
+      console.log(err);
+    },
+  });
 
   const onStartFreeTrailClicked = async () => {
     // Make HTTP POST call to set Proficiency
@@ -33,11 +33,7 @@ export const StartFreeTrial = () => {
 
   return (
     <YStack>
-      <View>
-        <Button onPress={onStartFreeTrailClicked} theme={'green'}>
-          Get started!
-        </Button>
-      </View>
+      <Button onPress={onStartFreeTrailClicked}>Get started!</Button>
     </YStack>
   );
 };

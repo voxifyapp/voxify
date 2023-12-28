@@ -17,7 +17,7 @@ import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { H1 } from 'tamagui';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
@@ -59,8 +59,11 @@ export const LessonScreen = ({ route }: Props) => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
-  const { mutate, isLoading: isCreateLessonResponseLoading } =
+  const { mutate, status: createLessonResponseMutationStatus } =
     useCreateLessonResponse();
+
+  const isCreateLessonResponseLoading =
+    createLessonResponseMutationStatus === 'pending';
 
   const { mutate: updateLessonResponseMutate } = useUpdateLessonResponse(
     lessonId,

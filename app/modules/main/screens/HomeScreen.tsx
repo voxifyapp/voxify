@@ -1,31 +1,29 @@
-import { useQuery } from 'react-query';
-import React, { useEffect, useRef } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Spacer, YStack, H1, Card, Text, Paragraph } from 'tamagui';
 import { Circle } from '@tamagui/lucide-icons';
+import { useQuery } from '@tanstack/react-query';
+import {
+  GET_UNITS_WITH_LESSON_COMPLETION,
+  getUnitsWithLessonCompletion,
+} from '@voxify/api/lms-progress/lesson-response';
+import React, { useEffect, useRef } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { Card, H1, Paragraph, Spacer, Text } from 'tamagui';
+
+import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
+
 import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
 import {
-  GET_UNITS_WITH_LESSON_COMPLETION,
-  getUnitsWithLessonCompletion,
-} from '@voxify/api/lms-progress/lesson-response';
-
+  GET_UNIT_RESPONSE,
+  getUnitResponse,
+} from '@voxify/api/lms-progress/unit-response';
 import {
   ProgressActions,
   ProgressState,
   useProfileProgressStore,
 } from '@voxify/modules/main/screens/useProfileProgressStore';
-import {
-  GET_UNIT_RESPONSE,
-  getUnitResponse,
-} from '@voxify/api/lms-progress/unit-response';
-import {
-  ProfileProgress,
-  ProfileProgressByUnit,
-  ProfileProgressResult,
-} from '@voxify/types/lms-progress/profile-progress';
+import { XStack, YStack } from '@voxify/design_system/layout';
 
 type Props = {
   navigation: {
@@ -57,13 +55,14 @@ export const HomeScreen = ({ navigation }: Props) => {
       queryFn: getUnitsWithLessonCompletion.bind(null, courseId),
       queryKey: [GET_UNITS_WITH_LESSON_COMPLETION, courseId],
       enabled: !!courseId,
-      onSuccess: (data: ProfileProgressResult) => {
-        const unitData: ProfileProgress = {};
-        data.result.map(profileCompletion => {
-          unitData[profileCompletion.id] = profileCompletion.lessonsWithStatus;
-        });
-        setProfileProgress(unitData);
-      },
+      //FIXME
+      // onSuccess: (data: ProfileProgressResult) => {
+      //   const unitData: ProfileProgress = {};
+      //   data.result.map(profileCompletion => {
+      //     unitData[profileCompletion.id] = profileCompletion.lessonsWithStatus;
+      //   });
+      //   setProfileProgress(unitData);
+      // },
     },
   );
 
@@ -107,15 +106,15 @@ export const HomeScreen = ({ navigation }: Props) => {
       .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
       .filter(lesson => !!lesson);
     return unitLessons.map(lesson => (
-      <View key={lesson.id} style={styles.lessonContainer}>
+      <XStack key={lesson.id}>
         <Circle size="$1" style={styles.circle} />
         <Text onPress={() => onPress(lesson.id, unitId)}>{lesson.title}</Text>
-      </View>
+      </XStack>
     ));
   };
 
   return (
-    <YStack fullscreen theme="green" backgroundColor={'$blue2Dark'}>
+    <YStack fullscreen backgroundColor={'$blue2Dark'}>
       <FlatList
         contentContainerStyle={{ marginTop: 20 }}
         ref={listRef}
@@ -123,15 +122,13 @@ export const HomeScreen = ({ navigation }: Props) => {
         ItemSeparatorComponent={() => <Spacer size={300} />}
         keyExtractor={unitWithLessons => unitWithLessons.id}
         renderItem={({ item: unitWithLessons, index }) => (
-          <View>
-            <Card>
-              <Card.Header padded>
-                <Paragraph theme="alt2">Day {index + 1}</Paragraph>
-                <Spacer size={20} />
-                {getLessonsFromUnit(unitWithLessons)}
-              </Card.Header>
-            </Card>
-          </View>
+          <Card>
+            <Card.Header padded>
+              <Paragraph>Day {index + 1}</Paragraph>
+              <Spacer size={20} />
+              {getLessonsFromUnit(unitWithLessons)}
+            </Card.Header>
+          </Card>
         )}
       />
     </YStack>
@@ -139,9 +136,6 @@ export const HomeScreen = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  lessonContainer: {
-    flexDirection: 'row',
-  },
   circle: {
     marginRight: 10,
   },

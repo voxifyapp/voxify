@@ -10,12 +10,13 @@ import {
   useProfileProgressStore,
 } from '@voxify/modules/main/screens/useProfileProgressStore';
 import { useSetAtom } from 'jotai';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 export const useCreateLessonResponse = () => {
-  return useMutation((data: CreateLessonResponsePostData) =>
-    createLessonResponse({ ...data }),
-  );
+  return useMutation({
+    mutationFn: (data: CreateLessonResponsePostData) =>
+      createLessonResponse({ ...data }),
+  });
 };
 
 export const useUpdateLessonResponse = (lessonId: string, unitId: string) => {
@@ -23,20 +24,18 @@ export const useUpdateLessonResponse = (lessonId: string, unitId: string) => {
     (state: ProgressActions) => [state.markLessonComplete],
   );
   const setLessonCompletion = useSetAtom(lessonCompletionInfoAtom);
-  return useMutation(
-    (data: UpdateLessonResponsePostData) => {
+  return useMutation({
+    mutationFn: (data: UpdateLessonResponsePostData) => {
       return updateLessonResponse({ ...data });
     },
-    {
-      onSuccess: _ => {
-        markLessonComplete(lessonId, unitId);
-        setLessonCompletion(prev => {
-          return new Map(prev).set(lessonId, {
-            ...prev.get(lessonId)!,
-            isCompleted: true,
-          });
+    onSuccess: _ => {
+      markLessonComplete(lessonId, unitId);
+      setLessonCompletion(prev => {
+        return new Map(prev).set(lessonId, {
+          ...prev.get(lessonId)!,
+          isCompleted: true,
         });
-      },
+      });
     },
-  );
+  });
 };
