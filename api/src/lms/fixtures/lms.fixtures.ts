@@ -69,6 +69,7 @@ export const lessonFactory = Factory.define<Lesson>(
       unit: undefined,
       unitId: undefined,
       activities: [],
+      homeImageFileName: 'test.jpg',
       published: false,
     };
   },
