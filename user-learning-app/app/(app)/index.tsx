@@ -12,7 +12,6 @@ import React, { useEffect, useRef } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Card, H1, Paragraph, Spacer, Text } from "tamagui";
 import Voice from "@react-native-voice/voice";
-
 import {
   GET_UNIT_RESPONSE,
   getUnitResponse,
@@ -36,15 +35,44 @@ export default function Home({}: Props) {
   //     state.setCompletedUnits,
   //   ]);
 
-  const onPress = (lessonId: string) => {
-    router.replace(`/lesson/${lessonId}`);
-    // navigation.navigate("Lesson", { lessonId, unitId });
-  };
-
   const { data: courseData, isLoading: isCourseLoading } = useQuery({
     queryFn: getCourseForProfile,
     queryKey: [GET_COURSE_FOR_PROFILE],
   });
+
+  useEffect(() => {
+    (async () => {
+      Voice.onSpeechStart = (e) => {
+        console.log("onSpeechStart");
+      };
+      Voice.onSpeechRecognized = (result) => {
+        console.log(result);
+      };
+
+      Voice.onSpeechPartialResults = (result) => {
+        console.log(result);
+      };
+
+      Voice.onSpeechResults = (result) => {
+        console.log(result);
+      };
+
+      Voice.onSpeechError = (err) => {
+        console.error(err);
+      };
+
+      Voice.onSpeechEnd = (error) => {
+        console.log("onSpeechEnd", error);
+      };
+
+      console.log("Voice.start");
+      Voice.start("en-US");
+    })();
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, []);
 
   const courseId = courseData && courseData.id;
 

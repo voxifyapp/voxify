@@ -103,9 +103,9 @@ export const HomeScreen = ({ navigation }: Props) => {
 
   const getLessonsFromUnit = (unit: ProfileProgressByUnit) => {
     const unitId = unit.id;
-    const unitLessons = unit.lessonsWithStatus.sort(
-      (lesson1, lesson2) => lesson1.order - lesson2.order,
-    );
+    const unitLessons = unit.lessonsWithStatus
+      .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
+      .filter(lesson => !!lesson);
     return unitLessons.map(lesson => (
       <View key={lesson.id} style={styles.lessonContainer}>
         <Circle size="$1" style={styles.circle} />

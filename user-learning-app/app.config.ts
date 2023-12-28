@@ -42,15 +42,7 @@ module.exports = {
         },
       },
     ],
-    [
-      "@react-native-voice/voice",
-      {
-        microphonePermission:
-          "CUSTOM: Allow $(PRODUCT_NAME) to access the microphone",
-        speechRecognitionPermission:
-          "CUSTOM: Allow $(PRODUCT_NAME) to securely recognize user speech",
-      },
-    ],
+    "@react-native-voice/voice",
   ],
   experiments: {
     typedRoutes: true,

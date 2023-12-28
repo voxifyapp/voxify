@@ -68,9 +68,7 @@ export const Pronunciation = ({ activity }: Props) => {
   useEffect(() => {
     const unsubscribe = pronunciationMachineActor.subscribe(async (e) => {
       // If we are in the listening state, we need to start the voice recognition
-      console.log(e.value);
       if (e.matches("LISTENING") && e.changed) {
-        console.log("Listening");
         // Remove any existing listeners and attach listeners for the current activity
         await Voice.destroy();
         Voice.removeAllListeners();
@@ -86,6 +84,7 @@ export const Pronunciation = ({ activity }: Props) => {
 
         Voice.onSpeechError = (err) => {
           pronunciationMachineActor.send("VOICE_RECOGNITION_FAIL");
+          console.error(err)
         };
 
         Voice.onSpeechEnd = (error) => {
