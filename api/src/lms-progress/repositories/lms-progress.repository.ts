@@ -1,7 +1,10 @@
+import { UnitWithLessonsAndLessonCompletionStatus } from '@/src/lms-progress/types/unit-with-lessons';
 import { Injectable } from '@nestjs/common';
-import { LessonResponse } from 'src/lms-progress/entities/lesson-response.entity';
+import {
+  LessonResponse,
+  LessonResponseStatus,
+} from 'src/lms-progress/entities/lesson-response.entity';
 import { UnitResponse } from 'src/lms-progress/entities/unit-response.entity';
-import { LessonUnitWithStatus } from 'src/lms-progress/types/lesson-unit-with-status';
 import { Lesson } from 'src/lms/entities/lesson.entity';
 import { Unit } from 'src/lms/entities/unit.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -47,13 +50,14 @@ export class UnitResponseRepository extends Repository<UnitResponse> {
   async getUnitsWithLessonCompletionStatus(
     profileId: string,
     courseId: string,
-  ): Promise<LessonUnitWithStatus[]> {
+  ) {
     const query = this.dataSource
       .getRepository(Unit)
       .createQueryBuilder('u')
       .select('u.*')
       .addSelect(
-        'jsonb_agg("lessonsWithCompletionStatus")',
+        // json_agg returns null from an empty set. We want to remove these nulls
+        `COALESCE(jsonb_agg("lessonsWithCompletionStatus") FILTER (WHERE "lessonsWithCompletionStatus".id IS NOT NULL), '[]'::jsonb)`,
         'lessonsWithStatus',
       )
       .leftJoin(
@@ -61,12 +65,13 @@ export class UnitResponseRepository extends Repository<UnitResponse> {
           return subQuery
             .select('l.*')
             .addSelect('lr.status', 'lessonCompletionStatus')
-            .from(Lesson, 'l') // Replace 'Lesson' with your lesson entity class
+            .from(Lesson, 'l')
+            .where('l.published = true')
             .leftJoin(
               'lesson_response',
               'lr',
               'lr."lessonId" = l.id AND lr.status = :status AND lr.profileId = :profileId',
-              { status: 'COMPLETED', profileId },
+              { status: LessonResponseStatus.COMPLETED, profileId },
             )
             .distinctOn(['l.id']);
         },
@@ -77,6 +82,9 @@ export class UnitResponseRepository extends Repository<UnitResponse> {
       .groupBy('u.id')
       .orderBy('u.order');
 
-    return query.getRawMany();
+    const result =
+      await query.getRawMany<UnitWithLessonsAndLessonCompletionStatus>();
+
+    return result;
   }
 }

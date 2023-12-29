@@ -3,13 +3,13 @@ import React from 'react';
 import { Constants } from '@voxify/appConstants';
 import { XStack, YStack } from '@voxify/design_system/layout';
 import { H3, H5 } from '@voxify/design_system/typography';
-import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
+import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
 import { Card, Image, Text, View } from 'tamagui';
 import { useNavigation } from '@react-navigation/native';
 import { AppStackNavigationProp } from '@voxify/App';
 
 type UnitItemProps = {
-  unitWithLessons: ProfileProgressByUnit;
+  unitWithLessons: UnitWithAssociatedLessons;
   index: number;
 };
 export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
@@ -31,13 +31,14 @@ export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
 };
 
 type LessonsForUnitProps = {
-  unitWithLessons: ProfileProgressByUnit;
+  unitWithLessons: UnitWithAssociatedLessons;
 };
 export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
   const navigation = useNavigation<AppStackNavigationProp>();
   const unitLessons = unitWithLessons.lessonsWithStatus
     .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
-    .filter(lesson => !!lesson);
+    .filter(i => !!i);
+
   return unitLessons.map(lesson => (
     <Card
       onPress={() =>

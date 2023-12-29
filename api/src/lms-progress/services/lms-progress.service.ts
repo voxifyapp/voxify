@@ -10,7 +10,6 @@ import {
   LessonResponseRepository,
   UnitResponseRepository,
 } from 'src/lms-progress/repositories/lms-progress.repository';
-import { LessonUnitWithStatus } from 'src/lms-progress/types/lesson-unit-with-status';
 import {
   LessonRepository,
   UnitRepository,
@@ -72,7 +71,7 @@ export class LmsProgressService {
         courseId,
       );
 
-    return { result: unitLesonResponseWithCompletion };
+    return unitLesonResponseWithCompletion;
   }
 
   async getLessonResponses(

@@ -1,24 +1,11 @@
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
+import { LessonEntity, UnitEntity } from '@voxify/types/lms/lms';
 
-export type ProfileProgressResult = {
-  result: ProfileProgressByUnit[];
-};
-
-export type ProfileProgressByUnit = {
-  id: string;
-  createdAt: string;
-  title: string;
-  order: number;
+export type UnitWithAssociatedLessons = UnitEntity & {
   lessonsWithStatus: LessonWithStatus[];
 };
 
-type LessonWithStatus = {
-  id: string;
-  order: number;
-  title: string;
-  unitId: string;
-  version: string;
-  homeImageFileName: string | null;
+type LessonWithStatus = LessonEntity & {
   lessonCompletionStatus: LessonResponseStatus | null;
 };
 

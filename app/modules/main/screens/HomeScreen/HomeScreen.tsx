@@ -7,7 +7,7 @@ import React, { useEffect, useRef } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { H1 } from 'tamagui';
 
-import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
+import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
 
 import {
   GET_COURSE_FOR_PROFILE,
@@ -46,21 +46,22 @@ export const HomeScreen = ({}: Props) => {
 
   const courseId = courseData && courseData.id;
 
-  const { data: lessonResponse, isLoading: isLessonResponseLoading } = useQuery(
-    {
-      queryFn: getUnitsWithLessonCompletion.bind(null, courseId),
-      queryKey: [GET_UNITS_WITH_LESSON_COMPLETION, courseId],
-      enabled: !!courseId,
-      //FIXME
-      // onSuccess: (data: ProfileProgressResult) => {
-      //   const unitData: ProfileProgress = {};
-      //   data.result.map(profileCompletion => {
-      //     unitData[profileCompletion.id] = profileCompletion.lessonsWithStatus;
-      //   });
-      //   setProfileProgress(unitData);
-      // },
-    },
-  );
+  const {
+    data: unitsWithAssociatedLessons,
+    isLoading: isLessonResponseLoading,
+  } = useQuery({
+    queryFn: getUnitsWithLessonCompletion.bind(null, courseId),
+    queryKey: [GET_UNITS_WITH_LESSON_COMPLETION, courseId],
+    enabled: !!courseId,
+    //FIXME
+    // onSuccess: (data: ProfileProgressResult) => {
+    //   const unitData: ProfileProgress = {};
+    //   data.result.map(profileCompletion => {
+    //     unitData[profileCompletion.id] = profileCompletion.lessonsWithStatus;
+    //   });
+    //   setProfileProgress(unitData);
+    // },
+  });
 
   const { data: unitResponses, isLoading: isUnitResponsesLoading } = useQuery({
     queryFn: getUnitResponse,
@@ -75,8 +76,10 @@ export const HomeScreen = ({}: Props) => {
   }, [setCompletedUnits, unitResponses]);
 
   const nextActivityToCompleteIndex =
-    (lessonResponse &&
-      lessonResponse.result.findIndex(unit => !completedUnits.has(unit.id))) ||
+    (unitsWithAssociatedLessons &&
+      unitsWithAssociatedLessons.findIndex(
+        unit => !completedUnits.has(unit.id),
+      )) ||
     -1;
 
   useEffect(() => {
@@ -90,7 +93,7 @@ export const HomeScreen = ({}: Props) => {
     }, 1000);
   }, [nextActivityToCompleteIndex]);
 
-  const listRef = useRef<FlatList<ProfileProgressByUnit>>(null);
+  const listRef = useRef<FlatList<UnitWithAssociatedLessons>>(null);
 
   if (isCourseLoading || isLessonResponseLoading || isUnitResponsesLoading) {
     return <H1>Loading..</H1>;
@@ -101,7 +104,7 @@ export const HomeScreen = ({}: Props) => {
       <FlatList
         contentContainerStyle={styles.mainFlatListContainerStyle}
         ref={listRef}
-        data={lessonResponse?.result}
+        data={unitsWithAssociatedLessons}
         keyExtractor={unitWithLessons => unitWithLessons.id}
         renderItem={({ item: unitWithLessons, index }) => (
           <UnitItem unitWithLessons={unitWithLessons} index={index} />

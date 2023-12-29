@@ -1,6 +1,6 @@
 import { authAxios } from '@voxify/axiosClient';
 import { LessonResponseEntity } from '@voxify/types/lms-progress/lesson-response';
-import { ProfileProgressResult } from '@voxify/types/lms-progress/profile-progress';
+import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
 
 export type CreateLessonResponsePostData = Pick<
   LessonResponseEntity,
@@ -28,10 +28,11 @@ export const GET_UNITS_WITH_LESSON_COMPLETION =
   'GET_UNITS_WITH_LESSON_COMPLETION';
 export const getUnitsWithLessonCompletion = async (
   courseId: string,
-): Promise<ProfileProgressResult> => {
-  return (
+): Promise<UnitWithAssociatedLessons[]> => {
+  const result = (
     await authAxios.get(
       `/lms-progress/lesson-responses/get-unit-lessons?courseId=${courseId}`,
     )
   ).data;
+  return result;
 };
