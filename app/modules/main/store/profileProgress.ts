@@ -6,14 +6,13 @@ import { create } from 'zustand';
 export type CourseProgressionState = {
   // Lesson.id => LessonResponseStatus - Used to track whether a lesson is competed or not
   lessonStatus: { [lessonId: string]: LessonResponseStatus };
-  completedUnits: Set<string>;
+  completedUnits: { [lessonId: string]: boolean };
 };
 
 export type ProgressActions = {
   setProfileProgress: (profProgress: ProfileProgress) => void;
   markLessonsAsComplete: (lessonId: string[]) => void;
-  markUnitCompleted: (unitId: string) => void;
-  setCompletedUnits: (completedUnits: Set<string>) => void;
+  markUnitsAsComplete: (unitId: string[]) => void;
 };
 
 /**
@@ -24,7 +23,7 @@ export const useProfileProgressStore = create<
 >(set => ({
   // State
   lessonStatus: {},
-  completedUnits: new Set(),
+  completedUnits: {},
 
   // Actions
   setProfileProgress: (profProgress: ProfileProgress) => {
@@ -33,12 +32,7 @@ export const useProfileProgressStore = create<
       profileProgress: profProgress,
     }));
   },
-  setCompletedUnits: (completedUnits: Set<string>) => {
-    set((state: CourseProgressionState) => ({
-      ...state,
-      completedUnits,
-    }));
-  },
+
   markLessonsAsComplete: (lessonIds: string[]) => {
     set(state => ({
       lessonStatus: {
@@ -51,10 +45,15 @@ export const useProfileProgressStore = create<
       },
     }));
   },
-  markUnitCompleted: (unitId: string) => {
-    set((state: CourseProgressionState) => ({
-      ...state,
-      completedUnits: new Set(state.completedUnits).add(unitId),
+  markUnitsAsComplete: (unitIds: string[]) => {
+    set(state => ({
+      completedUnits: {
+        ...state.completedUnits,
+        ...zipObject(
+          unitIds,
+          unitIds.map(() => true),
+        ),
+      },
     }));
   },
 }));

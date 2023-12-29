@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useQuery } from '@tanstack/react-query';
 import { AppStackParamList } from '@voxify/App';
 import {
   GET_LESSON,
@@ -12,12 +13,10 @@ import {
   useCreateLessonResponse,
   useUpdateLessonResponse,
 } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
-import { useUnitSyncCompletion } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useUnitSyncCompletion';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { H1 } from 'tamagui';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
@@ -36,8 +35,6 @@ export const LessonScreen = ({ route }: Props) => {
   const params = route.params;
 
   const [lessonId, setLessonId] = useState(params.lessonId);
-  const [unitId] = useState(params.unitId);
-  useUnitSyncCompletion({ unitId });
 
   // const [profileProgress, completedUnits, markUnitCompleted] =
   //   useProfileProgressStore((state: ProgressState & ProgressActions) => [
@@ -65,10 +62,8 @@ export const LessonScreen = ({ route }: Props) => {
   const isCreateLessonResponseLoading =
     createLessonResponseMutationStatus === 'pending';
 
-  const { mutate: updateLessonResponseMutate } = useUpdateLessonResponse(
-    lessonId,
-    unitId,
-  );
+  const { mutate: updateLessonResponseMutate } =
+    useUpdateLessonResponse(lessonId);
 
   // const { mutate: createUnitResponseMutate } = useCreateUnitResponse();
 

@@ -32,23 +32,21 @@ export const HomeScreen = () => {
 
   const { isLoading: isUnitResponsesLoading } = useGetUnitResponses();
 
-  const nextActivityToCompleteIndex =
+  const nextUnitToCompleteIndex =
     (unitsWithAssociatedLessons &&
-      unitsWithAssociatedLessons.findIndex(
-        unit => !completedUnits.has(unit.id),
-      )) ||
+      unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id])) ||
     -1;
 
   useEffect(() => {
     setTimeout(() => {
-      if (nextActivityToCompleteIndex !== -1) {
+      if (nextUnitToCompleteIndex !== -1) {
         listRef.current?.scrollToIndex({
           animated: false,
-          index: nextActivityToCompleteIndex,
+          index: nextUnitToCompleteIndex,
         });
       }
     }, 1000);
-  }, [nextActivityToCompleteIndex]);
+  }, [nextUnitToCompleteIndex]);
 
   const listRef = useRef<FlatList<UnitWithAssociatedLessons>>(null);
 

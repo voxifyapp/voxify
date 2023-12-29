@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import {
-  getUnitResponse,
   GET_UNIT_RESPONSE,
+  getUnitResponse,
 } from '@voxify/api/lms-progress/unit-response';
 import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
 import { useEffect } from 'react';
 
 export const useGetUnitResponses = () => {
-  const { setCompletedUnits } = useProfileProgressStore();
+  const { markUnitsAsComplete } = useProfileProgressStore();
 
   const mutation = useQuery({
     queryFn: getUnitResponse,
@@ -18,10 +18,10 @@ export const useGetUnitResponses = () => {
 
   useEffect(() => {
     !!unitResponses &&
-      setCompletedUnits(
-        new Set<string>(unitResponses.map(unitResponse => unitResponse.unitId)),
+      markUnitsAsComplete(
+        unitResponses.map(unitResponse => unitResponse.unitId),
       );
-  }, [setCompletedUnits, unitResponses]);
+  }, [markUnitsAsComplete, unitResponses]);
 
   return mutation;
 };

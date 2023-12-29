@@ -1,16 +1,11 @@
+import { useMutation } from '@tanstack/react-query';
 import {
   CreateLessonResponsePostData,
   UpdateLessonResponsePostData,
   createLessonResponse,
   updateLessonResponse,
 } from '@voxify/api/lms-progress/lesson-response';
-import { lessonCompletionInfoAtom } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
-import {
-  ProgressActions,
-  useProfileProgressStore,
-} from '@voxify/modules/main/screens/useProfileProgressStore';
-import { useSetAtom } from 'jotai';
-import { useMutation } from '@tanstack/react-query';
+import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
 
 export const useCreateLessonResponse = () => {
   return useMutation({
@@ -19,23 +14,16 @@ export const useCreateLessonResponse = () => {
   });
 };
 
-export const useUpdateLessonResponse = (lessonId: string, unitId: string) => {
-  const [markLessonComplete] = useProfileProgressStore(
-    (state: ProgressActions) => [state.markLessonComplete],
-  );
-  const setLessonCompletion = useSetAtom(lessonCompletionInfoAtom);
+export const useUpdateLessonResponse = (lessonId: string) => {
+  const { markLessonsAsComplete } = useProfileProgressStore();
   return useMutation({
     mutationFn: (data: UpdateLessonResponsePostData) => {
       return updateLessonResponse({ ...data });
     },
-    onSuccess: _ => {
-      markLessonComplete(lessonId, unitId);
-      setLessonCompletion(prev => {
-        return new Map(prev).set(lessonId, {
-          ...prev.get(lessonId)!,
-          isCompleted: true,
-        });
-      });
+    onSuccess: updatedLesson => {
+      if (updatedLesson.status === 'COMPLETED') {
+        markLessonsAsComplete([lessonId]);
+      }
     },
   });
 };
