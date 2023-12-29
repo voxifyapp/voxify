@@ -5,6 +5,8 @@ import { XStack, YStack } from '@voxify/design_system/layout';
 import { H3, H5 } from '@voxify/design_system/typography';
 import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
 import { Card, Image, View } from 'tamagui';
+import { useNavigation } from '@react-navigation/native';
+import { AppStackNavigationProp } from '@voxify/App';
 
 type UnitItemProps = {
   unitWithLessons: ProfileProgressByUnit;
@@ -32,11 +34,22 @@ type LessonsForUnitProps = {
   unitWithLessons: ProfileProgressByUnit;
 };
 export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
+  const navigation = useNavigation<AppStackNavigationProp>();
   const unitLessons = unitWithLessons.lessonsWithStatus
     .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
     .filter(lesson => !!lesson);
   return unitLessons.map(lesson => (
-    <Card mt="$2" mr="$1" backgroundColor="white" elevation={1}>
+    <Card
+      onPress={() =>
+        navigation.navigate('Lesson', {
+          lessonId: lesson.id,
+          unitId: unitWithLessons.id,
+        })
+      }
+      mt="$2"
+      mr="$1"
+      backgroundColor="white"
+      elevation={1}>
       <XStack width="100%" p="$4" alignItems="center" key={lesson.id}>
         <Image
           resizeMode="contain"

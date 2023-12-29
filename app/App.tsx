@@ -1,5 +1,5 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppContextProvider, useAppContext } from '@voxify/context/AppContext';
@@ -25,6 +25,8 @@ export type AppStackParamList = {
   Home: undefined;
   Lesson: { lessonId: string; unitId: string };
 };
+
+export type AppStackNavigationProp = NavigationProp<AppStackParamList>;
 
 const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator<AppStackParamList>();

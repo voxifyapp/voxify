@@ -21095,7 +21095,7 @@
     "themeClassNameOnRoot": true,
     "themes": {
       "base": {
-        "background": "#FEFAF1",
+        "background": "#fcfbf7",
         "screenPadding": 18,
         "color": "#1b69e4",
         "primaryTextColor": "#09234C",
