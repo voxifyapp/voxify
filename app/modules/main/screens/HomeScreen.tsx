@@ -1,4 +1,3 @@
-import { Circle } from '@tamagui/lucide-icons';
 import { useQuery } from '@tanstack/react-query';
 import {
   GET_UNITS_WITH_LESSON_COMPLETION,
@@ -6,7 +5,7 @@ import {
 } from '@voxify/api/lms-progress/lesson-response';
 import React, { useEffect, useRef } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { Card, H1, Paragraph, Spacer, Text } from 'tamagui';
+import { Card, H1, Image, Text, View } from 'tamagui';
 
 import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
 
@@ -18,12 +17,14 @@ import {
   GET_UNIT_RESPONSE,
   getUnitResponse,
 } from '@voxify/api/lms-progress/unit-response';
+import { Constants } from '@voxify/appConstants';
+import { Screen, XStack, YStack } from '@voxify/design_system/layout';
+import { H3, H5 } from '@voxify/design_system/typography';
 import {
   ProgressActions,
   ProgressState,
   useProfileProgressStore,
 } from '@voxify/modules/main/screens/useProfileProgressStore';
-import { XStack, YStack } from '@voxify/design_system/layout';
 
 type Props = {
   navigation: {
@@ -106,32 +107,48 @@ export const HomeScreen = ({ navigation }: Props) => {
       .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
       .filter(lesson => !!lesson);
     return unitLessons.map(lesson => (
-      <XStack key={lesson.id}>
-        <Circle size="$1" style={styles.circle} />
-        <Text onPress={() => onPress(lesson.id, unitId)}>{lesson.title}</Text>
-      </XStack>
+      <Card mt="$2" p="$4" backgroundColor="white" elevation={1}>
+        <XStack key={lesson.id}>
+          <Image
+            source={{
+              width: 32,
+              height: 32,
+              uri: `${Constants.IMAGE_HOST_PREFIX}/${lesson.homeImageFileName}`,
+            }}
+          />
+          <Text onPress={() => onPress(lesson.id, unitId)}>{lesson.title}</Text>
+        </XStack>
+      </Card>
     ));
   };
 
   return (
-    <YStack fullscreen backgroundColor={'$blue2Dark'}>
+    <Screen p={16}>
       <FlatList
-        contentContainerStyle={{ marginTop: 20 }}
+        contentContainerStyle={{
+          flex: 1,
+          height: '100%',
+        }}
         ref={listRef}
         data={lessonResponse?.result}
-        ItemSeparatorComponent={() => <Spacer size={300} />}
         keyExtractor={unitWithLessons => unitWithLessons.id}
         renderItem={({ item: unitWithLessons, index }) => (
-          <Card>
-            <Card.Header padded>
-              <Paragraph>Day {index + 1}</Paragraph>
-              <Spacer size={20} />
+          <XStack>
+            <YStack mr="$4" alignItems="center">
+              <YStack paddingVertical="$2" alignItems="center">
+                <H5 fontWeight="bold">DAY</H5>
+                <H3 fontWeight="bold">{index + 1}</H3>
+              </YStack>
+
+              <View flex={1} w={1} backgroundColor="$color.gray5" />
+            </YStack>
+            <YStack mb={50} flex={1}>
               {getLessonsFromUnit(unitWithLessons)}
-            </Card.Header>
-          </Card>
+            </YStack>
+          </XStack>
         )}
       />
-    </YStack>
+    </Screen>
   );
 };
 

@@ -18,6 +18,7 @@ type LessonWithStatus = {
   title: string;
   unitId: string;
   version: string;
+  homeImageFileName: string | null;
   lessonCompletionStatus: LessonResponseStatus | null;
 };
 
