@@ -12,9 +12,7 @@ import { useEffect } from 'react';
  * Get all units along with associated lessons for a course. This also includes the completion status of each lesson.
  */
 export const useGetUnitsWithAssociatedLessonsForCourse = (courseId: string) => {
-  const { markLessonsAsComplete, lessonStatus } = useProfileProgressStore();
-
-  console.log(lessonStatus);
+  const { markLessonsAsComplete } = useProfileProgressStore();
 
   const mutation = useQuery({
     queryFn: getUnitsWithAssociatedLessonsForCourse.bind(null, courseId),

@@ -52,14 +52,14 @@ export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
       mr="$1"
       backgroundColor="white"
       elevation={1}>
-      <XStack p="$4" alignItems="center" key={lesson.id}>
+      <XStack p="$3" paddingHorizontal="$4" alignItems="center" key={lesson.id}>
         <Image
           resizeMode="contain"
           mr="$4"
-          borderRadius={32}
+          borderRadius={48}
           source={{
-            width: 64,
-            height: 64,
+            width: 80,
+            height: 80,
             uri: `${Constants.IMAGE_HOST_PREFIX}/${lesson.homeImageFileName}`,
           }}
         />
