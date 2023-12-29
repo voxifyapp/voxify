@@ -9,7 +9,7 @@ import {
 } from '@voxify/hooks/profile';
 import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
 import { ProfileSetup } from '@voxify/modules/auth/screens/ProfileSetup/ProfileSetup';
-import { HomeScreen } from '@voxify/modules/main/screens/HomeScreen';
+import { HomeScreen } from '@voxify/modules/main/screens/HomeScreen/HomeScreen';
 import { LessonScreen } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
 import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';

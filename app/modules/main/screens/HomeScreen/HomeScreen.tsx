@@ -5,7 +5,7 @@ import {
 } from '@voxify/api/lms-progress/lesson-response';
 import React, { useEffect, useRef } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { Card, H1, Image, Text, View } from 'tamagui';
+import { H1 } from 'tamagui';
 
 import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
 
@@ -17,9 +17,8 @@ import {
   GET_UNIT_RESPONSE,
   getUnitResponse,
 } from '@voxify/api/lms-progress/unit-response';
-import { Constants } from '@voxify/appConstants';
-import { Screen, XStack, YStack } from '@voxify/design_system/layout';
-import { H3, H5 } from '@voxify/design_system/typography';
+import { Screen } from '@voxify/design_system/layout';
+import { UnitItem } from '@voxify/modules/main/screens/HomeScreen/components/UnitItem';
 import {
   ProgressActions,
   ProgressState,
@@ -32,17 +31,13 @@ type Props = {
   };
 };
 
-export const HomeScreen = ({ navigation }: Props) => {
+export const HomeScreen = ({}: Props) => {
   const [setProfileProgress, completedUnits, setCompletedUnits] =
     useProfileProgressStore((state: ProgressState & ProgressActions) => [
       state.setProfileProgress,
       state.completedUnits,
       state.setCompletedUnits,
     ]);
-
-  const onPress = (lessonId: string, unitId: string) => {
-    navigation.navigate('Lesson', { lessonId, unitId });
-  };
 
   const { data: courseData, isLoading: isCourseLoading } = useQuery({
     queryFn: getCourseForProfile,
@@ -101,51 +96,15 @@ export const HomeScreen = ({ navigation }: Props) => {
     return <H1>Loading..</H1>;
   }
 
-  const getLessonsFromUnit = (unit: ProfileProgressByUnit) => {
-    const unitId = unit.id;
-    const unitLessons = unit.lessonsWithStatus
-      .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
-      .filter(lesson => !!lesson);
-    return unitLessons.map(lesson => (
-      <Card mt="$2" p="$4" backgroundColor="white" elevation={1}>
-        <XStack key={lesson.id}>
-          <Image
-            source={{
-              width: 32,
-              height: 32,
-              uri: `${Constants.IMAGE_HOST_PREFIX}/${lesson.homeImageFileName}`,
-            }}
-          />
-          <Text onPress={() => onPress(lesson.id, unitId)}>{lesson.title}</Text>
-        </XStack>
-      </Card>
-    ));
-  };
-
   return (
     <Screen p={16}>
       <FlatList
-        contentContainerStyle={{
-          flex: 1,
-          height: '100%',
-        }}
+        contentContainerStyle={styles.mainFlatListContainerStyle}
         ref={listRef}
         data={lessonResponse?.result}
         keyExtractor={unitWithLessons => unitWithLessons.id}
         renderItem={({ item: unitWithLessons, index }) => (
-          <XStack>
-            <YStack mr="$4" alignItems="center">
-              <YStack paddingVertical="$2" alignItems="center">
-                <H5 fontWeight="bold">DAY</H5>
-                <H3 fontWeight="bold">{index + 1}</H3>
-              </YStack>
-
-              <View flex={1} w={1} backgroundColor="$color.gray5" />
-            </YStack>
-            <YStack mb={50} flex={1}>
-              {getLessonsFromUnit(unitWithLessons)}
-            </YStack>
-          </XStack>
+          <UnitItem unitWithLessons={unitWithLessons} index={index} />
         )}
       />
     </Screen>
@@ -153,7 +112,8 @@ export const HomeScreen = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  circle: {
-    marginRight: 10,
+  mainFlatListContainerStyle: {
+    flex: 1,
+    height: '100%',
   },
 });
