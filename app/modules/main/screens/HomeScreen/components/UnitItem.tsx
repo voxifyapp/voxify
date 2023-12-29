@@ -41,13 +41,14 @@ export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
 
   return unitLessons.map(lesson => (
     <Card
-      onPress={() =>
+      onPress={() => {
         navigation.navigate('Lesson', {
           lessonId: lesson.id,
           unitId: unitWithLessons.id,
-        })
-      }
+        });
+      }}
       mt="$2"
+      key={lesson.id}
       mr="$1"
       backgroundColor="white"
       elevation={1}>

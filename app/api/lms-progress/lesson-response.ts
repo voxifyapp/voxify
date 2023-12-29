@@ -26,7 +26,7 @@ export const updateLessonResponse = async (
 
 export const GET_UNITS_WITH_LESSON_COMPLETION =
   'GET_UNITS_WITH_LESSON_COMPLETION';
-export const getUnitsWithLessonCompletion = async (
+export const getUnitsWithAssociatedLessonsForCourse = async (
   courseId: string,
 ): Promise<UnitWithAssociatedLessons[]> => {
   const result = (
