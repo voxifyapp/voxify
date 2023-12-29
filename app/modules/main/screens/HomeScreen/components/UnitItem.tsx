@@ -4,7 +4,7 @@ import { Constants } from '@voxify/appConstants';
 import { XStack, YStack } from '@voxify/design_system/layout';
 import { H3, H5 } from '@voxify/design_system/typography';
 import { ProfileProgressByUnit } from '@voxify/types/lms-progress/profile-progress';
-import { Card, Image, View } from 'tamagui';
+import { Card, Image, Text, View } from 'tamagui';
 import { useNavigation } from '@react-navigation/native';
 import { AppStackNavigationProp } from '@voxify/App';
 
@@ -21,7 +21,7 @@ export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
           <H3 fontWeight="bold">{index + 1}</H3>
         </YStack>
 
-        <View flex={1} w={1} backgroundColor="$color.gray5" />
+        <View flex={1} w={2} backgroundColor="$color.gray5" />
       </YStack>
       <YStack mb={50} flex={1}>
         <LessonsForUnit unitWithLessons={unitWithLessons} />
@@ -50,7 +50,7 @@ export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
       mr="$1"
       backgroundColor="white"
       elevation={1}>
-      <XStack width="100%" p="$4" alignItems="center" key={lesson.id}>
+      <XStack p="$4" alignItems="center" key={lesson.id}>
         <Image
           resizeMode="contain"
           mr="$4"
@@ -61,9 +61,16 @@ export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
             uri: `${Constants.IMAGE_HOST_PREFIX}/${lesson.homeImageFileName}`,
           }}
         />
-        <H5 adjustsFontSizeToFit numberOfLines={2} fontWeight="bold">
-          {lesson.title}
-        </H5>
+        <View flex={1}>
+          <Text
+            fontSize="$6"
+            color="$color.blue10"
+            adjustsFontSizeToFit
+            numberOfLines={2}
+            fontWeight="bold">
+            {lesson.title}
+          </Text>
+        </View>
       </XStack>
     </Card>
   ));

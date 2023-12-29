@@ -21095,7 +21095,7 @@
     "themeClassNameOnRoot": true,
     "themes": {
       "base": {
-        "background": "#fcfbf7",
+        "background": "#FEFAF1",
         "screenPadding": 18,
         "color": "#1b69e4",
         "primaryTextColor": "#09234C",
@@ -21295,38 +21295,45 @@
           "val": "#eeeeee",
           "variable": ""
         },
+        "gray3": {
+          "isVar": true,
+          "key": "$gray3",
+          "name": "color-13",
+          "val": "#cccccc",
+          "variable": ""
+        },
         "gray5": {
           "isVar": true,
           "key": "$gray5",
-          "name": "color-13",
+          "name": "color-14",
           "val": "#999999",
           "variable": ""
         },
         "gray7": {
           "isVar": true,
           "key": "$gray7",
-          "name": "color-14",
+          "name": "color-15",
           "val": "#777777",
           "variable": ""
         },
         "gray10": {
           "isVar": true,
           "key": "$gray10",
-          "name": "color-15",
+          "name": "color-16",
           "val": "#444444",
           "variable": ""
         },
         "yellow1": {
           "isVar": true,
           "key": "$yellow1",
-          "name": "color-16",
+          "name": "color-17",
           "val": "FEFAF1",
           "variable": ""
         },
         "yellow5": {
           "isVar": true,
           "key": "$yellow5",
-          "name": "color-17",
+          "name": "color-18",
           "val": "#FDDC38",
           "variable": ""
         }
@@ -22291,38 +22298,45 @@
         "val": "#eeeeee",
         "variable": ""
       },
+      "$color.gray3": {
+        "isVar": true,
+        "key": "$gray3",
+        "name": "color-13",
+        "val": "#cccccc",
+        "variable": ""
+      },
       "$color.gray5": {
         "isVar": true,
         "key": "$gray5",
-        "name": "color-13",
+        "name": "color-14",
         "val": "#999999",
         "variable": ""
       },
       "$color.gray7": {
         "isVar": true,
         "key": "$gray7",
-        "name": "color-14",
+        "name": "color-15",
         "val": "#777777",
         "variable": ""
       },
       "$color.gray10": {
         "isVar": true,
         "key": "$gray10",
-        "name": "color-15",
+        "name": "color-16",
         "val": "#444444",
         "variable": ""
       },
       "$color.yellow1": {
         "isVar": true,
         "key": "$yellow1",
-        "name": "color-16",
+        "name": "color-17",
         "val": "FEFAF1",
         "variable": ""
       },
       "$color.yellow5": {
         "isVar": true,
         "key": "$yellow5",
-        "name": "color-17",
+        "name": "color-18",
         "val": "#FDDC38",
         "variable": ""
       },

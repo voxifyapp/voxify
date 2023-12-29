@@ -21,6 +21,7 @@ const shadesOfYellow = {
 };
 const shaesOfGray = {
   gray1: '#eeeeee',
+  gray3: '#cccccc',
   gray5: '#999999',
   gray7: '#777777',
   gray10: '#444444',
