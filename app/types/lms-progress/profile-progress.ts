@@ -5,7 +5,7 @@ export type UnitWithAssociatedLessons = UnitEntity & {
   lessonsWithStatus: LessonWithStatus[];
 };
 
-type LessonWithStatus = LessonEntity & {
+export type LessonWithStatus = LessonEntity & {
   lessonCompletionStatus: LessonResponseStatus | null;
 };
 

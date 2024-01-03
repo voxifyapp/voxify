@@ -21095,7 +21095,7 @@
     "themeClassNameOnRoot": true,
     "themes": {
       "base": {
-        "background": "#FEFAF1",
+        "background": "#E5F0FE",
         "screenPadding": 18,
         "color": "#1b69e4",
         "primaryTextColor": "#09234C",
@@ -21211,130 +21211,137 @@
     },
     "tokens": {
       "color": {
-        "blue5": {
-          "isVar": true,
-          "key": "$blue5",
-          "name": "color-1",
-          "val": "#1b69e4",
-          "variable": ""
-        },
         "blue": {
           "isVar": true,
           "key": "$blue",
-          "name": "color-2",
+          "name": "color-1",
           "val": "#1b69e4",
           "variable": ""
         },
         "yellow": {
           "isVar": true,
           "key": "$yellow",
-          "name": "color-3",
+          "name": "color-2",
           "val": "#FDDC38",
           "variable": ""
         },
         "pink": {
           "isVar": true,
           "key": "$pink",
-          "name": "color-4",
+          "name": "color-3",
           "val": "#FBC3D4",
-          "variable": ""
-        },
-        "blue10": {
-          "isVar": true,
-          "key": "$blue10",
-          "name": "color-5",
-          "val": "#09234C",
           "variable": ""
         },
         "green1": {
           "isVar": true,
           "key": "$green1",
-          "name": "color-6",
-          "val": "#C9F2E0",
+          "name": "color-4",
+          "val": "#e5f9f0",
           "variable": ""
         },
         "green5": {
           "isVar": true,
           "key": "$green5",
-          "name": "color-7",
+          "name": "color-5",
           "val": "#009E5A",
           "variable": ""
         },
         "green10": {
           "isVar": true,
           "key": "$green10",
-          "name": "color-8",
+          "name": "color-6",
           "val": "#004024",
           "variable": ""
         },
         "green8": {
           "isVar": true,
           "key": "$green8",
-          "name": "color-9",
+          "name": "color-7",
           "val": "#006137",
           "variable": ""
         },
         "orange1": {
           "isVar": true,
           "key": "$orange1",
-          "name": "color-10",
+          "name": "color-8",
           "val": "#FDE5DF",
           "variable": ""
         },
         "orange5": {
           "isVar": true,
           "key": "$orange5",
-          "name": "color-11",
+          "name": "color-9",
           "val": "#FA4D1D",
           "variable": ""
         },
         "gray1": {
           "isVar": true,
           "key": "$gray1",
-          "name": "color-12",
+          "name": "color-10",
           "val": "#eeeeee",
           "variable": ""
         },
         "gray3": {
           "isVar": true,
           "key": "$gray3",
-          "name": "color-13",
+          "name": "color-11",
           "val": "#cccccc",
           "variable": ""
         },
         "gray5": {
           "isVar": true,
           "key": "$gray5",
-          "name": "color-14",
+          "name": "color-12",
           "val": "#999999",
           "variable": ""
         },
         "gray7": {
           "isVar": true,
           "key": "$gray7",
-          "name": "color-15",
+          "name": "color-13",
           "val": "#777777",
           "variable": ""
         },
         "gray10": {
           "isVar": true,
           "key": "$gray10",
-          "name": "color-16",
+          "name": "color-14",
           "val": "#444444",
           "variable": ""
         },
         "yellow1": {
           "isVar": true,
           "key": "$yellow1",
-          "name": "color-17",
+          "name": "color-15",
           "val": "FEFAF1",
           "variable": ""
         },
         "yellow5": {
           "isVar": true,
           "key": "$yellow5",
-          "name": "color-18",
+          "name": "color-16",
           "val": "#FDDC38",
+          "variable": ""
+        },
+        "blue1": {
+          "isVar": true,
+          "key": "$blue1",
+          "name": "color-17",
+          "val": "#E5F0FE",
+          "variable": ""
+        },
+        "blue5": {
+          "isVar": true,
+          "key": "$blue5",
+          "name": "color-18",
+          "val": "#1b69e4",
+          "variable": ""
+        },
+        "blue10": {
+          "isVar": true,
+          "key": "$blue10",
+          "name": "color-19",
+          "val": "#09234C",
           "variable": ""
         }
       },
@@ -22214,130 +22221,137 @@
     "getNewCSS": "Function",
     "fontSizeTokens": {},
     "specificTokens": {
-      "$color.blue5": {
-        "isVar": true,
-        "key": "$blue5",
-        "name": "color-1",
-        "val": "#1b69e4",
-        "variable": ""
-      },
       "$color.blue": {
         "isVar": true,
         "key": "$blue",
-        "name": "color-2",
+        "name": "color-1",
         "val": "#1b69e4",
         "variable": ""
       },
       "$color.yellow": {
         "isVar": true,
         "key": "$yellow",
-        "name": "color-3",
+        "name": "color-2",
         "val": "#FDDC38",
         "variable": ""
       },
       "$color.pink": {
         "isVar": true,
         "key": "$pink",
-        "name": "color-4",
+        "name": "color-3",
         "val": "#FBC3D4",
-        "variable": ""
-      },
-      "$color.blue10": {
-        "isVar": true,
-        "key": "$blue10",
-        "name": "color-5",
-        "val": "#09234C",
         "variable": ""
       },
       "$color.green1": {
         "isVar": true,
         "key": "$green1",
-        "name": "color-6",
-        "val": "#C9F2E0",
+        "name": "color-4",
+        "val": "#e5f9f0",
         "variable": ""
       },
       "$color.green5": {
         "isVar": true,
         "key": "$green5",
-        "name": "color-7",
+        "name": "color-5",
         "val": "#009E5A",
         "variable": ""
       },
       "$color.green10": {
         "isVar": true,
         "key": "$green10",
-        "name": "color-8",
+        "name": "color-6",
         "val": "#004024",
         "variable": ""
       },
       "$color.green8": {
         "isVar": true,
         "key": "$green8",
-        "name": "color-9",
+        "name": "color-7",
         "val": "#006137",
         "variable": ""
       },
       "$color.orange1": {
         "isVar": true,
         "key": "$orange1",
-        "name": "color-10",
+        "name": "color-8",
         "val": "#FDE5DF",
         "variable": ""
       },
       "$color.orange5": {
         "isVar": true,
         "key": "$orange5",
-        "name": "color-11",
+        "name": "color-9",
         "val": "#FA4D1D",
         "variable": ""
       },
       "$color.gray1": {
         "isVar": true,
         "key": "$gray1",
-        "name": "color-12",
+        "name": "color-10",
         "val": "#eeeeee",
         "variable": ""
       },
       "$color.gray3": {
         "isVar": true,
         "key": "$gray3",
-        "name": "color-13",
+        "name": "color-11",
         "val": "#cccccc",
         "variable": ""
       },
       "$color.gray5": {
         "isVar": true,
         "key": "$gray5",
-        "name": "color-14",
+        "name": "color-12",
         "val": "#999999",
         "variable": ""
       },
       "$color.gray7": {
         "isVar": true,
         "key": "$gray7",
-        "name": "color-15",
+        "name": "color-13",
         "val": "#777777",
         "variable": ""
       },
       "$color.gray10": {
         "isVar": true,
         "key": "$gray10",
-        "name": "color-16",
+        "name": "color-14",
         "val": "#444444",
         "variable": ""
       },
       "$color.yellow1": {
         "isVar": true,
         "key": "$yellow1",
-        "name": "color-17",
+        "name": "color-15",
         "val": "FEFAF1",
         "variable": ""
       },
       "$color.yellow5": {
         "isVar": true,
         "key": "$yellow5",
-        "name": "color-18",
+        "name": "color-16",
         "val": "#FDDC38",
+        "variable": ""
+      },
+      "$color.blue1": {
+        "isVar": true,
+        "key": "$blue1",
+        "name": "color-17",
+        "val": "#E5F0FE",
+        "variable": ""
+      },
+      "$color.blue5": {
+        "isVar": true,
+        "key": "$blue5",
+        "name": "color-18",
+        "val": "#1b69e4",
+        "variable": ""
+      },
+      "$color.blue10": {
+        "isVar": true,
+        "key": "$blue10",
+        "name": "color-19",
+        "val": "#09234C",
         "variable": ""
       },
       "$radius.0": {

@@ -1,12 +1,18 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
+import { AppStackNavigationProp } from '@voxify/App';
 import { Constants } from '@voxify/appConstants';
 import { XStack, YStack } from '@voxify/design_system/layout';
 import { H3, H5 } from '@voxify/design_system/typography';
-import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
+import { CompletedChip } from '@voxify/modules/main/screens/HomeScreen/components/CompletedChip';
+import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
+import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
+import {
+  LessonWithStatus,
+  UnitWithAssociatedLessons,
+} from '@voxify/types/lms-progress/profile-progress';
 import { Card, Image, Text, View } from 'tamagui';
-import { useNavigation } from '@react-navigation/native';
-import { AppStackNavigationProp } from '@voxify/App';
 
 type UnitItemProps = {
   unitWithLessons: UnitWithAssociatedLessons;
@@ -34,46 +40,60 @@ type LessonsForUnitProps = {
   unitWithLessons: UnitWithAssociatedLessons;
 };
 export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
-  const navigation = useNavigation<AppStackNavigationProp>();
   const unitLessons = unitWithLessons.lessonsWithStatus
     .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
     .filter(i => !!i);
 
   return unitLessons.map(lesson => (
+    <LessonItem key={lesson.id} lesson={lesson} />
+  ));
+};
+
+const LessonItem = ({ lesson }: { lesson: LessonWithStatus }) => {
+  const navigation = useNavigation<AppStackNavigationProp>();
+  const { lessonStatus } = useProfileProgressStore();
+
+  const isLessonCompleted =
+    lessonStatus[lesson.id] === LessonResponseStatus.COMPLETED;
+
+  return (
     <Card
       onPress={() => {
         navigation.navigate('Lesson', {
           lessonId: lesson.id,
-          unitId: unitWithLessons.id,
+          unitId: lesson.unitId,
         });
       }}
       mt="$2"
-      key={lesson.id}
       mr="$1"
       backgroundColor="white"
       elevation={1}>
-      <XStack p="$3" paddingHorizontal="$4" alignItems="center" key={lesson.id}>
+      <XStack alignItems="center" key={lesson.id}>
         <Image
-          resizeMode="contain"
+          resizeMode="cover"
           mr="$4"
-          borderRadius={48}
+          maxWidth="30%"
+          // aspectRatio={1}
+          backgroundColor="red"
+          minHeight={80}
+          minWidth={80}
+          height="100%"
           source={{
-            width: 80,
-            height: 80,
             uri: `${Constants.IMAGE_HOST_PREFIX}/${lesson.homeImageFileName}`,
           }}
         />
-        <View flex={1}>
+        <YStack flex={1} space="$2" paddingVertical={32}>
           <Text
-            fontSize="$6"
+            fontSize="$8"
             color="$color.blue10"
             adjustsFontSizeToFit
             numberOfLines={2}
             fontWeight="bold">
             {lesson.title}
           </Text>
-        </View>
+          <CompletedChip isComplete={isLessonCompleted} />
+        </YStack>
       </XStack>
     </Card>
-  ));
+  );
 };

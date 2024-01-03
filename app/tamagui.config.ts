@@ -3,23 +3,30 @@ import { createTamagui } from 'tamagui';
 
 // Defining the main colors
 const blue5 = '#1b69e4';
+const shadesOfBlue = {
+  blue1: '#eff5ff',
+  blue5,
+  blue10: '#09234C',
+};
 const yellow5 = '#FDDC38';
+const shadesOfYellow = {
+  yellow1: '#FEFAF1',
+  yellow5,
+};
+
 const shadesOfOrange = {
   orange1: '#FDE5DF',
   orange5: '#FA4D1D',
 };
 const pink5 = '#FBC3D4';
 const shadesOfGreen = {
-  green1: '#C9F2E0',
+  green1: '#e5f9f0',
   green5: '#009E5A',
   green10: '#004024',
   green8: '#006137',
 };
-const shadesOfYellow = {
-  yellow1: 'FEFAF1',
-  yellow5,
-};
-const shaesOfGray = {
+
+const shadesOfGray = {
   gray1: '#eeeeee',
   gray3: '#cccccc',
   gray5: '#999999',
@@ -31,9 +38,6 @@ const white = '#ffffff';
 // Defining the color gradients for the colors 0 being the lightest and 10 being the darkest
 const blue10 = '#09234C';
 
-// Background colors
-const bgYellow = '#FEFAF1';
-
 // Text colors
 const primaryTextColor = blue10; // Used in place of black. Really dark
 
@@ -42,15 +46,14 @@ const appConfig = createTamagui({
   tokens: {
     ...config.tokens,
     color: {
-      blue5,
       blue: blue5,
       yellow: yellow5,
       pink: pink5,
-      blue10,
       ...shadesOfGreen,
       ...shadesOfOrange,
-      ...shaesOfGray,
+      ...shadesOfGray,
       ...shadesOfYellow,
+      ...shadesOfBlue,
     },
     size: {
       ...config.tokens.size,
@@ -65,7 +68,7 @@ const appConfig = createTamagui({
   themes: {
     base: {
       // Screen properties
-      background: bgYellow,
+      background: shadesOfYellow.yellow1,
       screenPadding: config.tokens.space[4],
 
       // Primary color
