@@ -58,6 +58,7 @@ const LessonItem = ({ lesson }: { lesson: LessonWithStatus }) => {
 
   return (
     <Card
+      overflow="hidden"
       onPress={() => {
         navigation.navigate('Lesson', {
           lessonId: lesson.id,
