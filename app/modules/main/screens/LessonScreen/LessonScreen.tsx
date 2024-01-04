@@ -1,22 +1,19 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useQuery } from '@tanstack/react-query';
 import { AppStackParamList } from '@voxify/App';
-import {
-  GET_LESSON,
-  GET_LESSON_ACTIVITIES,
-  getLesson,
-  getLessonActivities,
-} from '@voxify/api/lms/lms';
 import { Screen } from '@voxify/design_system/layout';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import {
-  useCreateLessonResponse,
-  useUpdateLessonResponse,
-} from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
+  useGetLesson,
+  useGetLessonActivities,
+} from '@voxify/modules/main/screens/LessonScreen/hooks/lessonHooks';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import React, { useCallback, useEffect, useState } from 'react';
 import { H1 } from 'tamagui';
+import {
+  useCreateLessonResponse,
+  useUpdateLessonResponse,
+} from './hooks/useCreateLessonResponse';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
 
@@ -25,16 +22,9 @@ export const LessonScreen = ({ route }: Props) => {
 
   const [lessonId, setLessonId] = useState(params.lessonId);
 
-  const { isLoading: isGetLessonLoading } = useQuery({
-    queryFn: getLesson.bind(null, lessonId),
-    queryKey: [GET_LESSON, lessonId],
-  });
-
+  const { isLoading: isGetLessonLoading } = useGetLesson(lessonId);
   const { data: lessonActivities, isLoading: isLessonActivitiesLoading } =
-    useQuery({
-      queryFn: () => getLessonActivities(lessonId),
-      queryKey: [GET_LESSON_ACTIVITIES, lessonId],
-    });
+    useGetLessonActivities(lessonId);
 
   const {
     mutate: createLessonResponseMutate,
