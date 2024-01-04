@@ -15,37 +15,17 @@ import {
 } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useCreateLessonResponse';
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useCallback, useEffect, useState } from 'react';
 import { H1 } from 'tamagui';
 
 type Props = NativeStackScreenProps<AppStackParamList, 'Lesson'>;
-
-export const lessonCompletionInfoAtom = atom<
-  Map<
-    string,
-    {
-      lessonResponseId: string;
-      isCompleted: boolean;
-    }
-  >
->(new Map());
 
 export const LessonScreen = ({ route }: Props) => {
   const params = route.params;
 
   const [lessonId, setLessonId] = useState(params.lessonId);
 
-  // const [profileProgress, completedUnits, markUnitCompleted] =
-  //   useProfileProgressStore((state: ProgressState & ProgressActions) => [
-  //     state.profileProgress,
-  //     state.completedUnits,
-  //     state.markUnitCompleted,
-  //   ]);
-
-  const lessonCompletionInfo = useAtomValue(lessonCompletionInfoAtom);
-  const setLessonCompletionInfo = useSetAtom(lessonCompletionInfoAtom);
-  const { isLoading: isLessonLoading } = useQuery({
+  const { isLoading: isGetLessonLoading } = useQuery({
     queryFn: getLesson.bind(null, lessonId),
     queryKey: [GET_LESSON, lessonId],
   });
@@ -56,8 +36,13 @@ export const LessonScreen = ({ route }: Props) => {
       queryKey: [GET_LESSON_ACTIVITIES, lessonId],
     });
 
-  const { mutate, status: createLessonResponseMutationStatus } =
-    useCreateLessonResponse();
+  const {
+    mutate: createLessonResponseMutate,
+    status: createLessonResponseMutationStatus,
+    data: createLessonResponseData,
+  } = useCreateLessonResponse();
+
+  const lessonResponseId = createLessonResponseData?.id;
 
   const isCreateLessonResponseLoading =
     createLessonResponseMutationStatus === 'pending';
@@ -65,57 +50,26 @@ export const LessonScreen = ({ route }: Props) => {
   const { mutate: updateLessonResponseMutate } =
     useUpdateLessonResponse(lessonId);
 
-  // const { mutate: createUnitResponseMutate } = useCreateUnitResponse();
-
+  // Create a new lesson response whenever the screen opens
   useEffect(() => {
-    !lessonCompletionInfo.has(lessonId) &&
-      mutate(
-        {
-          status: LessonResponseStatus.STARTED,
-          lessonId,
-        },
-        {
-          onSuccess: data => {
-            setLessonCompletionInfo(prev =>
-              new Map(prev).set(lessonId, {
-                lessonResponseId: data.id,
-                isCompleted: false,
-              }),
-            );
-          },
-        },
-      );
-  }, [lessonId, mutate, lessonCompletionInfo, setLessonCompletionInfo]);
-
-  // useEffect(() => {
-  //   if (
-  //     !completedUnits.has(unitId) &&
-  //     profileProgress[unitId].filter(
-  //       lesson =>
-  //         lesson.lessonCompletionStatus !== LessonResponseStatus.COMPLETED,
-  //     ).length === 0
-  //   ) {
-  //     markUnitCompleted(unitId);
-  //     createUnitResponseMutate({ unitId });
-  //   }
-  // }, [
-  //   completedUnits,
-  //   createUnitResponseMutate,
-  //   lessonId,
-  //   markUnitCompleted,
-  //   profileProgress,
-  //   unitId,
-  // ]);
+    if (!lessonResponseId) {
+      createLessonResponseMutate({
+        status: LessonResponseStatus.STARTED,
+        lessonId,
+      });
+    }
+  }, [lessonId, createLessonResponseMutate, lessonResponseId]);
 
   const handleLessonComplete = useCallback(() => {
-    updateLessonResponseMutate({
-      status: LessonResponseStatus.COMPLETED,
-      lessonResponseId: lessonCompletionInfo.get(lessonId)?.lessonResponseId!,
-    });
-  }, [lessonCompletionInfo, lessonId, updateLessonResponseMutate]);
+    lessonResponseId &&
+      updateLessonResponseMutate({
+        status: LessonResponseStatus.COMPLETED,
+        lessonResponseId,
+      });
+  }, [lessonResponseId, updateLessonResponseMutate]);
 
   if (
-    isLessonLoading ||
+    isGetLessonLoading ||
     isLessonActivitiesLoading ||
     isCreateLessonResponseLoading
   ) {
@@ -125,12 +79,10 @@ export const LessonScreen = ({ route }: Props) => {
   return (
     <Screen noPadding>
       <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
-      {lessonActivities && (
+      {lessonActivities && lessonResponseId && (
         <ActivityStepper
           lessonId={lessonId}
-          lessonResponseId={
-            lessonCompletionInfo.get(lessonId)?.lessonResponseId!
-          }
+          lessonResponseId={lessonResponseId}
           onLessonComplete={handleLessonComplete}
           activities={lessonActivities}
         />

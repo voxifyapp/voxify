@@ -74,8 +74,6 @@ const LessonItem = ({ lesson }: { lesson: LessonWithStatus }) => {
           resizeMode="cover"
           mr="$4"
           maxWidth="30%"
-          // aspectRatio={1}
-          backgroundColor="red"
           minHeight={80}
           minWidth={80}
           height="100%"

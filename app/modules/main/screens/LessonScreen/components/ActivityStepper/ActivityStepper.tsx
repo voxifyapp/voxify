@@ -1,52 +1,51 @@
-/* eslint-disable react/no-unstable-nested-components */
-
-//TODO Remove lint ignores above
+import { YStack } from '@voxify/design_system/layout';
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { lessonCompletionInfoAtom } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
 import { StepCard } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/StepCard';
 import { ActivityEntity } from '@voxify/types/lms/lms';
-import { atom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
+import { atomWithReset, useResetAtom } from 'jotai/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, ViewToken } from 'react-native';
-import { Spacer, YStack } from 'tamagui';
 
+// These calculations are to make sure that the first and last elements are centered
 export const activityAspectRatio = 9 / 15;
 export const { width: screenWidth, height: screenHeight } =
   Dimensions.get('window');
 export const width = screenWidth / 1.2;
 export const height = width / activityAspectRatio;
-
 export const firstAndLastElementMargin = (screenHeight - height) / 2;
 
 type Props = {
   activities: ActivityEntity[];
   lessonResponseId: string;
+  /**
+   * This callback is called when the user has gone through all activities
+   */
   onLessonComplete: () => void;
   lessonId: string;
 };
 
-export const completedActivitiesAtom = atom<
+export const completedActivitiesAtom = atomWithReset<
   Record<string, ActivityRendererMachineRestoreDataType>
 >({});
 
-export const ActivityStepper = ({
-  activities,
-  lessonResponseId,
-  lessonId,
-  onLessonComplete,
-}: Props) => {
+export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const listRef = useRef<FlatList<ActivityEntity>>(null);
 
   let renderedActivities = activities;
 
   const completedActivities = useAtomValue(completedActivitiesAtom);
-  const lessonCompletionInfo = useAtomValue(lessonCompletionInfoAtom);
+  const resetCompletedActivities = useResetAtom(completedActivitiesAtom);
 
   const nextActivityToCompleteIndex = renderedActivities.findIndex(
     activity => !completedActivities[activity.id],
   );
+
+  useEffect(() => {
+    resetCompletedActivities();
+  }, [lessonResponseId, resetCompletedActivities]);
 
   // renderedActivities = slice(
   //   renderedActivities,
@@ -67,24 +66,24 @@ export const ActivityStepper = ({
     }, 1000);
   }, [nextActivityToCompleteIndex]);
 
-  useEffect(() => {
-    let completedActivitiesCount = 0;
-    renderedActivities.forEach(
-      activity =>
-        completedActivities[activity.id] && ++completedActivitiesCount,
-    );
+  // useEffect(() => {
+  //   let completedActivitiesCount = 0;
+  //   renderedActivities.forEach(
+  //     activity =>
+  //       completedActivities[activity.id] && ++completedActivitiesCount,
+  //   );
 
-    completedActivitiesCount === renderedActivities.length &&
-      !lessonCompletionInfo.get(lessonId)?.isCompleted &&
-      onLessonComplete();
-  }, [
-    completedActivities,
-    lessonCompletionInfo,
-    lessonId,
-    lessonResponseId,
-    onLessonComplete,
-    renderedActivities,
-  ]);
+  //   completedActivitiesCount === renderedActivities.length &&
+  //     !lessonCompletionInfo.get(lessonId)?.isCompleted &&
+  //     onLessonComplete();
+  // }, [
+  //   completedActivities,
+  //   lessonCompletionInfo,
+  //   lessonId,
+  //   lessonResponseId,
+  //   onLessonComplete,
+  //   renderedActivities,
+  // ]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,
@@ -117,10 +116,10 @@ export const ActivityStepper = ({
       snapToOffsets={renderedActivities.map((_, index) => {
         return getItemLayout(_, index).offset;
       })}
-      ItemSeparatorComponent={() => <Spacer size={20} />}
+      // ItemSeparatorComponent={() => <Spacer size={20} />}
       keyExtractor={(activity, index) => activity.id || `${index}`}
       renderItem={({ item: activity, index }) => (
-        <YStack alignItems="center">
+        <YStack alignItems="center" mb={20}>
           <StepCard
             width={width}
             height={height}

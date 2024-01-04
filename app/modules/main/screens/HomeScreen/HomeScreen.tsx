@@ -14,6 +14,7 @@ import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
+import { useNavigation } from '@react-navigation/native';
 
 export const HomeScreen = () => {
   const { completedUnits } = useProfileProgressStore();
@@ -22,6 +23,15 @@ export const HomeScreen = () => {
     queryFn: getCourseForProfile,
     queryKey: [GET_COURSE_FOR_PROFILE],
   });
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.navigate('Lesson', {
+      lessonId: '33304d27-4b6e-482b-b4c7-c028728f8ebc',
+      unitId: '6b1cfe00-b741-42b8-8e74-f165f8c1574d',
+    });
+  }, [navigation]);
 
   const courseId = courseData && courseData.id;
 
