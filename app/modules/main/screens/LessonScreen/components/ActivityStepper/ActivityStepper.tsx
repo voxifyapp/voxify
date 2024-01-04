@@ -43,9 +43,13 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
     activity => !completedActivities[activity.id],
   );
 
+  // We want to reset the completed activities when the component unmounts
+  // or else the next time the user opens the lesson it will be marked as completed
   useEffect(() => {
-    resetCompletedActivities();
-  }, [lessonResponseId, resetCompletedActivities]);
+    return () => {
+      resetCompletedActivities();
+    };
+  }, [resetCompletedActivities]);
 
   // renderedActivities = slice(
   //   renderedActivities,

@@ -50,6 +50,7 @@ export const LessonScreen = ({ route }: Props) => {
     }
   }, [lessonId, createLessonResponseMutate, lessonResponseId]);
 
+  // Mark lesson response as completed when lesson is completed
   const handleLessonComplete = useCallback(() => {
     lessonResponseId &&
       updateLessonResponseMutate({
