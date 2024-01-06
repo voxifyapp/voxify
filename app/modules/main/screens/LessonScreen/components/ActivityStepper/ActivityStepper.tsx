@@ -43,10 +43,15 @@ export const completedActivitiesAtom = atomWithReset<
 
 const RESULTS_CARD = { id: 'results-card' };
 
-export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
+export const ActivityStepper = ({
+  activities,
+  lessonResponseId,
+  onLessonComplete,
+}: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const activitiesFlatListRef =
     useRef<FlatList<ActivityEntity | typeof RESULTS_CARD>>(null);
+  const isLessonCompleted = useRef(false);
 
   // We want to show a result screen as the last page
   const flatListItems = [...activities, RESULTS_CARD] as const;
@@ -54,9 +59,10 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   const completedActivities = useAtomValue(completedActivitiesAtom);
   const resetCompletedActivities = useResetAtom(completedActivitiesAtom);
 
-  const nextItemIndex = flatListItems.findIndex(
+  const currentItemIndex = flatListItems.findIndex(
     activity => activity === RESULTS_CARD || !completedActivities[activity.id],
   );
+  const currentFlatListItem = flatListItems[currentItemIndex];
 
   // We want to reset the completed activities when the component unmounts
   // or else the next time the user opens the lesson it will be marked as completed
@@ -66,16 +72,24 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
     };
   }, [resetCompletedActivities]);
 
+  // Scroll to the next activity, when the current activity is completed
   useEffect(() => {
     setTimeout(() => {
-      if (nextItemIndex !== -1) {
+      if (currentItemIndex !== -1) {
         activitiesFlatListRef.current?.scrollToIndex({
           animated: true,
-          index: nextItemIndex,
+          index: currentItemIndex,
         });
       }
     }, 1000);
-  }, [nextItemIndex]);
+  }, [currentItemIndex]);
+
+  // Mark lesson as complete on reaching the results card
+  useEffect(() => {
+    if (currentFlatListItem === RESULTS_CARD && !isLessonCompleted.current) {
+      onLessonComplete();
+    }
+  }, [currentFlatListItem, onLessonComplete]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,
@@ -103,11 +117,11 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
     const currentContentOffset = e.nativeEvent.contentOffset.y;
 
     const maxScrollableOffset =
-      nextItemIndex * flatListItemHeight + flatListItemHeight / 4;
+      currentItemIndex * flatListItemHeight + flatListItemHeight / 4;
 
     if (currentContentOffset > maxScrollableOffset) {
       activitiesFlatListRef.current?.scrollToIndex({
-        index: nextItemIndex,
+        index: currentItemIndex,
       });
     }
   };

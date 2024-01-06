@@ -78,7 +78,7 @@ export const Video = ({ activity }: Props) => {
   };
 
   return (
-    <ZStack fullscreen>
+    <ZStack backgroundColor="black" fullscreen>
       {isWorkingState ? (
         <YStack fullscreen onPress={() => setShowControls(true)}>
           <ExpoVideo
