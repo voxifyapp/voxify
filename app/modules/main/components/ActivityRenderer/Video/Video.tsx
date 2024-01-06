@@ -92,6 +92,7 @@ export const Video = ({ activity }: Props) => {
                   // TODO: Need to check when this is undefined
                   videoLength: playbackStatus.durationMillis!,
                 });
+
                 if (playbackStatus.didJustFinish) {
                   markAsFinished();
                 }

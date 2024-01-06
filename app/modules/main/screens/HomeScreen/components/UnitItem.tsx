@@ -51,7 +51,7 @@ export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
 
 const LessonItem = ({ lesson }: { lesson: LessonWithStatus }) => {
   const navigation = useNavigation<AppStackNavigationProp>();
-  const { lessonStatus } = useProfileProgressStore();
+  const lessonStatus = useProfileProgressStore(state => state.lessonStatus);
 
   const isLessonCompleted =
     lessonStatus[lesson.id] === LessonResponseStatus.COMPLETED;

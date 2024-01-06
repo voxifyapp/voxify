@@ -72,7 +72,7 @@ export const ActivityStepper = ({
     };
   }, [resetCompletedActivities]);
 
-  // Scroll to the next activity, when the current activity is completed
+  // When the next activity the user should be on change, scroll to it.
   useEffect(() => {
     setTimeout(() => {
       if (indexOfItemTheUserShouldBeOn !== -1) {
@@ -139,7 +139,6 @@ export const ActivityStepper = ({
         return getItemLayout(_, index).offset;
       })}
       onScroll={handleScroll}
-      // ItemSeparatorComponent={() => <Spacer size={20} />}
       keyExtractor={(activity, index) => activity.id || `${index}`}
       renderItem={({ item, index }) => (
         <YStack alignItems="center" mb={stepCardMarginBottom}>

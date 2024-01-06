@@ -9,29 +9,18 @@ import { useGetUnitResponses } from '@voxify/modules/main/screens/HomeScreen/hoo
 import { useGetUnitsWithAssociatedLessonsForCourse } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitsWithAssociatedLessons';
 import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
 
-import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
 import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
-import { useNavigation } from '@react-navigation/native';
-
+import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
 export const HomeScreen = () => {
-  const { completedUnits } = useProfileProgressStore();
+  const completedUnits = useProfileProgressStore(state => state.completedUnits);
 
   const { data: courseData, isLoading: isCourseLoading } = useQuery({
     queryFn: getCourseForProfile,
     queryKey: [GET_COURSE_FOR_PROFILE],
   });
-
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    navigation.navigate('Lesson', {
-      lessonId: '33304d27-4b6e-482b-b4c7-c028728f8ebc',
-      unitId: '6b1cfe00-b741-42b8-8e74-f165f8c1574d',
-    });
-  }, [navigation]);
 
   const courseId = courseData && courseData.id;
 

@@ -7,14 +7,16 @@ import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgr
 import { useEffect } from 'react';
 
 export const useGetUnitResponses = () => {
-  const { markUnitsAsComplete } = useProfileProgressStore();
+  const markUnitsAsComplete = useProfileProgressStore(
+    state => state.markUnitsAsComplete,
+  );
 
-  const mutation = useQuery({
+  const query = useQuery({
     queryFn: getUnitResponse,
     queryKey: [GET_UNIT_RESPONSE],
   });
 
-  const unitResponses = mutation.data;
+  const unitResponses = query.data;
 
   useEffect(() => {
     !!unitResponses &&
@@ -23,5 +25,5 @@ export const useGetUnitResponses = () => {
       );
   }, [markUnitsAsComplete, unitResponses]);
 
-  return mutation;
+  return query;
 };
