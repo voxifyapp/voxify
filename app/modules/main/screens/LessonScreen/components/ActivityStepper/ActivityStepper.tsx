@@ -1,6 +1,7 @@
 import { YStack } from '@voxify/design_system/layout';
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
+import { Results } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/Results';
 import { StepCard } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/StepCard';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { useAtomValue } from 'jotai';
@@ -15,6 +16,7 @@ import {
 } from 'react-native';
 
 // These calculations are to make sure that the first and last elements are centered
+// We are calculating the height and widht of the step card
 export const activityAspectRatio = 9 / 15;
 export const { width: screenWidth, height: screenHeight } =
   Dimensions.get('window');
@@ -29,6 +31,7 @@ type Props = {
   lessonResponseId: string;
   /**
    * This callback is called when the user has gone through all activities
+   * This is only called once
    */
   onLessonComplete: () => void;
   lessonId: string;
@@ -38,17 +41,21 @@ export const completedActivitiesAtom = atomWithReset<
   Record<string, ActivityRendererMachineRestoreDataType>
 >({});
 
+const RESULTS_CARD = { id: 'results-card' };
+
 export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-  const activitiesFlatListRef = useRef<FlatList<ActivityEntity>>(null);
+  const activitiesFlatListRef =
+    useRef<FlatList<ActivityEntity | typeof RESULTS_CARD>>(null);
 
-  let renderedActivities = activities;
+  // We want to show a result screen as the last page
+  const flatListItems = [...activities, RESULTS_CARD] as const;
 
   const completedActivities = useAtomValue(completedActivitiesAtom);
   const resetCompletedActivities = useResetAtom(completedActivitiesAtom);
 
-  const nextActivityToCompleteIndex = renderedActivities.findIndex(
-    activity => !completedActivities[activity.id],
+  const nextItemIndex = flatListItems.findIndex(
+    activity => activity === RESULTS_CARD || !completedActivities[activity.id],
   );
 
   // We want to reset the completed activities when the component unmounts
@@ -59,43 +66,16 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
     };
   }, [resetCompletedActivities]);
 
-  // renderedActivities = slice(
-  //   renderedActivities,
-  //   0,
-  //   nextActivityToCompleteIndex === -1
-  //     ? renderedActivities.length
-  //     : nextActivityToCompleteIndex + 1,
-  // );
-
   useEffect(() => {
     setTimeout(() => {
-      if (nextActivityToCompleteIndex !== -1) {
+      if (nextItemIndex !== -1) {
         activitiesFlatListRef.current?.scrollToIndex({
           animated: true,
-          index: nextActivityToCompleteIndex,
+          index: nextItemIndex,
         });
       }
     }, 1000);
-  }, [nextActivityToCompleteIndex]);
-
-  // useEffect(() => {
-  //   let completedActivitiesCount = 0;
-  //   renderedActivities.forEach(
-  //     activity =>
-  //       completedActivities[activity.id] && ++completedActivitiesCount,
-  //   );
-
-  //   completedActivitiesCount === renderedActivities.length &&
-  //     !lessonCompletionInfo.get(lessonId)?.isCompleted &&
-  //     onLessonComplete();
-  // }, [
-  //   completedActivities,
-  //   lessonCompletionInfo,
-  //   lessonId,
-  //   lessonResponseId,
-  //   onLessonComplete,
-  //   renderedActivities,
-  // ]);
+  }, [nextItemIndex]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,
@@ -123,11 +103,11 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
     const currentContentOffset = e.nativeEvent.contentOffset.y;
 
     const maxScrollableOffset =
-      nextActivityToCompleteIndex * flatListItemHeight + flatListItemHeight / 4;
+      nextItemIndex * flatListItemHeight + flatListItemHeight / 4;
 
     if (currentContentOffset > maxScrollableOffset) {
       activitiesFlatListRef.current?.scrollToIndex({
-        index: nextActivityToCompleteIndex,
+        index: nextItemIndex,
       });
     }
   };
@@ -137,33 +117,37 @@ export const ActivityStepper = ({ activities, lessonResponseId }: Props) => {
       decelerationRate={0.8}
       getItemLayout={getItemLayout}
       ref={activitiesFlatListRef}
-      data={renderedActivities}
+      data={flatListItems}
       viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       disableIntervalMomentum
-      snapToOffsets={renderedActivities.map((_, index) => {
+      snapToOffsets={flatListItems.map((_, index) => {
         return getItemLayout(_, index).offset;
       })}
       onScroll={handleScroll}
       // ItemSeparatorComponent={() => <Spacer size={20} />}
       keyExtractor={(activity, index) => activity.id || `${index}`}
-      renderItem={({ item: activity, index }) => (
+      renderItem={({ item, index }) => (
         <YStack alignItems="center" mb={stepCardMarginBottom}>
           <StepCard
             width={stepCardWidth}
             height={stepCardHeight}
             mb={
-              index === renderedActivities.length - 1
+              index === flatListItems.length - 1
                 ? firstAndLastElementMargin
                 : undefined
             }
             mt={index === 0 ? firstAndLastElementMargin : undefined}>
-            <ActivityStep
-              index={index}
-              restoreData={completedActivities[activity.id]}
-              activity={activity}
-              isActive={index === currentActiveIndex}
-              lessonResponseId={lessonResponseId}
-            />
+            {item === RESULTS_CARD ? (
+              <Results />
+            ) : (
+              <ActivityStep
+                index={index}
+                restoreData={completedActivities[item.id]}
+                activity={item as ActivityEntity}
+                isActive={index === currentActiveIndex}
+                lessonResponseId={lessonResponseId}
+              />
+            )}
           </StepCard>
         </YStack>
       )}
