@@ -59,10 +59,10 @@ export const ActivityStepper = ({
   const completedActivities = useAtomValue(completedActivitiesAtom);
   const resetCompletedActivities = useResetAtom(completedActivitiesAtom);
 
-  const currentItemIndex = flatListItems.findIndex(
+  const indexOfItemTheUserShouldBeOn = flatListItems.findIndex(
     activity => activity === RESULTS_CARD || !completedActivities[activity.id],
   );
-  const currentFlatListItem = flatListItems[currentItemIndex];
+  const currentFlatListItem = flatListItems[indexOfItemTheUserShouldBeOn];
 
   // We want to reset the completed activities when the component unmounts
   // or else the next time the user opens the lesson it will be marked as completed
@@ -75,14 +75,14 @@ export const ActivityStepper = ({
   // Scroll to the next activity, when the current activity is completed
   useEffect(() => {
     setTimeout(() => {
-      if (currentItemIndex !== -1) {
+      if (indexOfItemTheUserShouldBeOn !== -1) {
         activitiesFlatListRef.current?.scrollToIndex({
           animated: true,
-          index: currentItemIndex,
+          index: indexOfItemTheUserShouldBeOn,
         });
       }
     }, 1000);
-  }, [currentItemIndex]);
+  }, [indexOfItemTheUserShouldBeOn]);
 
   // Mark lesson as complete on reaching the results card
   useEffect(() => {
@@ -117,11 +117,12 @@ export const ActivityStepper = ({
     const currentContentOffset = e.nativeEvent.contentOffset.y;
 
     const maxScrollableOffset =
-      currentItemIndex * flatListItemHeight + flatListItemHeight / 4;
+      indexOfItemTheUserShouldBeOn * flatListItemHeight +
+      flatListItemHeight / 4;
 
     if (currentContentOffset > maxScrollableOffset) {
       activitiesFlatListRef.current?.scrollToIndex({
-        index: currentItemIndex,
+        index: indexOfItemTheUserShouldBeOn,
       });
     }
   };
