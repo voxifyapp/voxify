@@ -1,10 +1,10 @@
 import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
 import { YStack } from '@voxify/design_system/layout';
-import { H3, H4 } from '@voxify/design_system/typography';
+import { H4 } from '@voxify/design_system/typography';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import React from 'react';
-import { XStack, styled } from 'tamagui';
+import { H5, XStack, styled } from 'tamagui';
 
 type Props = {
   correctAnswerView?: React.ReactNode;
@@ -19,7 +19,9 @@ export const ResultView = ({ correctAnswerView }: Props) => {
       <ResultContainer backgroundColor="$color.green1">
         <XStack alignItems="center" space="$2">
           <CheckCircle2 color="$color.green5" />
-          <H3 color="$color.green5">Correct!</H3>
+          <H5 fontWeight="bold" color="$color.green5">
+            THAT'S RIGHT!
+          </H5>
         </XStack>
       </ResultContainer>
     );
