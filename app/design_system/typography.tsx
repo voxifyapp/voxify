@@ -4,6 +4,7 @@ import {
   getTokens,
   SizableTextProps,
   styled,
+  Text,
   SizableText as TSizableText,
 } from 'tamagui';
 
@@ -21,17 +22,19 @@ export const H1 = (props: SizableTextProps) => (
 );
 
 export const H2 = (props: SizableTextProps) => (
-  <SizableText
-    size="$9"
-    lineHeight={getTokens().space[9].val + getTokens().space['$-4'].val}
+  <Text
+    fontSize="$9"
+    color="$color.blue10"
+    // lineHeight={getTokens().space[9].val + getTokens().space['$-4'].val}
     {...props}
   />
 );
 
 export const H3 = (props: SizableTextProps) => (
-  <SizableText
-    size="$8"
-    lineHeight={getTokens().space[9].val + getTokens().space['$-5'].val}
+  <Text
+    fontSize="$9"
+    color="$color.blue10"
+    // lineHeight={getTokens().space[9].val + getTokens().space['$-5'].val}
     {...props}
   />
 );
@@ -53,7 +56,12 @@ export const H5 = (props: SizableTextProps) => (
 );
 
 export const Paragraph = (props: SizableTextProps) => (
-  <SizableText size="$6" lineHeight={getTokens().space[5].val} {...props} />
+  <Text
+    fontSize="$6"
+    color="$color.blue10"
+    lineHeight={getTokens().space[5].val}
+    {...props}
+  />
 );
 
 export const Subtext = (props: SizableTextProps) => (
