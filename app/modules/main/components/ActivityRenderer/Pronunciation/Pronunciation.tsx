@@ -35,7 +35,7 @@ export const Pronunciation = ({ activity }: Props) => {
     pronunciationMachineActor,
   } = contextValue;
 
-  const { machineService: activityRendererMachineService, activityEntity } =
+  const { machineService: activityRendererMachineService } =
     useActivityRendererContext();
 
   const onCheckAnswer = useCallback(
@@ -105,16 +105,11 @@ export const Pronunciation = ({ activity }: Props) => {
       Voice.destroy();
       Voice.removeAllListeners();
     };
-  }, [
-    activityEntity.id,
-    onCheckAnswer,
-    pronunciationMachineActor,
-    setUserAnswer,
-  ]);
+  }, [onCheckAnswer, pronunciationMachineActor, setUserAnswer]);
 
   useEffect(() => {
     pronunciationMachineActor.send(isWorkingState ? 'WORKING' : 'NOT_WORKING');
-  }, [activityEntity.id, isWorkingState, pronunciationMachineActor]);
+  }, [isWorkingState, pronunciationMachineActor]);
 
   const referenceStringAsArray = PronunciationActivity.convertStringToArray(
     activity.getPrompt().text,

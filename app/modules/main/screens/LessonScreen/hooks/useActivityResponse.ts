@@ -9,7 +9,7 @@ type Props = {
   activityEntity: ActivityEntity;
 };
 
-export const useActivityResponse = ({ activityEntity }: Props) => {
+export const useCreateActivityResponse = ({ activityEntity }: Props) => {
   return useMutation({
     mutationFn: (data: Omit<CreateActivityResponsePostData, 'activityId'>) => {
       return createActivityResponse({ ...data, activityId: activityEntity.id });

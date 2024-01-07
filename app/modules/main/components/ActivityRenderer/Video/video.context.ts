@@ -16,6 +16,7 @@ export function useCreateVideoContext({ activity }: ContextData) {
     setUserAnswer,
     isWorkingStateAnd,
     isShowResultState,
+    isFocused,
   } = useGetActivityRendererHookExtras<VideoActivityAnswer, null>({
     completionTime: 0,
   });
@@ -35,6 +36,7 @@ export function useCreateVideoContext({ activity }: ContextData) {
   );
 
   return {
+    isFocused,
     activity,
     userAnswer,
     setAnswerErrors,

@@ -5,14 +5,18 @@ import {
   PlayCircle,
   Rewind,
   RotateCcw,
+  SkipForward,
 } from '@tamagui/lucide-icons';
 import { Constants } from '@voxify/appConstants';
+import { Button } from '@voxify/design_system/button';
 import { YStack } from '@voxify/design_system/layout';
 import { useCreateVideoContext } from '@voxify/modules/main/components/ActivityRenderer/Video/video.context';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
+import { completedActivitiesAtom } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import { ActivityResponseResultType } from '@voxify/types/lms-progress/activity-response';
 import { Video as ExpoVideo, ResizeMode } from 'expo-av';
-import React, { useEffect, useRef } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { ButtonIcon, Progress, XStack, ZStack } from 'tamagui';
 
@@ -23,27 +27,30 @@ type Props = {
 const SKIP_IN_MILLIS = 10 * 1000;
 
 export const Video = ({ activity }: Props) => {
+  const completedActivities = useAtomValue(completedActivitiesAtom);
+
   const videoRef = useRef<ExpoVideo>(null);
-  const { machineService: activityRendererMachineService } =
+  const { machineService: activityRendererMachineService, activityEntity } =
     useActivityRendererContext();
 
+  const isVideoActivityCompleted = completedActivities[activityEntity.id];
+
   const {
-    isWorkingState,
     playbackProgressPercentage,
     setShowControls,
     showControls,
     setVideoProgress,
     videoStatus,
+    isFocused,
     setVideoStatus,
     videoProgress,
   } = useCreateVideoContext({ activity });
 
   useEffect(() => {
-    isWorkingState
-      ? videoRef.current?.playAsync()
-      : videoRef.current?.pauseAsync();
-  }, [isWorkingState]);
+    isFocused ? videoRef.current?.playAsync() : videoRef.current?.pauseAsync();
+  }, [isFocused]);
 
+  // If video is complete, we show the controls so that the user can replay
   const isVideoComplete = (playbackProgressPercentage || 0) > 99.5;
   useEffect(() => {
     if (isVideoComplete) {
@@ -51,7 +58,7 @@ export const Video = ({ activity }: Props) => {
     }
   }, [activityRendererMachineService, isVideoComplete, setShowControls]);
 
-  const markAsFinished = async () => {
+  const markAsFinished = useCallback(async () => {
     const _videoStatus = await videoRef.current?.getStatusAsync();
     const progress = _videoStatus?.isLoaded
       ? getVideoProgressPercentage(
@@ -75,11 +82,29 @@ export const Video = ({ activity }: Props) => {
       } as VideoActivityAnswer,
       answerError: null,
     });
-  };
+  }, [activityRendererMachineService]);
+
+  // // The user is not required to see the entire video. If they scroll away, we need to mark the activity as complete
+  // We will create a activity response if a user skips the video
+  useEffect(() => {
+    return activityRendererMachineService.subscribe(state => {
+      if (
+        state.matches('FOCUSED_STATE.UNFOCUSED') &&
+        state.changed &&
+        !isVideoActivityCompleted
+      ) {
+        markAsFinished();
+      }
+    }).unsubscribe;
+  }, [
+    activityRendererMachineService,
+    isVideoActivityCompleted,
+    markAsFinished,
+  ]);
 
   return (
     <ZStack backgroundColor="black" fullscreen>
-      {isWorkingState ? (
+      {isFocused ? (
         <YStack fullscreen onPress={() => setShowControls(true)}>
           <ExpoVideo
             ref={videoRef}
@@ -117,6 +142,19 @@ export const Video = ({ activity }: Props) => {
       ) : (
         <>{/* TODO Show the video thumbnail */}</>
       )}
+
+      <YStack
+        fullscreen
+        width="100%"
+        p="$2"
+        flexDirection="column-reverse"
+        alignItems="flex-end">
+        {!isVideoActivityCompleted && (
+          <Button onPress={markAsFinished} size="$3">
+            Skip {<SkipForward size="$1" />}
+          </Button>
+        )}
+      </YStack>
 
       {showControls && (
         <ZStack fullscreen width="100%">

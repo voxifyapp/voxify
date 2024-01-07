@@ -62,7 +62,8 @@ export const ActivityStepper = ({
   const indexOfItemTheUserShouldBeOn = flatListItems.findIndex(
     activity => activity === RESULTS_CARD || !completedActivities[activity.id],
   );
-  const currentFlatListItem = flatListItems[indexOfItemTheUserShouldBeOn];
+  const flatListItemTheUserShouldBeOn =
+    flatListItems[indexOfItemTheUserShouldBeOn];
 
   // We want to reset the completed activities when the component unmounts
   // or else the next time the user opens the lesson it will be marked as completed
@@ -86,10 +87,13 @@ export const ActivityStepper = ({
 
   // Mark lesson as complete on reaching the results card
   useEffect(() => {
-    if (currentFlatListItem === RESULTS_CARD && !isLessonCompleted.current) {
+    if (
+      flatListItemTheUserShouldBeOn === RESULTS_CARD &&
+      !isLessonCompleted.current
+    ) {
       onLessonComplete();
     }
-  }, [currentFlatListItem, onLessonComplete]);
+  }, [flatListItemTheUserShouldBeOn, onLessonComplete]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,

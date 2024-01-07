@@ -86,6 +86,12 @@ const appConfig = createTamagui({
       backgroundPress: blue10,
       disabledButtonBackground: '#cccccc',
     },
+    base_WhiteButton: {
+      background: white,
+      color: blue10,
+      backgroundPress: shadesOfGray.gray5,
+      disabledButtonBackground: shadesOfGray.gray7,
+    },
     base_FillInTheBlanksButton: {
       background: white,
       disabledButtonBackground: white,
