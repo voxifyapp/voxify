@@ -1,7 +1,7 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContextProvider, useAppContext } from '@voxify/context/AppContext';
 import {
   ProfileCompletionStep,
@@ -15,7 +15,9 @@ import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
 
-import { TamaguiProvider, Text, Theme } from 'tamagui';
+import { LoadingContainer } from '@voxify/common/components/LoadingContainer';
+import { Screen } from '@voxify/design_system/layout';
+import { TamaguiProvider, Theme } from 'tamagui';
 
 GoogleSignin.configure({
   webClientId: Config.FIREBASE_WEBCLIENT_ID,
@@ -38,7 +40,13 @@ export const Routes = () => {
   const currentProfileStep = useGetCurrentProfileStep(profile);
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return (
+      <Screen>
+        <LoadingContainer isLoading={loading}>
+          <></>
+        </LoadingContainer>
+      </Screen>
+    );
   }
 
   return (

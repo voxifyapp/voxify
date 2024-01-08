@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 import { FlatList } from 'react-native';
-import { H1, YStack } from 'tamagui';
+import { YStack } from 'tamagui';
 
 import { Screen } from '@voxify/design_system/layout';
 import { UnitItem } from '@voxify/modules/main/screens/HomeScreen/components/UnitItem';
@@ -12,9 +12,10 @@ import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
+import { LoadingContainer } from '@voxify/common/components/LoadingContainer';
+import { H4 } from '@voxify/design_system/typography';
 import { useSyncUnits } from '@voxify/modules/main/screens/HomeScreen/hooks/useSyncUnits';
 import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
-import { H4 } from '@voxify/design_system/typography';
 
 const MORE_COMING_SOON = {
   id: 'more-coming-soon',
@@ -46,10 +47,6 @@ export const HomeScreen = () => {
     unitToWorkOnIndex = unitsWithAssociatedLessons?.length || -1;
   }
 
-  if (isCourseLoading || isLessonResponseLoading || isUnitsSyncing) {
-    return <H1>Loading..</H1>;
-  }
-
   const flatListItems = [
     ...(unitsWithAssociatedLessons || []),
     MORE_COMING_SOON,
@@ -57,41 +54,47 @@ export const HomeScreen = () => {
 
   return (
     <Screen paddingHorizontal="$3">
-      {flatListItems && (
-        <FlatList
-          onLayout={() => {
-            if (unitToWorkOnIndex) {
-              listRef.current?.scrollToIndex({
-                animated: true,
-                index: unitToWorkOnIndex,
-                viewOffset: 100,
-              });
-            }
-          }}
-          ref={listRef}
-          data={flatListItems}
-          keyExtractor={unitWithLessons => unitWithLessons.id}
-          renderItem={({ item: flatListItem, index }) => {
-            if (flatListItem === MORE_COMING_SOON) {
+      <LoadingContainer
+        isLoading={
+          isCourseLoading || isLessonResponseLoading || isUnitsSyncing
+        }>
+        {flatListItems && (
+          <FlatList
+            onLayout={() => {
+              if (unitToWorkOnIndex) {
+                listRef.current?.scrollToIndex({
+                  animated: true,
+                  index: unitToWorkOnIndex,
+                  viewOffset: 100,
+                });
+              }
+            }}
+            ref={listRef}
+            data={flatListItems}
+            keyExtractor={unitWithLessons => unitWithLessons.id}
+            renderItem={({ item: flatListItem, index }) => {
+              if (flatListItem === MORE_COMING_SOON) {
+                return (
+                  <YStack p="$4" alignItems="center">
+                    <H4 textAlign="center" fontWeight="bold">
+                      We are working on making more content available for you.
+                      Please check back here tomorrow!
+                    </H4>
+                  </YStack>
+                );
+              }
+              const unitWithLessons = flatListItem as UnitWithAssociatedLessons;
               return (
-                <YStack p="$4" alignItems="center">
-                  <H4 textAlign="center" fontWeight="bold">
-                    More content is on the way! Check again tomorrow.
-                  </H4>
-                </YStack>
+                <UnitItem
+                  unitWithLessons={unitWithLessons}
+                  index={index}
+                  locked={unitToWorkOnIndex ? index > unitToWorkOnIndex : false}
+                />
               );
-            }
-            const unitWithLessons = flatListItem as UnitWithAssociatedLessons;
-            return (
-              <UnitItem
-                unitWithLessons={unitWithLessons}
-                index={index}
-                locked={unitToWorkOnIndex ? index > unitToWorkOnIndex : false}
-              />
-            );
-          }}
-        />
-      )}
+            }}
+          />
+        )}
+      </LoadingContainer>
     </Screen>
   );
 };
