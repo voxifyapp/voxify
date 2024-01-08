@@ -26,7 +26,7 @@ export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
   const isUnitCompleted = !!completedUnits[unitWithLessons.id];
 
   return (
-    <XStack>
+    <XStack paddingTop={index === 0 ? '$4' : undefined}>
       <YStack mr="$4" alignItems="center">
         <DayText day={index + 1} completed={isUnitCompleted} />
 

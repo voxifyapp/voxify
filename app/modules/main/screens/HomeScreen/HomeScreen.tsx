@@ -58,7 +58,7 @@ export const HomeScreen = () => {
   }
 
   return (
-    <Screen p={16}>
+    <Screen paddingHorizontal="$3">
       <FlatList
         contentContainerStyle={styles.mainFlatListContainerStyle}
         ref={listRef}
@@ -73,8 +73,5 @@ export const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  mainFlatListContainerStyle: {
-    flex: 1,
-    height: '100%',
-  },
+  mainFlatListContainerStyle: {},
 });

@@ -39,6 +39,11 @@ export const useSyncUnits = (courseId: string) => {
               lessonStatus[lesson.id] !== LessonResponseStatus.COMPLETED,
           ).length === 0;
 
+        // For some reason there is a unit without any lessons, let's not mark it as incomplete
+        if (unit.lessonsWithStatus.length === 0) {
+          return null;
+        }
+
         if (areAllLessonsCompleted) {
           return unit.id;
         }
