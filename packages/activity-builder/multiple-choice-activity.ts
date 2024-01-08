@@ -71,19 +71,21 @@ export class MultipleChoiceActivity extends Activity<
 
   /**
    * Returns options that are incorrect, else returns nothing
+   * TODO: Add unit tests for multiple cases: 1. Correct answer, 2. Incorrect answer, 3. Partially correct answer
    */
   checkAnswer(
-    answer: MultipleChoiceActivityAnswer
+    userAnswer: MultipleChoiceActivityAnswer
   ): MultipleChoiceAnswerErrorsType {
     const answerBank = this.getAnswer();
-    const wrongOptions = [];
-    for (const selectedOption of answer.answer) {
-      if (answerBank.indexOf(selectedOption) === -1) {
-        wrongOptions.push(selectedOption);
+    const wrongOptions = new Set<string>([]);
+
+    for (const answerFromBank of answerBank) {
+      if (userAnswer.answer.indexOf(answerFromBank) === -1) {
+        wrongOptions.add(answerFromBank);
       }
     }
 
-    return { wrongOptions };
+    return { wrongOptions: Array.from(wrongOptions) };
   }
 
   build() {

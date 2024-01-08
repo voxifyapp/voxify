@@ -27,7 +27,7 @@ export declare class PronunciationActivity extends Activity<PronunciationActivit
         type: string;
     };
 }
-export declare type PronunciationAnswerErrorType = {
+export type PronunciationAnswerErrorType = {
     correct: boolean;
     recognizedPercent: number;
 };
