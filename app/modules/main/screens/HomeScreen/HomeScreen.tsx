@@ -36,10 +36,12 @@ export const HomeScreen = () => {
 
   useSyncUnits(courseId);
 
-  const unitToWorkOnIndex =
-    (unitsWithAssociatedLessons &&
-      unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id])) ||
-    -1;
+  let unitToWorkOnIndex =
+    unitsWithAssociatedLessons &&
+    unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id]);
+  if (unitToWorkOnIndex === -1) {
+    unitToWorkOnIndex = unitsWithAssociatedLessons?.length || -1;
+  }
 
   // useEffect(() => {}, [unitToWorkOnIndex]);
 
@@ -49,29 +51,34 @@ export const HomeScreen = () => {
 
   return (
     <Screen paddingHorizontal="$3">
-      <FlatList
-        onLayout={() => {
-          if (unitToWorkOnIndex !== -1) {
-            listRef.current?.scrollToIndex({
-              animated: true,
-              index: unitToWorkOnIndex,
-              viewOffset: 100,
-            });
-          }
-        }}
-        ref={listRef}
-        data={unitsWithAssociatedLessons}
-        keyExtractor={unitWithLessons => unitWithLessons.id}
-        renderItem={({ item: unitWithLessons, index }) => {
-          return (
-            <UnitItem
-              unitWithLessons={unitWithLessons}
-              index={index}
-              locked={index > unitToWorkOnIndex}
-            />
-          );
-        }}
-      />
+      {unitsWithAssociatedLessons && (
+        <FlatList
+          onLayout={() => {
+            if (unitToWorkOnIndex) {
+              listRef.current?.scrollToIndex({
+                animated: true,
+                index:
+                  unitToWorkOnIndex === unitsWithAssociatedLessons?.length
+                    ? unitToWorkOnIndex - 1
+                    : unitToWorkOnIndex,
+                viewOffset: 100,
+              });
+            }
+          }}
+          ref={listRef}
+          data={unitsWithAssociatedLessons}
+          keyExtractor={unitWithLessons => unitWithLessons.id}
+          renderItem={({ item: unitWithLessons, index }) => {
+            return (
+              <UnitItem
+                unitWithLessons={unitWithLessons}
+                index={index}
+                locked={unitToWorkOnIndex ? index > unitToWorkOnIndex : false}
+              />
+            );
+          }}
+        />
+      )}
     </Screen>
   );
 };
