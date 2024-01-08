@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 import { FlatList } from 'react-native';
-import { H1 } from 'tamagui';
+import { H1, YStack } from 'tamagui';
 
 import { Screen } from '@voxify/design_system/layout';
 import { UnitItem } from '@voxify/modules/main/screens/HomeScreen/components/UnitItem';
@@ -14,9 +14,15 @@ import {
 } from '@voxify/api/auth/profile';
 import { useSyncUnits } from '@voxify/modules/main/screens/HomeScreen/hooks/useSyncUnits';
 import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
+import { H4 } from '@voxify/design_system/typography';
+
+const MORE_COMING_SOON = {
+  id: 'more-coming-soon',
+};
 
 export const HomeScreen = () => {
-  const listRef = useRef<FlatList<UnitWithAssociatedLessons>>(null);
+  const listRef =
+    useRef<FlatList<UnitWithAssociatedLessons | typeof MORE_COMING_SOON>>(null);
   const completedUnits = useProfileProgressStore(state => state.completedUnits);
 
   const { data: courseData, isLoading: isCourseLoading } = useQuery({
@@ -44,26 +50,38 @@ export const HomeScreen = () => {
     return <H1>Loading..</H1>;
   }
 
+  const flatListItems = [
+    ...(unitsWithAssociatedLessons || []),
+    MORE_COMING_SOON,
+  ];
+
   return (
     <Screen paddingHorizontal="$3">
-      {unitsWithAssociatedLessons && (
+      {flatListItems && (
         <FlatList
           onLayout={() => {
             if (unitToWorkOnIndex) {
               listRef.current?.scrollToIndex({
                 animated: true,
-                index:
-                  unitToWorkOnIndex === unitsWithAssociatedLessons?.length
-                    ? unitToWorkOnIndex - 1
-                    : unitToWorkOnIndex,
+                index: unitToWorkOnIndex,
                 viewOffset: 100,
               });
             }
           }}
           ref={listRef}
-          data={unitsWithAssociatedLessons}
+          data={flatListItems}
           keyExtractor={unitWithLessons => unitWithLessons.id}
-          renderItem={({ item: unitWithLessons, index }) => {
+          renderItem={({ item: flatListItem, index }) => {
+            if (flatListItem === MORE_COMING_SOON) {
+              return (
+                <YStack p="$4" alignItems="center">
+                  <H4 textAlign="center" fontWeight="bold">
+                    More content is on the way! Check again tomorrow.
+                  </H4>
+                </YStack>
+              );
+            }
+            const unitWithLessons = flatListItem as UnitWithAssociatedLessons;
             return (
               <UnitItem
                 unitWithLessons={unitWithLessons}
