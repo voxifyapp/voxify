@@ -5,7 +5,6 @@ import { H1 } from 'tamagui';
 
 import { Screen } from '@voxify/design_system/layout';
 import { UnitItem } from '@voxify/modules/main/screens/HomeScreen/components/UnitItem';
-import { useGetUnitResponses } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitResponses';
 import { useGetUnitsWithAssociatedLessonsForCourse } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitsWithAssociatedLessons';
 import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
 
@@ -32,9 +31,7 @@ export const HomeScreen = () => {
     isLoading: isLessonResponseLoading,
   } = useGetUnitsWithAssociatedLessonsForCourse(courseId);
 
-  const { isLoading: isUnitResponsesLoading } = useGetUnitResponses();
-
-  useSyncUnits(courseId);
+  const { isLoading: isUnitsSyncing } = useSyncUnits(courseId);
 
   let unitToWorkOnIndex =
     unitsWithAssociatedLessons &&
@@ -43,9 +40,7 @@ export const HomeScreen = () => {
     unitToWorkOnIndex = unitsWithAssociatedLessons?.length || -1;
   }
 
-  // useEffect(() => {}, [unitToWorkOnIndex]);
-
-  if (isCourseLoading || isLessonResponseLoading || isUnitResponsesLoading) {
+  if (isCourseLoading || isLessonResponseLoading || isUnitsSyncing) {
     return <H1>Loading..</H1>;
   }
 
