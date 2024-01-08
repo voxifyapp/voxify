@@ -4,30 +4,33 @@ import { useNavigation } from '@react-navigation/native';
 import { AppStackNavigationProp } from '@voxify/App';
 import { Constants } from '@voxify/appConstants';
 import { XStack, YStack } from '@voxify/design_system/layout';
-import { H3, H5 } from '@voxify/design_system/typography';
 import { CompletedChip } from '@voxify/modules/main/screens/HomeScreen/components/CompletedChip';
+import {
+  DayText,
+  ProgressLine,
+} from '@voxify/modules/main/screens/HomeScreen/components/ProgressLine';
 import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import {
   LessonWithStatus,
   UnitWithAssociatedLessons,
 } from '@voxify/types/lms-progress/profile-progress';
-import { Card, Image, Text, View } from 'tamagui';
+import { Card, Image, Text } from 'tamagui';
 
 type UnitItemProps = {
   unitWithLessons: UnitWithAssociatedLessons;
   index: number;
 };
 export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
+  const completedUnits = useProfileProgressStore(state => state.completedUnits);
+  const isUnitCompleted = !!completedUnits[unitWithLessons.id];
+
   return (
     <XStack>
       <YStack mr="$4" alignItems="center">
-        <YStack paddingVertical="$2" alignItems="center">
-          <H5 fontWeight="bold">DAY</H5>
-          <H3 fontWeight="bold">{index + 1}</H3>
-        </YStack>
+        <DayText day={index + 1} completed={isUnitCompleted} />
 
-        <View flex={1} w={2} backgroundColor="$color.gray5" />
+        <ProgressLine completed={isUnitCompleted} />
       </YStack>
       <YStack mb={50} flex={1}>
         <LessonsForUnit unitWithLessons={unitWithLessons} />
