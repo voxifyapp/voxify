@@ -13,7 +13,9 @@ import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
+import { useSyncUnits } from '@voxify/modules/main/screens/HomeScreen/hooks/useSyncUnits';
 import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
+
 export const HomeScreen = () => {
   const completedUnits = useProfileProgressStore(state => state.completedUnits);
 
@@ -30,6 +32,8 @@ export const HomeScreen = () => {
   } = useGetUnitsWithAssociatedLessonsForCourse(courseId);
 
   const { isLoading: isUnitResponsesLoading } = useGetUnitResponses();
+
+  useSyncUnits(courseId);
 
   const nextUnitToCompleteIndex =
     (unitsWithAssociatedLessons &&
