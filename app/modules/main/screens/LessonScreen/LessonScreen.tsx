@@ -22,14 +22,19 @@ export const LessonScreen = ({ route }: Props) => {
 
   const [lessonId, setLessonId] = useState(params.lessonId);
 
-  const { isLoading: isGetLessonLoading } = useGetLesson(lessonId);
-  const { data: lessonActivities, isLoading: isLessonActivitiesLoading } =
-    useGetLessonActivities(lessonId);
+  const { isLoading: isGetLessonLoading, error: getLessonError } =
+    useGetLesson(lessonId);
+  const {
+    data: lessonActivities,
+    isLoading: isLessonActivitiesLoading,
+    error: getLessonActivitiesError,
+  } = useGetLessonActivities(lessonId);
 
   const {
     mutate: createLessonResponseMutate,
     status: createLessonResponseMutationStatus,
     data: createLessonResponseData,
+    error: createLessonResponseError,
   } = useCreateLessonResponse();
 
   const lessonResponseId = createLessonResponseData?.id;
@@ -62,6 +67,11 @@ export const LessonScreen = ({ route }: Props) => {
   return (
     <Screen noPadding>
       <LoadingWithErrorContainer
+        error={
+          createLessonResponseError ||
+          getLessonError ||
+          getLessonActivitiesError
+        }
         isLoading={
           isGetLessonLoading ||
           isLessonActivitiesLoading ||

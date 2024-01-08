@@ -32,7 +32,7 @@ export const H2 = (props: SizableTextProps) => (
 
 export const H3 = (props: SizableTextProps) => (
   <Text
-    fontSize="$9"
+    fontSize="$8"
     color="$color.blue10"
     // lineHeight={getTokens().space[9].val + getTokens().space['$-5'].val}
     {...props}
