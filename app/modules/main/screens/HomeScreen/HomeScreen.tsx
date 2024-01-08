@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useRef } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { FlatList } from 'react-native';
 import { H1 } from 'tamagui';
 
 import { Screen } from '@voxify/design_system/layout';
@@ -17,6 +17,7 @@ import { useSyncUnits } from '@voxify/modules/main/screens/HomeScreen/hooks/useS
 import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
 
 export const HomeScreen = () => {
+  const listRef = useRef<FlatList<UnitWithAssociatedLessons>>(null);
   const completedUnits = useProfileProgressStore(state => state.completedUnits);
 
   const { data: courseData, isLoading: isCourseLoading } = useQuery({
@@ -35,23 +36,12 @@ export const HomeScreen = () => {
 
   useSyncUnits(courseId);
 
-  const nextUnitToCompleteIndex =
+  const unitToWorkOnIndex =
     (unitsWithAssociatedLessons &&
       unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id])) ||
     -1;
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (nextUnitToCompleteIndex !== -1) {
-        listRef.current?.scrollToIndex({
-          animated: false,
-          index: nextUnitToCompleteIndex,
-        });
-      }
-    }, 1000);
-  }, [nextUnitToCompleteIndex]);
-
-  const listRef = useRef<FlatList<UnitWithAssociatedLessons>>(null);
+  // useEffect(() => {}, [unitToWorkOnIndex]);
 
   if (isCourseLoading || isLessonResponseLoading || isUnitResponsesLoading) {
     return <H1>Loading..</H1>;
@@ -60,18 +50,28 @@ export const HomeScreen = () => {
   return (
     <Screen paddingHorizontal="$3">
       <FlatList
-        contentContainerStyle={styles.mainFlatListContainerStyle}
+        onLayout={() => {
+          if (unitToWorkOnIndex !== -1) {
+            listRef.current?.scrollToIndex({
+              animated: true,
+              index: unitToWorkOnIndex,
+              viewOffset: 100,
+            });
+          }
+        }}
         ref={listRef}
         data={unitsWithAssociatedLessons}
         keyExtractor={unitWithLessons => unitWithLessons.id}
-        renderItem={({ item: unitWithLessons, index }) => (
-          <UnitItem unitWithLessons={unitWithLessons} index={index} />
-        )}
+        renderItem={({ item: unitWithLessons, index }) => {
+          return (
+            <UnitItem
+              unitWithLessons={unitWithLessons}
+              index={index}
+              locked={index > unitToWorkOnIndex}
+            />
+          );
+        }}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  mainFlatListContainerStyle: {},
-});

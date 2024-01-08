@@ -20,8 +20,9 @@ import { Card, Image, Text } from 'tamagui';
 type UnitItemProps = {
   unitWithLessons: UnitWithAssociatedLessons;
   index: number;
+  locked: boolean;
 };
-export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
+export const UnitItem = ({ index, unitWithLessons, locked }: UnitItemProps) => {
   const completedUnits = useProfileProgressStore(state => state.completedUnits);
   const isUnitCompleted = !!completedUnits[unitWithLessons.id];
 
@@ -29,11 +30,10 @@ export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
     <XStack paddingTop={index === 0 ? '$4' : undefined}>
       <YStack mr="$4" alignItems="center">
         <DayText day={index + 1} completed={isUnitCompleted} />
-
         <ProgressLine completed={isUnitCompleted} />
       </YStack>
       <YStack mb={50} flex={1}>
-        <LessonsForUnit unitWithLessons={unitWithLessons} />
+        <LessonsForUnit unitWithLessons={unitWithLessons} lockAll={locked} />
       </YStack>
     </XStack>
   );
@@ -41,18 +41,28 @@ export const UnitItem = ({ index, unitWithLessons }: UnitItemProps) => {
 
 type LessonsForUnitProps = {
   unitWithLessons: UnitWithAssociatedLessons;
+  lockAll: boolean;
 };
-export const LessonsForUnit = ({ unitWithLessons }: LessonsForUnitProps) => {
+export const LessonsForUnit = ({
+  unitWithLessons,
+  lockAll,
+}: LessonsForUnitProps) => {
   const unitLessons = unitWithLessons.lessonsWithStatus
     .sort((lesson1, lesson2) => lesson1.order - lesson2.order)
     .filter(i => !!i);
 
   return unitLessons.map(lesson => (
-    <LessonItem key={lesson.id} lesson={lesson} />
+    <LessonItem key={lesson.id} lesson={lesson} locked={lockAll} />
   ));
 };
 
-const LessonItem = ({ lesson }: { lesson: LessonWithStatus }) => {
+const LessonItem = ({
+  lesson,
+  locked,
+}: {
+  lesson: LessonWithStatus;
+  locked: boolean;
+}) => {
   const navigation = useNavigation<AppStackNavigationProp>();
   const lessonStatus = useProfileProgressStore(state => state.lessonStatus);
 
@@ -61,7 +71,9 @@ const LessonItem = ({ lesson }: { lesson: LessonWithStatus }) => {
 
   return (
     <Card
+      opacity={locked ? 0.5 : 1}
       overflow="hidden"
+      disabled={locked}
       onPress={() => {
         navigation.navigate('Lesson', {
           lessonId: lesson.id,
