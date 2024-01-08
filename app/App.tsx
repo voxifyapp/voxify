@@ -15,7 +15,7 @@ import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
 
-import { LoadingContainer } from '@voxify/common/components/LoadingContainer';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
 import { Screen } from '@voxify/design_system/layout';
 import { TamaguiProvider, Theme } from 'tamagui';
 
@@ -42,9 +42,9 @@ export const Routes = () => {
   if (loading) {
     return (
       <Screen>
-        <LoadingContainer isLoading={loading}>
+        <LoadingWithErrorContainer isLoading={loading}>
           <></>
-        </LoadingContainer>
+        </LoadingWithErrorContainer>
       </Screen>
     );
   }

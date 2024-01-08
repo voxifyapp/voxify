@@ -16,12 +16,16 @@ export const useSyncUnits = (courseId: string) => {
     state => state.markUnitsAsComplete,
   );
 
-  const { isLoading: isGetUnitResponsesLoading } = useGetUnitResponses();
+  const { isLoading: isGetUnitResponsesLoading, error: getUnitResponsesError } =
+    useGetUnitResponses();
 
   const createUnitResponseMutation = useCreateUnitResponse();
 
-  const { data: unitsWithAssociatedLessons, isLoading: isGetUnitsLoading } =
-    useGetUnitsWithAssociatedLessonsForCourse(courseId);
+  const {
+    data: unitsWithAssociatedLessons,
+    isLoading: isGetUnitsLoading,
+    error: getUnitsError,
+  } = useGetUnitsWithAssociatedLessonsForCourse(courseId);
 
   const isRequiredDataLoading = isGetUnitsLoading || isGetUnitResponsesLoading;
 
@@ -69,5 +73,9 @@ export const useSyncUnits = (courseId: string) => {
 
   return {
     isLoading: isRequiredDataLoading || createUnitResponseMutation.isPending,
+    error:
+      createUnitResponseMutation.error ||
+      getUnitsError ||
+      getUnitResponsesError,
   };
 };

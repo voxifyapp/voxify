@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '@voxify/App';
-import { LoadingContainer } from '@voxify/common/components/LoadingContainer';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
 import { Screen } from '@voxify/design_system/layout';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import {
@@ -61,7 +61,7 @@ export const LessonScreen = ({ route }: Props) => {
 
   return (
     <Screen noPadding>
-      <LoadingContainer
+      <LoadingWithErrorContainer
         isLoading={
           isGetLessonLoading ||
           isLessonActivitiesLoading ||
@@ -76,7 +76,7 @@ export const LessonScreen = ({ route }: Props) => {
             activities={lessonActivities}
           />
         )}
-      </LoadingContainer>
+      </LoadingWithErrorContainer>
     </Screen>
   );
 };

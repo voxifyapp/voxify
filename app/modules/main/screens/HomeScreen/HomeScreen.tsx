@@ -12,7 +12,7 @@ import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
-import { LoadingContainer } from '@voxify/common/components/LoadingContainer';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
 import { H4 } from '@voxify/design_system/typography';
 import { useSyncUnits } from '@voxify/modules/main/screens/HomeScreen/hooks/useSyncUnits';
 import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
@@ -26,7 +26,11 @@ export const HomeScreen = () => {
     useRef<FlatList<UnitWithAssociatedLessons | typeof MORE_COMING_SOON>>(null);
   const completedUnits = useProfileProgressStore(state => state.completedUnits);
 
-  const { data: courseData, isLoading: isCourseLoading } = useQuery({
+  const {
+    data: courseData,
+    isLoading: isCourseLoading,
+    error: getCourseError,
+  } = useQuery({
     queryFn: getCourseForProfile,
     queryKey: [GET_COURSE_FOR_PROFILE],
   });
@@ -36,9 +40,11 @@ export const HomeScreen = () => {
   const {
     data: unitsWithAssociatedLessons,
     isLoading: isLessonResponseLoading,
+    error: getUnitsError,
   } = useGetUnitsWithAssociatedLessonsForCourse(courseId);
 
-  const { isLoading: isUnitsSyncing } = useSyncUnits(courseId);
+  const { isLoading: isUnitsSyncing, error: syncUnitsError } =
+    useSyncUnits(courseId);
 
   let unitToWorkOnIndex =
     unitsWithAssociatedLessons &&
@@ -54,7 +60,8 @@ export const HomeScreen = () => {
 
   return (
     <Screen paddingHorizontal="$3">
-      <LoadingContainer
+      <LoadingWithErrorContainer
+        error={getUnitsError || syncUnitsError || getCourseError}
         isLoading={
           isCourseLoading || isLessonResponseLoading || isUnitsSyncing
         }>
@@ -94,7 +101,7 @@ export const HomeScreen = () => {
             }}
           />
         )}
-      </LoadingContainer>
+      </LoadingWithErrorContainer>
     </Screen>
   );
 };

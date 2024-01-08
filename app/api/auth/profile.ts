@@ -28,5 +28,5 @@ export const startFreeTrail = async (
 
 export const GET_COURSE_FOR_PROFILE = 'GET_COURSE_FOR_PROFILE';
 export const getCourseForProfile = async (): Promise<any> => {
-  return (await authAxios.get('lms/courses/current-course-for-profile')).data;
+  return (await authAxios.get('lms/courses/current-course-for-profiles')).data;
 };
