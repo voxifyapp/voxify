@@ -1,5 +1,4 @@
 import { updateProfileDtoSchema } from '@/src/auth/dto/update-profile.dto';
-import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { MAX_FREE_TRIAL_DAYS } from 'src/common/constants/auth';
@@ -149,47 +148,6 @@ describe('/profile', () => {
         request(global.app.getHttpServer())
           .post('/profile/add-days-to-subscription')
           .send({ freeTrialDays: daysToAdd }),
-        { uid: profile.userId },
-      );
-
-      expect(res.status).toBe(400);
-    });
-  });
-
-  describe('/set-proficiency-level (POST)', () => {
-    it('throws a 401 without auth', () => {
-      return request(global.app.getHttpServer())
-        .post('/profile/set-proficiency-level')
-        .expect(401);
-    });
-
-    it('sets proficiency level', async () => {
-      const profile = await profileFactory.create({
-        proficiencyLevel: null,
-      });
-      const proficiencyLevel = ProficiencyLevel.ADVANCED;
-
-      const res = await loginAsFirebaseUser(
-        request(global.app.getHttpServer())
-          .post('/profile/set-proficiency-level')
-          .send({ proficiencyLevel }),
-        { uid: profile.userId },
-      );
-
-      expect(res.status).toBe(201);
-      expect(res.body.userId).toBe(profile.userId);
-      expect(res.body.id).toBe(profile.id);
-      expect(res.body.proficiencyLevel).toBe(proficiencyLevel);
-    });
-
-    it('if proficiencyLevel already exists, throws bad request', async () => {
-      const profile = await profileFactory.create();
-      const proficiencyLevel = ProficiencyLevel.ADVANCED;
-
-      const res = await loginAsFirebaseUser(
-        request(global.app.getHttpServer())
-          .post('/profile/set-proficiency-level')
-          .send({ proficiencyLevel }),
         { uid: profile.userId },
       );
 

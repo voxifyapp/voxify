@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import {
   AddDaysToSubscriptionDto,
-  SetProficiencyLevelDto,
   UpdateProfileDto,
   updateProfileDtoSchema,
 } from 'src/auth/dto/update-profile.dto';
@@ -62,19 +61,6 @@ export class ProfileController {
     return await this.profileService.addDaysToSubscription(
       currentProfile.id,
       freeTrialDays,
-    );
-  }
-
-  @Post('set-proficiency-level')
-  setProficiencyLevel(
-    @Req() req: AuthenticatedRequestWithProfile,
-    @Body() updateProfileDto: SetProficiencyLevelDto,
-  ) {
-    const { currentProfile } = req;
-    const { proficiencyLevel } = updateProfileDto;
-    return this.profileService.setProficiencyLevel(
-      currentProfile.id,
-      proficiencyLevel,
     );
   }
 }
