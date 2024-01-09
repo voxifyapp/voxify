@@ -12,7 +12,7 @@ export const XStack = styled(TXStack, {
 export const ScreenYStack = styled(YStack, {
   name: 'ScreenYStack',
   backgroundColor: '$background',
-  padding: '$screenPadding',
+  padding: '$4',
 
   variants: {
     noPadding: {

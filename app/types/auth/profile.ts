@@ -10,4 +10,6 @@ export interface ProfileEntity extends BaseEntity {
   proficiencyLevel: ProficiencyLevel | null;
   subscriptionEndDate: Date | null;
   userId: string;
+  fullName: string | null;
+  email: string | null;
 }

@@ -52,7 +52,7 @@ export const Routes = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <AppStack.Navigator>
+        <AppStack.Navigator screenOptions={{ headerShown: false }}>
           {currentProfileStep !== ProfileCompletionStep.COMPLETE ? (
             <AuthStack.Screen name="Profile Setup" component={ProfileSetup} />
           ) : (

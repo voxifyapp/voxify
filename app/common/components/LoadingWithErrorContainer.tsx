@@ -5,8 +5,9 @@ import { Card, Spinner, XStack } from 'tamagui';
 
 type Props = {
   isLoading: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   error?: any | null;
+  loadingView?: React.ReactNode;
 };
 /**
  * Container to handle loading states throughout the app
@@ -15,8 +16,13 @@ export const LoadingWithErrorContainer = ({
   isLoading,
   children,
   error,
+  loadingView,
 }: Props) => {
   if (isLoading) {
+    if (loadingView) {
+      return loadingView;
+    }
+
     return (
       <XStack width="100%" alignItems="center" justifyContent="center" p="$4">
         <Spinner color="$color.blue5" size="large" />
