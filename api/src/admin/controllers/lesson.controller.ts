@@ -28,7 +28,10 @@ export class LessonController {
   }
 
   @Post()
-  async create(@Body() lesson: Pick<Lesson, 'title' | 'order' | 'unitId'>) {
+  async create(
+    @Body()
+    lesson: Pick<Lesson, 'title' | 'order' | 'unitId' | 'homeImageFileName'>,
+  ) {
     return await this.lessonService.createLesson(lesson);
   }
 

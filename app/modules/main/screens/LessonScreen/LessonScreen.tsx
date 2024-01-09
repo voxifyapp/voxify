@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '@voxify/App';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
 import { Screen } from '@voxify/design_system/layout';
 import { ActivityStepper } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
 import {
@@ -9,7 +10,6 @@ import {
 import { LessonSelect } from '@voxify/modules/staff/components/LessonSelect';
 import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 import React, { useCallback, useEffect, useState } from 'react';
-import { H1 } from 'tamagui';
 import {
   useCreateLessonResponse,
   useUpdateLessonResponse,
@@ -22,14 +22,19 @@ export const LessonScreen = ({ route }: Props) => {
 
   const [lessonId, setLessonId] = useState(params.lessonId);
 
-  const { isLoading: isGetLessonLoading } = useGetLesson(lessonId);
-  const { data: lessonActivities, isLoading: isLessonActivitiesLoading } =
-    useGetLessonActivities(lessonId);
+  const { isLoading: isGetLessonLoading, error: getLessonError } =
+    useGetLesson(lessonId);
+  const {
+    data: lessonActivities,
+    isLoading: isLessonActivitiesLoading,
+    error: getLessonActivitiesError,
+  } = useGetLessonActivities(lessonId);
 
   const {
     mutate: createLessonResponseMutate,
     status: createLessonResponseMutationStatus,
     data: createLessonResponseData,
+    error: createLessonResponseError,
   } = useCreateLessonResponse();
 
   const lessonResponseId = createLessonResponseData?.id;
@@ -59,25 +64,29 @@ export const LessonScreen = ({ route }: Props) => {
       });
   }, [lessonResponseId, updateLessonResponseMutate]);
 
-  if (
-    isGetLessonLoading ||
-    isLessonActivitiesLoading ||
-    isCreateLessonResponseLoading
-  ) {
-    return <H1>Loading...</H1>;
-  }
-
   return (
     <Screen noPadding>
-      <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
-      {lessonActivities && lessonResponseId && (
-        <ActivityStepper
-          lessonId={lessonId}
-          lessonResponseId={lessonResponseId}
-          onLessonComplete={handleLessonComplete}
-          activities={lessonActivities}
-        />
-      )}
+      <LoadingWithErrorContainer
+        error={
+          createLessonResponseError ||
+          getLessonError ||
+          getLessonActivitiesError
+        }
+        isLoading={
+          isGetLessonLoading ||
+          isLessonActivitiesLoading ||
+          isCreateLessonResponseLoading
+        }>
+        <LessonSelect onLessonSelected={_lessonId => setLessonId(_lessonId)} />
+        {lessonActivities && lessonResponseId && (
+          <ActivityStepper
+            lessonId={lessonId}
+            lessonResponseId={lessonResponseId}
+            onLessonComplete={handleLessonComplete}
+            activities={lessonActivities}
+          />
+        )}
+      </LoadingWithErrorContainer>
     </Screen>
   );
 };

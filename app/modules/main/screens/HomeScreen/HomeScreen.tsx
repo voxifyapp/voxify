@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useRef } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { H1 } from 'tamagui';
+import React, { useRef } from 'react';
+import { FlatList } from 'react-native';
+import { YStack } from 'tamagui';
 
 import { Screen } from '@voxify/design_system/layout';
 import { UnitItem } from '@voxify/modules/main/screens/HomeScreen/components/UnitItem';
-import { useGetUnitResponses } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitResponses';
 import { useGetUnitsWithAssociatedLessonsForCourse } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitsWithAssociatedLessons';
 import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
 
@@ -13,11 +12,25 @@ import {
   GET_COURSE_FOR_PROFILE,
   getCourseForProfile,
 } from '@voxify/api/auth/profile';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
+import { H4 } from '@voxify/design_system/typography';
+import { useSyncUnits } from '@voxify/modules/main/screens/HomeScreen/hooks/useSyncUnits';
 import { UnitWithAssociatedLessons } from '@voxify/types/lms-progress/profile-progress';
+
+const MORE_COMING_SOON = {
+  id: 'more-coming-soon',
+};
+
 export const HomeScreen = () => {
+  const listRef =
+    useRef<FlatList<UnitWithAssociatedLessons | typeof MORE_COMING_SOON>>(null);
   const completedUnits = useProfileProgressStore(state => state.completedUnits);
 
-  const { data: courseData, isLoading: isCourseLoading } = useQuery({
+  const {
+    data: courseData,
+    isLoading: isCourseLoading,
+    error: getCourseError,
+  } = useQuery({
     queryFn: getCourseForProfile,
     queryKey: [GET_COURSE_FOR_PROFILE],
   });
@@ -27,50 +40,68 @@ export const HomeScreen = () => {
   const {
     data: unitsWithAssociatedLessons,
     isLoading: isLessonResponseLoading,
+    error: getUnitsError,
   } = useGetUnitsWithAssociatedLessonsForCourse(courseId);
 
-  const { isLoading: isUnitResponsesLoading } = useGetUnitResponses();
+  const { isLoading: isUnitsSyncing, error: syncUnitsError } =
+    useSyncUnits(courseId);
 
-  const nextUnitToCompleteIndex =
-    (unitsWithAssociatedLessons &&
-      unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id])) ||
-    -1;
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (nextUnitToCompleteIndex !== -1) {
-        listRef.current?.scrollToIndex({
-          animated: false,
-          index: nextUnitToCompleteIndex,
-        });
-      }
-    }, 1000);
-  }, [nextUnitToCompleteIndex]);
-
-  const listRef = useRef<FlatList<UnitWithAssociatedLessons>>(null);
-
-  if (isCourseLoading || isLessonResponseLoading || isUnitResponsesLoading) {
-    return <H1>Loading..</H1>;
+  let unitToWorkOnIndex =
+    unitsWithAssociatedLessons &&
+    unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id]);
+  if (unitToWorkOnIndex === -1) {
+    unitToWorkOnIndex = unitsWithAssociatedLessons?.length || -1;
   }
 
+  const flatListItems = [
+    ...(unitsWithAssociatedLessons || []),
+    MORE_COMING_SOON,
+  ];
+
   return (
-    <Screen p={16}>
-      <FlatList
-        contentContainerStyle={styles.mainFlatListContainerStyle}
-        ref={listRef}
-        data={unitsWithAssociatedLessons}
-        keyExtractor={unitWithLessons => unitWithLessons.id}
-        renderItem={({ item: unitWithLessons, index }) => (
-          <UnitItem unitWithLessons={unitWithLessons} index={index} />
+    <Screen paddingHorizontal="$3">
+      <LoadingWithErrorContainer
+        error={getUnitsError || syncUnitsError || getCourseError}
+        isLoading={
+          isCourseLoading || isLessonResponseLoading || isUnitsSyncing
+        }>
+        {flatListItems && (
+          <FlatList
+            onLayout={() => {
+              if (unitToWorkOnIndex) {
+                listRef.current?.scrollToIndex({
+                  animated: true,
+                  index: unitToWorkOnIndex,
+                  viewOffset: 100,
+                });
+              }
+            }}
+            ref={listRef}
+            data={flatListItems}
+            keyExtractor={unitWithLessons => unitWithLessons.id}
+            renderItem={({ item: flatListItem, index }) => {
+              if (flatListItem === MORE_COMING_SOON) {
+                return (
+                  <YStack p="$4" alignItems="center">
+                    <H4 textAlign="center" fontWeight="bold">
+                      We are working on making more content available for you.
+                      Please check back here tomorrow!
+                    </H4>
+                  </YStack>
+                );
+              }
+              const unitWithLessons = flatListItem as UnitWithAssociatedLessons;
+              return (
+                <UnitItem
+                  unitWithLessons={unitWithLessons}
+                  index={index}
+                  locked={unitToWorkOnIndex ? index > unitToWorkOnIndex : false}
+                />
+              );
+            }}
+          />
         )}
-      />
+      </LoadingWithErrorContainer>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  mainFlatListContainerStyle: {
-    flex: 1,
-    height: '100%',
-  },
-});
