@@ -49,6 +49,7 @@ export class ActivityRepository extends Repository<Activity> {
   async listActivitiesForLesson(lessonId: string) {
     return await this.find({
       where: { lesson: { id: lessonId }, published: true },
+      order: { order: 'ASC' },
     });
   }
 }
