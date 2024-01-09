@@ -82,6 +82,23 @@ describe('/profile', () => {
       expect(res.body.fullName).toBe('New');
       expect(res.body.email).toBe('new@email.com');
     });
+
+    it('throws 400 for wrong email', async () => {
+      const profile = await profileFactory.create({
+        email: 'john@does.com',
+      });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .patch('/profile/')
+          .send({ email: 'not an actual mail' } as z.infer<
+            typeof updateProfileDtoSchema
+          >),
+        { uid: profile.userId },
+      );
+
+      expect(res.status).toBe(400);
+    });
   });
 
   describe('/add-days-to-subscription (POST)', () => {
