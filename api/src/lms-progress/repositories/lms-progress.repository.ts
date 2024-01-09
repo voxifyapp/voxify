@@ -79,6 +79,7 @@ export class UnitResponseRepository extends Repository<UnitResponse> {
         '"lessonsWithCompletionStatus"."unitId" = u.id',
       )
       .where('u.courseId = :courseId', { courseId })
+      .andWhere('u.published = true')
       .groupBy('u.id')
       .orderBy('u.order');
 

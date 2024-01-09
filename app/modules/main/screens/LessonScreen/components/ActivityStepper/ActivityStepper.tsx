@@ -1,95 +1,104 @@
-/* eslint-disable react/no-unstable-nested-components */
-
-//TODO Remove lint ignores above
+import { YStack } from '@voxify/design_system/layout';
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
-import { lessonCompletionInfoAtom } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
 import { ActivityStep } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStep';
+import { Results } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/Results';
 import { StepCard } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/components/StepCard';
 import { ActivityEntity } from '@voxify/types/lms/lms';
-import { atom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
+import { atomWithReset, useResetAtom } from 'jotai/utils';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, ViewToken } from 'react-native';
-import { Spacer, YStack } from 'tamagui';
+import {
+  Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ViewToken,
+} from 'react-native';
 
+// These calculations are to make sure that the first and last elements are centered
+// We are calculating the height and widht of the step card
 export const activityAspectRatio = 9 / 15;
 export const { width: screenWidth, height: screenHeight } =
   Dimensions.get('window');
-export const width = screenWidth / 1.2;
-export const height = width / activityAspectRatio;
-
-export const firstAndLastElementMargin = (screenHeight - height) / 2;
+export const stepCardWidth = screenWidth / 1.2;
+export const stepCardHeight = stepCardWidth / activityAspectRatio;
+const stepCardMarginBottom = 20;
+const flatListItemHeight = stepCardHeight + stepCardMarginBottom;
+export const firstAndLastElementMargin = (screenHeight - stepCardHeight) / 2;
 
 type Props = {
   activities: ActivityEntity[];
   lessonResponseId: string;
+  /**
+   * This callback is called when the user has gone through all activities
+   * This is only called once
+   */
   onLessonComplete: () => void;
   lessonId: string;
 };
 
-export const completedActivitiesAtom = atom<
+export const completedActivitiesAtom = atomWithReset<
   Record<string, ActivityRendererMachineRestoreDataType>
 >({});
+
+const RESULTS_CARD = { id: 'results-card' };
 
 export const ActivityStepper = ({
   activities,
   lessonResponseId,
-  lessonId,
   onLessonComplete,
 }: Props) => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
-  const listRef = useRef<FlatList<ActivityEntity>>(null);
+  const activitiesFlatListRef =
+    useRef<FlatList<ActivityEntity | typeof RESULTS_CARD>>(null);
+  const isLessonCompleted = useRef(false);
 
-  let renderedActivities = activities;
+  // We want to show a result screen as the last page
+  const flatListItems = [...activities, RESULTS_CARD] as const;
 
   const completedActivities = useAtomValue(completedActivitiesAtom);
-  const lessonCompletionInfo = useAtomValue(lessonCompletionInfoAtom);
+  const resetCompletedActivities = useResetAtom(completedActivitiesAtom);
 
-  const nextActivityToCompleteIndex = renderedActivities.findIndex(
-    activity => !completedActivities[activity.id],
+  const indexOfItemTheUserShouldBeOn = flatListItems.findIndex(
+    activity => activity === RESULTS_CARD || !completedActivities[activity.id],
   );
+  const flatListItemTheUserShouldBeOn =
+    flatListItems[indexOfItemTheUserShouldBeOn];
 
-  // renderedActivities = slice(
-  //   renderedActivities,
-  //   0,
-  //   nextActivityToCompleteIndex === -1
-  //     ? renderedActivities.length
-  //     : nextActivityToCompleteIndex + 1,
-  // );
+  // We want to reset the completed activities when the component unmounts
+  // or else the next time the user opens the lesson it will be marked as completed
+  useEffect(() => {
+    return () => {
+      resetCompletedActivities();
+    };
+  }, [resetCompletedActivities]);
 
+  // When the next activity the user should be on change, scroll to it.
   useEffect(() => {
     setTimeout(() => {
-      if (nextActivityToCompleteIndex !== -1) {
-        listRef.current?.scrollToIndex({
+      if (indexOfItemTheUserShouldBeOn !== -1) {
+        activitiesFlatListRef.current?.scrollToIndex({
           animated: true,
-          index: nextActivityToCompleteIndex,
+          index: indexOfItemTheUserShouldBeOn,
         });
       }
     }, 1000);
-  }, [nextActivityToCompleteIndex]);
+  }, [indexOfItemTheUserShouldBeOn]);
 
+  // Mark lesson as complete on reaching the results card
   useEffect(() => {
-    let completedActivitiesCount = 0;
-    renderedActivities.forEach(
-      activity =>
-        completedActivities[activity.id] && ++completedActivitiesCount,
-    );
-
-    completedActivitiesCount === renderedActivities.length &&
-      !lessonCompletionInfo.get(lessonId)?.isCompleted &&
+    if (
+      flatListItemTheUserShouldBeOn === RESULTS_CARD &&
+      !isLessonCompleted.current
+    ) {
       onLessonComplete();
-  }, [
-    completedActivities,
-    lessonCompletionInfo,
-    lessonId,
-    lessonResponseId,
-    onLessonComplete,
-    renderedActivities,
-  ]);
+    }
+  }, [flatListItemTheUserShouldBeOn, onLessonComplete]);
 
   const getItemLayout = (_: any, index: number) => ({
     index: index,
-    offset: index * (height + 20),
-    length: height + 20,
+    offset: index * (stepCardHeight + 20),
+    length: stepCardHeight + 20,
   });
 
   const viewabilityConfigCallbackPairs = useRef([
@@ -106,37 +115,57 @@ export const ActivityStepper = ({
     },
   ]);
 
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    // We want to limit scrolling to the next activity until the previous activities are finished
+    // This allows a nice way to allow the user to see that there is more content but not allow them to scroll to it
+    const currentContentOffset = e.nativeEvent.contentOffset.y;
+
+    const maxScrollableOffset =
+      indexOfItemTheUserShouldBeOn * flatListItemHeight +
+      flatListItemHeight / 4;
+
+    if (currentContentOffset > maxScrollableOffset) {
+      activitiesFlatListRef.current?.scrollToIndex({
+        index: indexOfItemTheUserShouldBeOn,
+      });
+    }
+  };
+
   return (
     <FlatList
       decelerationRate={0.8}
       getItemLayout={getItemLayout}
-      ref={listRef}
-      data={renderedActivities}
+      ref={activitiesFlatListRef}
+      data={flatListItems}
       viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       disableIntervalMomentum
-      snapToOffsets={renderedActivities.map((_, index) => {
+      snapToOffsets={flatListItems.map((_, index) => {
         return getItemLayout(_, index).offset;
       })}
-      ItemSeparatorComponent={() => <Spacer size={20} />}
+      onScroll={handleScroll}
       keyExtractor={(activity, index) => activity.id || `${index}`}
-      renderItem={({ item: activity, index }) => (
-        <YStack alignItems="center">
+      renderItem={({ item, index }) => (
+        <YStack alignItems="center" mb={stepCardMarginBottom}>
           <StepCard
-            width={width}
-            height={height}
+            width={stepCardWidth}
+            height={stepCardHeight}
             mb={
-              index === renderedActivities.length - 1
+              index === flatListItems.length - 1
                 ? firstAndLastElementMargin
                 : undefined
             }
             mt={index === 0 ? firstAndLastElementMargin : undefined}>
-            <ActivityStep
-              index={index}
-              restoreData={completedActivities[activity.id]}
-              activity={activity}
-              isActive={index === currentActiveIndex}
-              lessonResponseId={lessonResponseId}
-            />
+            {item === RESULTS_CARD ? (
+              <Results />
+            ) : (
+              <ActivityStep
+                index={index}
+                restoreData={completedActivities[item.id]}
+                activity={item as ActivityEntity}
+                isActive={index === currentActiveIndex}
+                lessonResponseId={lessonResponseId}
+              />
+            )}
           </StepCard>
         </YStack>
       )}

@@ -43,6 +43,9 @@ export const useGetActivityRendererHookExtras = <
     answerErrors,
     setAnswerErrors,
     isWorkingStateAnd,
+    isFocused: activityRendererMachineService
+      .getSnapshot()
+      .matches('FOCUSED_STATE.FOCUSED'),
     isShowResultState: activityRendererMachineService
       .getSnapshot()
       ?.matches('WORKING_STATE.RESULT'),

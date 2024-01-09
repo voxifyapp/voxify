@@ -6,6 +6,7 @@ import {
   updateLessonResponse,
 } from '@voxify/api/lms-progress/lesson-response';
 import { useProfileProgressStore } from '@voxify/modules/main/store/profileProgress';
+import { LessonResponseStatus } from '@voxify/types/lms-progress/lesson-response';
 
 export const useCreateLessonResponse = () => {
   return useMutation({
@@ -15,13 +16,15 @@ export const useCreateLessonResponse = () => {
 };
 
 export const useUpdateLessonResponse = (lessonId: string) => {
-  const { markLessonsAsComplete } = useProfileProgressStore();
+  const markLessonsAsComplete = useProfileProgressStore(
+    state => state.markLessonsAsComplete,
+  );
   return useMutation({
     mutationFn: (data: UpdateLessonResponsePostData) => {
       return updateLessonResponse({ ...data });
     },
-    onSuccess: updatedLesson => {
-      if (updatedLesson.status === 'COMPLETED') {
+    onSuccess: updatedLessonResponse => {
+      if (updatedLessonResponse.status === LessonResponseStatus.COMPLETED) {
         markLessonsAsComplete([lessonId]);
       }
     },

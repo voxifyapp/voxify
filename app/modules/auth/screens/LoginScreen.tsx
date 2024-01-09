@@ -6,6 +6,7 @@ import { Screen, XStack, YStack } from '@voxify/design_system/layout';
 import { H2, Paragraph, SizableText } from '@voxify/design_system/typography';
 import LottieView from 'lottie-react-native';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { Spacer } from 'tamagui';
 
 export const LoginScreen = () => {
@@ -14,7 +15,7 @@ export const LoginScreen = () => {
       <YStack flex={1}>
         <LottieView
           autoPlay
-          style={{ width: '100%', height: '100%' }}
+          style={styles.lottieAnimation}
           source={require('@voxify/assets/lottie/communication.json')}
         />
       </YStack>
@@ -54,3 +55,10 @@ export const LoginScreen = () => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  lottieAnimation: {
+    width: '100%',
+    height: '100%',
+  },
+});

@@ -28,11 +28,11 @@ export class LessonResponseController {
     @Req() req: AuthenticatedRequestWithProfile,
     @Body() data: CreateLessonResponseDto,
   ) {
-    const unitResponse = await this.lmsProgressService.createLessonResponse(
+    const lessonResponse = await this.lmsProgressService.createLessonResponse(
       req.currentProfile.id,
       data,
     );
-    return unitResponse;
+    return lessonResponse;
   }
 
   @Put()
@@ -41,11 +41,11 @@ export class LessonResponseController {
     @Req() req: AuthenticatedRequestWithProfile,
     @Body() data: UpdateLessonResponseDto,
   ) {
-    const unitResponse = await this.lmsProgressService.updateLessonResponse(
+    const lessonResponse = await this.lmsProgressService.updateLessonResponse(
       req.currentProfile.id,
       data,
     );
-    return unitResponse;
+    return lessonResponse;
   }
 
   @Get()

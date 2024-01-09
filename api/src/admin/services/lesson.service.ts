@@ -29,11 +29,13 @@ export class LessonService {
     title,
     order,
     unitId,
-  }: Pick<Lesson, 'title' | 'order' | 'unitId'>) {
+    homeImageFileName,
+  }: Pick<Lesson, 'title' | 'order' | 'unitId' | 'homeImageFileName'>) {
     return await this.lessonRepository.save({
       title,
       order,
       unitId,
+      homeImageFileName,
     });
   }
 

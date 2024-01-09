@@ -2,7 +2,7 @@ import { ActivityRenderer } from '@voxify/modules/main/components/ActivityRender
 import { ActivityRendererOnCompleteType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
 import { completedActivitiesAtom } from '@voxify/modules/main/screens/LessonScreen/components/ActivityStepper/ActivityStepper';
-import { useActivityResponse } from '@voxify/modules/main/screens/LessonScreen/components/hooks/useActivityResponse';
+import { useCreateActivityResponse } from '@voxify/modules/main/screens/LessonScreen/hooks/useActivityResponse';
 import { ActivityEntity } from '@voxify/types/lms/lms';
 import { useSetAtom } from 'jotai';
 import React, { useCallback } from 'react';
@@ -17,7 +17,9 @@ type Props = {
 
 export const ActivityStep = React.memo(
   ({ activity, restoreData, isActive, index, lessonResponseId }: Props) => {
-    const { mutate } = useActivityResponse({ activityEntity: activity });
+    const { mutate: createActivityResponse } = useCreateActivityResponse({
+      activityEntity: activity,
+    });
 
     const setCompletedActivities = useSetAtom(completedActivitiesAtom);
 
@@ -28,7 +30,7 @@ export const ActivityStep = React.memo(
             ...prev,
             [activity.id]: data,
           }));
-          mutate({
+          createActivityResponse({
             responseData: {
               userAnswer: data.userAnswer,
               answerError: data.answerError,
@@ -38,7 +40,12 @@ export const ActivityStep = React.memo(
             lessonResponseId,
           });
         },
-        [activity.id, lessonResponseId, mutate, setCompletedActivities],
+        [
+          activity.id,
+          lessonResponseId,
+          createActivityResponse,
+          setCompletedActivities,
+        ],
       );
 
     return (

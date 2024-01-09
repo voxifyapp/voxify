@@ -35,6 +35,7 @@ export class LmsProgressService {
     return lessonResponse;
   }
 
+  // TODO Write a test for this
   async updateLessonResponse(profileId: string, data: UpdateLessonResponseDto) {
     const existingLessonResponse = <LessonResponse>(
       await findOneOr404(this.lessonResponseRepo, data.lessonResponseId)
@@ -42,10 +43,10 @@ export class LmsProgressService {
     if (existingLessonResponse.profileId !== profileId) {
       throw new UnauthorizedException();
     }
-    const lessonResponse = await this.lessonResponseRepo.update(
-      existingLessonResponse.id,
-      { status: data.status },
-    );
+    const lessonResponse = await this.lessonResponseRepo.save({
+      id: existingLessonResponse.id,
+      status: data.status,
+    });
 
     return lessonResponse;
   }
