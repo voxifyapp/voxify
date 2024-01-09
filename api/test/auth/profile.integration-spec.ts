@@ -1,9 +1,11 @@
+import { updateProfileDtoSchema } from '@/src/auth/dto/update-profile.dto';
 import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { firebaseUserFactory } from 'src/auth/fixtures/firebase-user.fixture';
 import { profileFactory } from 'src/auth/fixtures/profile.fixture';
 import { MAX_FREE_TRIAL_DAYS } from 'src/common/constants/auth';
 import * as request from 'supertest';
 import { loginAsFirebaseUser } from 'test/utils/firebase';
+import { z } from 'zod';
 
 describe('/profile', () => {
   describe('/ (POST)', () => {
@@ -55,6 +57,30 @@ describe('/profile', () => {
       expect(res.status).toBe(200);
       expect(res.body.userId).toBe(profile.userId);
       expect(res.body.id).toBe(profile.id);
+    });
+  });
+
+  describe('/ (PATCH)', () => {
+    it('updates name and email', async () => {
+      const profile = await profileFactory.create({
+        fullName: 'John Doe',
+        email: 'john@does.com',
+      });
+
+      const res = await loginAsFirebaseUser(
+        request(global.app.getHttpServer())
+          .patch('/profile/')
+          .send({ email: 'new@email.com', fullName: 'New' } as z.infer<
+            typeof updateProfileDtoSchema
+          >),
+        { uid: profile.userId },
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body.userId).toBe(profile.userId);
+      expect(res.body.id).toBe(profile.id);
+      expect(res.body.fullName).toBe('New');
+      expect(res.body.email).toBe('new@email.com');
     });
   });
 

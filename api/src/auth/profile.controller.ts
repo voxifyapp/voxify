@@ -1,9 +1,20 @@
-import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common';
 import {
   AddDaysToSubscriptionDto,
   SetProficiencyLevelDto,
+  UpdateProfileDto,
+  updateProfileDtoSchema,
 } from 'src/auth/dto/update-profile.dto';
 import { DoesNotRequireProfile } from 'src/common/decorators/auth';
+import { ZodValidationPipe } from 'src/common/pipes/ZodValidationPipe';
 import {
   AuthenticatedRequest,
   AuthenticatedRequestWithProfile,
@@ -27,6 +38,18 @@ export class ProfileController {
   async get(@Req() req: AuthenticatedRequestWithProfile) {
     const { currentProfile } = req;
     return currentProfile;
+  }
+
+  @Patch()
+  async updateProfile(
+    @Req() req: AuthenticatedRequestWithProfile,
+    @Body(new ZodValidationPipe(updateProfileDtoSchema))
+    updateProfileDto: UpdateProfileDto,
+  ) {
+    return await this.profileService.updateProfile(
+      req.currentProfile.id,
+      updateProfileDto,
+    );
   }
 
   @Post('add-days-to-subscription')
