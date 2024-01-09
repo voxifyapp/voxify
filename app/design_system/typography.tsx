@@ -57,7 +57,7 @@ export const H5 = (props: SizableTextProps) => (
 
 export const Paragraph = (props: SizableTextProps) => (
   <Text
-    fontSize="$6"
+    fontSize="$5"
     color="$color.blue10"
     lineHeight={getTokens().space[5].val}
     {...props}

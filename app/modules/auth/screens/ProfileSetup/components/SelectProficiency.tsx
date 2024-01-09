@@ -1,51 +1,93 @@
-import {
-  FETCH_OR_CREATE_PROFILE_QUERY,
-  setProficiency,
-} from '@voxify/api/auth/profile';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
+import { Button } from '@voxify/design_system/button';
+import { Screen, YStack } from '@voxify/design_system/layout';
+import { H2, H4, Subtext } from '@voxify/design_system/typography';
+import { useEditProfileMutation } from '@voxify/modules/auth/screens/ProfileSetup/hooks/useEditProfileMutation';
 import { ProficiencyLevel } from '@voxify/types/auth/profile';
 import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Stack, View } from 'tamagui';
-import { Button } from '@voxify/design_system/button';
+import { Card, RadioGroup, ScrollView, XStack } from 'tamagui';
 
 export const SelectProficiency = () => {
-  const queryClient = useQueryClient();
+  const [selectedProficiency, setSelectedProficiency] =
+    React.useState<ProficiencyLevel>(ProficiencyLevel.BEGINNER);
 
-  const { mutate } = useMutation({
-    mutationFn: (proficiency: ProficiencyLevel) => {
-      return setProficiency(proficiency);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [FETCH_OR_CREATE_PROFILE_QUERY],
-      });
-    },
-    onError(err) {
-      console.log(err);
-    },
-  });
-
-  const onProficiencySelected = async (proficiency: ProficiencyLevel) => {
-    // Make HTTP POST call to set Proficiency
-    mutate(proficiency);
-  };
+  const editProfileMutation = useEditProfileMutation();
 
   return (
-    <View>
-      <Button
-        onPress={onProficiencySelected.bind(this, ProficiencyLevel.BEGINNER)}>
-        Beginner
-      </Button>
-      <Stack padding={10} />
-      <Button
-        onPress={onProficiencySelected.bind(this, ProficiencyLevel.MEDIUM)}>
-        Medium
-      </Button>
-      <Stack padding={10} />
-      <Button
-        onPress={onProficiencySelected.bind(this, ProficiencyLevel.ADVANCED)}>
-        Advanced
-      </Button>
-    </View>
+    <Screen>
+      <ScrollView flex={1}>
+        <YStack space="$6" paddingVertical="$4">
+          <H2 fontWeight="bold">How well can you currently speak?</H2>
+          <RadioGroup
+            disabled={editProfileMutation.isPending}
+            value={selectedProficiency}
+            onValueChange={e => setSelectedProficiency(e as ProficiencyLevel)}>
+            <YStack space="$3">
+              <ProficiencyLevelCard
+                onPress={() =>
+                  setSelectedProficiency(ProficiencyLevel.BEGINNER)
+                }
+                value={ProficiencyLevel.BEGINNER}
+                title="Beginner"
+                description="You know the basics, and can deal with overall meaning. You
+                  mainly translate from your native language while talking."
+              />
+              <ProficiencyLevelCard
+                value={ProficiencyLevel.MEDIUM}
+                onPress={() => setSelectedProficiency(ProficiencyLevel.MEDIUM)}
+                title="Intermediate"
+                description="You can understand most of the things you hear. Make some mistakes while you talk and are not very confident."
+              />
+              <ProficiencyLevelCard
+                value={ProficiencyLevel.ADVANCED}
+                onPress={() =>
+                  setSelectedProficiency(ProficiencyLevel.ADVANCED)
+                }
+                title="Advanced"
+                description="You can speak confidently and understand everything you hear. You want to improve vocabulary and soft skills."
+              />
+            </YStack>
+          </RadioGroup>
+          <LoadingWithErrorContainer
+            isLoading={editProfileMutation.isPending}
+            error={editProfileMutation.error}>
+            <Button
+              onPress={() =>
+                editProfileMutation.mutate({
+                  proficiencyLevel: selectedProficiency,
+                })
+              }>
+              Continue
+            </Button>
+          </LoadingWithErrorContainer>
+        </YStack>
+      </ScrollView>
+    </Screen>
+  );
+};
+
+const ProficiencyLevelCard = ({
+  title,
+  description,
+  onPress,
+  value,
+}: {
+  title: string;
+  description: string;
+  value: ProficiencyLevel;
+  onPress?: () => void;
+}) => {
+  return (
+    <Card onPress={onPress} p="$4" backgroundColor="white">
+      <XStack space="$4">
+        <RadioGroup.Item mt="$2" size="$4" value={value}>
+          <RadioGroup.Indicator />
+        </RadioGroup.Item>
+        <YStack flex={1}>
+          <H4 fontWeight="bold">{title}</H4>
+          <Subtext>{description}</Subtext>
+        </YStack>
+      </XStack>
+    </Card>
   );
 };

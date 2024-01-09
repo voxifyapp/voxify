@@ -7,7 +7,7 @@ export const fetchOrCreateProfile = async (): Promise<ProfileEntity> => {
 };
 
 export const editProfile = async (
-  data: Partial<Pick<ProfileEntity, 'fullName' | 'email'>>,
+  data: Partial<Pick<ProfileEntity, 'fullName' | 'email' | 'proficiencyLevel'>>,
 ): Promise<ProfileEntity> => {
   return (await authAxios.patch('/profile', data)).data;
 };
