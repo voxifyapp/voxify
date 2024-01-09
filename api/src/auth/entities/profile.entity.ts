@@ -31,4 +31,18 @@ export class Profile extends BaseEntity {
     unique: true,
   })
   userId: string;
+
+  @Column({
+    comment: 'Name of the user',
+    type: 'text',
+    nullable: true,
+  })
+  fullName: string;
+
+  @Column({
+    comment: 'Email of the user',
+    type: 'text',
+    nullable: true,
+  })
+  email: string;
 }
