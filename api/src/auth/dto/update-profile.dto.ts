@@ -18,6 +18,7 @@ export class SetProficiencyLevelDto {
 export const updateProfileDtoSchema = z.object({
   fullName: z.string().optional(),
   email: z.string().email().optional(),
+  proficiencyLevel: z.nativeEnum(ProficiencyLevel).optional(),
 });
 
 export type UpdateProfileDto = z.infer<typeof updateProfileDtoSchema>;
