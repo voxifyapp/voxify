@@ -53,7 +53,7 @@ class PronunciationActivity extends activity_1.Activity {
     }
     checkAnswer(answer) {
         //If more than half the words are not detected, let's return wrong
-        const matchArray = PronunciationActivity.matchReferenceStringWithInput(this.getPrompt().text, answer.recognizedWords);
+        const matchArray = _a.matchReferenceStringWithInput(this.getPrompt().text, answer.recognizedWords);
         const numberOfWordsMatched = matchArray.filter((a) => !!a).length;
         const recognizedPercent = (numberOfWordsMatched / matchArray.length) * 100;
         if (recognizedPercent >= MATCHED_WORDS_PERCENTAGE_TO_BE_CORRECT) {

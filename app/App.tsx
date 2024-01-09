@@ -1,7 +1,7 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { NavigationContainer } from '@react-navigation/native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContextProvider, useAppContext } from '@voxify/context/AppContext';
 import {
   ProfileCompletionStep,
@@ -9,13 +9,15 @@ import {
 } from '@voxify/hooks/profile';
 import { LoginScreen } from '@voxify/modules/auth/screens/LoginScreen';
 import { ProfileSetup } from '@voxify/modules/auth/screens/ProfileSetup/ProfileSetup';
-import { HomeScreen } from '@voxify/modules/main/screens/HomeScreen';
+import { HomeScreen } from '@voxify/modules/main/screens/HomeScreen/HomeScreen';
 import { LessonScreen } from '@voxify/modules/main/screens/LessonScreen/LessonScreen';
 import tamaguiConfig from '@voxify/tamagui.config';
 import React from 'react';
 import Config from 'react-native-config';
 
-import { TamaguiProvider, Text, Theme } from 'tamagui';
+import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
+import { Screen } from '@voxify/design_system/layout';
+import { TamaguiProvider, Theme } from 'tamagui';
 
 GoogleSignin.configure({
   webClientId: Config.FIREBASE_WEBCLIENT_ID,
@@ -25,6 +27,8 @@ export type AppStackParamList = {
   Home: undefined;
   Lesson: { lessonId: string; unitId: string };
 };
+
+export type AppStackNavigationProp = NavigationProp<AppStackParamList>;
 
 const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator<AppStackParamList>();
@@ -36,7 +40,13 @@ export const Routes = () => {
   const currentProfileStep = useGetCurrentProfileStep(profile);
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return (
+      <Screen>
+        <LoadingWithErrorContainer isLoading={loading}>
+          <></>
+        </LoadingWithErrorContainer>
+      </Screen>
+    );
   }
 
   return (

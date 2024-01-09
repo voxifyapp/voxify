@@ -10,7 +10,6 @@ import {
   LessonResponseRepository,
   UnitResponseRepository,
 } from 'src/lms-progress/repositories/lms-progress.repository';
-import { LessonUnitWithStatus } from 'src/lms-progress/types/lesson-unit-with-status';
 import {
   LessonRepository,
   UnitRepository,
@@ -36,6 +35,7 @@ export class LmsProgressService {
     return lessonResponse;
   }
 
+  // TODO Write a test for this
   async updateLessonResponse(profileId: string, data: UpdateLessonResponseDto) {
     const existingLessonResponse = <LessonResponse>(
       await findOneOr404(this.lessonResponseRepo, data.lessonResponseId)
@@ -43,10 +43,10 @@ export class LmsProgressService {
     if (existingLessonResponse.profileId !== profileId) {
       throw new UnauthorizedException();
     }
-    const lessonResponse = await this.lessonResponseRepo.update(
-      existingLessonResponse.id,
-      { status: data.status },
-    );
+    const lessonResponse = await this.lessonResponseRepo.save({
+      id: existingLessonResponse.id,
+      status: data.status,
+    });
 
     return lessonResponse;
   }
@@ -72,7 +72,7 @@ export class LmsProgressService {
         courseId,
       );
 
-    return { result: unitLesonResponseWithCompletion };
+    return unitLesonResponseWithCompletion;
   }
 
   async getLessonResponses(

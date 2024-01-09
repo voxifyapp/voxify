@@ -19,6 +19,7 @@ export type Lesson = {
   order: number;
   unitId?: string;
   published: boolean;
+  homeImageFileName: string;
 } & BaseEntity;
 
 export type Activity = {

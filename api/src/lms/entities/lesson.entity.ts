@@ -31,4 +31,12 @@ export class Lesson extends BaseEntity {
 
   @Column({ default: false, comment: 'Is this visible to users' })
   published: boolean;
+
+  @Column({
+    nullable: true,
+    default: null,
+    comment:
+      'The image for the lesson that will be displayed on the home screen',
+  })
+  homeImageFileName: string;
 }

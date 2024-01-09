@@ -1,6 +1,6 @@
 import { TextActivity } from '@packages/activity-builder';
 import { Button } from '@voxify/design_system/button';
-import { H2, Paragraph } from '@voxify/design_system/typography';
+import { H3, Paragraph } from '@voxify/design_system/typography';
 import { useActivityRendererContext } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityCardContainer } from '@voxify/modules/main/components/ActivityRenderer/common/ActivityCardContainer';
 
@@ -31,7 +31,9 @@ export const Text = ({ activity }: Props) => {
   return (
     <ActivityCardContainer>
       <YStack flex={1} alignItems="center" justifyContent="center">
-        <H2 textAlign="center">{activity.getTitle().text}</H2>
+        <H3 fontWeight="bold" textAlign="center">
+          {activity.getTitle().text}
+        </H3>
         <Paragraph mt="$2" textAlign="center">
           {activity.getDescription().text}
         </Paragraph>

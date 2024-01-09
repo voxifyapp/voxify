@@ -41,15 +41,15 @@ class MultipleChoiceActivity extends activity_1.Activity {
     /**
      * Returns options that are incorrect, else returns nothing
      */
-    checkAnswer(answer) {
+    checkAnswer(userAnswer) {
         const answerBank = this.getAnswer();
-        const wrongOptions = [];
-        for (const selectedOption of answer.answer) {
-            if (answerBank.indexOf(selectedOption) === -1) {
-                wrongOptions.push(selectedOption);
+        const wrongOptions = new Set([]);
+        for (const answerFromBank of answerBank) {
+            if (userAnswer.answer.indexOf(answerFromBank) === -1) {
+                wrongOptions.add(answerFromBank);
             }
         }
-        return { wrongOptions };
+        return { wrongOptions: Array.from(wrongOptions) };
     }
     build() {
         //TODO Add unit tests

@@ -4,6 +4,7 @@ export type LessonEntity = BaseEntity & {
   unitId: string;
   order: number;
   title: string;
+  homeImageFileName: string | null;
 };
 
 export type UnitEntity = BaseEntity & {
