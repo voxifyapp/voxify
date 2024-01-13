@@ -7,6 +7,7 @@ import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWith
 import { Button } from '@voxify/design_system/button';
 import { Screen, YStack } from '@voxify/design_system/layout';
 import { H1, H2, Paragraph } from '@voxify/design_system/typography';
+import { firebaseAnalyticsFreeTrialStarted } from '@voxify/modules/auth/screens/ProfileSetup/components/analytics';
 import React from 'react';
 
 const NUMBER_OF_FREE_DAYS = 90;
@@ -31,7 +32,9 @@ export const StartFreeTrial = () => {
   const onStartFreeTrailClicked = async () => {
     // Make HTTP POST call to set Proficiency
     //TODO - Move the days to firebase config
-    mutate(NUMBER_OF_FREE_DAYS);
+    const noOfFreeTrialDays = NUMBER_OF_FREE_DAYS;
+    mutate(noOfFreeTrialDays);
+    firebaseAnalyticsFreeTrialStarted({ days: noOfFreeTrialDays });
   };
 
   return (

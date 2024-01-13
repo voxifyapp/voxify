@@ -2,6 +2,7 @@ import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWith
 import { Button } from '@voxify/design_system/button';
 import { Screen, YStack } from '@voxify/design_system/layout';
 import { H2, H4, Subtext } from '@voxify/design_system/typography';
+import { firebaseAnalyticsProficiencySubmitted } from '@voxify/modules/auth/screens/ProfileSetup/components/analytics';
 import { useEditProfileMutation } from '@voxify/modules/auth/screens/ProfileSetup/hooks/useEditProfileMutation';
 import { ProficiencyLevel } from '@voxify/types/auth/profile';
 import React from 'react';
@@ -52,11 +53,14 @@ export const SelectProficiency = () => {
             isLoading={editProfileMutation.isPending}
             error={editProfileMutation.error}>
             <Button
-              onPress={() =>
-                editProfileMutation.mutate({
+              onPress={async () => {
+                await editProfileMutation.mutateAsync({
                   proficiencyLevel: selectedProficiency,
-                })
-              }>
+                });
+                firebaseAnalyticsProficiencySubmitted({
+                  proficiencyLevel: selectedProficiency,
+                });
+              }}>
               Continue
             </Button>
           </LoadingWithErrorContainer>

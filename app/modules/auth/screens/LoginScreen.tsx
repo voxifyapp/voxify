@@ -50,6 +50,7 @@ export const LoginScreen = () => {
           isLoading={loginMutation.isPending}
           error={loginMutation.error}>
           <Button
+            size="$5"
             alignSelf="flex-end"
             onPress={() => {
               loginMutation.mutate();
