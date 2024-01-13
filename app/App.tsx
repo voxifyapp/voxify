@@ -57,7 +57,6 @@ export const Routes = () => {
   }
 
   const logScreenViewFirebaseAnalytics = async (routeName: string) => {
-    console.log('Screen', routeName);
     await analytics().logScreenView({
       screen_name: routeName,
       screen_class: routeName,

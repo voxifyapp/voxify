@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import { useGetUnitResponses } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitResponses';
 import { useGetUnitsWithAssociatedLessonsForCourse } from '@voxify/modules/main/screens/HomeScreen/hooks/useGetUnitsWithAssociatedLessons';
 import { useCreateUnitResponse } from '@voxify/modules/main/screens/LessonScreen/hooks/unitResponseHooks';
@@ -63,6 +64,7 @@ export const useSyncUnits = (courseId: string) => {
       markUnitsAsComplete(newUnitIdsToMarkComplete);
       for (const unitId of newUnitIdsToMarkComplete) {
         createUnitResponseMutation.mutate({ unitId });
+        analytics().logEvent('unit_completed', { unitId });
       }
     }
   }, [
@@ -70,6 +72,17 @@ export const useSyncUnits = (courseId: string) => {
     markUnitsAsComplete,
     newUnitIdsToMarkComplete,
   ]);
+
+  // This creates a google analytics event if all the units in the current course are completed.
+  useEffect(() => {
+    const areAllUnitsForCourseCompleted = !unitsWithAssociatedLessons?.find(
+      unit => !completedUnits[unit.id],
+    );
+
+    if (areAllUnitsForCourseCompleted) {
+      analytics().logEvent('course_end', { courseId });
+    }
+  }, [completedUnits, courseId, unitsWithAssociatedLessons]);
 
   return {
     isLoading: isRequiredDataLoading || createUnitResponseMutation.isPending,

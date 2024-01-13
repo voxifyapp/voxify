@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '@voxify/App';
 import { LoadingWithErrorContainer } from '@voxify/common/components/LoadingWithErrorContainer';
@@ -52,6 +53,7 @@ export const LessonScreen = ({ route }: Props) => {
         status: LessonResponseStatus.STARTED,
         lessonId,
       });
+      analytics().logEvent('lesson_started', { lessonId });
     }
   }, [lessonId, createLessonResponseMutate, lessonResponseId]);
 
@@ -62,7 +64,8 @@ export const LessonScreen = ({ route }: Props) => {
         status: LessonResponseStatus.COMPLETED,
         lessonResponseId,
       });
-  }, [lessonResponseId, updateLessonResponseMutate]);
+    analytics().logEvent('lesson_completed', { lessonId });
+  }, [lessonId, lessonResponseId, updateLessonResponseMutate]);
 
   return (
     <Screen noPadding>
