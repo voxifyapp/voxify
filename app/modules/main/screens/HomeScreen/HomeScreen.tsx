@@ -50,7 +50,14 @@ export const HomeScreen = () => {
     unitsWithAssociatedLessons &&
     unitsWithAssociatedLessons.findIndex(unit => !completedUnits[unit.id]);
   if (unitToWorkOnIndex === -1) {
-    unitToWorkOnIndex = unitsWithAssociatedLessons?.length || -1;
+    const isThereAnyUnitCompleted = !!unitsWithAssociatedLessons?.find(
+      unit => !!completedUnits[unit.id],
+    );
+    if (!isThereAnyUnitCompleted) {
+      unitToWorkOnIndex = 0;
+    } else {
+      unitToWorkOnIndex = unitsWithAssociatedLessons?.length || -1;
+    }
   }
 
   const flatListItems = [
@@ -59,7 +66,7 @@ export const HomeScreen = () => {
   ];
 
   return (
-    <Screen paddingHorizontal="$3">
+    <Screen noPadding paddingHorizontal="$3">
       <LoadingWithErrorContainer
         error={getUnitsError || syncUnitsError || getCourseError}
         isLoading={
@@ -95,7 +102,11 @@ export const HomeScreen = () => {
                 <UnitItem
                   unitWithLessons={unitWithLessons}
                   index={index}
-                  locked={unitToWorkOnIndex ? index > unitToWorkOnIndex : false}
+                  locked={
+                    unitToWorkOnIndex !== undefined
+                      ? index > unitToWorkOnIndex
+                      : false
+                  }
                 />
               );
             }}

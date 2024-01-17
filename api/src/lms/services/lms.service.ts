@@ -51,7 +51,8 @@ export class LmsService {
 
   async getCourseForProfile(profile: Profile) {
     const course = await this.courseRepository.findOneByOrFail({
-      proficiencyLevel: profile.proficiencyLevel || null,
+      // proficiencyLevel: profile.proficiencyLevel || null,
+      id: process.env.COURSE_ID_TO_DISPLAY,
     });
 
     return course;

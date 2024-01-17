@@ -1,19 +1,15 @@
 import { authAxios } from '@voxify/axiosClient';
-import { ProficiencyLevel, ProfileEntity } from '@voxify/types/auth/profile';
+import { ProfileEntity } from '@voxify/types/auth/profile';
 
 export const FETCH_OR_CREATE_PROFILE_QUERY = 'FETCH_OR_CREATE_PROFILE_QUERY';
 export const fetchOrCreateProfile = async (): Promise<ProfileEntity> => {
   return (await authAxios.post('/profile')).data;
 };
 
-export const setProficiency = async (
-  proficiency: ProficiencyLevel,
+export const editProfile = async (
+  data: Partial<Pick<ProfileEntity, 'fullName' | 'email' | 'proficiencyLevel'>>,
 ): Promise<ProfileEntity> => {
-  return (
-    await authAxios.post('/profile/set-proficiency-level', {
-      proficiencyLevel: proficiency,
-    })
-  ).data;
+  return (await authAxios.patch('/profile', data)).data;
 };
 
 export const startFreeTrail = async (

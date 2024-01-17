@@ -14,11 +14,7 @@ export const SizableText = styled(TSizableText, {
 });
 
 export const H1 = (props: SizableTextProps) => (
-  <SizableText
-    size="$10"
-    lineHeight={getTokens().space[9].val + getTokens().space['$-2'].val}
-    {...props}
-  />
+  <Text fontSize="$10" {...props} />
 );
 
 export const H2 = (props: SizableTextProps) => (
@@ -57,7 +53,7 @@ export const H5 = (props: SizableTextProps) => (
 
 export const Paragraph = (props: SizableTextProps) => (
   <Text
-    fontSize="$6"
+    fontSize="$5"
     color="$color.blue10"
     lineHeight={getTokens().space[5].val}
     {...props}

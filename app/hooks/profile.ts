@@ -1,6 +1,7 @@
 import { ProfileEntity } from '@voxify/types/auth/profile';
 
 export enum ProfileCompletionStep {
+  BASIC_INFO,
   SELECT_PROFICIENCY,
   SELECT_MEMBERSHIP,
   COMPLETE,
@@ -14,6 +15,10 @@ export enum ProfileCompletionStep {
 export const useGetCurrentProfileStep = (profile?: ProfileEntity) => {
   if (!profile) {
     return null;
+  }
+
+  if (!profile.fullName || !profile.email) {
+    return ProfileCompletionStep.BASIC_INFO;
   }
 
   if (!profile.proficiencyLevel) {

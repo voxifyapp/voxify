@@ -23,6 +23,8 @@ export const profileFactory = Factory.define<Profile>(({ onCreate }) => {
     ...baseFactory.build(),
     proficiencyLevel: ProficiencyLevel.MEDIUM,
     subscriptionEndDate: faker.date.future(),
+    fullName: faker.person.fullName(),
+    email: faker.internet.email(),
     userId: null,
   };
 });

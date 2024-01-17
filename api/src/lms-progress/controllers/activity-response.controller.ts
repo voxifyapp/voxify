@@ -7,8 +7,12 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
+import { ZodValidationPipe } from 'src/common/pipes/ZodValidationPipe';
 import { AuthenticatedRequestWithProfile } from 'src/common/request';
-import { CreateActivityResponseDto } from 'src/lms-progress/dtos/create-activity-response.dto';
+import {
+  CreateActivityResponseDto,
+  createActivityResponseDtoSchema,
+} from 'src/lms-progress/dtos/create-activity-response.dto';
 import { ActivityResponseService } from 'src/lms-progress/services/activity-response.service';
 
 @Controller('lms-progress/activity-responses')
@@ -19,7 +23,8 @@ export class ActivityResponseController {
   @HttpCode(200)
   async create(
     @Req() req: AuthenticatedRequestWithProfile,
-    @Body() data: CreateActivityResponseDto,
+    @Body(new ZodValidationPipe(createActivityResponseDtoSchema))
+    data: CreateActivityResponseDto,
   ) {
     const profile = await this.activityResponseService.create(
       req.currentProfile.id,

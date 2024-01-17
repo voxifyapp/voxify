@@ -1,3 +1,4 @@
+import { updateProfileDtoSchema } from '@/src/auth/dto/update-profile.dto';
 import {
   BadRequestException,
   Injectable,
@@ -6,6 +7,7 @@ import {
 import * as dayjs from 'dayjs';
 import { ProficiencyLevel } from 'src/auth/entities/profile.entity';
 import { ProfileRepository } from 'src/auth/profile.repository';
+import { z } from 'zod';
 
 @Injectable()
 export class ProfileService {
@@ -27,6 +29,16 @@ export class ProfileService {
 
   async findProfileForUser(userId: string) {
     return await this.profileRepository.findOneBy({ userId });
+  }
+
+  async updateProfile(
+    profileId,
+    updateData: z.infer<typeof updateProfileDtoSchema>,
+  ) {
+    const profile = await this.profileRepository.findOneBy({ id: profileId });
+    if (!profile) throw new NotFoundException({ profileId });
+
+    return await this.profileRepository.save({ ...profile, ...updateData });
   }
 
   /**

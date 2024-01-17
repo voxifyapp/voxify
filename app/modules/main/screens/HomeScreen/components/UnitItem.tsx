@@ -1,5 +1,6 @@
 import React from 'react';
 
+import analytics from '@react-native-firebase/analytics';
 import { useNavigation } from '@react-navigation/native';
 import { AppStackNavigationProp } from '@voxify/App';
 import { Constants } from '@voxify/appConstants';
@@ -78,6 +79,10 @@ const LessonItem = ({
         navigation.navigate('Lesson', {
           lessonId: lesson.id,
           unitId: lesson.unitId,
+        });
+        analytics().logSelectContent({
+          content_type: 'lesson',
+          item_id: lesson.id,
         });
       }}
       mt="$2"

@@ -1,12 +1,13 @@
 import { useAppContext } from '@voxify/context/AppContext';
+import { Screen } from '@voxify/design_system/layout';
 import {
   ProfileCompletionStep,
   useGetCurrentProfileStep,
 } from '@voxify/hooks/profile';
-import React from 'react';
-import { YStack } from 'tamagui';
+import { BasicInformation } from '@voxify/modules/auth/screens/ProfileSetup/components/BasicInformation';
 import { SelectProficiency } from '@voxify/modules/auth/screens/ProfileSetup/components/SelectProficiency';
 import { StartFreeTrial } from '@voxify/modules/auth/screens/ProfileSetup/components/StartFreeTrial';
+import React from 'react';
 
 export const ProfileSetup = () => {
   const { profile } = useAppContext();
@@ -14,12 +15,14 @@ export const ProfileSetup = () => {
     profile,
   ) as ProfileCompletionStep;
   return (
-    <YStack>
-      {currentProfileStep === ProfileCompletionStep.SELECT_PROFICIENCY ? (
+    <Screen>
+      {currentProfileStep === ProfileCompletionStep.BASIC_INFO ? (
+        <BasicInformation />
+      ) : currentProfileStep === ProfileCompletionStep.SELECT_PROFICIENCY ? (
         <SelectProficiency />
       ) : currentProfileStep === ProfileCompletionStep.SELECT_MEMBERSHIP ? (
         <StartFreeTrial />
       ) : null}
-    </YStack>
+    </Screen>
   );
 };

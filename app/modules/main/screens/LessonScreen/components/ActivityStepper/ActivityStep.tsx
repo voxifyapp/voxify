@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import { ActivityRenderer } from '@voxify/modules/main/components/ActivityRenderer/ActivityRenderer';
 import { ActivityRendererOnCompleteType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.context';
 import { ActivityRendererMachineRestoreDataType } from '@voxify/modules/main/components/ActivityRenderer/activityRenderer.machine';
@@ -25,19 +26,24 @@ export const ActivityStep = React.memo(
 
     const onActivityResultsCallback: ActivityRendererOnCompleteType =
       useCallback(
-        async data => {
+        async activityResult => {
           setCompletedActivities(prev => ({
             ...prev,
-            [activity.id]: data,
+            [activity.id]: activityResult,
           }));
           createActivityResponse({
             responseData: {
-              userAnswer: data.userAnswer,
-              answerError: data.answerError,
+              userAnswer: activityResult.userAnswer,
+              answerError: activityResult.answerError,
             },
-            timeTaken: data.timeTakenToCompleteInSeconds,
-            result: data.result,
+            timeTaken: activityResult.timeTakenToCompleteInSeconds,
+            result: activityResult.result,
             lessonResponseId,
+          });
+          analytics().logEvent('activity_completed', {
+            activityId: activity.id,
+            timeTakenInSeconds: activityResult.timeTakenToCompleteInSeconds,
+            result: activityResult.result,
           });
         },
         [

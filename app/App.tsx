@@ -1,5 +1,10 @@
+import analytics from '@react-native-firebase/analytics';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { NavigationContainer, NavigationProp } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationProp,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContextProvider, useAppContext } from '@voxify/context/AppContext';
@@ -39,6 +44,8 @@ export const Routes = () => {
 
   const currentProfileStep = useGetCurrentProfileStep(profile);
 
+  const routeNameRef = React.useRef<string | undefined>();
+  const navigationRef = React.useRef<NavigationContainerRef<any>>();
   if (loading) {
     return (
       <Screen>
@@ -49,10 +56,37 @@ export const Routes = () => {
     );
   }
 
+  const logScreenViewFirebaseAnalytics = async (routeName: string) => {
+    await analytics().logScreenView({
+      screen_name: routeName,
+      screen_class: routeName,
+    });
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef as any}
+      onReady={() => {
+        // The initial route name is not tracked in onStateChange
+        routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name;
+        routeNameRef.current &&
+          logScreenViewFirebaseAnalytics(routeNameRef.current);
+      }}
+      onStateChange={async () => {
+        // Firebase analytics screen tracking
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName =
+          navigationRef?.current?.getCurrentRoute()?.name;
+
+        if (previousRouteName !== currentRouteName) {
+          if (currentRouteName) {
+            await logScreenViewFirebaseAnalytics(currentRouteName);
+          }
+        }
+        routeNameRef.current = currentRouteName;
+      }}>
       {user ? (
-        <AppStack.Navigator>
+        <AppStack.Navigator screenOptions={{ headerShown: false }}>
           {currentProfileStep !== ProfileCompletionStep.COMPLETE ? (
             <AuthStack.Screen name="Profile Setup" component={ProfileSetup} />
           ) : (
